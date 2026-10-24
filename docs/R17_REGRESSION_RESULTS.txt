@@ -1,0 +1,315 @@
+TAP version 13
+# Subtest: Dash alters Rapier velocity and produces a deterministic replay
+ok 1 - Dash alters Rapier velocity and produces a deterministic replay # SKIP Provide local original font path
+  ---
+  duration_ms: 0.905091
+  type: 'test'
+  ...
+# Subtest: pull controls produce bounded aim and power
+ok 2 - pull controls produce bounded aim and power
+  ---
+  duration_ms: 1.213805
+  type: 'test'
+  ...
+# Subtest: dash gestures are directional with cancellation threshold
+ok 3 - dash gestures are directional with cancellation threshold
+  ---
+  duration_ms: 0.180641
+  type: 'test'
+  ...
+# Subtest: keyboard does not steal typing
+ok 4 - keyboard does not steal typing
+  ---
+  duration_ms: 0.166378
+  type: 'test'
+  ...
+# Subtest: tier scales by actual event magnitude and critical always wins
+ok 5 - tier scales by actual event magnitude and critical always wins
+  ---
+  duration_ms: 0.981503
+  type: 'test'
+  ...
+# Subtest: pull requires deliberate movement; return to origin cancels
+ok 6 - pull requires deliberate movement; return to origin cancels
+  ---
+  duration_ms: 1.287772
+  type: 'test'
+  ...
+# Subtest: mobile heuristic respects narrow, weak devices and save-data
+ok 7 - mobile heuristic respects narrow, weak devices and save-data
+  ---
+  duration_ms: 2.134334
+  type: 'test'
+  ...
+# Subtest: quality auto degrades after persistent slow frames with cooldown
+ok 8 - quality auto degrades after persistent slow frames with cooldown
+  ---
+  duration_ms: 0.399235
+  type: 'test'
+  ...
+# Subtest: quality manual mode does not adapt and renderer skip is presentation-only
+ok 9 - quality manual mode does not adapt and renderer skip is presentation-only
+  ---
+  duration_ms: 0.241114
+  type: 'test'
+  ...
+# Subtest: audio, visuals and haptics have independent cooldown, reduction
+ok 10 - audio, visuals and haptics have independent cooldown, reduction
+  ---
+  duration_ms: 0.242046
+  type: 'test'
+  ...
+# Subtest: touch targets operate in CSS pixels independent of DPR
+ok 11 - touch targets operate in CSS pixels independent of DPR
+  ---
+  duration_ms: 0.323036
+  type: 'test'
+  ...
+# Subtest: new players see first playable stage and no false saved stars
+ok 12 - new players see first playable stage and no false saved stars
+  ---
+  duration_ms: 12.341312
+  type: 'test'
+  ...
+# Subtest: one cleared stage resumes at next unlocked real stage
+ok 13 - one cleared stage resumes at next unlocked real stage
+  ---
+  duration_ms: 0.963219
+  type: 'test'
+  ...
+# Subtest: three clear stages navigate to boss, never the locked chapter 2
+ok 14 - three clear stages navigate to boss, never the locked chapter 2
+  ---
+  duration_ms: 0.376681
+  type: 'test'
+  ...
+# Subtest: finishing chapter returns replay path and earned stars
+ok 15 - finishing chapter returns replay path and earned stars
+  ---
+  duration_ms: 0.503805
+  type: 'test'
+  ...
+# Subtest: out-of-order or invalid data is not presented as completed content
+ok 16 - out-of-order or invalid data is not presented as completed content
+  ---
+  duration_ms: 1.56338
+  type: 'test'
+  ...
+# Subtest: storage failure is signalled without granting fake progress
+ok 17 - storage failure is signalled without granting fake progress
+  ---
+  duration_ms: 1.353065
+  type: 'test'
+  ...
+# Subtest: R15 initial stage board shows only four genuine playable story entries
+ok 18 - R15 initial stage board shows only four genuine playable story entries
+  ---
+  duration_ms: 1.845811
+  type: 'test'
+  ...
+# Subtest: R15 progress gates, replay and historic best use only validated R10 save
+ok 19 - R15 progress gates, replay and historic best use only validated R10 save
+  ---
+  duration_ms: 0.487917
+  type: 'test'
+  ...
+# Subtest: R15 all-clear still exposes replay, not a phantom next chapter
+ok 20 - R15 all-clear still exposes replay, not a phantom next chapter
+  ---
+  duration_ms: 0.369048
+  type: 'test'
+  ...
+# Subtest: R15 corrupted/out of order saves never make a stage clickable
+ok 21 - R15 corrupted/out of order saves never make a stage clickable
+  ---
+  duration_ms: 0.171434
+  type: 'test'
+  ...
+# Subtest: R15 local storage disabled is explicit and stage 1 remains playable
+ok 22 - R15 local storage disabled is explicit and stage 1 remains playable
+  ---
+  duration_ms: 0.379715
+  type: 'test'
+  ...
+# Subtest: R15 mission contracts match the active evaluator in all four stages
+ok 23 - R15 mission contracts match the active evaluator in all four stages
+  ---
+  duration_ms: 0.282408
+  type: 'test'
+  ...
+# Subtest: R15 stars require clearing the objective even if HP/time are sufficient
+ok 24 - R15 stars require clearing the objective even if HP/time are sufficient
+  ---
+  duration_ms: 0.257668
+  type: 'test'
+  ...
+# Subtest: R15 stage translations do not silently fallback for supported locales
+ok 25 - R15 stage translations do not silently fallback for supported locales
+  ---
+  duration_ms: 0.288039
+  type: 'test'
+  ...
+# Subtest: single visible grapheme is kept, NFC-normalized and not truncated
+ok 26 - single visible grapheme is kept, NFC-normalized and not truncated
+  ---
+  duration_ms: 19.934763
+  type: 'test'
+  ...
+# Subtest: only supported mode and fonts can be selected
+ok 27 - only supported mode and fonts can be selected
+  ---
+  duration_ms: 1.778704
+  type: 'test'
+  ...
+# Subtest: verification starts disabled and becomes ready only on native result
+ok 28 - verification starts disabled and becomes ready only on native result
+  ---
+  duration_ms: 0.599285
+  type: 'test'
+  ...
+# Subtest: latest selection wins over stale async font validation
+ok 29 - latest selection wins over stale async font validation
+  ---
+  duration_ms: 0.312489
+  type: 'test'
+  ...
+# Subtest: unsupported fonts and missing font resources never become playable
+ok 30 - unsupported fonts and missing font resources never become playable
+  ---
+  duration_ms: 0.492421
+  type: 'test'
+  ...
+# Subtest: invalid draft immediately invalidates previous verified selection
+ok 31 - invalid draft immediately invalidates previous verified selection
+  ---
+  duration_ms: 0.257812
+  type: 'test'
+  ...
+# Subtest: Story always uses catalog opponent AND opponent font, not player style or edited rival
+ok 32 - Story always uses catalog opponent AND opponent font, not player style or edited rival
+  ---
+  duration_ms: 20.211046
+  type: 'test'
+  ...
+# Subtest: Story rejects locked, unknown stages, and unsupported modes
+ok 33 - Story rejects locked, unknown stages, and unsupported modes
+  ---
+  duration_ms: 0.885249
+  type: 'test'
+  ...
+# Subtest: Classic requires a real single visible opponent and retains no HP rules
+ok 34 - Classic requires a real single visible opponent and retains no HP rules
+  ---
+  duration_ms: 0.320972
+  type: 'test'
+  ...
+# Subtest: same battle config has same fingerprint; changing rival, font or stage differs
+ok 35 - same battle config has same fingerprint; changing rival, font or stage differs
+  ---
+  duration_ms: 0.39678
+  type: 'test'
+  ...
+# Subtest: native pair inspection blocks launch until current request resolves
+ok 36 - native pair inspection blocks launch until current request resolves
+  ---
+  duration_ms: 0.324808
+  type: 'test'
+  ...
+# Subtest: fast opponent change makes stale validation ineligible
+ok 37 - fast opponent change makes stale validation ineligible
+  ---
+  duration_ms: 0.288685
+  type: 'test'
+  ...
+# Subtest: explicit glyph/font error reason preserved and never ready
+ok 38 - explicit glyph/font error reason preserved and never ready
+  ---
+  duration_ms: 0.404118
+  type: 'test'
+  ...
+# Subtest: launch lock prevents concurrent bridge calls, releases on failure
+ok 39 - launch lock prevents concurrent bridge calls, releases on failure
+  ---
+  duration_ms: 1.252847
+  type: 'test'
+  ...
+# R3 ENGINE TESTS: PASS — deterministic replay, shot-dependent outcomes, HP damage, no-contact, mask stats, local save, failure fallback
+# Subtest: tests/r3-engine.test.mjs
+ok 9 - tests/r3-engine.test.mjs
+  ---
+  duration_ms: 88.275298
+  type: 'test'
+  ...
+# R4 SHAPE TESTS PASSED: geometry identity, silhouette holes, noncircular contact, repeatable simulation, input response, isolated save.
+# Subtest: tests/r4-shape.test.mjs
+ok 10 - tests/r4-shape.test.mjs
+  ---
+  duration_ms: 141.787773
+  type: 'test'
+  ...
+# R5 TESTS PASSED: shape manifold, finite angular response, deterministic replay, 4 level contracts, sequence unlock, objective/star rules and safe isolated save.
+# Subtest: tests/r5-engine.test.mjs
+ok 11 - tests/r5-engine.test.mjs
+  ---
+  duration_ms: 100.819857
+  type: 'test'
+  ...
+# R6 PASS: glyph mask portability/holes, integrity bounds, repeatable capsule, edit detection, live match comparison and unverified provenance
+# Subtest: tests/r6-replay.test.mjs
+ok 12 - tests/r6-replay.test.mjs
+  ---
+  duration_ms: 162.556099
+  type: 'test'
+  ...
+# R7 PASS: pinned SHA-256 packs, mask reuse, invalid asset refusal, CLI build/verify, parity adapter, competitive fail-closed
+# Subtest: tests/r7-assets-and-parity.test.mjs
+ok 13 - tests/r7-assets-and-parity.test.mjs
+  ---
+  duration_ms: 328.123744
+  type: 'test'
+  ...
+# Subtest: R8 preserves exact uploaded native physics identity
+ok 45 - R8 preserves exact uploaded native physics identity
+  ---
+  duration_ms: 1.680575
+  type: 'test'
+  ...
+# Subtest: Native adapter only with authorized local font file
+ok 46 - Native adapter only with authorized local font file # SKIP Set MOJI_V2_FONT_PATH to locally extracted source.zip font to run genuine 3D parity tests
+  ---
+  duration_ms: 0.144928
+  type: 'test'
+  ...
+# Subtest: R9 damage bounded and critical directional
+ok 47 - R9 damage bounded and critical directional
+  ---
+  duration_ms: 1.931042
+  type: 'test'
+  ...
+# Subtest: R9 deterministic outcome priority and simultaneous HP KO
+ok 48 - R9 deterministic outcome priority and simultaneous HP KO
+  ---
+  duration_ms: 0.43784
+  type: 'test'
+  ...
+# Subtest: R9 isolated versioned saves and stage unlock
+ok 49 - R9 isolated versioned saves and stage unlock
+  ---
+  duration_ms: 2.515944
+  type: 'test'
+  ...
+# Subtest: R9 uses original Rapier outcomes; trace stable across replay
+ok 50 - R9 uses original Rapier outcomes; trace stable across replay # SKIP Set MOJI_V2_FONT_PATH for native Rapier test
+  ---
+  duration_ms: 0.142011
+  type: 'test'
+  ...
+1..50
+# tests 50
+# suites 0
+# pass 47
+# fail 0
+# cancelled 0
+# skipped 3
+# todo 0
+# duration_ms 845.891121

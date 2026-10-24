@@ -1,0 +1,1239 @@
+{
+  "generatedAt": "2026-10-23",
+  "baseline": {
+    "product": "moji-blade",
+    "observedVersion": "v2.4.1",
+    "origin": "https://tsukuruum.pages.dev/games/moji-blade/",
+    "physicsVersion": "moji-blade-rapier021-r16-app-inner1",
+    "sourceKind": "published client modules, not the original build repository"
+  },
+  "fonts": {
+    "outline": [
+      { "path": "source/fonts/mplus1-medium.ttf", "bytes": 1836880, "fontId": "gothic" },
+      { "path": "source/fonts/NotoSerifJP-Regular.ttf", "bytes": 8079972, "fontId": "mincho" },
+      { "path": "source/fonts/RoundedMplus1c-ExtraBold.ttf", "bytes": 3628512, "fontId": "pop" },
+      { "path": "source/fonts/KouzanGyousho.ttf", "bytes": 5640044, "fontId": "brush" }
+    ],
+    "title": [
+      "source/fonts/title-gothic.woff",
+      "source/fonts/title-mincho.woff",
+      "source/fonts/title-pop.woff",
+      "source/fonts/title-brush.woff",
+      "source/fonts/title-ko-gothic.ttf",
+      "source/fonts/title-ko-mincho.ttf",
+      "source/fonts/title-ko-pop.ttf",
+      "source/fonts/title-ko-brush.ttf",
+      "assets/fonts/wdxl-lubrifont-jp-n.woff2"
+    ]
+  },
+  "entry": "source/game.js",
+  "battleEntry": "source/physics.js#Battle",
+  "counts": {
+    "files": 101
+  },
+  "nodes": [
+    {
+      "file": "source/app-audio-tuning.js",
+      "bytes": 266,
+      "lines": 4,
+      "sha256": "6de19b5b3903cdddc615632f69d8a85a5d3e898f167c6f697c1b8a5e0b0ec19f",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/app-collision.js",
+      "bytes": 4049,
+      "lines": 63,
+      "sha256": "5404b9166e75fe64481d40533ae70bd1fc2f29a149eee961924cba0863f7a717",
+      "role": "client-module",
+      "imports": [
+        "./config.js",
+        "./vendor/rapier.js",
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/app-font-index.js",
+      "bytes": 8891,
+      "lines": 24,
+      "sha256": "391f60926fd7f4bdf6d2779c67ac5696c8f4ef7e20c3280476be1a69b1fb3914",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/app-font-loading.js",
+      "bytes": 636,
+      "lines": 14,
+      "sha256": "9355379c6514c96a6e15179c75c6618fd65781073837eb77d49211d7d426a58c",
+      "role": "client-module",
+      "imports": [
+        "./app-font-index.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/app-glyph-detail.js",
+      "bytes": 5344,
+      "lines": 61,
+      "sha256": "a1edec2ace88bac5fb1c6efc3eb7f169cac9889d7ecc42f604a442c705f89dc4",
+      "role": "client-module",
+      "imports": [
+        "./config.js",
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/app-grid.js",
+      "bytes": 1496,
+      "lines": 28,
+      "sha256": "a75403a650c29424d0f2acad14a7824046510bb5f5de79462ac47ab6d11be7d2",
+      "role": "client-module",
+      "imports": [
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/app-haptics.js",
+      "bytes": 1358,
+      "lines": 25,
+      "sha256": "289f55aeb61b6df6ef75ab5c5a3c9c9033ffb719ef743692c0c6dd76216c206e",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/app-outside-floor.js",
+      "bytes": 362,
+      "lines": 8,
+      "sha256": "d8eb0cb34989e4421f535ee633c8593ed5503587274c61097dae6e66bf9f596b",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/app-physics-warmup.js",
+      "bytes": 848,
+      "lines": 23,
+      "sha256": "5e99dd2bf49e32a817be0d4373f9cac72b30b4c0e9c68dd28f746d415435012a",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/app-render-resources.js",
+      "bytes": 4247,
+      "lines": 67,
+      "sha256": "e3be47a8808b957e830d9f1f82c897e5cdddaa81bd7f6235413a1fedc6181e07",
+      "role": "client-module",
+      "imports": [
+        "./config.js",
+        "./driver.js",
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/app-sharing.js",
+      "bytes": 4075,
+      "lines": 68,
+      "sha256": "c9c385f65d0bf2628b63a932dc615276207aa57f151dde8fc1bdb65144d93cbc",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/app.css",
+      "bytes": 3947,
+      "lines": 55,
+      "sha256": "3b7e28c7dc64be2b7e0b11853ef1bf58f54d96d37c672691d92ac65de209af3d",
+      "role": "presentation",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/arena-framing.js",
+      "bytes": 726,
+      "lines": 8,
+      "sha256": "38d1cb398e5b6a3348982d64b4be97445d666288cd4f01e97acd64caf4179cf6",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/arena-lighting.js",
+      "bytes": 998,
+      "lines": 13,
+      "sha256": "b239c9ceb493aae66eef1a71d33efd5158265b1f54ed3d0c0bca9e4bdfcd059f",
+      "role": "client-module",
+      "imports": [
+        "./stages.js",
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/audio.js",
+      "bytes": 15630,
+      "lines": 213,
+      "sha256": "d313185edcd78f403ba834e1c45b4b81a9bf4927950a121751051571e097aa62",
+      "role": "client-module",
+      "imports": [
+        "./app-audio-tuning.js",
+        "./boss-music.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/boost-trails.js",
+      "bytes": 2989,
+      "lines": 42,
+      "sha256": "a7206d8c05401c8d78ebd28a8735fe90831ff7c6ae710f51ac65c193eb232873",
+      "role": "client-module",
+      "imports": [
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/boss-music.js",
+      "bytes": 2684,
+      "lines": 18,
+      "sha256": "be19b9a7ecc5a61063012ad6978afaacd06ecc26954ed43818bb22ce03763207",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/budget-rankings.json",
+      "bytes": 51720,
+      "lines": 1,
+      "sha256": "3e1406b730080e0a76daaf67fc53cd4353a11de551e9136a091cc22d10229212",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/challenge-catalog.js",
+      "bytes": 67860,
+      "lines": 5,
+      "sha256": "f502a106af1bedac61c147dc51e04597cf8d5619d22144ea4fb58ec339a78f10",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/challenge-random.js",
+      "bytes": 3464,
+      "lines": 64,
+      "sha256": "31137ac308bf9ce1046f86978eed26e1571d05b8cb3db4b1deff767affbcb76a",
+      "role": "client-module",
+      "imports": [
+        "./challenge-catalog.js",
+        "./config.js",
+        "./fonts.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/challenge-stages.js",
+      "bytes": 1317,
+      "lines": 25,
+      "sha256": "4d72a4f755fa309dc4c5e5d4b39697732782591c139ab6d0d8409fe08ae1d489",
+      "role": "client-module",
+      "imports": [
+        "./stages.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/character-category.js",
+      "bytes": 603,
+      "lines": 11,
+      "sha256": "c24b1e7410df55c3a278c34da9706bb8fc45a7c3cb9a5e61d40a1a6b2acbe562",
+      "role": "client-module",
+      "imports": [
+        "./config.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/config.js",
+      "bytes": 6297,
+      "lines": 109,
+      "sha256": "80ba669227823051754fec3f12c92582959679327b18b02f7af86660b9f512d7",
+      "role": "game-rules",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/driver.js",
+      "bytes": 1397,
+      "lines": 23,
+      "sha256": "2c6480746a4a44011d821dccfa2d915e4fac15ea9aec3c745f06c815546acab3",
+      "role": "simulation",
+      "imports": [
+        "./config.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/encyclopedia-catalog.js",
+      "bytes": 5019,
+      "lines": 64,
+      "sha256": "3caeccbd6c9476d8a7801a5a8c19442a1673f5a4dccc24738a1570ffb8ea1f29",
+      "role": "collection",
+      "imports": [
+        "./challenge-random.js",
+        "./character-category.js",
+        "./encyclopedia-performance.js",
+        "./encyclopedia-schema.js",
+        "./encyclopedia-store.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/encyclopedia-direction.js",
+      "bytes": 489,
+      "lines": 6,
+      "sha256": "2027937bbba4dab022e40ea5cc53452328833310e8029035f0dcfb052c9d1c16",
+      "role": "collection",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/encyclopedia-display-probe.js",
+      "bytes": 3496,
+      "lines": 46,
+      "sha256": "baba9c0601c4494cd6513d2f899185761ad3053dc1764296d5ac06d2c89bfcc9",
+      "role": "collection",
+      "imports": [
+        "./fonts.js",
+        "./glyph-emoji.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/encyclopedia-notices.js",
+      "bytes": 1354,
+      "lines": 23,
+      "sha256": "cf3a29a7d05b12e2928630bba08b39656a02bc875586f7e1fbe5ceb25d1d1cc1",
+      "role": "collection",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/encyclopedia-performance-worker.js",
+      "bytes": 942,
+      "lines": 16,
+      "sha256": "512ffcdf3210d6ef9ca758cbf2067a16ee8b5134550331d5befa0a225cb537c3",
+      "role": "collection",
+      "imports": [
+        "./encyclopedia-performance.js",
+        "./glyph.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/encyclopedia-performance.js",
+      "bytes": 6498,
+      "lines": 78,
+      "sha256": "d72ed9a90e18edbde98d86b4a0c2aefaf3a7ae371f55db7a748d6dc2f6b79e4c",
+      "role": "collection",
+      "imports": [
+        "./config.js",
+        "./glyph.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/encyclopedia-persistence.js",
+      "bytes": 11098,
+      "lines": 105,
+      "sha256": "72740afb10c29446667fa53da86e57975ef21ed79bbf5a49ebc7c6c789a7b3e3",
+      "role": "save-core",
+      "imports": [
+        "./encyclopedia-schema.js",
+        "./encyclopedia-store.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/encyclopedia-preview.js",
+      "bytes": 11351,
+      "lines": 134,
+      "sha256": "52ce07177c347927de33823ae8a2fac455e141854ee0fc1bd9f663473e53c4f5",
+      "role": "collection",
+      "imports": [
+        "./config.js",
+        "./physics.js",
+        "./render.js",
+        "./reward-surface.js",
+        "./scout-variant.js",
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/encyclopedia-rewards.js",
+      "bytes": 5702,
+      "lines": 65,
+      "sha256": "b04acce0d1d852f974c72c07715d6bd116edf3d2ad585e31d9fa3cb43a43f5b8",
+      "role": "collection",
+      "imports": [
+        "./encyclopedia-catalog.js",
+        "./encyclopedia-store.js",
+        "./skin-catalog.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/encyclopedia-schema.js",
+      "bytes": 1283,
+      "lines": 20,
+      "sha256": "ba4caec7342defe3e43ad4f6b976331bb923abca25ea6490680269bd29bd34a8",
+      "role": "collection",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/encyclopedia-scrollbar.js",
+      "bytes": 3464,
+      "lines": 26,
+      "sha256": "d8af9106e446bb7c4253dadd8b3a4746c87609444c4ddc204606909487fca905",
+      "role": "collection",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/encyclopedia-store.js",
+      "bytes": 10671,
+      "lines": 130,
+      "sha256": "8fd0fefb842ce9318e2ab6999d34ded99f28373ef489d466b99ea5c268916906",
+      "role": "save-core",
+      "imports": [
+        "./encyclopedia-schema.js",
+        "./fonts.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/encyclopedia-support-worker.js",
+      "bytes": 1337,
+      "lines": 14,
+      "sha256": "754817a224cce347dd34f6dee117626922d5b0841a4a2d22a60ec6891dfa92fa",
+      "role": "collection",
+      "imports": [
+        "./encyclopedia-display-probe.js",
+        "./fonts.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/encyclopedia-support.js",
+      "bytes": 9421,
+      "lines": 79,
+      "sha256": "9cc0e26fa64e6e25d81c1cccecc59a2d420dce9148c2f3ffe6a2a36da6e8ecc6",
+      "role": "collection",
+      "imports": [
+        "./encyclopedia-display-probe.js",
+        "./fonts.js",
+        "./glyph-emoji.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/encyclopedia.css",
+      "bytes": 15438,
+      "lines": 141,
+      "sha256": "a49b657edd9da1b7239f65a2abd0214e37dd0bda9061a0f9547b55eaabbe0efc",
+      "role": "collection",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/encyclopedia.js",
+      "bytes": 25657,
+      "lines": 187,
+      "sha256": "4aaa211e76cf648bda940960609ec7b98a82ee6e583f109eb9674c4ae89943aa",
+      "role": "collection",
+      "imports": [
+        "./encyclopedia-catalog.js",
+        "./encyclopedia-direction.js",
+        "./encyclopedia-notices.js",
+        "./encyclopedia-performance.js",
+        "./encyclopedia-preview.js",
+        "./encyclopedia-rewards.js",
+        "./encyclopedia-scrollbar.js",
+        "./encyclopedia-store.js",
+        "./encyclopedia-support.js",
+        "./fonts.js",
+        "./i18n.js",
+        "./scout-variant.js",
+        "./skin-catalog.js",
+        "./skins.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/events.js",
+      "bytes": 471,
+      "lines": 9,
+      "sha256": "cf7d75c83189a55ed169a3fa70d475feba4dd736db084f9763f8292fd9a8234e",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/feature-telemetry.js",
+      "bytes": 425,
+      "lines": 6,
+      "sha256": "cd1881817140a9387389891cfe8437664dc5081a9357e95a9700c09975d1ed0d",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/fonts.js",
+      "bytes": 1029,
+      "lines": 10,
+      "sha256": "126a62eb98a5635faf8b7f8e5cef2929e6eefb10f1cd88cfe2e83615a78f4ebe",
+      "role": "glyph-core",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/fracture.js",
+      "bytes": 972,
+      "lines": 20,
+      "sha256": "319b4970d9bad1ecf7f2e52e7204e93efe836b5ef4777f8d729b3b1b26fed139",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/game-session.js",
+      "bytes": 2780,
+      "lines": 38,
+      "sha256": "cf76ddb2176a008a2f73d128a72fd0f259d67152206a773b46dc4c53d3db0600",
+      "role": "save-core",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/game.js",
+      "bytes": 119698,
+      "lines": 1068,
+      "sha256": "117de8b48cce4308c4bb22f37f761f923faed846a375c2a04fad2e71857fcfa5",
+      "role": "app-bootstrap",
+      "imports": [
+        "./app-haptics.js",
+        "./app-physics-warmup.js",
+        "./app-sharing.js",
+        "./audio.js",
+        "./challenge-random.js",
+        "./challenge-stages.js",
+        "./config.js",
+        "./encyclopedia-catalog.js",
+        "./encyclopedia-persistence.js",
+        "./encyclopedia-rewards.js",
+        "./encyclopedia-store.js",
+        "./encyclopedia-support.js",
+        "./encyclopedia.js",
+        "./events.js",
+        "./fonts.js",
+        "./game-session.js",
+        "./glyph.js",
+        "./halloween-missions.js",
+        "./halloween-progress.js",
+        "./home-notices.js",
+        "./i18n.js",
+        "./physics.js",
+        "./pull-gesture.js",
+        "./render-recovery.js",
+        "./render.js",
+        "./scout-controller.js",
+        "./scout-run.js",
+        "./scout-variant.js",
+        "./skin-catalog.js",
+        "./skin-store.js",
+        "./skins.js",
+        "./stage-selection.js",
+        "./stages.js"
+      ],
+      "dynamicImports": [
+        "./halloween-boss.js",
+        "./halloween-entry.js"
+      ]
+    },
+    {
+      "file": "source/glyph-emoji.js",
+      "bytes": 1641,
+      "lines": 23,
+      "sha256": "564500b9b32b03806be481e81eb8caf9abc35300356725e43cfb5d900608a682",
+      "role": "client-module",
+      "imports": [
+        "./challenge-catalog.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/glyph-symmetry-worker.js",
+      "bytes": 212,
+      "lines": 3,
+      "sha256": "4940e8617157bdaa4b21c2be7314d3e26167e98cffea2cd7c20c59ae3cd76963",
+      "role": "client-module",
+      "imports": [
+        "./glyph-symmetry.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/glyph-symmetry.js",
+      "bytes": 7411,
+      "lines": 72,
+      "sha256": "3375fcedb70eb6e7c966f431f88d1488093733cae975acf02dbe53491878631c",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/glyph.js",
+      "bytes": 16915,
+      "lines": 228,
+      "sha256": "31e7486fb91f4d029bcd20620aa7b0e6b9d083a65f426a9209087458edcc33fb",
+      "role": "glyph-core",
+      "imports": [
+        "./app-font-loading.js",
+        "./config.js",
+        "./fonts.js",
+        "./glyph-emoji.js",
+        "./stats.js",
+        "./vendor/clipper.js",
+        "./vendor/opentype.js",
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/gold-effects.js",
+      "bytes": 1452,
+      "lines": 16,
+      "sha256": "2aab2f69339a2b5d795c2cb1750ce441a11ac6e7b63ee53c6a7dbd132e84ab63",
+      "role": "client-module",
+      "imports": [
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/halloween-boss-cutin.js",
+      "bytes": 2122,
+      "lines": 18,
+      "sha256": "98f50c22d9c57791728b3fef6a9f46752032d399eff202e74d164b122eb1edc2",
+      "role": "cosmetics-or-event",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/halloween-boss-model.js",
+      "bytes": 4776,
+      "lines": 42,
+      "sha256": "e0f50d83de1376d0fdc7273330e23c355eeb7090c25a22b3d8d3daf29a665d7b",
+      "role": "cosmetics-or-event",
+      "imports": [
+        "./config.js",
+        "./stages.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/halloween-boss-physics.js",
+      "bytes": 5264,
+      "lines": 64,
+      "sha256": "94bf61a5ea457f9901e6b0115cd7f0c94826bf26a7024180017696d952deed3d",
+      "role": "cosmetics-or-event",
+      "imports": [
+        "./config.js",
+        "./halloween-boss-model.js",
+        "./physics.js",
+        "./stages.js",
+        "./vendor/rapier.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/halloween-boss.js",
+      "bytes": 18490,
+      "lines": 109,
+      "sha256": "b88ac76ba666503c5c7acd1b55f954790f8f49b5592a0b91555059820c31f276",
+      "role": "cosmetics-or-event",
+      "imports": [
+        "./config.js",
+        "./encyclopedia-rewards.js",
+        "./feature-telemetry.js",
+        "./halloween-boss-cutin.js",
+        "./halloween-boss-model.js",
+        "./halloween-boss-physics.js",
+        "./i18n.js",
+        "./physics.js",
+        "./pull-gesture.js",
+        "./render-recovery.js",
+        "./render.js",
+        "./reward-surface.js",
+        "./skin-catalog.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/halloween-entry.js",
+      "bytes": 3504,
+      "lines": 19,
+      "sha256": "468fa2e2c5f84b5c381ad34f7e032776b85906153e198a438125f0aed854ce4f",
+      "role": "cosmetics-or-event",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/halloween-missions.js",
+      "bytes": 12098,
+      "lines": 103,
+      "sha256": "f9ebfdf71519546b6ae9f6f65b8fc2788e17ec78f7472aed5e098670e6cdf023",
+      "role": "cosmetics-or-event",
+      "imports": [
+        "./feature-telemetry.js",
+        "./halloween-progress.js",
+        "./i18n.js",
+        "./skin-catalog.js",
+        "./skins.js"
+      ],
+      "dynamicImports": [
+        "./skin-receipt-preview.js"
+      ]
+    },
+    {
+      "file": "source/halloween-progress.js",
+      "bytes": 6075,
+      "lines": 54,
+      "sha256": "a186fd7b88f45d527a891234ecb5c22a3fd2d1ce1dea13e6e5d0ce16d701a569",
+      "role": "cosmetics-or-event",
+      "imports": [
+        "./feature-telemetry.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/halloween-scenery.js",
+      "bytes": 13327,
+      "lines": 106,
+      "sha256": "820737dc572ef850c3ca2d7f4076645bd2760ecb946761b9469f76e40aa185b7",
+      "role": "cosmetics-or-event",
+      "imports": [
+        "./config.js",
+        "./physics.js",
+        "./stages.js",
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/halloween-skins.js",
+      "bytes": 7451,
+      "lines": 83,
+      "sha256": "52b2a5f9607b74df8f2834dc50078da8bc0801402f145805040e069934084dbd",
+      "role": "cosmetics-or-event",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/home-notices.css",
+      "bytes": 6552,
+      "lines": 74,
+      "sha256": "3cf3ae8ce3031f5a81fd586fd7f75c2770649cc5c9ad22617ba352b0906ee657",
+      "role": "presentation",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/home-notices.js",
+      "bytes": 6522,
+      "lines": 85,
+      "sha256": "9dd01badb2ce8b606f9ffa6d3fe8f166b7fea71b082cd1491c75a16306ca9960",
+      "role": "client-module",
+      "imports": [
+        "./i18n.js",
+        "./update-notice.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/i18n.js",
+      "bytes": 65725,
+      "lines": 619,
+      "sha256": "421c47e2d0a3cb1501c20a3b2271fe679506b3c327f3b0abe5dbe4dbf7835291",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/kanji-radicals-data.js",
+      "bytes": 138531,
+      "lines": 5,
+      "sha256": "b26797a66f63b872f79c106d60b1c32fc767525c89553b82338dc0ec9ac0508e",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/physics.js",
+      "bytes": 35709,
+      "lines": 500,
+      "sha256": "943c4ac1b4c30c73c33a83cf967eb7a4f4cd41cde8908cc4e34181d28572210a",
+      "role": "simulation",
+      "imports": [
+        "./app-collision.js",
+        "./app-outside-floor.js",
+        "./config.js",
+        "./driver.js",
+        "./ring-boundary.js",
+        "./scout-variant.js",
+        "./stages.js",
+        "./top-bounds.js",
+        "./vendor/rapier.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/pull-gesture.js",
+      "bytes": 543,
+      "lines": 5,
+      "sha256": "eda3f0060fe96287b998f8461374a497e921514a4b856731617cf5e7f50f668a",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/rainbow-effects.js",
+      "bytes": 2609,
+      "lines": 27,
+      "sha256": "a10d7496043423b6c93364fda59d3a5841386c483c59d2733918bbbc8360926d",
+      "role": "client-module",
+      "imports": [
+        "./skin-catalog.js",
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/rare-effects.js",
+      "bytes": 7750,
+      "lines": 88,
+      "sha256": "d2d730f4cf78abd4ec29928293ab18bee27a66cd4c132f6a8e59fbd04241fb55",
+      "role": "client-module",
+      "imports": [
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/raster-display.js",
+      "bytes": 8186,
+      "lines": 99,
+      "sha256": "6930087121cc0f91af7296df5ad20a2f2fd72202c9b68d1fbeedb1c456270637",
+      "role": "client-module",
+      "imports": [
+        "./config.js",
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/render-recovery.js",
+      "bytes": 2943,
+      "lines": 62,
+      "sha256": "9c73ca5f4a5132c56704c5e1fe7a26af8055d2886d3f85a4ba88392cc525fb43",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/render.js",
+      "bytes": 31018,
+      "lines": 252,
+      "sha256": "66d84ca6728ac3f5b0bd3a71ec8c821c1691a0df6d65f8686e4ced04e1630ad3",
+      "role": "render-three",
+      "imports": [
+        "./app-glyph-detail.js",
+        "./app-grid.js",
+        "./app-render-resources.js",
+        "./arena-framing.js",
+        "./arena-lighting.js",
+        "./boost-trails.js",
+        "./config.js",
+        "./driver.js",
+        "./fracture.js",
+        "./gold-effects.js",
+        "./halloween-scenery.js",
+        "./physics.js",
+        "./rainbow-effects.js",
+        "./rare-effects.js",
+        "./raster-display.js",
+        "./render-recovery.js",
+        "./reward-surface.js",
+        "./skin-catalog.js",
+        "./skin-effects.js",
+        "./stage-boards.js",
+        "./stages.js",
+        "./top-presence.js",
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/reward-surface.js",
+      "bytes": 8523,
+      "lines": 102,
+      "sha256": "a00fcdacdff9fc004472a902887f2db95f73364e69b51db3d35d269613c71a43",
+      "role": "client-module",
+      "imports": [
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/ring-boundary.js",
+      "bytes": 3010,
+      "lines": 38,
+      "sha256": "6c21892d07d1288add876a82ce4ddaafada304daf98f541d982e13387ae6f03c",
+      "role": "client-module",
+      "imports": [
+        "./config.js",
+        "./stages.js",
+        "./top-bounds.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/scout-controller.js",
+      "bytes": 35152,
+      "lines": 297,
+      "sha256": "ddf9df085a745ce01d40d71cd0196528bf6edfa6c312d661c3cdb400c7593b0c",
+      "role": "game-modes",
+      "imports": [
+        "./config.js",
+        "./encyclopedia-rewards.js",
+        "./encyclopedia-store.js",
+        "./fonts.js",
+        "./glyph-symmetry.js",
+        "./i18n.js",
+        "./scout-party-bonus.js",
+        "./scout-radicals.js",
+        "./scout-run.js",
+        "./scout-variant.js",
+        "./skin-catalog.js",
+        "./stages.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/scout-party-bonus.js",
+      "bytes": 2975,
+      "lines": 30,
+      "sha256": "71a02c51488bfd6064b8187ae3d4b6a51e1736c95cde170bed854ef44b39529d",
+      "role": "game-modes",
+      "imports": [
+        "./character-category.js",
+        "./config.js",
+        "./fonts.js",
+        "./glyph-symmetry.js",
+        "./scout-radicals.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/scout-radicals.js",
+      "bytes": 1920,
+      "lines": 35,
+      "sha256": "6cf0bc2536faf3bc31212317af6e1557160344784e831c67db4a3351108f5c5e",
+      "role": "game-modes",
+      "imports": [],
+      "dynamicImports": [
+        "./kanji-radicals-data.js"
+      ]
+    },
+    {
+      "file": "source/scout-run.js",
+      "bytes": 13179,
+      "lines": 148,
+      "sha256": "2caca906bdfb3a64ed05f5dc6f3ce62a77e1356a39ad002641aa71699cfbd4dd",
+      "role": "game-modes",
+      "imports": [
+        "./challenge-random.js",
+        "./fonts.js",
+        "./scout-variant.js",
+        "./stages.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/scout-variant.js",
+      "bytes": 1902,
+      "lines": 35,
+      "sha256": "090a49dbccc717abd87aea83983a4ddf8ada4cf364beb346e8181a7748df2e5d",
+      "role": "game-modes",
+      "imports": [
+        "./config.js",
+        "./scout-party-bonus.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/scout.css",
+      "bytes": 20307,
+      "lines": 195,
+      "sha256": "98c375b66b30873b048aee3a1f0d39e4c9a88bc09ad052ee8cdf6dd49d69c6d5",
+      "role": "game-modes",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/skin-carousel.js",
+      "bytes": 6731,
+      "lines": 79,
+      "sha256": "f30c0ea08c761d05e47523796e00d8bc49c99a148845f3c1a346bd4ca986db41",
+      "role": "cosmetics-or-event",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/skin-catalog.js",
+      "bytes": 3608,
+      "lines": 53,
+      "sha256": "03da5b75515fd7d1a2de27ec4a9594edbd4167eb9280ef95a157d751e09b4840",
+      "role": "cosmetics-or-event",
+      "imports": [
+        "./halloween-skins.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/skin-effects.js",
+      "bytes": 2271,
+      "lines": 25,
+      "sha256": "c32ab9fda92037e647e658f960b3e73131a64b23d03c6a029c38d18b9e91cabf",
+      "role": "cosmetics-or-event",
+      "imports": [
+        "./halloween-skins.js",
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/skin-receipt-preview.js",
+      "bytes": 848,
+      "lines": 14,
+      "sha256": "52b0c1f154dc14c27d520d5ebe650a801afbd43e4943aac1e92a32f9af8a474d",
+      "role": "cosmetics-or-event",
+      "imports": [
+        "./encyclopedia-preview.js",
+        "./glyph.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/skin-store.js",
+      "bytes": 4435,
+      "lines": 51,
+      "sha256": "f0531b482a6b4f56ac604eb7672c3befdae129f728d17cf025899fd63398e700",
+      "role": "save-core",
+      "imports": [
+        "./encyclopedia-rewards.js",
+        "./feature-telemetry.js",
+        "./glyph-emoji.js",
+        "./skin-catalog.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/skins.css",
+      "bytes": 7134,
+      "lines": 56,
+      "sha256": "212ac63094bd7e82c5608c62ab055c07a72fb8dd34db20e0d88736c57a9d9acc",
+      "role": "cosmetics-or-event",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/skins.js",
+      "bytes": 8830,
+      "lines": 51,
+      "sha256": "4dbf17126294c5b2cbf60a1a3a8f65005c3f3515afb3194e5e4865fdee90cc19",
+      "role": "cosmetics-or-event",
+      "imports": [
+        "./feature-telemetry.js",
+        "./i18n.js",
+        "./skin-carousel.js",
+        "./skin-catalog.js"
+      ],
+      "dynamicImports": [
+        "./skin-receipt-preview.js"
+      ]
+    },
+    {
+      "file": "source/stage-boards.js",
+      "bytes": 13506,
+      "lines": 151,
+      "sha256": "aee356d367c9ce047d4e078e2d01448fbc5c6b24e6bc42a07d9cad6118bc6a15",
+      "role": "client-module",
+      "imports": [
+        "./config.js",
+        "./physics.js",
+        "./stages.js",
+        "./vendor/three.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/stage-selection.js",
+      "bytes": 8009,
+      "lines": 92,
+      "sha256": "1c94a124727db3d1a386d879b303d7437ba9013e29a7be0c912412c5a2a8abf6",
+      "role": "client-module",
+      "imports": [
+        "./i18n.js",
+        "./stages.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/stages.js",
+      "bytes": 10222,
+      "lines": 136,
+      "sha256": "47f042dedba58ae8548475720e83bd72991e5da933d61b53853126b102898d16",
+      "role": "arena-catalog",
+      "imports": [
+        "./config.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/stats.js",
+      "bytes": 7677,
+      "lines": 145,
+      "sha256": "18cbcb780e79a7eabab6f3cd185870980b003a4a04d37ba8d7d50bda3fe9c899",
+      "role": "glyph-core",
+      "imports": [
+        "./config.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/style.css",
+      "bytes": 78024,
+      "lines": 485,
+      "sha256": "fe4aa0dfda2699cba9213995e539963b2cc90693cc640331650977a2183ffec1",
+      "role": "presentation",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/top-bounds.js",
+      "bytes": 4525,
+      "lines": 61,
+      "sha256": "0bc6e7c3c0572f55eb722a36114cc7844963f4a2ed6b39c933f0bec73d32b155",
+      "role": "client-module",
+      "imports": [
+        "./config.js",
+        "./driver.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/top-presence.js",
+      "bytes": 1660,
+      "lines": 28,
+      "sha256": "8e98224f46b76e2aef6249cbf4e8faa3f794d1b6e565dd1fd31e8e63c976ee12",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/update-notice.js",
+      "bytes": 1991,
+      "lines": 37,
+      "sha256": "a79f3e596cd070c86097ed101769a23a4f722e1068a3aa7fee52e40e21512261",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/vendor/clipper.js",
+      "bytes": 203969,
+      "lines": 7635,
+      "sha256": "e90ffb8178e6fc147e7e93a81d73e78c2c38a7f5afea3807dd9cafd607e1ec57",
+      "role": "vendor-glyph",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/vendor/opentype.js",
+      "bytes": 244745,
+      "lines": 4,
+      "sha256": "30757bbd265b5e1e12e07201ed55007751a14581a8b6fbb343a84057085b6311",
+      "role": "vendor-glyph",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/vendor/rapier.js",
+      "bytes": 4422124,
+      "lines": 2,
+      "sha256": "02e635b48252d69814f43b065b069aa387daa9c2090818dc978338a311ee4ffa",
+      "role": "vendor-physics",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/vendor/three.core.js",
+      "bytes": 1458113,
+      "lines": 60587,
+      "sha256": "9edde002b066a9a05676a6127f67735b62baf399bdea529f2f7e31657da769e6",
+      "role": "vendor-render",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/vendor/three.js",
+      "bytes": 662772,
+      "lines": 19720,
+      "sha256": "9052042d676cb0fdc1ddfefe193053f34b7ac0513a616fdac4535d49987812ea",
+      "role": "vendor-render",
+      "imports": [
+        "./three.core.js"
+      ],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/web-bridge.js",
+      "bytes": 827,
+      "lines": 20,
+      "sha256": "39b511df8a9f4c5ef43d3163703bdf51df90239082509d50e6d1e90cdf2db1c9",
+      "role": "client-module",
+      "imports": [],
+      "dynamicImports": []
+    },
+    {
+      "file": "source/web.css",
+      "bytes": 2066,
+      "lines": 21,
+      "sha256": "a16817efa92b234ab2abada67ea1393f7ee848c256fb548788b49a61e236a968",
+      "role": "presentation",
+      "imports": [],
+      "dynamicImports": []
+    }
+  ]
+}

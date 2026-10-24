@@ -1,0 +1,16 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+.env
+.nitro
+.tanstack
+.wrangler
+.output
+.vinxi
+__unconfig*
+todos.json
+
+# R15 generated QA-only HTML fixtures (regenerate with node scripts/r15-stage-fixture.mjs)
+assets/r15-fixture-*.html

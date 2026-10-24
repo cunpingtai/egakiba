@@ -1,0 +1,11 @@
+{
+ "source":"source.zip uploaded 2026-10-23",
+ "physicsVersion":"moji-blade-rapier021-r16-app-inner1",
+ "scope":"Node.js original V2 Rapier run; NOT certified browser/cross-device parity",
+ "cases":[
+  {"font":"gothic","chars":["文","字"],"fontSha256":"8723ec26fb5e5f2bc63fc33841e5fb950a33a739c043172297b6cf8baabaf614","result":{"winner":0,"reason":"回転停止"},"steps":315,"finalStateHash":"d8cbf482"},
+  {"font":"mincho","chars":["文","字"],"fontSha256":"912f23bd002f54c2a6960d4ad5baf70fb35a12f9d5ac84fcea7abba3d5fc5fe4","result":{"winner":0,"reason":"場外"},"steps":40,"finalStateHash":"34856985"},
+  {"font":"pop","chars":["田","力"],"fontSha256":"8e7c15901dca87f1451b356dda594f7d092ba252a5dcc47da74523a242493c36","result":{"winner":0,"reason":"回転停止"},"steps":252,"finalStateHash":"a63b3c8c"},
+  {"font":"brush","chars":["文","字"],"fontSha256":"6b063cc0f9591ea2e71c97f06c8e663d04a0b0ac4bbe6c0e4c3b49a13215db99","result":{"winner":1,"reason":"場外"},"steps":72,"finalStateHash":"9a5122ad"}
+ ]
+}

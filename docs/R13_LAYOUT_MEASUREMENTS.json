@@ -1,0 +1,754 @@
+[
+  {
+    "viewport": {
+      "w": 320,
+      "h": 568
+    },
+    "hud": {
+      "x": 8,
+      "y": 79,
+      "w": 304,
+      "h": 53.59375,
+      "right": 312,
+      "bottom": 132.59375,
+      "visible": true
+    },
+    "control": {
+      "x": 9,
+      "y": 472,
+      "w": 302,
+      "h": 96,
+      "right": 311,
+      "bottom": 568,
+      "visible": true
+    },
+    "mission": {
+      "x": 11,
+      "y": 41,
+      "w": 298,
+      "h": 24,
+      "right": 309,
+      "bottom": 65,
+      "visible": true
+    },
+    "arena": {
+      "x": 0,
+      "y": 0,
+      "w": 320,
+      "h": 568,
+      "right": 320,
+      "bottom": 568,
+      "visible": true
+    },
+    "settings": {
+      "x": 9,
+      "y": 485,
+      "w": 44,
+      "h": 48,
+      "right": 53,
+      "bottom": 533,
+      "visible": true
+    },
+    "dash": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0,
+      "right": 0,
+      "bottom": 0,
+      "visible": false
+    },
+    "fire": {
+      "x": 189,
+      "y": 485,
+      "w": 78,
+      "h": 48,
+      "right": 267,
+      "bottom": 533,
+      "visible": true
+    },
+    "spin": {
+      "x": 56,
+      "y": 485,
+      "w": 62,
+      "h": 48,
+      "right": 118,
+      "bottom": 533,
+      "visible": true
+    },
+    "pause": {
+      "x": 270,
+      "y": 485,
+      "w": 44,
+      "h": 48,
+      "right": 314,
+      "bottom": 533,
+      "visible": true
+    },
+    "scrollWidth": 320,
+    "settingsPanel": {
+      "x": 9,
+      "y": 126,
+      "right": 294,
+      "bottom": 467
+    }
+  },
+  {
+    "viewport": {
+      "w": 360,
+      "h": 640
+    },
+    "hud": {
+      "x": 8,
+      "y": 102,
+      "w": 344,
+      "h": 55.59375,
+      "right": 352,
+      "bottom": 157.59375,
+      "visible": true
+    },
+    "control": {
+      "x": 9,
+      "y": 536,
+      "w": 342,
+      "h": 104,
+      "right": 351,
+      "bottom": 640,
+      "visible": true
+    },
+    "mission": {
+      "x": 11,
+      "y": 55,
+      "w": 338,
+      "h": 30,
+      "right": 349,
+      "bottom": 85,
+      "visible": true
+    },
+    "arena": {
+      "x": 0,
+      "y": 0,
+      "w": 360,
+      "h": 640,
+      "right": 360,
+      "bottom": 640,
+      "visible": true
+    },
+    "settings": {
+      "x": 9,
+      "y": 549,
+      "w": 44,
+      "h": 48,
+      "right": 53,
+      "bottom": 597,
+      "visible": true
+    },
+    "dash": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0,
+      "right": 0,
+      "bottom": 0,
+      "visible": false
+    },
+    "fire": {
+      "x": 215.640625,
+      "y": 549,
+      "w": 88.34375,
+      "h": 48,
+      "right": 303.984375,
+      "bottom": 597,
+      "visible": true
+    },
+    "spin": {
+      "x": 56,
+      "y": 549,
+      "w": 76.8125,
+      "h": 48,
+      "right": 132.8125,
+      "bottom": 597,
+      "visible": true
+    },
+    "pause": {
+      "x": 306.984375,
+      "y": 549,
+      "w": 44,
+      "h": 48,
+      "right": 350.984375,
+      "bottom": 597,
+      "visible": true
+    },
+    "scrollWidth": 360,
+    "settingsPanel": {
+      "x": 9,
+      "y": 190,
+      "right": 294,
+      "bottom": 531
+    }
+  },
+  {
+    "viewport": {
+      "w": 390,
+      "h": 844
+    },
+    "hud": {
+      "x": 8,
+      "y": 106,
+      "w": 374,
+      "h": 55.59375,
+      "right": 382,
+      "bottom": 161.59375,
+      "visible": true
+    },
+    "control": {
+      "x": 9,
+      "y": 737,
+      "w": 372,
+      "h": 107,
+      "right": 381,
+      "bottom": 844,
+      "visible": true
+    },
+    "mission": {
+      "x": 11,
+      "y": 55,
+      "w": 368,
+      "h": 30,
+      "right": 379,
+      "bottom": 85,
+      "visible": true
+    },
+    "arena": {
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "right": 390,
+      "bottom": 844,
+      "visible": true
+    },
+    "settings": {
+      "x": 9,
+      "y": 750,
+      "w": 52,
+      "h": 48,
+      "right": 61,
+      "bottom": 798,
+      "visible": true
+    },
+    "dash": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0,
+      "right": 0,
+      "bottom": 0,
+      "visible": false
+    },
+    "fire": {
+      "x": 231.5,
+      "y": 750,
+      "w": 91.5,
+      "h": 48,
+      "right": 323,
+      "bottom": 798,
+      "visible": true
+    },
+    "spin": {
+      "x": 67,
+      "y": 749,
+      "w": 76.25,
+      "h": 50,
+      "right": 143.25,
+      "bottom": 799,
+      "visible": true
+    },
+    "pause": {
+      "x": 329,
+      "y": 750,
+      "w": 52,
+      "h": 48,
+      "right": 381,
+      "bottom": 798,
+      "visible": true
+    },
+    "scrollWidth": 390,
+    "settingsPanel": {
+      "x": 9,
+      "y": 391,
+      "right": 319,
+      "bottom": 732
+    }
+  },
+  {
+    "viewport": {
+      "w": 430,
+      "h": 932
+    },
+    "hud": {
+      "x": 8,
+      "y": 106,
+      "w": 414,
+      "h": 55.59375,
+      "right": 422,
+      "bottom": 161.59375,
+      "visible": true
+    },
+    "control": {
+      "x": 9,
+      "y": 825,
+      "w": 412,
+      "h": 107,
+      "right": 421,
+      "bottom": 932,
+      "visible": true
+    },
+    "mission": {
+      "x": 11,
+      "y": 55,
+      "w": 408,
+      "h": 30,
+      "right": 419,
+      "bottom": 85,
+      "visible": true
+    },
+    "arena": {
+      "x": 0,
+      "y": 0,
+      "w": 430,
+      "h": 932,
+      "right": 430,
+      "bottom": 932,
+      "visible": true
+    },
+    "settings": {
+      "x": 9,
+      "y": 838,
+      "w": 52,
+      "h": 48,
+      "right": 61,
+      "bottom": 886,
+      "visible": true
+    },
+    "dash": {
+      "x": 0,
+      "y": 0,
+      "w": 0,
+      "h": 0,
+      "right": 0,
+      "bottom": 0,
+      "visible": false
+    },
+    "fire": {
+      "x": 256.5,
+      "y": 838,
+      "w": 106.5,
+      "h": 48,
+      "right": 363,
+      "bottom": 886,
+      "visible": true
+    },
+    "spin": {
+      "x": 67,
+      "y": 837,
+      "w": 88.75,
+      "h": 50,
+      "right": 155.75,
+      "bottom": 887,
+      "visible": true
+    },
+    "pause": {
+      "x": 369,
+      "y": 838,
+      "w": 52,
+      "h": 48,
+      "right": 421,
+      "bottom": 886,
+      "visible": true
+    },
+    "scrollWidth": 430,
+    "settingsPanel": {
+      "x": 9,
+      "y": 479,
+      "right": 319,
+      "bottom": 820
+    }
+  },
+  {
+    "viewport": {
+      "w": 800,
+      "h": 390
+    },
+    "hud": {
+      "x": 10,
+      "y": 60,
+      "w": 780,
+      "h": 51.59375,
+      "right": 790,
+      "bottom": 111.59375,
+      "visible": true
+    },
+    "control": {
+      "x": 10,
+      "y": 322,
+      "w": 780,
+      "h": 68,
+      "right": 790,
+      "bottom": 390,
+      "visible": true
+    },
+    "mission": {
+      "x": 325.0703125,
+      "y": 36,
+      "w": 149.859375,
+      "h": 25,
+      "right": 474.9296875,
+      "bottom": 61,
+      "visible": true
+    },
+    "arena": {
+      "x": 0,
+      "y": 0,
+      "w": 800,
+      "h": 390,
+      "right": 800,
+      "bottom": 390,
+      "visible": true
+    },
+    "settings": {
+      "x": 10,
+      "y": 330,
+      "w": 48,
+      "h": 48,
+      "right": 58,
+      "bottom": 378,
+      "visible": true
+    },
+    "dash": {
+      "x": 370.34375,
+      "y": 336,
+      "w": 147.265625,
+      "h": 46,
+      "right": 517.609375,
+      "bottom": 382,
+      "visible": true
+    },
+    "fire": {
+      "x": 525.609375,
+      "y": 326,
+      "w": 165,
+      "h": 56,
+      "right": 690.609375,
+      "bottom": 382,
+      "visible": true
+    },
+    "spin": {
+      "x": 66,
+      "y": 330,
+      "w": 148.34375,
+      "h": 52,
+      "right": 214.34375,
+      "bottom": 382,
+      "visible": true
+    },
+    "pause": {
+      "x": 698.609375,
+      "y": 330,
+      "w": 44.40625,
+      "h": 52,
+      "right": 743.015625,
+      "bottom": 382,
+      "visible": true
+    },
+    "scrollWidth": 800,
+    "settingsPanel": {
+      "x": 10,
+      "y": 24,
+      "right": 280,
+      "bottom": 318
+    }
+  },
+  {
+    "viewport": {
+      "w": 844,
+      "h": 390
+    },
+    "hud": {
+      "x": 10,
+      "y": 60,
+      "w": 824,
+      "h": 51.59375,
+      "right": 834,
+      "bottom": 111.59375,
+      "visible": true
+    },
+    "control": {
+      "x": 10,
+      "y": 322,
+      "w": 824,
+      "h": 68,
+      "right": 834,
+      "bottom": 390,
+      "visible": true
+    },
+    "mission": {
+      "x": 347.0703125,
+      "y": 36,
+      "w": 149.859375,
+      "h": 25,
+      "right": 496.9296875,
+      "bottom": 61,
+      "visible": true
+    },
+    "arena": {
+      "x": 0,
+      "y": 0,
+      "w": 844,
+      "h": 390,
+      "right": 844,
+      "bottom": 390,
+      "visible": true
+    },
+    "settings": {
+      "x": 10,
+      "y": 330,
+      "w": 48,
+      "h": 48,
+      "right": 58,
+      "bottom": 378,
+      "visible": true
+    },
+    "dash": {
+      "x": 370.34375,
+      "y": 336,
+      "w": 147.265625,
+      "h": 46,
+      "right": 517.609375,
+      "bottom": 382,
+      "visible": true
+    },
+    "fire": {
+      "x": 525.609375,
+      "y": 326,
+      "w": 165,
+      "h": 56,
+      "right": 690.609375,
+      "bottom": 382,
+      "visible": true
+    },
+    "spin": {
+      "x": 66,
+      "y": 330,
+      "w": 148.34375,
+      "h": 52,
+      "right": 214.34375,
+      "bottom": 382,
+      "visible": true
+    },
+    "pause": {
+      "x": 698.609375,
+      "y": 330,
+      "w": 44.40625,
+      "h": 52,
+      "right": 743.015625,
+      "bottom": 382,
+      "visible": true
+    },
+    "scrollWidth": 844,
+    "settingsPanel": {
+      "x": 10,
+      "y": 24,
+      "right": 280,
+      "bottom": 318
+    }
+  },
+  {
+    "viewport": {
+      "w": 768,
+      "h": 1024
+    },
+    "hud": {
+      "x": 15.359375,
+      "y": 108,
+      "w": 737.28125,
+      "h": 72,
+      "right": 752.640625,
+      "bottom": 180,
+      "visible": true
+    },
+    "control": {
+      "x": 23.03125,
+      "y": 909.03125,
+      "w": 721.9375,
+      "h": 96.96875,
+      "right": 744.96875,
+      "bottom": 1006,
+      "visible": true
+    },
+    "mission": {
+      "x": 304.0703125,
+      "y": 56,
+      "w": 159.859375,
+      "h": 31,
+      "right": 463.9296875,
+      "bottom": 87,
+      "visible": true
+    },
+    "arena": {
+      "x": 0,
+      "y": 0,
+      "w": 768,
+      "h": 1024,
+      "right": 768,
+      "bottom": 1024,
+      "visible": true
+    },
+    "settings": {
+      "x": 23.03125,
+      "y": 933.515625,
+      "w": 48,
+      "h": 48,
+      "right": 71.03125,
+      "bottom": 981.515625,
+      "visible": true
+    },
+    "dash": {
+      "x": 388.421875,
+      "y": 925,
+      "w": 123.140625,
+      "h": 68,
+      "right": 511.5625,
+      "bottom": 993,
+      "visible": true
+    },
+    "fire": {
+      "x": 523.5625,
+      "y": 937,
+      "w": 165,
+      "h": 56,
+      "right": 688.5625,
+      "bottom": 993,
+      "visible": true
+    },
+    "spin": {
+      "x": 83.03125,
+      "y": 931,
+      "w": 117.390625,
+      "h": 62,
+      "right": 200.421875,
+      "bottom": 993,
+      "visible": true
+    },
+    "pause": {
+      "x": 700.5625,
+      "y": 941,
+      "w": 44.40625,
+      "h": 52,
+      "right": 744.96875,
+      "bottom": 993,
+      "visible": true
+    },
+    "scrollWidth": 768,
+    "settingsPanel": {
+      "x": 23.03125,
+      "y": 580.515625,
+      "right": 333.03125,
+      "bottom": 921.515625
+    }
+  },
+  {
+    "viewport": {
+      "w": 1440,
+      "h": 900
+    },
+    "hud": {
+      "x": 28.796875,
+      "y": 120,
+      "w": 1382.40625,
+      "h": 72,
+      "right": 1411.203125,
+      "bottom": 192,
+      "visible": true
+    },
+    "control": {
+      "x": 42,
+      "y": 800,
+      "w": 1356,
+      "h": 82,
+      "right": 1398,
+      "bottom": 882,
+      "visible": true
+    },
+    "mission": {
+      "x": 640.0703125,
+      "y": 71,
+      "w": 159.859375,
+      "h": 31,
+      "right": 799.9296875,
+      "bottom": 102,
+      "visible": true
+    },
+    "arena": {
+      "x": 0,
+      "y": 0,
+      "w": 1440,
+      "h": 900,
+      "right": 1440,
+      "bottom": 900,
+      "visible": true
+    },
+    "settings": {
+      "x": 42,
+      "y": 817,
+      "w": 48,
+      "h": 48,
+      "right": 90,
+      "bottom": 865,
+      "visible": true
+    },
+    "dash": {
+      "x": 1017.328125,
+      "y": 823,
+      "w": 147.265625,
+      "h": 46,
+      "right": 1164.59375,
+      "bottom": 869,
+      "visible": true
+    },
+    "fire": {
+      "x": 1176.59375,
+      "y": 813,
+      "w": 165,
+      "h": 56,
+      "right": 1341.59375,
+      "bottom": 869,
+      "visible": true
+    },
+    "spin": {
+      "x": 102,
+      "y": 817,
+      "w": 148.34375,
+      "h": 52,
+      "right": 250.34375,
+      "bottom": 869,
+      "visible": true
+    },
+    "pause": {
+      "x": 1353.59375,
+      "y": 817,
+      "w": 44.40625,
+      "h": 52,
+      "right": 1398,
+      "bottom": 869,
+      "visible": true
+    },
+    "scrollWidth": 1440,
+    "settingsPanel": {
+      "x": 42,
+      "y": 464,
+      "right": 352,
+      "bottom": 805
+    }
+  }
+]

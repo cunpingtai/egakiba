@@ -1,0 +1,514 @@
+{
+  "01-01": {
+    "wins": 12,
+    "losses": 2,
+    "draws": 1,
+    "contacted": 13,
+    "outcomes": [
+      {
+        "angle": 0,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 18.7
+      },
+      {
+        "angle": 0,
+        "power": 0.85,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 18.833333
+      },
+      {
+        "angle": 0,
+        "power": 1,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 19.033333
+      },
+      {
+        "angle": 0.18,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 18.466667
+      },
+      {
+        "angle": 0.18,
+        "power": 0.85,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 18.516667
+      },
+      {
+        "angle": 0.18,
+        "power": 1,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 18.333333
+      },
+      {
+        "angle": -0.18,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 18.483333
+      },
+      {
+        "angle": -0.18,
+        "power": 0.85,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 18.583333
+      },
+      {
+        "angle": -0.18,
+        "power": 1,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 18.566667
+      },
+      {
+        "angle": 0.38,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 19.033333
+      },
+      {
+        "angle": 0.38,
+        "power": 0.85,
+        "winner": null,
+        "reason": "no-contact",
+        "contacts": 0,
+        "duration": 8
+      },
+      {
+        "angle": 0.38,
+        "power": 1,
+        "winner": 1,
+        "reason": "ring-out",
+        "contacts": 0,
+        "duration": 1
+      },
+      {
+        "angle": -0.38,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 18.516667
+      },
+      {
+        "angle": -0.38,
+        "power": 0.85,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 3,
+        "duration": 18.2
+      },
+      {
+        "angle": -0.38,
+        "power": 1,
+        "winner": 1,
+        "reason": "ring-out",
+        "contacts": 1,
+        "duration": 0.883333
+      }
+    ]
+  },
+  "01-02": {
+    "wins": 12,
+    "losses": 2,
+    "draws": 1,
+    "contacted": 14,
+    "outcomes": [
+      {
+        "angle": 0,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 17.116667
+      },
+      {
+        "angle": 0,
+        "power": 0.85,
+        "winner": 0,
+        "reason": "ring-out",
+        "contacts": 1,
+        "duration": 0.983333
+      },
+      {
+        "angle": 0,
+        "power": 1,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 17.283333
+      },
+      {
+        "angle": 0.18,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 16.933333
+      },
+      {
+        "angle": 0.18,
+        "power": 0.85,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 16.95
+      },
+      {
+        "angle": 0.18,
+        "power": 1,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 17.233333
+      },
+      {
+        "angle": -0.18,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 17.266667
+      },
+      {
+        "angle": -0.18,
+        "power": 0.85,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 17.15
+      },
+      {
+        "angle": -0.18,
+        "power": 1,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 17
+      },
+      {
+        "angle": 0.38,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 17.516667
+      },
+      {
+        "angle": 0.38,
+        "power": 0.85,
+        "winner": null,
+        "reason": "no-contact",
+        "contacts": 0,
+        "duration": 8
+      },
+      {
+        "angle": 0.38,
+        "power": 1,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 17.5
+      },
+      {
+        "angle": -0.38,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 17.066667
+      },
+      {
+        "angle": -0.38,
+        "power": 0.85,
+        "winner": 1,
+        "reason": "ring-out",
+        "contacts": 1,
+        "duration": 0.916667
+      },
+      {
+        "angle": -0.38,
+        "power": 1,
+        "winner": 1,
+        "reason": "ring-out",
+        "contacts": 1,
+        "duration": 0.866667
+      }
+    ]
+  },
+  "01-03": {
+    "wins": 14,
+    "losses": 1,
+    "draws": 0,
+    "contacted": 15,
+    "outcomes": [
+      {
+        "angle": 0,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 18.716667
+      },
+      {
+        "angle": 0,
+        "power": 0.85,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 18.516667
+      },
+      {
+        "angle": 0,
+        "power": 1,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 18.35
+      },
+      {
+        "angle": 0.18,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 18.333333
+      },
+      {
+        "angle": 0.18,
+        "power": 0.85,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 18.3
+      },
+      {
+        "angle": 0.18,
+        "power": 1,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 18.583333
+      },
+      {
+        "angle": -0.18,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 18.466667
+      },
+      {
+        "angle": -0.18,
+        "power": 0.85,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 18.483333
+      },
+      {
+        "angle": -0.18,
+        "power": 1,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 18.35
+      },
+      {
+        "angle": 0.38,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 18.9
+      },
+      {
+        "angle": 0.38,
+        "power": 0.85,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 18.916667
+      },
+      {
+        "angle": 0.38,
+        "power": 1,
+        "winner": 1,
+        "reason": "ring-out",
+        "contacts": 1,
+        "duration": 0.95
+      },
+      {
+        "angle": -0.38,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 18.716667
+      },
+      {
+        "angle": -0.38,
+        "power": 0.85,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 18.35
+      },
+      {
+        "angle": -0.38,
+        "power": 1,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 18.1
+      }
+    ]
+  },
+  "01-04": {
+    "wins": 11,
+    "losses": 3,
+    "draws": 1,
+    "contacted": 13,
+    "outcomes": [
+      {
+        "angle": 0,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 18.033333
+      },
+      {
+        "angle": 0,
+        "power": 0.85,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 17.733333
+      },
+      {
+        "angle": 0,
+        "power": 1,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 17.783333
+      },
+      {
+        "angle": 0.18,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 17.883333
+      },
+      {
+        "angle": 0.18,
+        "power": 0.85,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 17.683333
+      },
+      {
+        "angle": 0.18,
+        "power": 1,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 2,
+        "duration": 18.15
+      },
+      {
+        "angle": -0.18,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 17.9
+      },
+      {
+        "angle": -0.18,
+        "power": 0.85,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 17.8
+      },
+      {
+        "angle": -0.18,
+        "power": 1,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 17.766667
+      },
+      {
+        "angle": 0.38,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 18.316667
+      },
+      {
+        "angle": 0.38,
+        "power": 0.85,
+        "winner": null,
+        "reason": "no-contact",
+        "contacts": 0,
+        "duration": 8
+      },
+      {
+        "angle": 0.38,
+        "power": 1,
+        "winner": 1,
+        "reason": "ring-out",
+        "contacts": 0,
+        "duration": 1
+      },
+      {
+        "angle": -0.38,
+        "power": 0.65,
+        "winner": 0,
+        "reason": "spin-exhausted",
+        "contacts": 1,
+        "duration": 17.9
+      },
+      {
+        "angle": -0.38,
+        "power": 0.85,
+        "winner": 1,
+        "reason": "ring-out",
+        "contacts": 1,
+        "duration": 0.933333
+      },
+      {
+        "angle": -0.38,
+        "power": 1,
+        "winner": 1,
+        "reason": "ring-out",
+        "contacts": 1,
+        "duration": 0.866667
+      }
+    ]
+  }
+}

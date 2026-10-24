@@ -1,0 +1,518 @@
+{
+  "status": "draft-not-calibrated",
+  "ruleset": "arena-hp-v3.0.0-draft",
+  "note": "HP traces use arena-hp-v3.0.0-draft.2. forceUnit is round(batch median force / 12) from docs/v3/m3/arena-hp-contact-batch.json. This is a sample scale, not a balanced ruleset. Classic results are not replaced.",
+  "cases": [
+    {
+      "id": "standard-bun-ji-gothic",
+      "classic": {
+        "tick": 1965,
+        "winner": 0,
+        "reason": "回転停止"
+      },
+      "arena": {
+        "version": "arena-hp-v3.0.0-draft.2",
+        "maxHp": 100,
+        "hp": [
+          40,
+          41
+        ],
+        "applications": [
+          {
+            "tick": 116,
+            "target": 0,
+            "amount": 30,
+            "hpAfter": 70,
+            "sourceContactId": "116:0:1"
+          },
+          {
+            "tick": 116,
+            "target": 1,
+            "amount": 29,
+            "hpAfter": 71,
+            "sourceContactId": "116:0:1"
+          },
+          {
+            "tick": 1041,
+            "target": 0,
+            "amount": 21,
+            "hpAfter": 49,
+            "sourceContactId": "1041:0:1"
+          },
+          {
+            "tick": 1041,
+            "target": 1,
+            "amount": 21,
+            "hpAfter": 50,
+            "sourceContactId": "1041:0:1"
+          },
+          {
+            "tick": 1812,
+            "target": 0,
+            "amount": 9,
+            "hpAfter": 40,
+            "sourceContactId": "1812:0:1"
+          },
+          {
+            "tick": 1812,
+            "target": 1,
+            "amount": 9,
+            "hpAfter": 41,
+            "sourceContactId": "1812:0:1"
+          }
+        ],
+        "ended": null
+      }
+    },
+    {
+      "id": "standard-bun-ji-opposite-spin",
+      "classic": {
+        "tick": 1499,
+        "winner": 0,
+        "reason": "回転停止"
+      },
+      "arena": {
+        "version": "arena-hp-v3.0.0-draft.2",
+        "maxHp": 100,
+        "hp": [
+          18,
+          20
+        ],
+        "applications": [
+          {
+            "tick": 107,
+            "target": 0,
+            "amount": 30,
+            "hpAfter": 70,
+            "sourceContactId": "107:0:1"
+          },
+          {
+            "tick": 107,
+            "target": 1,
+            "amount": 30,
+            "hpAfter": 70,
+            "sourceContactId": "107:0:1"
+          },
+          {
+            "tick": 851,
+            "target": 0,
+            "amount": 30,
+            "hpAfter": 40,
+            "sourceContactId": "851:0:1"
+          },
+          {
+            "tick": 851,
+            "target": 1,
+            "amount": 28,
+            "hpAfter": 42,
+            "sourceContactId": "851:0:1"
+          },
+          {
+            "tick": 1037,
+            "target": 0,
+            "amount": 12,
+            "hpAfter": 28,
+            "sourceContactId": "1037:0:1"
+          },
+          {
+            "tick": 1037,
+            "target": 1,
+            "amount": 12,
+            "hpAfter": 30,
+            "sourceContactId": "1037:0:1"
+          },
+          {
+            "tick": 1135,
+            "target": 0,
+            "amount": 2,
+            "hpAfter": 26,
+            "sourceContactId": "1135:0:1"
+          },
+          {
+            "tick": 1135,
+            "target": 1,
+            "amount": 2,
+            "hpAfter": 28,
+            "sourceContactId": "1135:0:1"
+          },
+          {
+            "tick": 1360,
+            "target": 0,
+            "amount": 8,
+            "hpAfter": 18,
+            "sourceContactId": "1360:0:1"
+          },
+          {
+            "tick": 1360,
+            "target": 1,
+            "amount": 8,
+            "hpAfter": 20,
+            "sourceContactId": "1360:0:1"
+          }
+        ],
+        "ended": null
+      }
+    },
+    {
+      "id": "standard-light-vs-heavy",
+      "classic": {
+        "tick": 296,
+        "winner": 1,
+        "reason": "転倒"
+      },
+      "arena": {
+        "version": "arena-hp-v3.0.0-draft.2",
+        "maxHp": 100,
+        "hp": [
+          75,
+          75
+        ],
+        "applications": [
+          {
+            "tick": 103,
+            "target": 0,
+            "amount": 25,
+            "hpAfter": 75,
+            "sourceContactId": "103:0:1"
+          },
+          {
+            "tick": 103,
+            "target": 1,
+            "amount": 25,
+            "hpAfter": 75,
+            "sourceContactId": "103:0:1"
+          }
+        ],
+        "ended": null
+      }
+    },
+    {
+      "id": "mincho-vs-brush",
+      "classic": {
+        "tick": 845,
+        "winner": 1,
+        "reason": "回転停止"
+      },
+      "arena": {
+        "version": "arena-hp-v3.0.0-draft.2",
+        "maxHp": 100,
+        "hp": [
+          70,
+          70
+        ],
+        "applications": [
+          {
+            "tick": 101,
+            "target": 0,
+            "amount": 30,
+            "hpAfter": 70,
+            "sourceContactId": "101:0:1"
+          },
+          {
+            "tick": 101,
+            "target": 1,
+            "amount": 30,
+            "hpAfter": 70,
+            "sourceContactId": "101:0:1"
+          }
+        ],
+        "ended": null
+      }
+    },
+    {
+      "id": "boost-bowl",
+      "classic": {
+        "tick": 680,
+        "winner": 1,
+        "reason": "回転停止"
+      },
+      "arena": {
+        "version": "arena-hp-v3.0.0-draft.2",
+        "maxHp": 100,
+        "hp": [
+          70,
+          72
+        ],
+        "applications": [
+          {
+            "tick": 117,
+            "target": 0,
+            "amount": 30,
+            "hpAfter": 70,
+            "sourceContactId": "117:0:1"
+          },
+          {
+            "tick": 117,
+            "target": 1,
+            "amount": 28,
+            "hpAfter": 72,
+            "sourceContactId": "117:0:1"
+          }
+        ],
+        "ended": null
+      }
+    },
+    {
+      "id": "square-ring",
+      "classic": {
+        "tick": 4701,
+        "winner": 0,
+        "reason": "回転停止"
+      },
+      "arena": {
+        "version": "arena-hp-v3.0.0-draft.2",
+        "maxHp": 100,
+        "hp": [
+          24,
+          13
+        ],
+        "applications": [
+          {
+            "tick": 113,
+            "target": 0,
+            "amount": 30,
+            "hpAfter": 70,
+            "sourceContactId": "113:0:1"
+          },
+          {
+            "tick": 113,
+            "target": 1,
+            "amount": 30,
+            "hpAfter": 70,
+            "sourceContactId": "113:0:1"
+          },
+          {
+            "tick": 1297,
+            "target": 0,
+            "amount": 21,
+            "hpAfter": 49,
+            "sourceContactId": "1297:0:1"
+          },
+          {
+            "tick": 1297,
+            "target": 1,
+            "amount": 21,
+            "hpAfter": 49,
+            "sourceContactId": "1297:0:1"
+          },
+          {
+            "tick": 1389,
+            "target": 0,
+            "amount": 1,
+            "hpAfter": 48,
+            "sourceContactId": "1389:0:1"
+          },
+          {
+            "tick": 1389,
+            "target": 1,
+            "amount": 1,
+            "hpAfter": 48,
+            "sourceContactId": "1389:0:1"
+          },
+          {
+            "tick": 2655,
+            "target": 0,
+            "amount": 7,
+            "hpAfter": 41,
+            "sourceContactId": "2655:0:1"
+          },
+          {
+            "tick": 2655,
+            "target": 1,
+            "amount": 10,
+            "hpAfter": 38,
+            "sourceContactId": "2655:0:1"
+          },
+          {
+            "tick": 3516,
+            "target": 0,
+            "amount": 17,
+            "hpAfter": 24,
+            "sourceContactId": "3516:0:1"
+          },
+          {
+            "tick": 3516,
+            "target": 1,
+            "amount": 25,
+            "hpAfter": 13,
+            "sourceContactId": "3516:0:1"
+          }
+        ],
+        "ended": null
+      }
+    },
+    {
+      "id": "rotating-floor",
+      "classic": {
+        "tick": 2578,
+        "winner": 0,
+        "reason": "回転停止"
+      },
+      "arena": {
+        "version": "arena-hp-v3.0.0-draft.2",
+        "maxHp": 100,
+        "hp": [
+          42,
+          38
+        ],
+        "applications": [
+          {
+            "tick": 149,
+            "target": 0,
+            "amount": 30,
+            "hpAfter": 70,
+            "sourceContactId": "149:0:1"
+          },
+          {
+            "tick": 149,
+            "target": 1,
+            "amount": 21,
+            "hpAfter": 79,
+            "sourceContactId": "149:0:1"
+          },
+          {
+            "tick": 2234,
+            "target": 0,
+            "amount": 19,
+            "hpAfter": 51,
+            "sourceContactId": "2234:0:1"
+          },
+          {
+            "tick": 2234,
+            "target": 1,
+            "amount": 28,
+            "hpAfter": 51,
+            "sourceContactId": "2234:0:1"
+          },
+          {
+            "tick": 2548,
+            "target": 0,
+            "amount": 9,
+            "hpAfter": 42,
+            "sourceContactId": "2548:0:1"
+          },
+          {
+            "tick": 2548,
+            "target": 1,
+            "amount": 13,
+            "hpAfter": 38,
+            "sourceContactId": "2548:0:1"
+          }
+        ],
+        "ended": null
+      }
+    },
+    {
+      "id": "weak-com-default",
+      "classic": {
+        "tick": 2292,
+        "winner": 0,
+        "reason": "回転停止"
+      },
+      "arena": {
+        "version": "arena-hp-v3.0.0-draft.2",
+        "maxHp": 100,
+        "hp": [
+          51,
+          51
+        ],
+        "applications": [
+          {
+            "tick": 171,
+            "target": 0,
+            "amount": 23,
+            "hpAfter": 77,
+            "sourceContactId": "171:0:1"
+          },
+          {
+            "tick": 171,
+            "target": 1,
+            "amount": 23,
+            "hpAfter": 77,
+            "sourceContactId": "171:0:1"
+          },
+          {
+            "tick": 966,
+            "target": 0,
+            "amount": 14,
+            "hpAfter": 63,
+            "sourceContactId": "966:0:1"
+          },
+          {
+            "tick": 966,
+            "target": 1,
+            "amount": 14,
+            "hpAfter": 63,
+            "sourceContactId": "966:0:1"
+          },
+          {
+            "tick": 1842,
+            "target": 0,
+            "amount": 12,
+            "hpAfter": 51,
+            "sourceContactId": "1842:0:1"
+          },
+          {
+            "tick": 1842,
+            "target": 1,
+            "amount": 12,
+            "hpAfter": 51,
+            "sourceContactId": "1842:0:1"
+          }
+        ],
+        "ended": null
+      }
+    },
+    {
+      "id": "boost-bowl-contact",
+      "classic": {
+        "tick": 748,
+        "winner": 0,
+        "reason": "回転停止"
+      },
+      "arena": {
+        "version": "arena-hp-v3.0.0-draft.2",
+        "maxHp": 100,
+        "hp": [
+          100,
+          100
+        ],
+        "applications": [],
+        "ended": null
+      }
+    },
+    {
+      "id": "square-rope-contact",
+      "classic": {
+        "tick": 770,
+        "winner": 0,
+        "reason": "回転停止"
+      },
+      "arena": {
+        "version": "arena-hp-v3.0.0-draft.2",
+        "maxHp": 100,
+        "hp": [
+          70,
+          70
+        ],
+        "applications": [
+          {
+            "tick": 572,
+            "target": 0,
+            "amount": 30,
+            "hpAfter": 70,
+            "sourceContactId": "572:0:1"
+          },
+          {
+            "tick": 572,
+            "target": 1,
+            "amount": 30,
+            "hpAfter": 70,
+            "sourceContactId": "572:0:1"
+          }
+        ],
+        "ended": null
+      }
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+{
+  "status": "inputs-frozen-results-in-legacy-battle-results.json",
+  "physicsVersion": "moji-blade-rapier021-r16-app-inner1",
+  "ruleset": "classic-v2.4.1",
+  "note": "Inputs only. Node and browser replays, including state hashes and impact events, are in legacy-battle-results.json. boost-bowl-contact and square-rope-contact are the launches that reach a boost board and a rope.",
+  "launchConvention": {
+    "angle": "radians passed to Battle.launchPair; player z velocity is negated inside Battle",
+    "power": "0..1 float, not V3 angleQ/powerQ",
+    "spinDirection": "1 counterclockwise from above, -1 clockwise"
+  },
+  "cases": [
+    {
+      "id": "standard-bun-ji-gothic",
+      "glyphs": ["文", "字"],
+      "fonts": ["gothic", "gothic"],
+      "stageId": "standard",
+      "actions": [
+        { "angle": 0, "power": 0.8, "spinDirection": 1 },
+        { "angle": 0.3, "power": 0.82, "spinDirection": 1 }
+      ]
+    },
+    {
+      "id": "standard-bun-ji-opposite-spin",
+      "glyphs": ["文", "字"],
+      "fonts": ["gothic", "gothic"],
+      "stageId": "standard",
+      "actions": [
+        { "angle": 0, "power": 0.8, "spinDirection": -1 },
+        { "angle": 0.3, "power": 0.82, "spinDirection": -1 }
+      ]
+    },
+    {
+      "id": "standard-light-vs-heavy",
+      "glyphs": ["一", "龍"],
+      "fonts": ["gothic", "gothic"],
+      "stageId": "standard",
+      "actions": [
+        { "angle": 0.2, "power": 1, "spinDirection": 1 },
+        { "angle": 0, "power": 0.7, "spinDirection": 1 }
+      ]
+    },
+    {
+      "id": "mincho-vs-brush",
+      "glyphs": ["文", "字"],
+      "fonts": ["mincho", "brush"],
+      "stageId": "standard",
+      "actions": [
+        { "angle": 0, "power": 0.8, "spinDirection": 1 },
+        { "angle": 0.3, "power": 0.82, "spinDirection": 1 }
+      ]
+    },
+    {
+      "id": "boost-bowl",
+      "glyphs": ["文", "字"],
+      "fonts": ["gothic", "gothic"],
+      "stageId": "boost-bowl",
+      "actions": [
+        { "angle": 0.4, "power": 0.9, "spinDirection": 1 },
+        { "angle": -0.2, "power": 0.75, "spinDirection": 1 }
+      ]
+    },
+    {
+      "id": "square-ring",
+      "glyphs": ["文", "字"],
+      "fonts": ["gothic", "gothic"],
+      "stageId": "square",
+      "actions": [
+        { "angle": 0.6, "power": 1, "spinDirection": 1 },
+        { "angle": 0, "power": 0.82, "spinDirection": 1 }
+      ]
+    },
+    {
+      "id": "rotating-floor",
+      "glyphs": ["文", "字"],
+      "fonts": ["gothic", "gothic"],
+      "stageId": "rotating-floor",
+      "actions": [
+        { "angle": 0, "power": 0.55, "spinDirection": 1 },
+        { "angle": 0, "power": 0.55, "spinDirection": 1 }
+      ]
+    },
+    {
+      "id": "weak-com-default",
+      "glyphs": ["文", "字"],
+      "fonts": ["pop", "gothic"],
+      "stageId": "standard",
+      "actions": [
+        { "angle": 0, "power": 0.4, "spinDirection": 1 },
+        { "angle": 0.5, "power": 0.3, "spinDirection": 1 }
+      ]
+    },
+    {
+      "id": "boost-bowl-contact",
+      "glyphs": ["文", "字"],
+      "fonts": ["gothic", "gothic"],
+      "stageId": "boost-bowl",
+      "actions": [
+        { "angle": 1.23, "power": 1, "spinDirection": 1 },
+        { "angle": 3.141592653589793, "power": 0.2, "spinDirection": 1 }
+      ]
+    },
+    {
+      "id": "square-rope-contact",
+      "glyphs": ["文", "字"],
+      "fonts": ["gothic", "gothic"],
+      "stageId": "square",
+      "actions": [
+        { "angle": 1.5707963267948966, "power": 1, "spinDirection": 1 },
+        { "angle": 4.71238898038469, "power": 1, "spinDirection": 1 }
+      ]
+    }
+  ]
+}

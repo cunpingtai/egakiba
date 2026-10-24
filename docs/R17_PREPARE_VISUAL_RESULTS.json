@@ -1,0 +1,58 @@
+[
+  {
+    "viewport": [
+      1440,
+      900
+    ],
+    "language": "ja",
+    "horizontalOverflowPx": 0,
+    "fighters": 2,
+    "nativeStatSlots": 8,
+    "startDisabledUntilValidation": true,
+    "errors": [],
+    "screenshot": "r17-prepare-desktop-layout-fixture.png",
+    "kind": "UI-only (no WebGL or licensed font resources)"
+  },
+  {
+    "viewport": [
+      800,
+      900
+    ],
+    "language": "en",
+    "horizontalOverflowPx": 0,
+    "fighters": 2,
+    "nativeStatSlots": 8,
+    "startDisabledUntilValidation": true,
+    "errors": [],
+    "screenshot": "r17-prepare-tablet-layout-fixture.png",
+    "kind": "UI-only (no WebGL or licensed font resources)"
+  },
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "language": "ko",
+    "horizontalOverflowPx": 0,
+    "fighters": 2,
+    "nativeStatSlots": 8,
+    "startDisabledUntilValidation": true,
+    "errors": [],
+    "screenshot": "r17-prepare-mobile-layout-fixture.png",
+    "kind": "UI-only (no WebGL or licensed font resources)"
+  },
+  {
+    "viewport": [
+      320,
+      690
+    ],
+    "language": "zh",
+    "horizontalOverflowPx": 0,
+    "fighters": 2,
+    "nativeStatSlots": 8,
+    "startDisabledUntilValidation": true,
+    "errors": [],
+    "screenshot": "r17-prepare-narrow-layout-fixture.png",
+    "kind": "UI-only (no WebGL or licensed font resources)"
+  }
+]

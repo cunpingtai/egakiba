@@ -1,0 +1,200 @@
+[
+  {
+    "mode": "story",
+    "phase": "ready",
+    "viewport": [
+      1440,
+      900
+    ],
+    "overflowPx": 0,
+    "controls": [
+      {
+        "id": "r10-dash",
+        "visible": true,
+        "rect": {
+          "x": 1024.984375,
+          "y": 830,
+          "w": 133,
+          "h": 39
+        }
+      },
+      {
+        "id": "r9-fire",
+        "visible": true,
+        "rect": {
+          "x": 1169.984375,
+          "y": 811,
+          "w": 165,
+          "h": 58
+        }
+      },
+      {
+        "id": "r9-pause",
+        "visible": true,
+        "rect": {
+          "x": 1346.984375,
+          "y": 817,
+          "w": 51.015625,
+          "h": 52
+        }
+      }
+    ],
+    "phaseLabel": "発射準備完了",
+    "errors": [],
+    "screenshot": "r18-battle-desktop-layout-fixture.png",
+    "kind": "native-markup UI-only, no live Rapier/WebGL"
+  },
+  {
+    "mode": "story",
+    "phase": "battle",
+    "viewport": [
+      390,
+      844
+    ],
+    "overflowPx": 0,
+    "controls": [
+      {
+        "id": "r10-dash",
+        "visible": true,
+        "rect": {
+          "x": 231.5,
+          "y": 747,
+          "w": 91.5,
+          "h": 52
+        }
+      },
+      {
+        "id": "r9-fire",
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        }
+      },
+      {
+        "id": "r9-pause",
+        "visible": true,
+        "rect": {
+          "x": 329,
+          "y": 749,
+          "w": 52,
+          "h": 48
+        }
+      }
+    ],
+    "phaseLabel": "战斗中",
+    "errors": [],
+    "screenshot": "r18-battle-mobile-layout-fixture.png",
+    "kind": "native-markup UI-only, no live Rapier/WebGL"
+  },
+  {
+    "mode": "story",
+    "phase": "battle",
+    "viewport": [
+      320,
+      680
+    ],
+    "overflowPx": 0,
+    "controls": [
+      {
+        "id": "r10-dash",
+        "visible": true,
+        "rect": {
+          "x": 189,
+          "y": 589,
+          "w": 78,
+          "h": 48
+        }
+      },
+      {
+        "id": "r9-fire",
+        "visible": false,
+        "rect": {
+          "x": 0,
+          "y": 0,
+          "w": 0,
+          "h": 0
+        }
+      },
+      {
+        "id": "r9-pause",
+        "visible": true,
+        "rect": {
+          "x": 270,
+          "y": 589,
+          "w": 44,
+          "h": 48
+        }
+      }
+    ],
+    "phaseLabel": "战斗中",
+    "errors": [],
+    "screenshot": "r18-battle-narrow-layout-fixture.png",
+    "kind": "native-markup UI-only, no live Rapier/WebGL"
+  },
+  {
+    "mode": "story",
+    "phase": "paused",
+    "viewport": [
+      800,
+      820
+    ],
+    "overflowPx": 0,
+    "controls": [
+      {
+        "id": "r10-dash",
+        "visible": true,
+        "rect": {
+          "x": 409.59375,
+          "y": 750,
+          "w": 133,
+          "h": 39
+        }
+      },
+      {
+        "id": "r9-fire",
+        "visible": true,
+        "rect": {
+          "x": 554.59375,
+          "y": 734,
+          "w": 165,
+          "h": 55
+        }
+      },
+      {
+        "id": "r9-pause",
+        "visible": true,
+        "rect": {
+          "x": 731.59375,
+          "y": 737,
+          "w": 44.40625,
+          "h": 52
+        }
+      }
+    ],
+    "phaseLabel": "Paused",
+    "errors": [],
+    "screenshot": "r18-battle-paused-layout-fixture.png",
+    "kind": "native-markup UI-only, no live Rapier/WebGL"
+  },
+  {
+    "mode": "classic",
+    "phase": "battle",
+    "viewport": [
+      390,
+      844
+    ],
+    "overflowPx": 0,
+    "controls": [
+      null,
+      null,
+      null
+    ],
+    "phaseLabel": "Battle underway",
+    "errors": [],
+    "screenshot": "r18-battle-classic-layout-fixture.png",
+    "kind": "native-markup UI-only, no live Rapier/WebGL"
+  }
+]

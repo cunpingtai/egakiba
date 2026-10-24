@@ -1,0 +1,47 @@
+/* R17 Page #004: Battle preparation; shared by static game and React/Vite shell. */
+#flow-page .r17-heading{display:flex;align-items:end;justify-content:space-between;gap:20px;flex-wrap:wrap}
+#flow-page .r17-rule-chip{display:inline-flex;align-items:center;min-height:36px;padding:9px 15px;border-radius:99px;color:#29445b;background:#eaf1f0;border:1px solid #c7d9d5;font-size:11px;font-weight:900;letter-spacing:.05em}
+#flow-page .r17-prepare-layout{display:grid;grid-template-columns:minmax(0,1.16fr) minmax(310px,.84fr);align-items:start;gap:19px;max-width:1300px;margin:0 auto}
+#flow-page .r17-versus,#flow-page .r17-checklist{border-radius:23px;border:1px solid #dfd7cd;box-shadow:0 16px 35px #22384d15;min-width:0;overflow:hidden}
+#flow-page .r17-versus{background:radial-gradient(ellipse at 50% 32%,#eef4f2,#dfe8e7 55%,#e5e9e5 100%);color:#2a4257}
+#flow-page .r17-arena-head{display:flex;justify-content:space-between;gap:9px;align-items:center;padding:19px 22px;border-bottom:1px solid #cbd7d5;font-size:10px;letter-spacing:.13em;font-weight:900;color:#627b86}
+#flow-page .r17-faceoff{display:grid;grid-template-columns:minmax(0,1fr) 48px minmax(0,1fr);gap:7px;align-items:center;min-height:466px;padding:21px 16px}
+#flow-page .r17-fighter{min-width:0;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center}
+#flow-page .r17-fighter-type{font-size:10px;font-weight:900;letter-spacing:.16em;color:#597c9a}
+#flow-page .r17-rival .r17-fighter-type{color:#b46a5d}
+#flow-page .r17-hero-letter{display:block;max-width:100%;font:900 clamp(92px,10vw,163px)/1.3 var(--serif);color:#3376ba;text-shadow:2px 4px #b8d3ea,7px 13px 25px #3c779356;overflow-wrap:anywhere}
+#flow-page .r17-rival .r17-hero-letter{color:#bc5b47;text-shadow:2px 4px #ead2c6,7px 13px 25px #a14c3956}
+#flow-page .r17-fighter>b{font-size:14px;color:#273f55}
+#flow-page .r17-fighter>small{font-size:10px;font-weight:900;letter-spacing:.15em;color:#677c8b}
+#flow-page .r17-vs{font:900 clamp(21px,2.7vw,40px)/1 var(--serif);text-align:center;color:#a8a19a}
+#flow-page .r17-statline{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:7px;margin-top:18px}
+#flow-page .r17-statline span{border:1px solid #d1dfdd;background:#ffffffaa;border-radius:10px;padding:9px 7px;font-size:10px;color:#586d7a;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:5px;min-width:0}
+#flow-page .r17-statline span b{font-size:12px;color:#234861;font-variant-numeric:tabular-nums}
+#flow-page .r17-edit{margin-top:11px;padding:10px 17px;background:#fffaf4;border:1px solid #bccbd1;border-radius:11px;color:#336b9c;font-size:11px;font-weight:800}
+#flow-page .r17-edit:hover,#flow-page .r17-subtle:hover{border-color:#5484a3;background:#e7f2f5}
+#flow-page .r17-battle-note{padding:15px 20px;color:#5c7283;background:#ffffff8a;border-top:1px solid #cfdbd8;font-size:11px;font-weight:700;text-align:center;line-height:1.6}
+#flow-page .r17-checklist{display:flex;flex-direction:column;gap:19px;background:#fffaf3;padding:28px 27px;min-height:520px}
+#flow-page .r17-checklist-top h2{font:900 clamp(23px,2.4vw,32px)/1.35 var(--serif);margin:9px 0 6px;color:#273f53}
+#flow-page .r17-checklist-sub{margin:0;font-size:12px;color:#647581;line-height:1.6}
+#flow-page .r17-objectives{border:1px solid #e5d4be;background:#fff4e5;border-radius:14px;padding:16px 18px}
+#flow-page .r17-objectives h3{font-size:11px;color:#98643f;margin:0 0 9px}
+#flow-page .r17-objectives strong{font-size:15px;color:#3f4e5c;display:block;margin-bottom:10px}
+#flow-page .r17-objectives p{font-size:12px;color:#64717a;margin:6px 0}
+#flow-page .r17-rival-input{display:flex;flex-direction:column;gap:8px}
+#flow-page .r17-rival-input label{font-size:12px;font-weight:900;color:#364d60}
+#flow-page .r17-rival-input input{max-width:100%;width:100%;min-height:58px;border:1px solid #b9cbd3;border-radius:12px;color:#324d62;background:white;text-align:center;font:900 30px/1.2 var(--serif);outline-offset:3px}
+#flow-page .r17-rival-input input[aria-invalid="true"]{border-color:#b95549;background:#fff0ed}
+#flow-page .r17-rival-input small{font-size:11px;color:#6c7c87}
+#flow-page .r17-rule-row{display:flex;align-items:start;justify-content:space-between;gap:15px;padding-bottom:11px;border-bottom:1px solid #e7ded2}
+#flow-page .r17-rule-row>span{color:#7b8894;font-size:11px;flex-shrink:0}
+#flow-page .r17-rule-row>strong{font-size:11px;color:#354d60;text-align:right;line-height:1.55}
+#flow-page .r17-check-status{border-radius:12px;padding:13px 15px;line-height:1.5;font-size:12px;font-weight:750;color:#496678;background:#e8f0f5;border:1px solid #cbdce5}
+#flow-page .r17-check-status[data-state="ready"]{color:#316748;background:#ecf7ee;border-color:#b7ddc7}
+#flow-page .r17-check-status[data-state="invalid"]{color:#9a473e;background:#fff1ee;border-color:#edc1b9}
+#flow-page .r17-check-status[data-state="starting"]{color:#4c658c;background:#eaf1ff;border-color:#bdcde9}
+#flow-page .r17-battle-cta{min-height:60px;width:100%;display:flex;align-items:center;justify-content:center;margin-top:auto;font-size:15px}
+#flow-page .r17-battle-cta:disabled{opacity:.48;box-shadow:none;filter:grayscale(.22);cursor:not-allowed}
+#flow-page .r17-secondary-actions{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+#flow-page .r17-subtle{background:transparent;border:1px solid #d9d3cc;padding:10px 13px;border-radius:10px;font-size:11px;color:#536e80;font-weight:800}
+@media(max-width:1080px){#flow-page .r17-prepare-layout{grid-template-columns:1fr}#flow-page .r17-faceoff{min-height:330px}#flow-page .r17-checklist{min-height:0}}
+@media(max-width:550px){#flow-page .r17-heading{align-items:start}#flow-page .r17-prepare-layout{gap:12px}#flow-page .r17-versus,#flow-page .r17-checklist{border-radius:17px}#flow-page .r17-faceoff{grid-template-columns:minmax(0,1fr) 34px minmax(0,1fr);padding:16px 9px;gap:3px;min-height:0}#flow-page .r17-arena-head{padding:12px;font-size:9px}#flow-page .r17-hero-letter{font-size:clamp(70px,21vw,111px)}#flow-page .r17-statline{gap:5px}#flow-page .r17-statline span{font-size:9px;padding:7px 5px}#flow-page .r17-statline span b{font-size:10px}#flow-page .r17-fighter>b{font-size:11px}#flow-page .r17-edit{padding:9px 10px}#flow-page .r17-checklist{padding:22px 17px;gap:15px}#flow-page .r17-rule-row{gap:10px}#flow-page .r17-battle-cta{min-height:56px}}

@@ -1,0 +1,53 @@
+{
+  "scope": "Standalone HTML/CSS fixture; 3D WebGL and module loading NOT tested",
+  "results": [
+    {
+      "viewport": "320x568",
+      "overflow": false,
+      "title": "角度のひみつ",
+      "count": "2 / 4 ステージ",
+      "route": {
+        "screen": "prepare",
+        "mode": "story",
+        "levelId": "01-03"
+      },
+      "errors": []
+    },
+    {
+      "viewport": "390x844",
+      "overflow": false,
+      "title": "角度のひみつ",
+      "count": "2 / 4 ステージ",
+      "route": {
+        "screen": "prepare",
+        "mode": "story",
+        "levelId": "01-03"
+      },
+      "errors": []
+    },
+    {
+      "viewport": "800x390",
+      "overflow": false,
+      "title": "角度のひみつ",
+      "count": "2 / 4 ステージ",
+      "route": {
+        "screen": "prepare",
+        "mode": "story",
+        "levelId": "01-03"
+      },
+      "errors": []
+    },
+    {
+      "viewport": "1440x900",
+      "overflow": false,
+      "title": "角度のひみつ",
+      "count": "2 / 4 ステージ",
+      "route": {
+        "screen": "prepare",
+        "mode": "story",
+        "levelId": "01-03"
+      },
+      "errors": []
+    }
+  ]
+}

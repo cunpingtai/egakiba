@@ -1,0 +1,58 @@
+[
+  {
+    "viewport": [
+      1440,
+      960
+    ],
+    "language": "ja",
+    "overflowPx": 0,
+    "statRows": 4,
+    "initiallyDisabled": true,
+    "fontSwitch": "true",
+    "errors": [],
+    "screenshot": "r16-glyph-desktop-layout-fixture.png",
+    "kind": "UI-only fixture (no original WebGL, no font archive)"
+  },
+  {
+    "viewport": [
+      800,
+      920
+    ],
+    "language": "en",
+    "overflowPx": 0,
+    "statRows": 4,
+    "initiallyDisabled": true,
+    "fontSwitch": "true",
+    "errors": [],
+    "screenshot": "r16-glyph-tablet-layout-fixture.png",
+    "kind": "UI-only fixture (no original WebGL, no font archive)"
+  },
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "language": "ja",
+    "overflowPx": 0,
+    "statRows": 4,
+    "initiallyDisabled": true,
+    "fontSwitch": "true",
+    "errors": [],
+    "screenshot": "r16-glyph-mobile-layout-fixture.png",
+    "kind": "UI-only fixture (no original WebGL, no font archive)"
+  },
+  {
+    "viewport": [
+      320,
+      690
+    ],
+    "language": "zh",
+    "overflowPx": 0,
+    "statRows": 4,
+    "initiallyDisabled": true,
+    "fontSwitch": "true",
+    "errors": [],
+    "screenshot": "r16-glyph-narrow-layout-fixture.png",
+    "kind": "UI-only fixture (no original WebGL, no font archive)"
+  }
+]

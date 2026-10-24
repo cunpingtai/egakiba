@@ -1,0 +1,3044 @@
+{
+  "status": "sample-batch-not-a-balance-claim",
+  "draft": "arena-hp-v3.0.0-draft",
+  "scaleDecision": {
+    "nextVersion": "arena-hp-v3.0.0-draft.2",
+    "rule": "forceUnit is round(median force / 12). A median contact removes about 12 HP before the critical multiplier. One hit is capped at 30.",
+    "forceUnit": 121,
+    "maxDamagePerHit": 30,
+    "measuredWith": "arena-hp-v3.0.0-draft"
+  },
+  "grid": {
+    "stages": [
+      "standard",
+      "boost-bowl",
+      "square",
+      "rotating-floor"
+    ],
+    "pairs": [
+      "文/字",
+      "字/文",
+      "一/龍",
+      "龍/一"
+    ],
+    "angles": [
+      -0.8,
+      0,
+      0.8,
+      1.5707963267948966
+    ],
+    "powers": [
+      0.6,
+      1
+    ],
+    "opponent": {
+      "angle": 0.3,
+      "power": 0.82,
+      "spinDirection": 1
+    }
+  },
+  "fights": 128,
+  "force": {
+    "count": 369,
+    "min": 27.84876251220703,
+    "p50": 1450.251220703125,
+    "p90": 3045.8359375,
+    "max": 5099.07666015625
+  },
+  "outcomes": {
+    "noImpact": 3,
+    "firstSecond": 14,
+    "timeout": 0,
+    "tipped": 26,
+    "ringOut": 4,
+    "spinStopped": 97,
+    "arenaDepleted": 50,
+    "cappedApplications": 452,
+    "boostFights": 22,
+    "ropeFights": 24,
+    "meanSteps": 2178.8125
+  },
+  "byGlyph": {
+    "文字": {
+      "fights": 32,
+      "wins": {
+        "文": 11,
+        "字": 20,
+        "draw": 1
+      },
+      "reasons": {
+        "回転停止": 30,
+        "同時決着": 1,
+        "転倒": 1
+      }
+    },
+    "字文": {
+      "fights": 32,
+      "wins": {
+        "文": 26,
+        "字": 6
+      },
+      "reasons": {
+        "回転停止": 28,
+        "場外": 1,
+        "転倒": 3
+      }
+    },
+    "一龍": {
+      "fights": 32,
+      "wins": {
+        "一": 5,
+        "龍": 27
+      },
+      "reasons": {
+        "回転停止": 18,
+        "転倒": 12,
+        "場外": 2
+      }
+    },
+    "龍一": {
+      "fights": 32,
+      "wins": {
+        "一": 17,
+        "龍": 15
+      },
+      "reasons": {
+        "回転停止": 21,
+        "転倒": 10,
+        "場外": 1
+      }
+    }
+  },
+  "cases": [
+    {
+      "id": "standard:文字:-0.8:0.6",
+      "stageId": "standard",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 1924,
+      "time": 3.8174603174603043,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2710.6298828125,
+        170.9474334716797,
+        867.8644409179688
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "ba8a2987"
+    },
+    {
+      "id": "standard:文字:-0.8:1",
+      "stageId": "standard",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 1688,
+      "time": 3.3492063492063378,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2536.350341796875
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "1c983779"
+    },
+    {
+      "id": "standard:文字:0:0.6",
+      "stageId": "standard",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 1934,
+      "time": 3.837301587301574,
+      "winner": null,
+      "reason": "同時決着",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        4446.8935546875,
+        2122.490234375,
+        1847.285888671875
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "17e0795a"
+    },
+    {
+      "id": "standard:文字:0:1",
+      "stageId": "standard",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 1483,
+      "time": 2.9424603174603075,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        4381.48681640625,
+        2033.0716552734375
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "250645b8"
+    },
+    {
+      "id": "standard:文字:0.8:0.6",
+      "stageId": "standard",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 2442,
+      "time": 4.845238095238267,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        3020.849853515625,
+        2543.253662109375,
+        51.54350662231445,
+        1292.86181640625
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "374785ea"
+    },
+    {
+      "id": "standard:文字:0.8:1",
+      "stageId": "standard",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 2025,
+      "time": 4.017857142857133,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        3449.650390625,
+        2408.39404296875,
+        1936.13330078125
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "7bb6fc82"
+    },
+    {
+      "id": "standard:文字:1.5707963267948966:0.6",
+      "stageId": "standard",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 2568,
+      "time": 5.095238095238322,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        644.5660400390625,
+        1510.34228515625,
+        1867.824462890625
+      ],
+      "cappedHits": 5,
+      "arenaEnded": "hp-depleted",
+      "hash": "ee501fc4"
+    },
+    {
+      "id": "standard:文字:1.5707963267948966:1",
+      "stageId": "standard",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 891,
+      "time": 1.7678571428571368,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2919.310791015625
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "9b5db696"
+    },
+    {
+      "id": "standard:字文:-0.8:0.6",
+      "stageId": "standard",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 2231,
+      "time": 4.426587301587381,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2039.935791015625
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "40a12847"
+    },
+    {
+      "id": "standard:字文:-0.8:1",
+      "stageId": "standard",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 1964,
+      "time": 3.8968253968253834,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2320.0263671875
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "44dc644a"
+    },
+    {
+      "id": "standard:字文:0:0.6",
+      "stageId": "standard",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 1362,
+      "time": 2.7023809523809432,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        4213.57958984375,
+        2034.306396484375
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "3109f068"
+    },
+    {
+      "id": "standard:字文:0:1",
+      "stageId": "standard",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 605,
+      "time": 1.2003968253968214,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        4201.38720703125
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "d3a92181"
+    },
+    {
+      "id": "standard:字文:0.8:0.6",
+      "stageId": "standard",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 368,
+      "time": 0.7301587301587278,
+      "winner": 1,
+      "reason": "場外",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2729.383544921875
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "0ec90d4d"
+    },
+    {
+      "id": "standard:字文:0.8:1",
+      "stageId": "standard",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 2969,
+      "time": 5.890873015873418,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        3499.93408203125,
+        1242.5587158203125,
+        2441.116455078125,
+        1911.666259765625
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "1d2925a4"
+    },
+    {
+      "id": "standard:字文:1.5707963267948966:0.6",
+      "stageId": "standard",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 3246,
+      "time": 6.440476190476714,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        164.21421813964844,
+        1742.8446044921875,
+        459.9554138183594,
+        1055.0902099609375
+      ],
+      "cappedHits": 4,
+      "arenaEnded": "hp-depleted",
+      "hash": "b886c42b"
+    },
+    {
+      "id": "standard:字文:1.5707963267948966:1",
+      "stageId": "standard",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 3151,
+      "time": 6.251984126984609,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 6,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        945.3317260742188,
+        207.13356018066406,
+        67.78253936767578,
+        359.8868408203125,
+        67.73612976074219,
+        1099.2872314453125
+      ],
+      "cappedHits": 4,
+      "arenaEnded": "hp-depleted",
+      "hash": "a9626d85"
+    },
+    {
+      "id": "standard:一龍:-0.8:0.6",
+      "stageId": "standard",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 3249,
+      "time": 6.446428571429096,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        552.066650390625,
+        478.79107666015625,
+        269.09820556640625,
+        1370.38232421875
+      ],
+      "cappedHits": 2,
+      "arenaEnded": "hp-depleted",
+      "hash": "20c3a17b"
+    },
+    {
+      "id": "standard:一龍:-0.8:1",
+      "stageId": "standard",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 2201,
+      "time": 4.367063492063559,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        1584.1295166015625
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "b4fdc433"
+    },
+    {
+      "id": "standard:一龍:0:0.6",
+      "stageId": "standard",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 506,
+      "time": 1.0039682539682506,
+      "winner": 1,
+      "reason": "転倒",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2391.849853515625
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "ed531a57"
+    },
+    {
+      "id": "standard:一龍:0:1",
+      "stageId": "standard",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 753,
+      "time": 1.494047619047614,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        4063.60546875
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "f0090211"
+    },
+    {
+      "id": "standard:一龍:0.8:0.6",
+      "stageId": "standard",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 242,
+      "time": 0.4801587301587287,
+      "winner": 1,
+      "reason": "転倒",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2170.326416015625
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "2d9561e7"
+    },
+    {
+      "id": "standard:一龍:0.8:1",
+      "stageId": "standard",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 1430,
+      "time": 2.8373015873015777,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        38.567203521728516,
+        235.44520568847656,
+        30.12858009338379,
+        673.9910278320312
+      ],
+      "cappedHits": 0,
+      "arenaEnded": null,
+      "hash": "a44d9344"
+    },
+    {
+      "id": "standard:一龍:1.5707963267948966:0.6",
+      "stageId": "standard",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 2580,
+      "time": 5.119047619047851,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        1508.5570068359375,
+        573.8372192382812
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "5645f3b6"
+    },
+    {
+      "id": "standard:一龍:1.5707963267948966:1",
+      "stageId": "standard",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 771,
+      "time": 1.5297619047618995,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 0,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [],
+      "cappedHits": 0,
+      "arenaEnded": null,
+      "hash": "c3a6b2f3"
+    },
+    {
+      "id": "standard:龍一:-0.8:0.6",
+      "stageId": "standard",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 1547,
+      "time": 3.069444444444434,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2739.2626953125,
+        279.05718994140625,
+        260.9281005859375,
+        5099.07666015625
+      ],
+      "cappedHits": 4,
+      "arenaEnded": "hp-depleted",
+      "hash": "311d461d"
+    },
+    {
+      "id": "standard:龍一:-0.8:1",
+      "stageId": "standard",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 1434,
+      "time": 2.8452380952380856,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2564.864990234375
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "9123f0ff"
+    },
+    {
+      "id": "standard:龍一:0:0.6",
+      "stageId": "standard",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 1979,
+      "time": 3.926587301587288,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        1742.4384765625,
+        2425.40283203125,
+        348.92388916015625
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "a3060aa9"
+    },
+    {
+      "id": "standard:龍一:0:1",
+      "stageId": "standard",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 2077,
+      "time": 4.1210317460317585,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        3043.4580078125,
+        828.3195190429688,
+        345.7095031738281
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "4d73d0e3"
+    },
+    {
+      "id": "standard:龍一:0.8:0.6",
+      "stageId": "standard",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 591,
+      "time": 1.1726190476190437,
+      "winner": 0,
+      "reason": "転倒",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2486.39990234375
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "512ce135"
+    },
+    {
+      "id": "standard:龍一:0.8:1",
+      "stageId": "standard",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 417,
+      "time": 0.8273809523809497,
+      "winner": 1,
+      "reason": "場外",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2646.10498046875
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "25680047"
+    },
+    {
+      "id": "standard:龍一:1.5707963267948966:0.6",
+      "stageId": "standard",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 644,
+      "time": 1.2777777777777735,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2047.852783203125
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "76f2d04a"
+    },
+    {
+      "id": "standard:龍一:1.5707963267948966:1",
+      "stageId": "standard",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 3488,
+      "time": 6.92063492063555,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2474.936279296875,
+        240.7569580078125,
+        1339.592041015625,
+        1434.6917724609375
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "1d26fde5"
+    },
+    {
+      "id": "boost-bowl:文字:-0.8:0.6",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 3771,
+      "time": 7.48214285714361,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 6,
+      "ropes": 0,
+      "forces": [
+        1794.447021484375,
+        2487.391357421875,
+        1544.3333740234375
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "721f73cf"
+    },
+    {
+      "id": "boost-bowl:文字:-0.8:1",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 1294,
+      "time": 2.567460317460309,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 3,
+      "ropes": 0,
+      "forces": [
+        398.1091003417969,
+        789.760009765625
+      ],
+      "cappedHits": 1,
+      "arenaEnded": null,
+      "hash": "6f0b8a94"
+    },
+    {
+      "id": "boost-bowl:文字:0:0.6",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 3886,
+      "time": 7.710317460318263,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 5,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        3717.9814453125,
+        2588.8505859375,
+        2451.058349609375,
+        1845.57080078125,
+        1452.0755615234375
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "feb0d365"
+    },
+    {
+      "id": "boost-bowl:文字:0:1",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 3336,
+      "time": 6.619047619048182,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 2,
+      "ropes": 0,
+      "forces": [
+        4224.443359375,
+        3359.026611328125,
+        1750.7593994140625,
+        945.625
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "8790c0bb"
+    },
+    {
+      "id": "boost-bowl:文字:0.8:0.6",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 1670,
+      "time": 3.313492063492052,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 5,
+      "boosts": 6,
+      "ropes": 0,
+      "forces": [
+        2773.55126953125,
+        394.416259765625,
+        350.06695556640625,
+        1418.1982421875,
+        236.7390594482422
+      ],
+      "cappedHits": 4,
+      "arenaEnded": "hp-depleted",
+      "hash": "f0fcf55d"
+    },
+    {
+      "id": "boost-bowl:文字:0.8:1",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 954,
+      "time": 1.8928571428571364,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 1,
+      "ropes": 0,
+      "forces": [
+        3356.611328125,
+        1226.335693359375
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "79f466db"
+    },
+    {
+      "id": "boost-bowl:文字:1.5707963267948966:0.6",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 3477,
+      "time": 6.898809523810148,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 5,
+      "boosts": 1,
+      "ropes": 0,
+      "forces": [
+        1386.4019775390625,
+        397.9295959472656,
+        1250.838623046875,
+        2637.98486328125,
+        1501.298095703125
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "b027276f"
+    },
+    {
+      "id": "boost-bowl:文字:1.5707963267948966:1",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 966,
+      "time": 1.91666666666666,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 4,
+      "ropes": 0,
+      "forces": [
+        3915.180908203125,
+        538.9984130859375
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "a36ccf2a"
+    },
+    {
+      "id": "boost-bowl:字文:-0.8:0.6",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 2305,
+      "time": 4.5734126984128105,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 1,
+      "ropes": 0,
+      "forces": [
+        2350.462646484375,
+        2508.99560546875,
+        1450.251220703125
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "66b59871"
+    },
+    {
+      "id": "boost-bowl:字文:-0.8:1",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 1704,
+      "time": 3.3809523809523694,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 3,
+      "ropes": 0,
+      "forces": [
+        2878.407958984375,
+        2708.990478515625
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "9f421384"
+    },
+    {
+      "id": "boost-bowl:字文:0:0.6",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 3742,
+      "time": 7.424603174603915,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 9,
+      "boosts": 6,
+      "ropes": 0,
+      "forces": [
+        4229.9716796875,
+        1394.760986328125,
+        1418.3804931640625,
+        1587.221923828125,
+        83.88446807861328,
+        135.9410400390625,
+        695.728271484375,
+        295.2283630371094,
+        727.7303466796875
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "7acdbea7"
+    },
+    {
+      "id": "boost-bowl:字文:0:1",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 1466,
+      "time": 2.908730158730149,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        3957.261962890625,
+        2547.255126953125
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "3cefe1f6"
+    },
+    {
+      "id": "boost-bowl:字文:0.8:0.6",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 396,
+      "time": 0.7857142857142831,
+      "winner": 1,
+      "reason": "転倒",
+      "impacts": 3,
+      "boosts": 1,
+      "ropes": 0,
+      "forces": [
+        2715.880615234375,
+        355.0089111328125,
+        1209.3856201171875
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "09c16950"
+    },
+    {
+      "id": "boost-bowl:字文:0.8:1",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 495,
+      "time": 0.9821428571428539,
+      "winner": 1,
+      "reason": "転倒",
+      "impacts": 1,
+      "boosts": 3,
+      "ropes": 0,
+      "forces": [
+        3064.082763671875
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "3fcd140c"
+    },
+    {
+      "id": "boost-bowl:字文:1.5707963267948966:0.6",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 3203,
+      "time": 6.355158730159235,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 5,
+      "boosts": 1,
+      "ropes": 0,
+      "forces": [
+        2416.734619140625,
+        2912.63720703125,
+        2330.320556640625,
+        48.90885543823242,
+        1269.7176513671875
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "c42971bf"
+    },
+    {
+      "id": "boost-bowl:字文:1.5707963267948966:1",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 1446,
+      "time": 2.8690476190476093,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 1,
+      "ropes": 0,
+      "forces": [
+        3120.989013671875,
+        2020.2938232421875
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "bf1b05d2"
+    },
+    {
+      "id": "boost-bowl:一龍:-0.8:0.6",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 826,
+      "time": 1.6388888888888833,
+      "winner": 1,
+      "reason": "転倒",
+      "impacts": 1,
+      "boosts": 3,
+      "ropes": 0,
+      "forces": [
+        2562.905517578125
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "b5fd6acf"
+    },
+    {
+      "id": "boost-bowl:一龍:-0.8:1",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 734,
+      "time": 1.4563492063492014,
+      "winner": 1,
+      "reason": "転倒",
+      "impacts": 0,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [],
+      "cappedHits": 0,
+      "arenaEnded": null,
+      "hash": "2b8b216b"
+    },
+    {
+      "id": "boost-bowl:一龍:0:0.6",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 472,
+      "time": 0.9365079365079334,
+      "winner": 1,
+      "reason": "転倒",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2392.422119140625
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "8ddb8b59"
+    },
+    {
+      "id": "boost-bowl:一龍:0:1",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 689,
+      "time": 1.3670634920634874,
+      "winner": 1,
+      "reason": "転倒",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2874.90185546875
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "14688f60"
+    },
+    {
+      "id": "boost-bowl:一龍:0.8:0.6",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 526,
+      "time": 1.0436507936507902,
+      "winner": 1,
+      "reason": "転倒",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2170.709228515625
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "3ef8c804"
+    },
+    {
+      "id": "boost-bowl:一龍:0.8:1",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 1891,
+      "time": 3.751984126984114,
+      "winner": 1,
+      "reason": "転倒",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2973.708984375,
+        1753.5550537109375,
+        1865.048828125
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "037e6f7f"
+    },
+    {
+      "id": "boost-bowl:一龍:1.5707963267948966:0.6",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 773,
+      "time": 1.5337301587301535,
+      "winner": 1,
+      "reason": "場外",
+      "impacts": 1,
+      "boosts": 1,
+      "ropes": 0,
+      "forces": [
+        2451.52099609375
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "b43cc909"
+    },
+    {
+      "id": "boost-bowl:一龍:1.5707963267948966:1",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 3106,
+      "time": 6.162698412698875,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 6,
+      "boosts": 8,
+      "ropes": 0,
+      "forces": [
+        1479.5086669921875,
+        138.8621368408203,
+        105.23479461669922,
+        1556.0972900390625,
+        945.4956665039062,
+        1431.1484375
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "2b13d58b"
+    },
+    {
+      "id": "boost-bowl:龍一:-0.8:0.6",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 1618,
+      "time": 3.2103174603174494,
+      "winner": 0,
+      "reason": "転倒",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        1946.0855712890625,
+        1032.9173583984375
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "37cc320b"
+    },
+    {
+      "id": "boost-bowl:龍一:-0.8:1",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 2849,
+      "time": 5.652777777778128,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 11,
+      "ropes": 0,
+      "forces": [
+        2000.2991943359375,
+        467.7761535644531,
+        1556.375732421875
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "fe30489d"
+    },
+    {
+      "id": "boost-bowl:龍一:0:0.6",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 2472,
+      "time": 4.90476190476209,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 6,
+      "boosts": 1,
+      "ropes": 0,
+      "forces": [
+        1772.68994140625,
+        2341.407958984375,
+        497.825927734375,
+        160.6902618408203,
+        63.054752349853516,
+        1275.0552978515625
+      ],
+      "cappedHits": 4,
+      "arenaEnded": "hp-depleted",
+      "hash": "c8cc67c2"
+    },
+    {
+      "id": "boost-bowl:龍一:0:1",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 155,
+      "time": 0.30753968253968167,
+      "winner": 0,
+      "reason": "転倒",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2769.696533203125
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "a549b686"
+    },
+    {
+      "id": "boost-bowl:龍一:0.8:0.6",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 605,
+      "time": 1.2003968253968214,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2580.394287109375,
+        2607.581787109375
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "650a01bd"
+    },
+    {
+      "id": "boost-bowl:龍一:0.8:1",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 274,
+      "time": 0.5436507936507919,
+      "winner": 0,
+      "reason": "転倒",
+      "impacts": 1,
+      "boosts": 1,
+      "ropes": 0,
+      "forces": [
+        2647.661865234375
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "4f7ccb10"
+    },
+    {
+      "id": "boost-bowl:龍一:1.5707963267948966:0.6",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 958,
+      "time": 1.9007936507936443,
+      "winner": 0,
+      "reason": "転倒",
+      "impacts": 5,
+      "boosts": 2,
+      "ropes": 0,
+      "forces": [
+        1598.1025390625,
+        378.0203857421875,
+        371.2315979003906,
+        1823.18212890625,
+        1284.023681640625
+      ],
+      "cappedHits": 4,
+      "arenaEnded": "hp-depleted",
+      "hash": "c97fa0ca"
+    },
+    {
+      "id": "boost-bowl:龍一:1.5707963267948966:1",
+      "stageId": "boost-bowl",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 2868,
+      "time": 5.690476190476549,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 8,
+      "boosts": 1,
+      "ropes": 0,
+      "forces": [
+        90.25375366210938,
+        49.66489791870117,
+        110.39537811279297,
+        22.898324966430664,
+        2959.53857421875,
+        90.71141815185547,
+        222.59695434570312,
+        1119.6456298828125
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "03d271c9"
+    },
+    {
+      "id": "square:文字:-0.8:0.6",
+      "stageId": "square",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 2835,
+      "time": 5.625000000000344,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 2,
+      "forces": [
+        1281.62451171875,
+        2359.586181640625
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "d5c9d080"
+    },
+    {
+      "id": "square:文字:-0.8:1",
+      "stageId": "square",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 4250,
+      "time": 8.432539682540451,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 5,
+      "boosts": 0,
+      "ropes": 1,
+      "forces": [
+        367.0438537597656,
+        1576.468017578125,
+        915.7081298828125,
+        1118.08935546875,
+        27.84876251220703
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "be66d1b8"
+    },
+    {
+      "id": "square:文字:0:0.6",
+      "stageId": "square",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 1778,
+      "time": 3.5277777777777657,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 1,
+      "forces": [
+        3621.506591796875,
+        2738.30908203125
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "f935fba7"
+    },
+    {
+      "id": "square:文字:0:1",
+      "stageId": "square",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 713,
+      "time": 1.4146825396825349,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        3893.037109375
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "beda487a"
+    },
+    {
+      "id": "square:文字:0.8:0.6",
+      "stageId": "square",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 2562,
+      "time": 5.083333333333558,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 6,
+      "boosts": 0,
+      "ropes": 1,
+      "forces": [
+        2773.8193359375,
+        298.971923828125,
+        83.60218811035156,
+        1673.16455078125,
+        289.1039733886719,
+        560.4564208984375
+      ],
+      "cappedHits": 4,
+      "arenaEnded": "hp-depleted",
+      "hash": "7ee878ae"
+    },
+    {
+      "id": "square:文字:0.8:1",
+      "stageId": "square",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 2159,
+      "time": 4.283730158730207,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 2,
+      "forces": [
+        3849.421875,
+        2698.56982421875,
+        314.7966613769531,
+        439.6478576660156
+      ],
+      "cappedHits": 4,
+      "arenaEnded": "hp-depleted",
+      "hash": "df5dd84d"
+    },
+    {
+      "id": "square:文字:1.5707963267948966:0.6",
+      "stageId": "square",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 5885,
+      "time": 11.676587301587332,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 3,
+      "forces": [
+        2349.05810546875,
+        2103.716064453125,
+        210.8424072265625,
+        1110.86572265625
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "b57e2d89"
+    },
+    {
+      "id": "square:文字:1.5707963267948966:1",
+      "stageId": "square",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 3649,
+      "time": 7.2400793650800646,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 4,
+      "forces": [
+        2468.18408203125,
+        3232.474609375,
+        365.4856872558594,
+        103.17464447021484
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "82153350"
+    },
+    {
+      "id": "square:字文:-0.8:0.6",
+      "stageId": "square",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 3751,
+      "time": 7.4424603174610615,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 6,
+      "boosts": 0,
+      "ropes": 1,
+      "forces": [
+        165.87298583984375,
+        137.59811401367188,
+        323.1626892089844,
+        2009.18505859375,
+        174.09091186523438,
+        1219.141357421875
+      ],
+      "cappedHits": 4,
+      "arenaEnded": "hp-depleted",
+      "hash": "52df9213"
+    },
+    {
+      "id": "square:字文:-0.8:1",
+      "stageId": "square",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 4881,
+      "time": 9.684523809524293,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 5,
+      "boosts": 0,
+      "ropes": 1,
+      "forces": [
+        508.20684814453125,
+        196.09524536132812,
+        1034.900390625,
+        1161.07568359375,
+        992.09765625
+      ],
+      "cappedHits": 4,
+      "arenaEnded": "hp-depleted",
+      "hash": "08b66711"
+    },
+    {
+      "id": "square:字文:0:0.6",
+      "stageId": "square",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 3631,
+      "time": 7.204365079365771,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        4192.42626953125,
+        2434.97705078125,
+        2054.571533203125
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "8ea888df"
+    },
+    {
+      "id": "square:字文:0:1",
+      "stageId": "square",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 2713,
+      "time": 5.382936507936798,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        3706.698974609375,
+        3142.084228515625,
+        1244.293212890625
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "79080a41"
+    },
+    {
+      "id": "square:字文:0.8:0.6",
+      "stageId": "square",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 1076,
+      "time": 2.134920634920628,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 1,
+      "forces": [
+        2661.0361328125,
+        327.3777160644531,
+        294.0815124511719,
+        394.45147705078125
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "d39a1eae"
+    },
+    {
+      "id": "square:字文:0.8:1",
+      "stageId": "square",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 949,
+      "time": 1.8829365079365015,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 1,
+      "forces": [
+        2832.821533203125
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "01729a3b"
+    },
+    {
+      "id": "square:字文:1.5707963267948966:0.6",
+      "stageId": "square",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 1277,
+      "time": 2.53373015873015,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 2,
+      "forces": [
+        140.6416473388672
+      ],
+      "cappedHits": 0,
+      "arenaEnded": null,
+      "hash": "18531a58"
+    },
+    {
+      "id": "square:字文:1.5707963267948966:1",
+      "stageId": "square",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 5987,
+      "time": 11.878968253968239,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 2,
+      "forces": [
+        3613.3779296875,
+        1406.4019775390625,
+        1880.674072265625,
+        1763.6610107421875
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "2bd5541a"
+    },
+    {
+      "id": "square:一龍:-0.8:0.6",
+      "stageId": "square",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 2226,
+      "time": 4.416666666666744,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 1,
+      "forces": [
+        1938.2325439453125,
+        1155.039794921875
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "89cecb8f"
+    },
+    {
+      "id": "square:一龍:-0.8:1",
+      "stageId": "square",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 2385,
+      "time": 4.732142857143004,
+      "winner": 1,
+      "reason": "転倒",
+      "impacts": 0,
+      "boosts": 0,
+      "ropes": 35,
+      "forces": [],
+      "cappedHits": 0,
+      "arenaEnded": null,
+      "hash": "b1a1bc91"
+    },
+    {
+      "id": "square:一龍:0:0.6",
+      "stageId": "square",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 2840,
+      "time": 5.634920634920981,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        3045.8359375,
+        1407.607666015625,
+        842.0803833007812
+      ],
+      "cappedHits": 5,
+      "arenaEnded": "hp-depleted",
+      "hash": "66301713"
+    },
+    {
+      "id": "square:一龍:0:1",
+      "stageId": "square",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 496,
+      "time": 0.9841269841269809,
+      "winner": 1,
+      "reason": "転倒",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        3499.216552734375
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "0907a203"
+    },
+    {
+      "id": "square:一龍:0.8:0.6",
+      "stageId": "square",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 1178,
+      "time": 2.3373015873015794,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2182.846923828125,
+        1241.9052734375
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "686eccee"
+    },
+    {
+      "id": "square:一龍:0.8:1",
+      "stageId": "square",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 3869,
+      "time": 7.676587301588097,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2325.302978515625,
+        2303.7998046875,
+        1930.0322265625,
+        867.696044921875
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "4fdd003f"
+    },
+    {
+      "id": "square:一龍:1.5707963267948966:0.6",
+      "stageId": "square",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 5303,
+      "time": 10.52182539682569,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 5,
+      "boosts": 0,
+      "ropes": 3,
+      "forces": [
+        2137.227783203125,
+        1558.57080078125,
+        54.76822280883789,
+        491.6218566894531,
+        424.54150390625
+      ],
+      "cappedHits": 4,
+      "arenaEnded": "hp-depleted",
+      "hash": "1e44cd12"
+    },
+    {
+      "id": "square:一龍:1.5707963267948966:1",
+      "stageId": "square",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 828,
+      "time": 1.6428571428571372,
+      "winner": 1,
+      "reason": "場外",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 2,
+      "forces": [
+        292.1485290527344
+      ],
+      "cappedHits": 0,
+      "arenaEnded": null,
+      "hash": "d5694444"
+    },
+    {
+      "id": "square:龍一:-0.8:0.6",
+      "stageId": "square",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 3113,
+      "time": 6.176587301587767,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 1,
+      "forces": [
+        2296.5771484375,
+        1782.73046875
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "efe656d7"
+    },
+    {
+      "id": "square:龍一:-0.8:1",
+      "stageId": "square",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 4298,
+      "time": 8.527777777778525,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 2,
+      "forces": [
+        794.5151977539062,
+        2199.294189453125,
+        1562.8260498046875
+      ],
+      "cappedHits": 5,
+      "arenaEnded": "hp-depleted",
+      "hash": "4516b586"
+    },
+    {
+      "id": "square:龍一:0:0.6",
+      "stageId": "square",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 2574,
+      "time": 5.107142857143087,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        1708.0966796875,
+        1628.537109375
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "7c3e87be"
+    },
+    {
+      "id": "square:龍一:0:1",
+      "stageId": "square",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 3612,
+      "time": 7.16666666666735,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 1,
+      "forces": [
+        3753.926025390625,
+        2186.864990234375,
+        1882.0987548828125,
+        1207.46826171875
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "199b0bf9"
+    },
+    {
+      "id": "square:龍一:0.8:0.6",
+      "stageId": "square",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 1667,
+      "time": 3.3075396825396712,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 8,
+      "forces": [
+        3453.352783203125,
+        223.40748596191406,
+        263.1361389160156
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "c4fe14fb"
+    },
+    {
+      "id": "square:龍一:0.8:1",
+      "stageId": "square",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 284,
+      "time": 0.5634920634920617,
+      "winner": 0,
+      "reason": "転倒",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 1,
+      "forces": [
+        2521.101318359375
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "59aab3b6"
+    },
+    {
+      "id": "square:龍一:1.5707963267948966:0.6",
+      "stageId": "square",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 1389,
+      "time": 2.7559523809523716,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 5,
+      "boosts": 0,
+      "ropes": 3,
+      "forces": [
+        49.00171661376953,
+        2015.9864501953125,
+        57.93020248413086,
+        1262.5335693359375,
+        217.91358947753906
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "fe5b2a48"
+    },
+    {
+      "id": "square:龍一:1.5707963267948966:1",
+      "stageId": "square",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 4722,
+      "time": 9.369047619048175,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 2,
+      "forces": [
+        15.261147499084473,
+        1783.1402587890625,
+        7.034564971923828
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "dc1710e3"
+    },
+    {
+      "id": "rotating-floor:文字:-0.8:0.6",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 3294,
+      "time": 6.53571428571483,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        3108.822021484375,
+        1899.3756103515625,
+        339.1894836425781,
+        244.4059295654297
+      ],
+      "cappedHits": 4,
+      "arenaEnded": "hp-depleted",
+      "hash": "62f5b01f"
+    },
+    {
+      "id": "rotating-floor:文字:-0.8:1",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 4013,
+      "time": 7.962301587302446,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        33.137447357177734,
+        1348.03125,
+        2036.1217041015625,
+        418.1361999511719
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "9124ed12"
+    },
+    {
+      "id": "rotating-floor:文字:0:0.6",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 2355,
+      "time": 4.672619047619182,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        3629.018310546875,
+        2480.360595703125
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "1c9216c2"
+    },
+    {
+      "id": "rotating-floor:文字:0:1",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 3261,
+      "time": 6.470238095238625,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 5,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        4050.34619140625,
+        3501.16796875,
+        1012.71337890625,
+        299.38946533203125,
+        2057.784423828125
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "65e3fddf"
+    },
+    {
+      "id": "rotating-floor:文字:0.8:0.6",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 3698,
+      "time": 7.337301587302308,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2597.6064453125,
+        1891.6201171875,
+        335.8247985839844
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "764fa478"
+    },
+    {
+      "id": "rotating-floor:文字:0.8:1",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 2893,
+      "time": 5.740079365079734,
+      "winner": 0,
+      "reason": "転倒",
+      "impacts": 5,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        3209.015869140625,
+        1085.8851318359375,
+        487.16351318359375,
+        1110.8717041015625,
+        746.2972412109375
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "e9b21957"
+    },
+    {
+      "id": "rotating-floor:文字:1.5707963267948966:0.6",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 3116,
+      "time": 6.182539682540149,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        1733.2598876953125,
+        1026.64111328125,
+        173.89422607421875,
+        1138.1053466796875
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "043bde47"
+    },
+    {
+      "id": "rotating-floor:文字:1.5707963267948966:1",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "文",
+        "字"
+      ],
+      "steps": 3653,
+      "time": 7.248015873016574,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        1457.60546875,
+        160.3362579345703
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "0484c8b8"
+    },
+    {
+      "id": "rotating-floor:字文:-0.8:0.6",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 2434,
+      "time": 4.829365079365248,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        3725.201416015625,
+        2244.447509765625
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "c65a46a9"
+    },
+    {
+      "id": "rotating-floor:字文:-0.8:1",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 2852,
+      "time": 5.65873015873051,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 7,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        73.39996337890625,
+        195.78440856933594,
+        568.2003173828125,
+        1262.8604736328125,
+        234.74935913085938,
+        722.6785278320312,
+        686.8642578125
+      ],
+      "cappedHits": 2,
+      "arenaEnded": "hp-depleted",
+      "hash": "4fa54a60"
+    },
+    {
+      "id": "rotating-floor:字文:0:0.6",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 605,
+      "time": 1.2003968253968214,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2971.931396484375
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "87d28cdc"
+    },
+    {
+      "id": "rotating-floor:字文:0:1",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 2394,
+      "time": 4.750000000000151,
+      "winner": 1,
+      "reason": "転倒",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2535.314697265625,
+        2976.797119140625
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "3e25090e"
+    },
+    {
+      "id": "rotating-floor:字文:0.8:0.6",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 3547,
+      "time": 7.037698412699068,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        1417.7864990234375,
+        2672.216796875
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "74ba2fa7"
+    },
+    {
+      "id": "rotating-floor:字文:0.8:1",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 3463,
+      "time": 6.871031746032364,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 6,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        3019.876708984375,
+        515.2649536132812,
+        2243.117431640625,
+        435.93865966796875,
+        770.3590698242188,
+        1483.080078125
+      ],
+      "cappedHits": 4,
+      "arenaEnded": "hp-depleted",
+      "hash": "78b1c2f0"
+    },
+    {
+      "id": "rotating-floor:字文:1.5707963267948966:0.6",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 3839,
+      "time": 7.617063492064275,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 2,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        1832.225341796875,
+        2305.424072265625
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "d7067b9d"
+    },
+    {
+      "id": "rotating-floor:字文:1.5707963267948966:1",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "字",
+        "文"
+      ],
+      "steps": 3552,
+      "time": 7.047619047619705,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        177.73345947265625,
+        1194.908935546875,
+        2522.330810546875
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "640c0e60"
+    },
+    {
+      "id": "rotating-floor:一龍:-0.8:0.6",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 2789,
+      "time": 5.533730158730482,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        95.22394561767578,
+        1120.974609375,
+        1120.1563720703125,
+        135.66107177734375
+      ],
+      "cappedHits": 4,
+      "arenaEnded": null,
+      "hash": "68537739"
+    },
+    {
+      "id": "rotating-floor:一龍:-0.8:1",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 3770,
+      "time": 7.4801587301594825,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 5,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        1560.3731689453125,
+        157.2236328125,
+        276.89569091796875,
+        288.450439453125,
+        1474.24853515625
+      ],
+      "cappedHits": 4,
+      "arenaEnded": "hp-depleted",
+      "hash": "18971751"
+    },
+    {
+      "id": "rotating-floor:一龍:0:0.6",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 769,
+      "time": 1.5257936507936456,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2920.583251953125
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "434f50f3"
+    },
+    {
+      "id": "rotating-floor:一龍:0:1",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 228,
+      "time": 0.452380952380951,
+      "winner": 1,
+      "reason": "転倒",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        4158.5009765625
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "f894ae7f"
+    },
+    {
+      "id": "rotating-floor:一龍:0.8:0.6",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 3089,
+      "time": 6.128968253968709,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 5,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        677.2000732421875,
+        1249.4671630859375,
+        142.8717803955078,
+        1369.8526611328125,
+        495.1513671875
+      ],
+      "cappedHits": 4,
+      "arenaEnded": "hp-depleted",
+      "hash": "68d364d2"
+    },
+    {
+      "id": "rotating-floor:一龍:0.8:1",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 3659,
+      "time": 7.259920634921339,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 6,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2800.25146484375,
+        432.4947204589844,
+        1511.63037109375,
+        233.84336853027344,
+        415.0389709472656,
+        341.83856201171875
+      ],
+      "cappedHits": 4,
+      "arenaEnded": "hp-depleted",
+      "hash": "f402d4dc"
+    },
+    {
+      "id": "rotating-floor:一龍:1.5707963267948966:0.6",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 2654,
+      "time": 5.2658730158732805,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        1702.22265625,
+        1360.6429443359375,
+        1705.6065673828125
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "feae9fcf"
+    },
+    {
+      "id": "rotating-floor:一龍:1.5707963267948966:1",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "一",
+        "龍"
+      ],
+      "steps": 919,
+      "time": 1.8234126984126922,
+      "winner": 1,
+      "reason": "転倒",
+      "impacts": 6,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        386.5968933105469,
+        502.3414001464844,
+        395.2489929199219,
+        596.6690673828125,
+        914.5865478515625,
+        285.50579833984375
+      ],
+      "cappedHits": 2,
+      "arenaEnded": "hp-depleted",
+      "hash": "7ea272a7"
+    },
+    {
+      "id": "rotating-floor:龍一:-0.8:0.6",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 2882,
+      "time": 5.7182539682543325,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 4,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        114.41522979736328,
+        259.20819091796875,
+        2154.987060546875,
+        378.76837158203125
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "927f8f0a"
+    },
+    {
+      "id": "rotating-floor:龍一:-0.8:1",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 169,
+      "time": 0.33531746031745935,
+      "winner": 0,
+      "reason": "転倒",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        101.28231811523438
+      ],
+      "cappedHits": 0,
+      "arenaEnded": null,
+      "hash": "34c97d07"
+    },
+    {
+      "id": "rotating-floor:龍一:0:0.6",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 605,
+      "time": 1.2003968253968214,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2788.308349609375
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "85f94322"
+    },
+    {
+      "id": "rotating-floor:龍一:0:1",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 3245,
+      "time": 6.438492063492586,
+      "winner": 0,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        3343.631591796875,
+        1983.7049560546875,
+        1130.5020751953125
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "9c636231"
+    },
+    {
+      "id": "rotating-floor:龍一:0.8:0.6",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 257,
+      "time": 0.5099206349206333,
+      "winner": 0,
+      "reason": "転倒",
+      "impacts": 1,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2204.859619140625
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "63857940"
+    },
+    {
+      "id": "rotating-floor:龍一:0.8:1",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 501,
+      "time": 0.9940476190476157,
+      "winner": 0,
+      "reason": "転倒",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2280.650634765625,
+        144.16580200195312,
+        864.8341674804688
+      ],
+      "cappedHits": 2,
+      "arenaEnded": null,
+      "hash": "51838bd7"
+    },
+    {
+      "id": "rotating-floor:龍一:1.5707963267948966:0.6",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 2339,
+      "time": 4.640873015873143,
+      "winner": 1,
+      "reason": "回転停止",
+      "impacts": 3,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        2110.893798828125,
+        1839.4423828125,
+        918.0867309570312
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "58f2874a"
+    },
+    {
+      "id": "rotating-floor:龍一:1.5707963267948966:1",
+      "stageId": "rotating-floor",
+      "glyphs": [
+        "龍",
+        "一"
+      ],
+      "steps": 3477,
+      "time": 6.898809523810148,
+      "winner": 0,
+      "reason": "転倒",
+      "impacts": 7,
+      "boosts": 0,
+      "ropes": 0,
+      "forces": [
+        1478.970703125,
+        1922.9130859375,
+        1621.3765869140625,
+        1679.74169921875,
+        1183.6875,
+        84.8586196899414,
+        22.768997192382812
+      ],
+      "cappedHits": 6,
+      "arenaEnded": "hp-depleted",
+      "hash": "d68bbfe9"
+    }
+  ]
+}

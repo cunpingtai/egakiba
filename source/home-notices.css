@@ -1,0 +1,73 @@
+/* HOME release notes use the existing notes as their single content source. */
+.release-notes{display:none!important}
+.home-dialog{position:fixed;top:50%;left:50%;right:auto;bottom:auto;transform:translate(-50%,-50%);width:min(480px,calc(100vw - 28px));height:auto;max-height:calc(100vh - 32px);max-height:calc(100dvh - 32px);margin:0;padding:0;border:2px solid #8294ad;border-radius:16px;background:#f5f7fa;color:#273546;box-shadow:0 16px 48px #17213040;overflow:hidden;word-break:normal;overflow-wrap:break-word;-webkit-user-select:none;user-select:none}
+.home-dialog::backdrop{background:#17213080}
+.home-dialog-panel{padding:18px;min-width:0}
+.home-dialog-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.home-dialog h2{margin:0;font-size:20px;line-height:1.35;word-break:keep-all;overflow-wrap:anywhere}
+.home-dialog .ranking-close{flex:none;border:1px solid #7d8791;color:#273546}
+.home-dialog-scroll{max-height:calc(100vh - 142px);max-height:calc(100dvh - 142px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+.release-dialog .release-list{margin:0;gap:10px}
+.release-dialog article{padding:13px;border:1px solid #d5dce3;border-radius:10px;background:#fff;font-size:12px;line-height:1.75;word-break:normal;overflow-wrap:break-word;-webkit-user-select:text;user-select:text}
+.release-dialog article header{display:flex;flex-wrap:wrap;align-items:center;gap:5px 9px;color:#34465c}
+.release-dialog article strong{padding:1px 7px;border-radius:99px;background:#34465c;color:#fff;font-size:10px;font-variant-numeric:tabular-nums}
+.release-dialog article time{color:#7b8896;font-variant-numeric:tabular-nums}
+.release-dialog ul{margin:9px 0 0;padding-left:1.35em}.release-dialog li+li{margin-top:4px}
+.app-update-dialog{width:min(360px,calc(100vw - 28px));text-align:center;border-color:#4a78bd}
+.app-update-dialog p{font-size:13px;line-height:1.7;margin:16px 0;word-break:keep-all;overflow-wrap:normal;text-wrap:balance}
+.home-dialog-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+.home-dialog-actions button{min-width:0;font-size:13px;white-space:normal;word-break:keep-all}
+.encyclopedia-entry .app-update-button[data-update-available=true]{position:relative;border-color:#4175c3;background:#e6f0ff;color:#2560b6}
+.encyclopedia-entry .app-update-button[data-update-available=true]::after{content:'';position:absolute;top:0;right:0;width:8px;height:8px;border:1.5px solid #fff;border-radius:50%;background:#e84646}
+.encyclopedia-entry{gap:clamp(7px,2vw,14px)}
+@media(max-width:420px){.encyclopedia-entry :is(#encyclopedia-open,.language-button,.sound-button){width:40px;height:40px;min-height:40px}.home-dialog-panel{padding:15px}.home-dialog h2{font-size:18px}}
+
+.app-update-dialog:is([data-state=current],[data-state=checking]) .home-dialog-actions{grid-template-columns:1fr}
+
+/* Four icons in the first row; the fifth (help) begins a centered second row. */
+.guide{display:none!important}
+.encyclopedia-entry{--home-icon-size:48px;--home-icon-gap:14px;display:grid;grid-template-columns:repeat(8,calc((var(--home-icon-size) - var(--home-icon-gap))/2));gap:12px var(--home-icon-gap)}
+.encyclopedia-entry #encyclopedia-open{grid-column:1/span 2;grid-row:1}
+.encyclopedia-entry #sound{grid-column:3/span 2;grid-row:1}
+.encyclopedia-entry .vibration-button{grid-column:5/span 2;grid-row:1}
+.encyclopedia-entry .language-picker{grid-column:7/span 2;grid-row:1}
+.encyclopedia-entry #help-open{grid-column:2/span 2;grid-row:2}
+.encyclopedia-entry #release-open{grid-column:4/span 2;grid-row:2}
+.encyclopedia-entry #app-update-open{grid-column:6/span 2;grid-row:2}
+.encyclopedia-entry:has(#app-update-open[hidden]) #help-open{grid-column:3/span 2}
+.encyclopedia-entry:has(#app-update-open[hidden]) #release-open{grid-column:5/span 2}
+/* Still images are captured with the actual EncyclopediaPreview renderer. */
+.help-dialog{width:min(440px,calc(100vw - 28px));background:#fff}
+.help-dialog .home-dialog-header{margin-bottom:0;padding-bottom:16px;border-bottom:1px solid #dce3eb}
+.help-sections{display:grid;gap:0}
+.help-feature{display:grid;grid-template-columns:82px minmax(0,1fr);align-items:center;gap:18px;padding:20px 0;border-bottom:1px solid #e5eaf0}
+.help-top-image{display:block;width:100%;height:auto;border-radius:10px}
+.help-top-pair{display:grid;align-content:center;gap:2px}
+.help-top-pair img{display:block;width:100%;height:auto;border-radius:8px}
+.help-feature-copy{min-width:0}
+.help-feature h3{margin:0 0 7px;font-size:15px;line-height:1.45;color:#273546;word-break:keep-all;overflow-wrap:break-word}
+.help-dialog p{margin:0;font-size:12px;font-weight:400;line-height:1.85;color:#607084;word-break:normal;overflow-wrap:break-word}
+.help-rule{display:flex;align-items:center;gap:12px;padding-top:16px}
+.help-rule svg{flex:none;width:28px;height:28px;fill:none;stroke:#8294ad;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.help-rule p{font-size:11px;line-height:1.65}
+@media(max-width:360px){.help-feature{grid-template-columns:64px minmax(0,1fr);gap:13px;padding:18px 0}.help-feature h3{font-size:14px}.help-dialog p{font-size:11px}}
+@media(max-width:420px){.encyclopedia-entry{--home-icon-size:40px;--home-icon-gap:10px}}
+
+/* Give secondary dialog actions the same 3px depth as the primary action. */
+.home-dialog-actions>button:not(.primary){box-shadow:var(--button-shadow)}
+.home-dialog-actions>button:not(:disabled):active{transform:translateY(var(--button-depth));box-shadow:none}
+
+/* Keep the shared circular hit target; enlarge only the question mark. */
+.encyclopedia-entry #help-open svg{width:28px;height:28px}
+
+/* Four aligned controls per row; keep music directly beside the sound control. */
+.encyclopedia-entry #bgm{grid-column:5/span 2;grid-row:1}
+.encyclopedia-entry .vibration-button{grid-column:7/span 2;grid-row:1}
+.encyclopedia-entry .language-picker{grid-column:1/span 2;grid-row:2}
+.encyclopedia-entry #help-open,.encyclopedia-entry:has(#app-update-open[hidden]) #help-open{grid-column:3/span 2;grid-row:2}
+.encyclopedia-entry #release-open,.encyclopedia-entry:has(#app-update-open[hidden]) #release-open{grid-column:5/span 2;grid-row:2}
+.encyclopedia-entry #app-update-open{grid-column:7/span 2;grid-row:2}
+
+.encyclopedia-entry:has(#app-update-open[hidden]) .language-picker{grid-column:2/span 2}
+.encyclopedia-entry:has(#app-update-open[hidden]) #help-open{grid-column:4/span 2}
+.encyclopedia-entry:has(#app-update-open[hidden]) #release-open{grid-column:6/span 2}

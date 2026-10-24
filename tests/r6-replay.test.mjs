@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import {geometryFromMask,containsWorld} from '../engine/glyph-geometry.mjs';
+import {packGlyphSnapshot,unpackGlyphSnapshot} from '../engine/glyph-snapshot-v6.mjs';
+import {recordBattleReplay,verifyBattleReplay,summarizeBattleEvents} from '../engine/replay-v6.mjs';
+import {ShapeSimulationV5} from '../engine/shape-sim-v5.mjs';
+import {enemyAction} from '../engine/arena-sim.mjs';
+const n=40,mask=fn=>{const m=new Uint8Array(n*n);for(let y=0;y<n;y++)for(let x=0;x<n;x++)m[y*n+x]=+!!fn(x,y);return m;};
+const g1=geometryFromMask(mask((x,y)=>x>=9&&x<31&&y>=9&&y<31),n,{glyph:'田'});
+const g2=geometryFromMask(mask((x,y)=>x>=7&&x<33&&y>=7&&y<33&&!(x>=14&&x<26&&y>=14&&y<26)),n,{glyph:'回'});
+for(const g of [g1,g2]){
+ const snap=packGlyphSnapshot(g),newg=unpackGlyphSnapshot(JSON.parse(JSON.stringify(snap)));
+ assert.equal(newg.id,g.id);assert.deepEqual([...newg.mask],[...g.mask]);
+ assert.deepEqual(newg.stats,g.stats);
+}
+assert.equal(containsWorld(unpackGlyphSnapshot(packGlyphSnapshot(g2)),{x:0,y:0,angle:0,radius:.5},0,0),false);
+const fake=packGlyphSnapshot(g1);fake.geometryId+='x';assert.throws(()=>unpackGlyphSnapshot(fake),/integrity/);
+const bad=packGlyphSnapshot(g1);bad.maskBits=bad.maskBits.slice(0,-5);assert.throws(()=>unpackGlyphSnapshot(bad));
+const stats={speed:65,power:65,balance:65,maxHp:110,pointiness:.2,source:'local-browser-font-raster',statsVersion:'r3-local-raster-0.1'};
+const fighters=[{glyph:'田',geometry:g1,stats},{glyph:'回',geometry:g2,stats:{...stats,maxHp:80}}];
+const action=[{angle:0,power:.79,spinDirection:1},enemyAction('r6-test')];
+const params={geometries:[g1,g2],participants:fighters,actions:action,stage:'01-01',stageConfig:{objective:'win'}};
+const replay=recordBattleReplay(params);assert.equal(replay.verified,false);assert.ok(replay.frames.length>1);
+const check=verifyBattleReplay(JSON.parse(JSON.stringify(replay)));assert.equal(check.consistent,true);assert.equal(check.competitiveVerification,false);
+const corrupted=structuredClone(replay);corrupted.frames[2][1]+=.01;assert.throws(()=>verifyBattleReplay(corrupted),/mismatch/);
+const tampered=structuredClone(replay);tampered.init.geometries[0].maskBits='!';assert.throws(()=>verifyBattleReplay(tampered));
+const live=new ShapeSimulationV5({player:fighters[0],enemy:fighters[1],playerAction:action[0],enemyLaunch:action[1],stage:'01-01',stageConfig:{objective:'win'}});live.runToEnd();
+assert.equal(recordBattleReplay({...params,originalResult:live.result}).result.tick,live.result.tick);
+assert.throws(()=>recordBattleReplay({...params,originalResult:{...live.result,tick:9999}}),/Live result differs/);
+const sum=summarizeBattleEvents(replay.events.map(e=>e[0]==='collision'?{type:'collision',critical:e[3]}:e[0]==='damage'?{type:'damage',slot:e[2],amount:e[3]}:{type:'ring-out'}));assert.ok(sum.collisions>=0);assert.ok(sum.damageTaken>=0);
+console.log('R6 PASS: glyph mask portability/holes, integrity bounds, repeatable capsule, edit detection, live match comparison and unverified provenance');

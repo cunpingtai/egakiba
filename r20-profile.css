@@ -1,0 +1,57 @@
+/* R20 — player history page; local-first, no fabricated performance figures. */
+.r20-profile{width:min(1200px,100%);margin:0 auto;color:#eaf0ff;min-width:0;padding:clamp(8px,2vw,18px) 0 40px}
+.r20-profile *{box-sizing:border-box;min-width:0}
+.r20-hero{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding:20px 0 26px}
+.r20-hero h1{font-size:clamp(28px,3.3vw,45px);margin:8px 0;color:#fff;line-height:1.18;letter-spacing:-.035em}
+.r20-hero p{color:#acb9d7;font-size:14px;margin:4px 0;line-height:1.75}
+.r20-local{flex-shrink:0;white-space:nowrap;border:1px solid rgba(130,191,175,.34);background:rgba(49,105,101,.19);border-radius:999px;padding:10px 14px;font-size:11px;font-weight:800;color:#ade1d2}
+.r20-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.r20-metrics article{border:1px solid #31446b;background:linear-gradient(145deg,#263d67,#162642);border-radius:16px;min-height:148px;display:flex;flex-direction:column;gap:9px;padding:20px}
+.r20-metrics article>span{font-size:12px;color:#b8c7e4;font-weight:700}
+.r20-metrics strong{font-size:clamp(28px,3.8vw,40px);font-weight:850;line-height:1.15;color:#fff;font-variant-numeric:tabular-nums}
+.r20-metrics strong small{font-size:15px;color:#91a8cb}
+.r20-metrics article>small{font-size:11px;color:#8fa5cb;margin-top:auto;letter-spacing:.045em}
+.r20-sample-note{margin:12px 0 24px;color:#a9b9d2;font-size:12px;line-height:1.6}
+.r20-warning{border:1px solid #d7a26b;border-radius:12px;background:#5b3e29;color:#ffebce;padding:12px 15px;margin:0 0 16px}
+.r20-panels{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(250px,.9fr);gap:16px;margin:0 0 18px}
+.r20-card{background:linear-gradient(140deg,#172944,#13233d);border:1px solid #304268;border-radius:18px;padding:22px;min-width:0}
+.r20-card h2{color:#f2f6ff;font-size:19px;letter-spacing:-.025em;margin:0 0 18px}
+.r20-stage-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.r20-stage{padding:16px;border-radius:13px;border:1px solid #344b70;background:#213758;display:grid;gap:10px}
+.r20-stage.is-pending{background:#192b44;color:#8398b7}
+.r20-stage-num{font-size:11px;color:#a7c2e5;font-weight:800;letter-spacing:.07em}
+.r20-stage-line{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:4px}
+.r20-stage-line strong{font-size:19px;letter-spacing:.03em;color:#f6ca79}
+.r20-stage.is-pending .r20-stage-line strong{color:#62748e}
+.r20-stage-line span{font-size:11px;color:#b4c8e1}
+.r20-stage>small{color:#a0b7d4;font-size:11px;font-variant-numeric:tabular-nums}
+.r20-favorites,.r20-history{padding:0;margin:0;list-style:none}
+.r20-favorites li{display:flex;align-items:center;gap:12px;padding:9px 0;border-bottom:1px solid #304264}
+.r20-favorites li:last-child{border-bottom:0}
+.r20-rank{font-size:13px;color:#9db4d6;width:20px}
+.r20-glyph{font-size:28px;line-height:1.2;color:#fff}
+.r20-frequency{margin-left:auto;color:#abbedb;font-size:12px}
+.r20-blank,.r20-empty{padding:24px;color:#a8b9d5;line-height:1.65;background:#1c2c49;border-radius:12px}
+.r20-journal{margin-top:8px}
+.r20-journal-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.r20-journal-heading h2{margin-bottom:6px}
+.r20-journal-heading small{color:#9fb0d0;font-size:11px}
+.r20-filters{display:flex;align-items:end;flex-wrap:wrap;gap:10px}
+.r20-filters label{display:grid;gap:5px;color:#bbcbe6;font-weight:700;font-size:11px}
+.r20-filters select{min-width:142px;max-width:100%;background:#203757;border:1px solid #60799e;color:#fff;padding:10px 32px 10px 10px;border-radius:10px;cursor:pointer;font-size:13px}
+.r20-filters select:focus-visible{outline:3px solid #a9d7ff;outline-offset:2px}
+.r20-history{display:grid;gap:8px}
+.r20-match{display:grid;grid-template-columns:54px minmax(0,1fr) minmax(76px,110px) 100px;align-items:center;gap:14px;padding:12px;background:#1d3050;border:1px solid #354a6b;border-radius:12px}
+.r20-match-glyph{width:52px;min-height:52px;border-radius:10px;background:#2c456b;color:white;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:24px;overflow-wrap:anywhere;overflow:hidden}
+.r20-match strong{font-size:14px;color:white}
+.r20-match div small,.r20-match-time small{display:block;color:#9db3d1;font-size:11px;margin-top:5px}
+.r20-outcome{font-size:12px;font-weight:800;white-space:nowrap}
+.r20-outcome-win{color:#8fe2b0}.r20-outcome-loss{color:#ffa5a1}.r20-outcome-draw{color:#f4d38e}
+.r20-match-time{text-align:right;font-variant-numeric:tabular-nums;font-size:12px;color:#e1e9fa}
+.r20-match-time small{color:#f5ce82}
+.r20-actions{display:flex;gap:12px;flex-wrap:wrap;margin:25px 0 12px}
+.r20-actions .button{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:12px 22px}
+.r20-disclaimer{font-size:12px;color:#a6b4cc;line-height:1.75}
+@media(max-width:900px){.r20-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}.r20-panels{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:520px){.r20-profile{padding:6px 0 32px}.r20-hero{display:block;padding:12px 0 20px}.r20-local{display:inline-block;margin-top:12px;white-space:normal}.r20-metrics{gap:8px}.r20-metrics article{min-height:118px;padding:14px 12px}.r20-metrics article>span{font-size:11px}.r20-metrics strong{font-size:28px}.r20-metrics article>small{font-size:10px}.r20-card{padding:14px}.r20-stage-grid{gap:7px}.r20-stage{padding:11px}.r20-stage-line strong{font-size:16px}.r20-filters{width:100%}.r20-filters label{flex:1;min-width:110px}.r20-filters select{width:100%;min-width:0}.r20-match{grid-template-columns:44px minmax(0,1fr) minmax(62px,80px);gap:9px;padding:10px 8px}.r20-match-glyph{width:42px;min-height:44px;font-size:21px}.r20-match .r20-outcome{grid-column:2;grid-row:2}.r20-match-time{grid-column:3;grid-row:1/span 2}.r20-match strong{font-size:12px}.r20-match div small{font-size:10px}.r20-actions .button{flex:1}}
+@media(prefers-reduced-motion:reduce){.r20-profile *{scroll-behavior:auto;animation:none!important;transition:none!important}}

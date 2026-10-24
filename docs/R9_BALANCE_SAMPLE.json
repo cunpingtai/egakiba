@@ -1,0 +1,329 @@
+{
+  "label": "nonrepresentative engineering sample; one glyph, two fonts, six actions per level, original V2 physics",
+  "attempts": [
+    {
+      "level": "01-01",
+      "trials": [
+        {
+          "angle": -0.25,
+          "power": 0.7,
+          "winner": 0,
+          "reason": "回転停止",
+          "sec": 2.33,
+          "hits": 1,
+          "hp": [
+            71,
+            48
+          ]
+        },
+        {
+          "angle": -0.25,
+          "power": 0.95,
+          "winner": null,
+          "reason": "double-ko",
+          "sec": 5,
+          "hits": 4,
+          "hp": [
+            0,
+            0
+          ]
+        },
+        {
+          "angle": 0,
+          "power": 0.7,
+          "winner": 0,
+          "reason": "hp-depleted",
+          "sec": 3.55,
+          "hits": 3,
+          "hp": [
+            13,
+            0
+          ]
+        },
+        {
+          "angle": 0,
+          "power": 0.95,
+          "winner": 0,
+          "reason": "回転停止",
+          "sec": 2.38,
+          "hits": 2,
+          "hp": [
+            61,
+            40
+          ]
+        },
+        {
+          "angle": 0.25,
+          "power": 0.7,
+          "winner": 0,
+          "reason": "hp-depleted",
+          "sec": 5.15,
+          "hits": 4,
+          "hp": [
+            1,
+            0
+          ]
+        },
+        {
+          "angle": 0.25,
+          "power": 0.95,
+          "winner": null,
+          "reason": "double-ko",
+          "sec": 5.02,
+          "hits": 5,
+          "hp": [
+            0,
+            0
+          ]
+        }
+      ],
+      "wins": 4,
+      "losses": 0,
+      "draws": 2,
+      "hpKo": 2
+    },
+    {
+      "level": "01-02",
+      "trials": [
+        {
+          "angle": -0.25,
+          "power": 0.7,
+          "winner": 0,
+          "reason": "回転停止",
+          "sec": 1.2,
+          "hits": 1,
+          "hp": [
+            64,
+            46
+          ]
+        },
+        {
+          "angle": -0.25,
+          "power": 0.95,
+          "winner": 0,
+          "reason": "hp-depleted",
+          "sec": 5.08,
+          "hits": 4,
+          "hp": [
+            16,
+            0
+          ]
+        },
+        {
+          "angle": 0,
+          "power": 0.7,
+          "winner": 0,
+          "reason": "回転停止",
+          "sec": 1.2,
+          "hits": 1,
+          "hp": [
+            72,
+            54
+          ]
+        },
+        {
+          "angle": 0,
+          "power": 0.95,
+          "winner": 0,
+          "reason": "回転停止",
+          "sec": 3.66,
+          "hits": 2,
+          "hp": [
+            67,
+            49
+          ]
+        },
+        {
+          "angle": 0.25,
+          "power": 0.7,
+          "winner": 1,
+          "reason": "回転停止",
+          "sec": 2.45,
+          "hits": 2,
+          "hp": [
+            53,
+            34
+          ]
+        },
+        {
+          "angle": 0.25,
+          "power": 0.95,
+          "winner": 0,
+          "reason": "回転停止",
+          "sec": 1.53,
+          "hits": 1,
+          "hp": [
+            74,
+            56
+          ]
+        }
+      ],
+      "wins": 5,
+      "losses": 1,
+      "draws": 0,
+      "hpKo": 1
+    },
+    {
+      "level": "01-03",
+      "trials": [
+        {
+          "angle": -0.25,
+          "power": 0.7,
+          "winner": 0,
+          "reason": "回転停止",
+          "sec": 1.43,
+          "hits": 1,
+          "hp": [
+            65,
+            50
+          ]
+        },
+        {
+          "angle": -0.25,
+          "power": 0.95,
+          "winner": 0,
+          "reason": "hp-depleted",
+          "sec": 5.8,
+          "hits": 5,
+          "hp": [
+            4,
+            0
+          ]
+        },
+        {
+          "angle": 0,
+          "power": 0.7,
+          "winner": 1,
+          "reason": "回転停止",
+          "sec": 3.91,
+          "hits": 6,
+          "hp": [
+            11,
+            2
+          ]
+        },
+        {
+          "angle": 0,
+          "power": 0.95,
+          "winner": null,
+          "reason": "double-ko",
+          "sec": 5,
+          "hits": 4,
+          "hp": [
+            0,
+            0
+          ]
+        },
+        {
+          "angle": 0.25,
+          "power": 0.7,
+          "winner": 0,
+          "reason": "回転停止",
+          "sec": 3.76,
+          "hits": 4,
+          "hp": [
+            37,
+            21
+          ]
+        },
+        {
+          "angle": 0.25,
+          "power": 0.95,
+          "winner": 0,
+          "reason": "回転停止",
+          "sec": 4.93,
+          "hits": 4,
+          "hp": [
+            17,
+            7
+          ]
+        }
+      ],
+      "wins": 4,
+      "losses": 1,
+      "draws": 1,
+      "hpKo": 1
+    },
+    {
+      "level": "01-04",
+      "trials": [
+        {
+          "angle": -0.25,
+          "power": 0.7,
+          "winner": 1,
+          "reason": "hp-depleted",
+          "sec": 3.52,
+          "hits": 3,
+          "hp": [
+            0,
+            44
+          ]
+        },
+        {
+          "angle": -0.25,
+          "power": 0.95,
+          "winner": 1,
+          "reason": "hp-depleted",
+          "sec": 3.53,
+          "hits": 4,
+          "hp": [
+            0,
+            39
+          ]
+        },
+        {
+          "angle": 0,
+          "power": 0.7,
+          "winner": 1,
+          "reason": "回転停止",
+          "sec": 4.98,
+          "hits": 3,
+          "hp": [
+            13,
+            48
+          ]
+        },
+        {
+          "angle": 0,
+          "power": 0.95,
+          "winner": 1,
+          "reason": "hp-depleted",
+          "sec": 3.37,
+          "hits": 3,
+          "hp": [
+            0,
+            45
+          ]
+        },
+        {
+          "angle": 0.25,
+          "power": 0.7,
+          "winner": 1,
+          "reason": "回転停止",
+          "sec": 4.15,
+          "hits": 3,
+          "hp": [
+            2,
+            46
+          ]
+        },
+        {
+          "angle": 0.25,
+          "power": 0.95,
+          "winner": 0,
+          "reason": "回転停止",
+          "sec": 1.2,
+          "hits": 1,
+          "hp": [
+            61,
+            85
+          ]
+        }
+      ],
+      "wins": 1,
+      "losses": 5,
+      "draws": 0,
+      "hpKo": 3
+    }
+  ]
+}

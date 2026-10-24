@@ -1,0 +1,9 @@
+{
+  "name": "@moji-blade/game-rules",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/ruleset-v3-draft.ts",
+    "./arena-hp": "./src/arena-hp-draft.ts"
+  }
+}

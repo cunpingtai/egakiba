@@ -1,0 +1,57 @@
+[
+  {
+    "overflow": 0,
+    "page": true,
+    "filters": 5,
+    "rows": 8,
+    "unavailable": "排名只包含已成功验证的文字。",
+    "actions": true,
+    "viewport": "1440x960",
+    "mode": "ready",
+    "screenshot": "r24-ranking-desktop-1440.png"
+  },
+  {
+    "overflow": 0,
+    "page": true,
+    "filters": 5,
+    "rows": 8,
+    "unavailable": "排名只包含已成功验证的文字。",
+    "actions": true,
+    "viewport": "390x844",
+    "mode": "ready",
+    "screenshot": "r24-ranking-mobile-390.png"
+  },
+  {
+    "overflow": 0,
+    "page": true,
+    "filters": 5,
+    "rows": 8,
+    "unavailable": "排名只包含已成功验证的文字。",
+    "actions": true,
+    "viewport": "320x700",
+    "mode": "ready",
+    "screenshot": "r24-ranking-mobile-320.png"
+  },
+  {
+    "overflow": 0,
+    "page": true,
+    "filters": 5,
+    "rows": 0,
+    "unavailable": "原本の書体を読み込み、候補を検証中…",
+    "actions": true,
+    "viewport": "800x900",
+    "mode": "loading",
+    "screenshot": "r24-ranking-tablet-loading-800.png"
+  },
+  {
+    "overflow": 0,
+    "page": true,
+    "filters": 5,
+    "rows": 0,
+    "unavailable": "Original font data could not be loaded. No estimated values or ranking are shown.",
+    "actions": true,
+    "viewport": "390x844",
+    "mode": "unavailable",
+    "screenshot": "r24-ranking-unavailable-390.png"
+  }
+]

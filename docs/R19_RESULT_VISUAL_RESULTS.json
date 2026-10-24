@@ -1,0 +1,115 @@
+[
+  {
+    "report": true,
+    "reportText": "STAGE 01-04 · 战斗结算\n胜利\n结束原因: 出界\n★★★\n\n任务达成\n\n战斗耗时\n10.8s\n剩余 HP\n63 / 100\nDASH\n2\n接触事件\n12\n主任务 / 额外任务\n✓\n击败首领「剣」\n已完成\n✓\n胜利时剩余HP至少55%\n已完成\n✓\n2",
+    "overflow": 0,
+    "panelScrollHeight": 900,
+    "panelClientHeight": 900,
+    "buttonsVisible": [
+      true,
+      true,
+      true
+    ],
+    "reportRect": {
+      "x": 262.5,
+      "width": 900
+    },
+    "file": "r19-result-story-zh-win-fixture.html",
+    "viewport": "1440x900",
+    "screenshot": "r19-result-desktop-1440.png"
+  },
+  {
+    "report": true,
+    "reportText": "STAGE 01-04 · 战斗结算\n胜利\n结束原因: 出界\n★★★\n\n任务达成\n\n战斗耗时\n10.8s\n剩余 HP\n63 / 100\nDASH\n2\n接触事件\n12\n主任务 / 额外任务\n✓\n击败首领「剣」\n已完成\n✓\n胜利时剩余HP至少55%\n已完成\n✓\n2",
+    "overflow": 0,
+    "panelScrollHeight": 844,
+    "panelClientHeight": 844,
+    "buttonsVisible": [
+      true,
+      true,
+      true
+    ],
+    "reportRect": {
+      "x": 14,
+      "width": 347
+    },
+    "file": "r19-result-story-zh-win-fixture.html",
+    "viewport": "390x844",
+    "screenshot": "r19-result-mobile-390.png"
+  },
+  {
+    "report": true,
+    "reportText": "STAGE 01-04 · 战斗结算\n胜利\n结束原因: 出界\n★★★\n\n任务达成\n\n战斗耗时\n10.8s\n剩余 HP\n63 / 100\nDASH\n2\n接触事件\n12\n主任务 / 额外任务\n✓\n击败首领「剣」\n已完成\n✓\n胜利时剩余HP至少55%\n已完成\n✓\n2",
+    "overflow": 0,
+    "panelScrollHeight": 832,
+    "panelClientHeight": 700,
+    "buttonsVisible": [
+      true,
+      true,
+      true
+    ],
+    "reportRect": {
+      "x": 14,
+      "width": 277
+    },
+    "file": "r19-result-story-zh-win-fixture.html",
+    "viewport": "320x700",
+    "screenshot": "r19-result-narrow-320.png"
+  },
+  {
+    "report": true,
+    "reportText": "STAGE 01-04 · Battle results\nVictory\nFinish reason: Ring out\n★★★\n\nStage cleared\n\nDuration\n10.8s\nHP remaining\n63 / 100\nDASH\n2\nConta",
+    "overflow": 0,
+    "panelScrollHeight": 900,
+    "panelClientHeight": 900,
+    "buttonsVisible": [
+      true,
+      true,
+      true
+    ],
+    "reportRect": {
+      "x": 32,
+      "width": 721
+    },
+    "file": "r19-result-story-en-win-fixture.html",
+    "viewport": "800x900",
+    "screenshot": "r19-result-tablet-800.png"
+  },
+  {
+    "report": true,
+    "reportText": "STAGE 01-04 · バトル結果\n敗北\n決着: Ring out\n☆☆☆\n\nクリア条件未達成\n\n試合時間\n10.8s\n残りHP\n63 / 100\nDASH\n2\n接触イベント\n12\nクリア条件 / 追加目標\n○\nボス「剣」に勝利\n未達成\n○\n勝利時の残りH",
+    "overflow": 0,
+    "panelScrollHeight": 844,
+    "panelClientHeight": 844,
+    "buttonsVisible": [
+      true,
+      true,
+      true
+    ],
+    "reportRect": {
+      "x": 14,
+      "width": 347
+    },
+    "file": "r19-result-story-ja-loss-fixture.html",
+    "viewport": "390x844",
+    "screenshot": "r19-result-loss-mobile-390.png"
+  },
+  {
+    "report": true,
+    "reportText": "CLASSIC · Battle results\nVictory\n\nFinish reason: Ring out\n\nDuration\n13.2s\nContact events\n18\n\nLocal records only · Not ranked",
+    "overflow": 0,
+    "panelScrollHeight": 248,
+    "panelClientHeight": 248,
+    "buttonsVisible": [
+      true,
+      true
+    ],
+    "reportRect": {
+      "x": 31,
+      "width": 313
+    },
+    "file": "r19-result-classic-en-fixture.html",
+    "viewport": "390x844",
+    "screenshot": "r19-result-classic-mobile-390.png"
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "storageKey": "tsukuruum.moji-blade.skins.v1",
+  "kind": "synthetic-schema-sample",
+  "value": {
+    "version": 1,
+    "selected": "blue",
+    "owned": []
+  }
+}

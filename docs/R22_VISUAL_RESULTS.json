@@ -1,0 +1,380 @@
+[
+  {
+    "overflow": 0,
+    "fontTabs": 4,
+    "rows": 4,
+    "controls": [
+      {
+        "ok": true,
+        "label": "← 返回文字图鉴"
+      },
+      {
+        "ok": true,
+        "label": "GOTHIC✓"
+      },
+      {
+        "ok": true,
+        "label": "MINCHO✓"
+      },
+      {
+        "ok": true,
+        "label": "POP—"
+      },
+      {
+        "ok": true,
+        "label": "GYOSHO—"
+      },
+      {
+        "ok": true,
+        "label": "加入收藏 ★"
+      },
+      {
+        "ok": true,
+        "label": "用这个文字对战 ↗"
+      },
+      {
+        "ok": true,
+        "label": "重新读取 ↻"
+      },
+      {
+        "ok": true,
+        "label": "●"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "复制此文字详情链接 ↗"
+      }
+    ],
+    "view": true,
+    "size": "1440x900",
+    "fixture": "r22-detail-zh-gothic-mixed-fixture.html",
+    "screenshot": "r22-detail-desktop-1440.png"
+  },
+  {
+    "overflow": 0,
+    "fontTabs": 4,
+    "rows": 4,
+    "controls": [
+      {
+        "ok": true,
+        "label": "← 返回文字图鉴"
+      },
+      {
+        "ok": true,
+        "label": "GOTHIC✓"
+      },
+      {
+        "ok": true,
+        "label": "MINCHO✓"
+      },
+      {
+        "ok": true,
+        "label": "POP—"
+      },
+      {
+        "ok": true,
+        "label": "GYOSHO—"
+      },
+      {
+        "ok": true,
+        "label": "加入收藏 ★"
+      },
+      {
+        "ok": true,
+        "label": "用这个文字对战 ↗"
+      },
+      {
+        "ok": true,
+        "label": "重新读取 ↻"
+      },
+      {
+        "ok": true,
+        "label": "●"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "复制此文字详情链接 ↗"
+      }
+    ],
+    "view": true,
+    "size": "390x844",
+    "fixture": "r22-detail-zh-gothic-mixed-fixture.html",
+    "screenshot": "r22-detail-mobile-390.png"
+  },
+  {
+    "overflow": 0,
+    "fontTabs": 4,
+    "rows": 4,
+    "controls": [
+      {
+        "ok": true,
+        "label": "← 返回文字图鉴"
+      },
+      {
+        "ok": true,
+        "label": "GOTHIC✓"
+      },
+      {
+        "ok": true,
+        "label": "MINCHO✓"
+      },
+      {
+        "ok": true,
+        "label": "POP—"
+      },
+      {
+        "ok": true,
+        "label": "GYOSHO—"
+      },
+      {
+        "ok": true,
+        "label": "加入收藏 ★"
+      },
+      {
+        "ok": true,
+        "label": "用这个文字对战 ↗"
+      },
+      {
+        "ok": true,
+        "label": "重新读取 ↻"
+      },
+      {
+        "ok": true,
+        "label": "●"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "复制此文字详情链接 ↗"
+      }
+    ],
+    "view": true,
+    "size": "320x720",
+    "fixture": "r22-detail-zh-gothic-mixed-fixture.html",
+    "screenshot": "r22-detail-mobile-320.png"
+  },
+  {
+    "overflow": 0,
+    "fontTabs": 4,
+    "rows": 4,
+    "controls": [
+      {
+        "ok": true,
+        "label": "← Back to collection"
+      },
+      {
+        "ok": true,
+        "label": "GOTHIC✓"
+      },
+      {
+        "ok": true,
+        "label": "MINCHO✓"
+      },
+      {
+        "ok": true,
+        "label": "POP—"
+      },
+      {
+        "ok": true,
+        "label": "GYOSHO—"
+      },
+      {
+        "ok": true,
+        "label": "Remove favorite ★"
+      },
+      {
+        "ok": true,
+        "label": "Use this glyph ↗"
+      },
+      {
+        "ok": true,
+        "label": "Retry measurement ↻"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "●"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "Copy detail link ↗"
+      }
+    ],
+    "view": true,
+    "size": "800x900",
+    "fixture": "r22-detail-en-mincho-mixed-fixture.html",
+    "screenshot": "r22-detail-tablet-800.png"
+  },
+  {
+    "overflow": 0,
+    "fontTabs": 4,
+    "rows": 4,
+    "controls": [
+      {
+        "ok": true,
+        "label": "← 文字図鑑へ戻る"
+      },
+      {
+        "ok": true,
+        "label": "GOTHIC…"
+      },
+      {
+        "ok": true,
+        "label": "MINCHO…"
+      },
+      {
+        "ok": true,
+        "label": "POP…"
+      },
+      {
+        "ok": true,
+        "label": "GYOSHO…"
+      },
+      {
+        "ok": true,
+        "label": "お気に入りに追加 ★"
+      },
+      {
+        "ok": true,
+        "label": "この文字で対戦 ↗"
+      },
+      {
+        "ok": true,
+        "label": "再検査 ↻"
+      },
+      {
+        "ok": true,
+        "label": "●"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "ページへのリンクをコピー ↗"
+      }
+    ],
+    "view": true,
+    "size": "390x844",
+    "fixture": "r22-detail-ja-gothic-loading-fixture.html",
+    "screenshot": "r22-detail-loading-390.png"
+  },
+  {
+    "overflow": 0,
+    "fontTabs": 4,
+    "rows": 4,
+    "controls": [
+      {
+        "ok": true,
+        "label": "← 도감으로 돌아가기"
+      },
+      {
+        "ok": true,
+        "label": "GOTHIC✓"
+      },
+      {
+        "ok": true,
+        "label": "MINCHO✓"
+      },
+      {
+        "ok": true,
+        "label": "POP—"
+      },
+      {
+        "ok": true,
+        "label": "GYOSHO—"
+      },
+      {
+        "ok": true,
+        "label": "즐겨찾기 추가 ★"
+      },
+      {
+        "ok": true,
+        "label": "이 글자로 배틀 ↗"
+      },
+      {
+        "ok": true,
+        "label": "다시 확인 ↻"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "↗"
+      },
+      {
+        "ok": true,
+        "label": "●"
+      },
+      {
+        "ok": true,
+        "label": "상세 링크 복사 ↗"
+      }
+    ],
+    "view": true,
+    "size": "390x844",
+    "fixture": "r22-detail-ko-gyosho-mixed-fixture.html",
+    "screenshot": "r22-detail-unavailable-390.png"
+  }
+]

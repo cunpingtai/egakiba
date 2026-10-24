@@ -1,0 +1,161 @@
+@import "tailwindcss";
+
+@theme {
+  --color-void: #10172d;
+  --color-plum: #2c2b65;
+  --color-ink: #eaf4ff;
+  --color-muted: #9eafca;
+  --color-gold: #ffe19b;
+  --color-electric: #70e4ff;
+  --color-rival: #ff817b;
+  --color-paper: #10172d;
+  --color-verm: #ffe19b;
+  --font-serif: "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif CJK JP", serif;
+  --font-sans: "Hiragino Kaku Gothic ProN", "Noto Sans CJK JP", Meiryo, sans-serif;
+}
+
+@import "../styles.css" layer(components);
+@import "../flow.css" layer(components);
+@import "../r3-battle.css" layer(components);
+
+@import "../game-experience-r10.css" layer(components);
+@import "../r14-home.css" layer(components);
+@import "../r15-story.css" layer(components);
+@import "../r16-glyph.css" layer(components);
+@import "../r17-prepare.css" layer(components);
+@import "../r18-battle.css" layer(components);
+@import "../r19-result.css" layer(components);
+@import "../r20-profile.css" layer(components);
+@import "../r21-collection.css" layer(components);
+@import "../r22-glyph-detail.css" layer(components);
+@import "../r23-glyph-lab.css" layer(components);
+@import "../r24-glyph-ranking.css" layer(components);
+@import "../r25-content-seo.css" layer(components);
+@import "../r26-indexable-pages.css" layer(components);
+
+@layer components {
+  #battle-root.r8-shell {
+    background: radial-gradient(ellipse at 52% 40%, #45548f, #1b2b59 60%, #0c1634);
+    color: #e9f3ff;
+    font-family: var(--sans);
+  }
+  #battle-root.r8-shell .r8-head h1 {
+    color: #eff5ff;
+  }
+  #battle-root.r8-shell .r8-head small,
+  #battle-root.r8-shell .r8-status,
+  #battle-root.r8-shell .r8-note {
+    color: #c5d6ef;
+  }
+  #battle-root.r8-shell .r8-second {
+    background: #193467b6;
+    color: #f1f7ff;
+    border: 1px solid #b6d1ff88;
+  }
+  #battle-root.r8-shell .r8-cta {
+    background: linear-gradient(#ffe7ab, #f1bd78);
+    color: #24315b;
+    border: 1px solid #ffecbe;
+    box-shadow: 0 4px #ad765c;
+  }
+  #battle-root.r8-shell .r8-view {
+    background: radial-gradient(ellipse at 48% 62%, #778aca 0%, #42518d 34%, #252c65 66%, #101839 100%);
+    border-color: #a4c8ff33;
+  }
+  #battle-root.r8-shell .r8-controls label {
+    color: #eaf4ff;
+  }
+  #battle-root.r8-shell .r8-result {
+    background: #102649ed;
+    color: #f4f8ff;
+    border: 1px solid #c1d8ff55;
+  }
+
+  .game-shelf { margin-top: 28px; padding: 0 5px; }
+  .game-shelf-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 13px;
+  }
+  .game-card {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 6px;
+    min-height: 204px;
+    padding: 18px 18px 16px;
+    text-decoration: none;
+    color: #f4f7ff;
+    border-radius: 13px;
+    border: 1px solid #91bcff4a;
+    background: linear-gradient(140deg, #314678 0%, #1a2a56 85%);
+    box-shadow: inset 0 1px #d9ebff20, 0 15px 35px #050a2350;
+  }
+  .game-card--rakugaki-fighter {
+    background: linear-gradient(140deg, #71537a, #27365f 62%, #1a2349);
+  }
+  .game-card-mark {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    font: 900 92px/1 var(--serif);
+    color: #ffe5ae;
+    text-shadow: 3px 3px #9b6280, 5px 8px 15px #060b30;
+    pointer-events: none;
+  }
+  .game-card--rakugaki-fighter .game-card-mark {
+    color: #ffd0c4;
+    text-shadow: 3px 3px #8a4a55, 5px 8px 15px #060b30;
+  }
+  .game-card-body {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    max-width: calc(100% - 108px);
+  }
+  .game-card-kicker {
+    color: #ffe7aa;
+    font-size: 11px;
+    font-weight: 900;
+  }
+  .game-card-go {
+    margin-top: 4px;
+    color: #ffe7aa;
+    font-size: 12px;
+    font-weight: 800;
+  }
+  .game-card strong {
+    font: 800 22px/1.35 var(--serif);
+    color: #f4f7ff;
+    text-wrap: balance;
+  }
+  .game-card-copy {
+    max-width: 28em;
+    color: #d5e1f5;
+    font-size: 13px;
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+  .game-card:hover {
+    border-color: #ffe2a3;
+    box-shadow: 0 18px 30px #0610298c, 0 0 24px #e3c38124;
+  }
+  .game-card:focus-visible {
+    outline: 3px solid #2e76c9;
+    outline-offset: 4px;
+  }
+  .game-card[aria-current="page"] { border-color: #ffe2a366; }
+  @media (max-width: 620px) {
+    .game-card { min-height: 167px; }
+    .game-card strong { font-size: 18px; }
+    .game-card-copy { font-size: 12px; }
+    .game-card-mark { font-size: 72px; }
+  }
+}
+

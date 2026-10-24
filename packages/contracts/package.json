@@ -1,0 +1,8 @@
+{
+  "name": "@moji-blade/contracts",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/v3-contracts.ts"
+  }
+}

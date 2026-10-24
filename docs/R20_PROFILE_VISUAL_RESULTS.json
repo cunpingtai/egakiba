@@ -1,0 +1,97 @@
+[
+  {
+    "overflow": 0,
+    "profile": true,
+    "filters": [
+      {
+        "width": 142,
+        "visible": true
+      },
+      {
+        "width": 142,
+        "visible": true
+      }
+    ],
+    "cards": 4,
+    "shownMatches": 14,
+    "size": "1440x900",
+    "fixture": "r20-profile-zh-all-fixture.html",
+    "screenshot": "r20-profile-desktop-1440.png"
+  },
+  {
+    "overflow": 0,
+    "profile": true,
+    "filters": [
+      {
+        "width": 151,
+        "visible": true
+      },
+      {
+        "width": 151,
+        "visible": true
+      }
+    ],
+    "cards": 4,
+    "shownMatches": 14,
+    "size": "390x844",
+    "fixture": "r20-profile-zh-all-fixture.html",
+    "screenshot": "r20-profile-mobile-390.png"
+  },
+  {
+    "overflow": 0,
+    "profile": true,
+    "filters": [
+      {
+        "width": 116,
+        "visible": true
+      },
+      {
+        "width": 116,
+        "visible": true
+      }
+    ],
+    "cards": 4,
+    "shownMatches": 14,
+    "size": "320x700",
+    "fixture": "r20-profile-zh-all-fixture.html",
+    "screenshot": "r20-profile-mobile-320.png"
+  },
+  {
+    "overflow": 0,
+    "profile": true,
+    "filters": [
+      {
+        "width": 142,
+        "visible": true
+      },
+      {
+        "width": 142,
+        "visible": true
+      }
+    ],
+    "cards": 4,
+    "shownMatches": 3,
+    "size": "800x900",
+    "fixture": "r20-profile-en-loss-fixture.html",
+    "screenshot": "r20-profile-filtered-tablet-800.png"
+  },
+  {
+    "overflow": 0,
+    "profile": true,
+    "filters": [
+      {
+        "width": 151,
+        "visible": true
+      },
+      {
+        "width": 151,
+        "visible": true
+      }
+    ],
+    "cards": 4,
+    "shownMatches": 0,
+    "size": "390x844",
+    "fixture": "r20-profile-ja-empty-fixture.html",
+    "screenshot": "r20-profile-empty-mobile-390.png"
+  }
+]

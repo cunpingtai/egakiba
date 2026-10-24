@@ -1,0 +1,8 @@
+{
+  "name": "@moji-blade/verification",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "replay": "node replay-legacy-battles.mjs"
+  }
+}

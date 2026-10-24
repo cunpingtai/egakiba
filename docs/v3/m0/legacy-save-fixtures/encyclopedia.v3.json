@@ -1,0 +1,14 @@
+{
+  "storageKey": "tsukuruum.moji-blade.encyclopedia.v1",
+  "schemaVersion": 3,
+  "kind": "synthetic-schema-sample",
+  "value": {
+    "version": 3,
+    "sequence": 0,
+    "entries": {},
+    "pending": {},
+    "receipts": {},
+    "unread": [],
+    "unlocks": { "gold": [], "rainbow": false }
+  }
+}

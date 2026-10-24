@@ -1,0 +1,42 @@
+<svg class="arena-art" viewBox="0 0 660 485" role="img" aria-label="青いノートのネコと赤いトゲトゲのラクガキが、紙のリングで向かい合っている" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <pattern id="arenaGrid" width="26" height="26" patternUnits="userSpaceOnUse"><path d="M26 0H0V26" fill="none" stroke="#c2dce6" stroke-width="1" opacity=".65"/></pattern>
+                  <radialGradient id="groundShade"><stop offset="0" stop-color="#8f9db3" stop-opacity=".28"/><stop offset="1" stop-color="#8f9db3" stop-opacity="0"/></radialGradient>
+                </defs>
+                <rect x="0" y="0" width="660" height="485" fill="url(#arenaGrid)" opacity=".75"/>
+                <g class="doodle-props" stroke="#9bb7c8" stroke-width="3" fill="none" stroke-linecap="round"><path d="M73 74q13-22 32 0M554 91q-19-12-33 8M65 212l-18-2m18 15-21 8M578 211l26-11m-21 25 23 1"/></g>
+                <ellipse cx="328" cy="404" rx="268" ry="64" fill="#dceaf0" stroke="#283850" stroke-width="5"/>
+                <ellipse cx="328" cy="412" rx="222" ry="35" fill="url(#groundShade)"/>
+                <path d="M61 404Q331 478 594 404" fill="none" stroke="#9eb9ca" stroke-width="3" stroke-dasharray="11 10"/>
+                <ellipse cx="203" cy="391" rx="102" ry="20" fill="#536f85" opacity=".17"/>
+                <ellipse cx="455" cy="391" rx="90" ry="19" fill="#536f85" opacity=".17"/>
+                <g class="f-left" stroke="#27364e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+                  <g class="left-legs" fill="none"><path d="M176 322q-20 19-30 53l-29 2"/><path d="M230 318q16 22 31 48l29-7"/></g>
+                  <g class="left-arm-back" fill="none"><path d="M144 250q-43 9-55 43l-29-2"/></g>
+                  <path d="M151 143l-17-85 71 47 59-45 11 95" fill="#8dcad9"/>
+                  <path d="M143 162C121 213 127 281 158 316Q198 365 249 319C285 277 295 197 268 157Q241 118 197 126Q160 127 143 162Z" fill="#8dd0db"/>
+                  <path d="M157 163q30-12 51-10" fill="none" stroke="#d7f5f1" stroke-width="6" opacity=".95"/>
+                  <ellipse class="eye eye-left-1" cx="171" cy="224" rx="7" ry="12" fill="#263751" stroke="none"/>
+                  <ellipse class="eye eye-left-2" cx="232" cy="225" rx="7" ry="12" fill="#263751" stroke="none"/>
+                  <path d="m197 247 8 7-9 8-8-8Z" fill="#ed786c" stroke-width="4"/>
+                  <path d="M187 267q15 15 31-1" fill="none" stroke-width="5"/>
+                  <path d="m158 250-34-7m31 17-31 7m119-17 32-7m-33 17 32 7" stroke-width="4" opacity=".7"/>
+                  <g class="left-arm-front" fill="none"><path d="M264 251q33-27 56-1l21-18"/></g>
+                  <path d="M155 310q44 29 95-1" stroke="#58aab9" stroke-width="5" fill="none"/>
+                </g>
+                <g class="vs-stamp"><path d="M309 210 338 193 365 216 353 246 316 248Z" fill="#fff4c9" stroke="#27364e" stroke-width="5"/><text x="336" y="232" text-anchor="middle" font-family="Arial Rounded MT Bold,Arial,sans-serif" font-weight="900" font-size="26" fill="#e95a4a" transform="rotate(-8 336 228)">VS</text></g>
+                <g class="f-right" stroke="#27364e" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+                  <g class="right-legs" fill="none"><path d="M425 319q-15 25-24 52l-29 6"/><path d="M487 319q24 30 29 48l31 8"/></g>
+                  <g class="right-arm-back" fill="none"><path d="M495 250q48-13 63 15l24-10"/></g>
+                  <path d="M455 112 488 69 504 122 558 117 538 167 581 209 533 234 558 283 508 291 501 347 459 319 416 352 404 301 354 288 379 241 340 206 393 179 378 126 427 128Z" fill="#f08b80"/>
+                  <path d="M431 157q36-20 69 6" fill="none" stroke="#ffd8c4" stroke-width="6"/>
+                  <ellipse class="eye eye-right-1" cx="433" cy="225" rx="7" ry="12" fill="#263751" stroke="none"/>
+                  <ellipse class="eye eye-right-2" cx="485" cy="225" rx="7" ry="12" fill="#263751" stroke="none"/>
+                  <path d="M441 257q21-17 41-2" fill="none" stroke-width="5"/>
+                  <path d="M453 274l5 7 8-7" fill="none" stroke-width="4"/>
+                  <g class="right-arm-front" fill="none"><path d="M402 258q-43-29-63-6l-25-12"/></g>
+                </g>
+                <g class="battle-impact" stroke="#e45548" stroke-width="7" stroke-linecap="round" fill="none"><path d="m336 149-11-35m27 36 10-36m-43 60-28-16m73 10 25-19"/></g>
+                <path d="M122 134q-30 24-31 53" fill="none" stroke="#e7b23c" stroke-width="4" stroke-dasharray="7 10"/>
+                <path d="M533 140q28 32 21 57" fill="none" stroke="#e7b23c" stroke-width="4" stroke-dasharray="7 10"/>
+              </svg>

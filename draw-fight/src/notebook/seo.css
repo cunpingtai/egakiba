@@ -1,0 +1,103 @@
+.rf-seo {
+  min-height: 100dvh;
+  background:
+    radial-gradient(ellipse 60% 70% at 100% 0%, #ebead8 0%, transparent 75%),
+    #dbe5e1;
+  color: #27364e;
+  font-family: "Hiragino Maru Gothic ProN", "Yu Gothic", "Noto Sans JP", sans-serif;
+}
+.rf-seo-copy {
+  width: min(920px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 28px 0 64px;
+}
+.rf-seo-banner {
+  width: min(920px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 22px 0 8px;
+  text-align: center;
+}
+.rf-seo h1 {
+  margin: 0 0 12px;
+  font-size: clamp(26px, 3vw, 34px);
+  line-height: 1.35;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+.rf-seo-banner .rf-seo-actions { justify-content: center; }
+.rf-seo h2 {
+  margin: 36px 0 12px;
+  font-size: clamp(22px, 3vw, 30px);
+  line-height: 1.35;
+}
+.rf-seo h3 {
+  margin: 22px 0 8px;
+  font-size: 18px;
+  line-height: 1.45;
+}
+.rf-seo p, .rf-seo li {
+  font-size: 16px;
+  line-height: 1.85;
+  color: #3d4d63;
+}
+.rf-seo a {
+  color: #b83c37;
+  font-weight: 800;
+}
+.rf-seo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 16px 0 8px;
+}
+.rf-seo-actions a, .rf-seo-back {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 2px solid #27364e;
+  border-radius: 14px;
+  background: #e4544a;
+  color: #fffdf8;
+  text-decoration: none;
+  box-shadow: 3px 3px 0 #27364e;
+}
+.rf-seo-actions a:last-child, .rf-seo-back {
+  background: #fffdf8;
+  color: #27364e;
+}
+.rf-seo table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0 8px;
+  background: #fffdf8;
+  font-size: 14px;
+}
+.rf-seo th, .rf-seo td {
+  border: 2px solid #27364e;
+  padding: 8px 10px;
+  text-align: left;
+  vertical-align: top;
+}
+.rf-seo th { background: #fff1b8; }
+.rf-seo-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 28px;
+}
+.rf-seo-nav a, .rf-seo-nav span {
+  border: 2px solid #27364e;
+  border-radius: 999px;
+  background: #fffdf8;
+  padding: 6px 12px;
+  color: #27364e;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 800;
+}
+.rf-seo-nav span { background: #ffe08a; }
+.rf-seo-play {
+  width: min(1540px, calc(100% - 24px));
+  margin: 0 auto;
+}

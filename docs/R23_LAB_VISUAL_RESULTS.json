@@ -1,0 +1,162 @@
+[
+  {
+    "overflow": 0,
+    "lab": true,
+    "sideCount": 2,
+    "metrics": 4,
+    "battleDisabled": false,
+    "controls": [
+      {
+        "id": "r23-a-glyph",
+        "inBounds": true
+      },
+      {
+        "id": "r23-a-font",
+        "inBounds": true
+      },
+      {
+        "id": "r23-b-glyph",
+        "inBounds": true
+      },
+      {
+        "id": "r23-b-font",
+        "inBounds": true
+      },
+      {
+        "id": "battle",
+        "inBounds": true
+      }
+    ],
+    "viewport": "1440x960",
+    "screenshot": "r23-lab-desktop-1440.png",
+    "mode": "ready"
+  },
+  {
+    "overflow": 0,
+    "lab": true,
+    "sideCount": 2,
+    "metrics": 4,
+    "battleDisabled": false,
+    "controls": [
+      {
+        "id": "r23-a-glyph",
+        "inBounds": true
+      },
+      {
+        "id": "r23-a-font",
+        "inBounds": true
+      },
+      {
+        "id": "r23-b-glyph",
+        "inBounds": true
+      },
+      {
+        "id": "r23-b-font",
+        "inBounds": true
+      },
+      {
+        "id": "battle",
+        "inBounds": true
+      }
+    ],
+    "viewport": "390x844",
+    "screenshot": "r23-lab-mobile-390.png",
+    "mode": "ready"
+  },
+  {
+    "overflow": 0,
+    "lab": true,
+    "sideCount": 2,
+    "metrics": 4,
+    "battleDisabled": false,
+    "controls": [
+      {
+        "id": "r23-a-glyph",
+        "inBounds": true
+      },
+      {
+        "id": "r23-a-font",
+        "inBounds": true
+      },
+      {
+        "id": "r23-b-glyph",
+        "inBounds": true
+      },
+      {
+        "id": "r23-b-font",
+        "inBounds": true
+      },
+      {
+        "id": "battle",
+        "inBounds": true
+      }
+    ],
+    "viewport": "320x700",
+    "screenshot": "r23-lab-mobile-320.png",
+    "mode": "ready"
+  },
+  {
+    "overflow": 0,
+    "lab": true,
+    "sideCount": 2,
+    "metrics": 4,
+    "battleDisabled": true,
+    "controls": [
+      {
+        "id": "r23-a-glyph",
+        "inBounds": true
+      },
+      {
+        "id": "r23-a-font",
+        "inBounds": true
+      },
+      {
+        "id": "r23-b-glyph",
+        "inBounds": true
+      },
+      {
+        "id": "r23-b-font",
+        "inBounds": true
+      },
+      {
+        "id": "battle",
+        "inBounds": true
+      }
+    ],
+    "viewport": "800x900",
+    "screenshot": "r23-lab-tablet-loading-800.png",
+    "mode": "waiting"
+  },
+  {
+    "overflow": 0,
+    "lab": true,
+    "sideCount": 2,
+    "metrics": 4,
+    "battleDisabled": true,
+    "controls": [
+      {
+        "id": "r23-a-glyph",
+        "inBounds": true
+      },
+      {
+        "id": "r23-a-font",
+        "inBounds": true
+      },
+      {
+        "id": "r23-b-glyph",
+        "inBounds": true
+      },
+      {
+        "id": "r23-b-font",
+        "inBounds": true
+      },
+      {
+        "id": "battle",
+        "inBounds": true
+      }
+    ],
+    "viewport": "390x844",
+    "screenshot": "r23-lab-unsupported-390.png",
+    "mode": "unsupported"
+  }
+]

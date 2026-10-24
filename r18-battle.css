@@ -1,0 +1,52 @@
+/* R18 Page 005 – compact battle phase HUD; pure presentation, original collision engine unchanged. */
+#battle-root .r9-center{min-width:0}
+#battle-root .r9-shell[data-phase=ready] .r10-aim-callout{top:31%}
+#battle-root .r9-center .r18-clock-label{font-size:9px;font-weight:650;color:#c9d9f6;white-space:nowrap}
+#battle-root .r9-center .r18-phase-chip{display:block;max-width:100%;margin-top:4px;padding:5px 7px;border:1px solid #a9dff880;border-radius:5px;background:#0b2846d9;color:#fff2cf;font-weight:900;font-size:10px;line-height:1.15;text-align:center;letter-spacing:0;white-space:normal;overflow-wrap:anywhere}
+#battle-root .r9-shell[data-phase=battle] .r18-phase-chip{background:#1d6259e8;border-color:#a0eed4a8;color:#e3fff4}
+#battle-root .r9-shell[data-phase=paused] .r18-phase-chip{background:#664968;border-color:#efd0f7ad;color:#fff0ff}
+#battle-root .r9-shell[data-phase=result] .r18-phase-chip{background:#6c5136e8;color:#ffeed0}
+#battle-root .r18-coach{position:absolute;z-index:14;bottom:110px;left:50%;transform:translateX(-50%);width:min(770px,calc(100% - 24px));padding:10px 13px;border-radius:10px;background:linear-gradient(110deg,#11264bf0,#263c69d9);border:1px solid #a9d4ff69;box-shadow:0 8px 28px #050f2f7c;display:grid;gap:4px;pointer-events:none;backdrop-filter:blur(9px)}
+#battle-root .r18-coach-main{display:flex;align-items:center;justify-content:center;gap:9px;min-width:0;color:#e8f2ff;font-size:11px;text-align:center}
+#battle-root .r18-coach-main strong{color:#fff0c3;font-weight:900;white-space:nowrap}
+#battle-root .r18-coach-main span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#battle-root .r18-dot{height:8px;width:8px;flex:none;border-radius:50%;background:#ffd499;box-shadow:0 0 12px #f8d9a39c}
+#battle-root .r18-coach[data-phase=battle] .r18-dot{background:#85f1d4;box-shadow:0 0 12px #85f1d4}
+#battle-root .r18-coach-side{display:flex;gap:9px;justify-content:center;align-items:center;min-height:13px}
+#battle-root .r18-coach-side span{font-size:10px;letter-spacing:.02em;color:#bfeeff}
+#battle-root #r18-health-feedback[data-state=player]{color:#ffc0ac;font-weight:900}
+#battle-root #r18-health-feedback[data-state=rival]{color:#ffdfa6}
+#battle-root #r18-dash-feedback[data-state=ready]{color:#bafcdb;font-weight:900}
+#battle-root .r18-coach>small{display:block;color:#bbcee8;font-size:9px;text-align:center}
+#battle-root .r9-shell[data-phase=result] .r18-coach{display:none}
+#battle-root .r9-shell[data-phase=paused] .r18-coach{z-index:0}
+#battle-root .r10-pause-overlay .r18-exit{background:transparent;color:#ecf4ff;border:1px solid #b6cffc8f;font-size:14px;min-height:45px}
+#battle-root .r10-pause-overlay .r18-pause-warning{max-width:300px;text-align:center;color:#ffdba9;font-size:11px;line-height:1.5}
+#battle-root .r9-shell[data-phase=settling] .r10-aim-callout{opacity:0}
+#battle-root .r9-shell :is(button,summary,input):focus-visible{outline:3px solid #ffdc8d;outline-offset:3px}
+/* Classic shares R18 phase language while keeping the original no-HP V2 physics. */
+#battle-root.r8-shell .r18-classic-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 12px;margin:6px 0 12px;color:#eff5ff;background:#192b52c9;border:1px solid #91badf99;border-radius:9px}
+#battle-root.r8-shell .r18-classic-copy{display:flex;align-items:center;gap:11px;min-width:0;font-size:12px}
+#battle-root.r8-shell .r18-classic-copy b{color:#ffe0a1;white-space:nowrap}
+#battle-root.r8-shell .r18-classic-copy span{color:#d5e5fc;min-width:0}
+#battle-root.r8-shell .r18-classic-strip button{flex:none;min-width:45px;min-height:43px;background:#273e68;color:#fff;border-color:#a5c8f99e}
+#battle-root.r8-shell .r18-classic-pause-layer{position:absolute;inset:0;z-index:9;background:#07142aeb;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:17px;padding:22px;text-align:center;backdrop-filter:blur(8px);color:#fff}
+#battle-root.r8-shell .r18-classic-pause-layer[hidden]{display:none}
+#battle-root.r8-shell .r18-classic-pause-layer strong{font-size:clamp(28px,5vw,50px)}
+#battle-root.r8-shell .r18-classic-pause-layer span{font-size:13px;color:#ffe2bd}
+#battle-root.r8-shell .r18-classic-pause-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+@media(max-width:620px){
+ #battle-root .r9-center .r18-phase-chip{font-size:8px;padding:4px 3px;letter-spacing:0}
+ #battle-root .r9-center .r18-clock-label{font-size:7px}
+ #battle-root .r18-coach{bottom:165px;padding:6px 9px;gap:3px;max-width:calc(100% - 16px)}
+ #battle-root .r18-coach-main{font-size:10px;gap:5px}
+ #battle-root .r18-coach-main span:last-child{display:none}
+ #battle-root .r18-coach-side span{font-size:9px}
+ #battle-root .r18-coach>small{font-size:8px;max-width:100%;overflow-wrap:break-word}
+ #battle-root.r8-shell .r18-classic-strip{gap:6px;padding:7px 9px}
+ #battle-root.r8-shell .r18-classic-copy{flex-direction:column;align-items:flex-start;gap:3px;font-size:11px}
+ #battle-root.r8-shell .r18-classic-copy span{font-size:10px}
+}
+@media(max-width:620px) and (max-height:710px){#battle-root .r18-coach{bottom:148px}#battle-root .r18-coach>small{display:none}}
+@media(max-height:490px) and (min-width:621px){#battle-root .r18-coach{bottom:58px;left:42%;width:min(410px,55vw);padding:4px 8px}#battle-root .r18-coach>small{display:none}#battle-root .r18-coach-main span:last-child{display:none}}
+@media(prefers-reduced-motion:reduce){#battle-root .r18-dot{box-shadow:none}}

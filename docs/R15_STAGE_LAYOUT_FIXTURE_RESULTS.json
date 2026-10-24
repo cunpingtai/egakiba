@@ -1,0 +1,65 @@
+{
+  "kind": "UI-only fixture; actual R15 renderer HTML and stylesheet but no full WebGL",
+  "results": [
+    {
+      "view": "desktop",
+      "viewport": [
+        1440,
+        900
+      ],
+      "tileCount": 4,
+      "boardCount": 1,
+      "overflowPx": 0,
+      "selected": "01-01",
+      "launchFixture": "01-01",
+      "disabledStages": 1,
+      "errors": [],
+      "screenshot": "r15-stage-desktop-layout-fixture.png"
+    },
+    {
+      "view": "mobile",
+      "viewport": [
+        390,
+        844
+      ],
+      "tileCount": 4,
+      "boardCount": 1,
+      "overflowPx": 0,
+      "selected": "01-01",
+      "launchFixture": "01-01",
+      "disabledStages": 1,
+      "errors": [],
+      "screenshot": "r15-stage-mobile-layout-fixture.png"
+    },
+    {
+      "view": "narrow",
+      "viewport": [
+        320,
+        690
+      ],
+      "tileCount": 4,
+      "boardCount": 1,
+      "overflowPx": 0,
+      "selected": "01-01",
+      "launchFixture": null,
+      "disabledStages": 3,
+      "errors": [],
+      "screenshot": "r15-stage-narrow-layout-fixture.png"
+    },
+    {
+      "view": "tablet",
+      "viewport": [
+        800,
+        900
+      ],
+      "tileCount": 4,
+      "boardCount": 1,
+      "overflowPx": 0,
+      "selected": "01-04",
+      "launchFixture": null,
+      "disabledStages": 0,
+      "errors": [],
+      "screenshot": "r15-stage-tablet-layout-fixture.png"
+    }
+  ]
+}

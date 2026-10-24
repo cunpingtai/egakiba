@@ -1,0 +1,20 @@
+/* Keep the original website header above the shared game and app optimizations. */
+body{padding-top:52px;--game-header-height:52px}
+.site-header{height:52px;z-index:40}
+main{padding-top:32px}
+.arena-section .scoreboard{top:calc(var(--game-header-height) + 16px)}
+html:not([data-app-keyboard-focus=true]) :is(button,a,summary,canvas,.selection-title):focus-visible{outline:3px solid #6797ef;outline-offset:4px}
+.web-store-promo{max-width:480px;margin:28px auto 0;padding:22px 0 4px;border-top:1px solid var(--line)}
+body:not([data-phase=setup]) .web-store-promo{display:none}
+.web-store-copy h2{margin:0;font-size:18px;line-height:1.5}
+.web-store-copy p{margin:6px 0 20px;color:#607084;font-size:12px}
+.web-store-links{display:flex;align-items:flex-start;justify-content:center;gap:48px}
+.web-store-app{display:flex;flex-direction:column;align-items:center;gap:12px;font-size:12px;color:var(--blue);text-align:center}
+.web-store-icon{display:block;width:128px;height:128px;border-radius:28px;box-shadow:0 4px 10px #27354620}
+.web-store-app:hover .web-store-icon{box-shadow:0 4px 12px #27354640}
+.web-store-qr{margin:0;text-align:center}
+.web-store-qr img{display:block;width:128px;height:128px;background:#fff;image-rendering:pixelated}
+.web-store-qr figcaption{margin-top:12px;color:#607084;font-size:12px}
+@media(max-width:850px){.site-header{display:grid;grid-template-columns:24px minmax(0,1fr) auto;gap:8px;padding-inline:12px}.brand{gap:0}.brand-name,.back-label{display:none}.game-title{position:static;max-width:none;transform:none;justify-self:center;font-size:13px}.header-actions{gap:4px}.back{display:grid;place-items:center;width:42px;min-height:42px;padding:0;font-size:20px;line-height:1}}
+@media(max-width:650px){body{padding-top:44px;--game-header-height:44px}.site-header{height:44px}.site-header .back{width:36px;min-height:36px}.arena-section .scoreboard{top:calc(var(--game-header-height) + 10px)}}
+@media(max-width:360px){.web-store-links{gap:24px}.web-store-icon,.web-store-qr img{width:112px;height:112px}.web-store-icon{border-radius:24px}}

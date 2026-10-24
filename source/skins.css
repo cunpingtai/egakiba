@@ -1,0 +1,55 @@
+/* A compact drawer over the COM panel; the player's preview stays visible. */
+.player-setup,.com-setup{position:relative}.has-skin-button{position:relative}
+.skin-open{position:absolute;left:0;bottom:9px;display:grid;place-items:center;width:36px;height:36px;min-height:0;padding:0;border:1px solid #7d8791;border-radius:50%;background:#f9fbfc;color:#273546;box-shadow:var(--button-shadow);z-index:3}
+.skin-open svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.65;stroke-linecap:round;stroke-linejoin:round}.skin-open[aria-expanded=true]{background:#e4edfc;color:#2869dc}
+.skin-open:active:not(:disabled){transform:translateY(var(--button-depth));box-shadow:none}
+.skin-panel{position:absolute;top:auto;left:0;right:0;z-index:20;margin-top:4px;padding:8px 10px 11px;border:2px solid #8294ad;border-radius:14px;background:#fff;box-shadow:0 5px 0 #aebbc9,0 12px 24px #2735462b;opacity:0;transform:translateY(-8px) scale(.97);transform-origin:top left;transition:opacity .2s ease,transform .26s cubic-bezier(.2,.8,.2,1)}
+.skin-panel.is-open{opacity:1;transform:none}.skin-panel[hidden]{display:none}
+.skin-panel header{display:flex;justify-content:flex-end;align-items:center;margin:0 2px 4px}.skin-close{width:34px;height:34px;min-height:0;border:1px solid #7d8791;background:#f9fbfc;color:#273546;box-shadow:var(--button-shadow)}.skin-close svg{width:16px;height:16px}
+
+.skin-carousel{display:grid;grid-template-columns:24px minmax(0,1fr) 24px;gap:5px;align-items:center}
+.skin-prev,.skin-next{width:24px;height:54px;min-height:0;padding:0;border:1px solid #8e99a3;border-radius:9px;color:#34465c;background:#f2f5f8;box-shadow:var(--button-shadow);font:28px/1 sans-serif}
+.skin-prev:disabled,.skin-next:disabled{opacity:.28;box-shadow:none}
+.skin-pages{overflow-anchor:none;display:flex;min-width:0;overflow:hidden;scrollbar-width:none;touch-action:pan-y;overscroll-behavior-x:contain}.skin-pages::-webkit-scrollbar{display:none}.skin-pages.is-dragging{cursor:grabbing;user-select:none}
+.skin-grid{overflow-anchor:none;flex:0 0 100%;box-sizing:border-box;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));grid-template-rows:repeat(2,auto);gap:14px 9px;padding:8px 7px;min-height:104px;align-content:start}
+.skin-swatch{position:relative;justify-self:center;width:min(100%,40px);aspect-ratio:1;min-height:0;padding:0;border:1px solid #7d8791;border-radius:50%;background:var(--swatch);box-sizing:border-box;box-shadow:none;transition:border-color .15s}
+.skin-swatch:hover{background:var(--swatch)}
+.skin-swatch::before{content:'';position:absolute;inset:0;border-radius:inherit;background:#fff;opacity:0;pointer-events:none;transition:opacity .12s ease}
+.skin-swatch:hover::before{opacity:.14}
+.skin-swatch[aria-pressed=true]::after{content:'';position:absolute;inset:-7px;border:4px solid #2869dc;border-radius:50%;pointer-events:none}
+.skin-swatch:not(:disabled):active{transform:none;box-shadow:none}
+.skin-panel footer{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin:12px 5px 0;color:#607084;font-size:10px}.skin-page{white-space:nowrap;font-variant-numeric:tabular-nums}
+.skin-received{text-align:center}.skin-received h2{font-size:17px;margin:0 0 18px}.skin-received-swatch{display:block;width:66px;height:66px;border-radius:50%;border:1px solid #8294ad;box-shadow:0 4px 0 #b8c1cb,inset 0 2px 2px #ffffff70;margin:auto}.skin-received p{margin:16px 0;font-size:13px}.skin-received button{margin-top:4px}
+/* Only glyph labels follow the skin; gauge colours stay independent. */
+[data-skin]:not([data-skin=''])[data-skin-gradient]{color:var(--skin-color)!important;-webkit-text-fill-color:var(--skin-color);-webkit-text-stroke:0}
+[data-skin-gradient=true]:not([data-skin='']){background-image:var(--skin-paint)!important;background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent!important;text-shadow:none}
+#encyclopedia-total[data-unread]::after,.encyclopedia-entry #encyclopedia-open[data-reward-unread]::after{content:'';position:absolute;top:0;right:0;width:8px;height:8px;border:1.5px solid #fff;border-radius:50%;background:#e84646;pointer-events:none}
+#encyclopedia #encyclopedia-total[data-claimed=true]{background:linear-gradient(#f5f7f9,#dce1e6);color:#536170;cursor:default}#encyclopedia-total[data-claimed=true] .encyclopedia-reward-lock{display:none}
+@media(max-width:360px){.skin-grid{gap:14px 8px;min-height:92px}.skin-panel{padding-inline:6px}.skin-carousel{gap:3px}.skin-swatch{width:30px}}
+@media(prefers-reduced-motion:reduce){.skin-panel,.skin-swatch{transition:none}}
+
+#encyclopedia #encyclopedia-total[data-unread][data-reward=skin]{background:linear-gradient(120deg,#f1be45,#fff1b6,#f1be45);border-color:#be8d24;color:#6d4b0a;box-shadow:var(--button-shadow)}
+#encyclopedia #encyclopedia-total[data-unread][data-reward=rainbow]{background:linear-gradient(115deg,#f9aab4,#f4d98c 24%,#a5dfb0 46%,#9dd5ef 68%,#c4b0ef 88%,#eeaed4);border-color:#a393b9;color:#25384c}
+
+/* White stays readable on the light HOME card without outlining every colour. */
+[data-skin=white][data-skin-gradient]{text-shadow:0 1px 2px #27354699}
+
+.skin-panel.is-upward{scroll-margin-top:12px;top:auto;bottom:calc(100% + 4px);margin-top:0;transform-origin:bottom left;transform:translateY(8px) scale(.97)}
+.skin-panel.is-upward.is-open{transform:none}
+
+/* Receipt content fits a short mobile screen and releases its one 3D view on close. */
+.skin-received .home-dialog-panel{max-height:calc(100dvh - 36px);overflow:auto;box-sizing:border-box}
+.skin-received-stage{position:relative;height:clamp(140px,27dvh,218px);margin:6px 0;overflow:hidden;border-radius:12px;animation:skin-gift-in .42s cubic-bezier(.16,1,.3,1)}
+.skin-received-stage canvas{display:block;width:100%;height:100%;opacity:0;touch-action:none}
+.skin-received-stage[data-ready] canvas{opacity:1}.skin-received-stage[data-ready] .skin-received-swatch{display:none}
+.skin-received-stage .skin-received-swatch{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%)}
+.skin-received-spark{position:absolute;left:var(--x);top:var(--y);width:5px;height:5px;background:var(--reward-spark,#e4b24c);transform:rotate(45deg);pointer-events:none;animation:skin-gift-spark .8s ease-out both;animation-delay:var(--delay)}
+.skin-received p{font-size:17px;font-weight:700;margin:10px 0 16px}
+@keyframes skin-gift-in{from{transform:translateY(15px) scale(.78);opacity:0}to{transform:none;opacity:1}}
+@keyframes skin-gift-spark{0%{opacity:0;scale:0}30%{opacity:1;scale:1.3}100%{opacity:0;translate:0 -28px;scale:.3}}
+#encyclopedia #encyclopedia-total[data-unread][data-reward]{background:var(--reward-paint);border-color:var(--reward-edge);color:var(--reward-ink);box-shadow:var(--button-shadow)}
+@media(prefers-reduced-motion:reduce){.skin-received-stage,.skin-received-spark{animation:none}.skin-received-spark{display:none}}
+
+/* Pattern icons use the whole SVG; glyph labels keep their own bounded paint. */
+.skin-swatch,.skin-swatch:hover{background-size:cover;background-position:center}
+[data-skin^="halloween-"][data-skin-gradient=true]{background-size:100% 100%;background-repeat:no-repeat}

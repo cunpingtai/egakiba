@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';
+import {geometryFromMask,containsWorld,silhouetteContact,assertGeometry} from '../engine/glyph-geometry.mjs';
+import {ShapeSimulation,SHAPE_SIM_VERSION} from '../engine/shape-sim.mjs';
+import {loadSave,commitBattle,SAVE_KEY,emptySave} from '../engine/r4-local-save.mjs';
+const N=40, make=fn=>{const mask=new Uint8Array(N*N);for(let y=0;y<N;y++)for(let x=0;x<N;x++)mask[y*N+x]=Number(fn(x,y));return mask;};
+const square=geometryFromMask(make((x,y)=>x>=9&&x<31&&y>=9&&y<31),N,{glyph:'田'});
+const donut=geometryFromMask(make((x,y)=>x>=7&&x<33&&y>=7&&y<33&&!(x>=14&&x<26&&y>=14&&y<26)),N,{glyph:'回'});
+const bar=geometryFromMask(make((x,y)=>x>=8&&x<32&&y>=17&&y<23),N,{glyph:'一'});
+const square2=geometryFromMask(make((x,y)=>x>=9&&x<31&&y>=9&&y<31),N,{glyph:'田'});
+assertGeometry(square);assert.equal(square.id,square2.id,'stable same-asset fingerprint');assert.notEqual(donut.id,square.id);
+const centered={x:0,y:0,angle:0,radius:.5};
+assert.equal(containsWorld(donut,centered,0,0),false,'glyph hole must stay empty');
+assert.equal(containsWorld(square,centered,0,0),true);
+assert.equal(containsWorld(bar,centered,0,.3),false,'bar must be hollow away from stroke');
+const other={x:.52,y:.26,angle:0,radius:.5};
+const other2={x:.52,y:0,angle:0,radius:.5};
+assert.equal(silhouetteContact(centered,other,bar,bar),null,'slender bars separated vertically despite intersecting bounding circles');
+assert.ok(silhouetteContact(centered,other2,bar,bar),'horizontal bars contact');
+const stats={speed:67,power:60,balance:60,maxHp:110,pointiness:.1};
+function create(a=0,g=square){return new ShapeSimulation({player:{glyph:'田',geometry:g,stats},enemy:{glyph:'回',geometry:donut,stats:{...stats,maxHp:68}},playerAction:{angle:a,power:.78,spinDirection:1},stage:'01-01'});}
+const a=create(),b=create();a.runToEnd();b.runToEnd();assert.deepEqual(a.snapshot(),b.snapshot(),'deterministic local 60Hz replay');assert.equal(a.result.simulationVersion,SHAPE_SIM_VERSION);assert.deepEqual(a.result.geometryHashes,[square.id,donut.id]);assert.ok(a.result.tick<=2700);
+const alternate=create(.7);alternate.runToEnd();assert.notDeepEqual(alternate.result,a.result,'aim affects silhouette match');
+const storage={map:new Map(),getItem(k){return this.map.get(k)||null;},setItem(k,v){this.map.set(k,v);}};
+const result={...a.result,playerMaxHp:stats.maxHp};const saved=commitBattle(emptySave(),{result,levelId:'01-01',glyph:'田'},storage);assert.equal(saved.status,'saved');assert.equal(loadSave(storage).save.battleCount,1);assert.ok(storage.map.has(SAVE_KEY));assert.notEqual(SAVE_KEY,'moji-blade.v3.r3.local-save.v1');
+console.log('R4 SHAPE TESTS PASSED: geometry identity, silhouette holes, noncircular contact, repeatable simulation, input response, isolated save.');

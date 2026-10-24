@@ -1,0 +1,25 @@
+MOJI BLADE R25 SITEWIDE CONTENT / SEO REGRESSION
+
+npm run test:r25
+Result: 117 PASS, 3 SKIP, 0 FAIL (120 tests total).
+Skipped tests require the authorized original V2 font pack; font files are intentionally not included.
+
+npm run check:r9
+Result: PASS. Static check reports 36 JS modules, no duplicate HTML IDs, native story bridge/save isolation and CSS balance.
+
+npm run check:r25
+Result: PASS. Homepage keyword-density, query-cluster copy, placeholder-removal and localized page-metadata tests.
+
+npm run audit:r25
+Result: PASS. Japanese homepage exact phrase density is 3.13% in static HTML and 3.15% after localized copy hydration using exact phrase occurrences / Intl.Segmenter Japanese word-like tokens.
+
+node --check
+Result: PASS for changed JS/MJS files.
+
+Browser smoke
+Attempted via tests/browser_smoke_inline.py. Blocked by environment: net::ERR_BLOCKED_BY_ADMINISTRATOR for http://127.0.0.1. No live browser pass is claimed.
+
+npm run build
+Could not run: vite: not found. Vite is not installed in this runtime; no successful production build is claimed.
+
+No real WebGL/physical battle acceptance is claimed because the authorized font pack is not included.

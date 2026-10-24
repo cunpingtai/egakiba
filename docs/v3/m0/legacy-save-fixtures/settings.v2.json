@@ -1,0 +1,17 @@
+{
+  "storageKey": "tsukuruum.moji-blade.v2",
+  "kind": "synthetic-schema-sample",
+  "value": {
+    "character": "文",
+    "opponent": "字",
+    "name": "",
+    "font": "gothic",
+    "comFont": "gothic",
+    "difficulty": "normal",
+    "sound": true,
+    "bgm": true,
+    "rankingEnabled": true,
+    "spinDirection": 1,
+    "comSpinDirection": 1
+  }
+}

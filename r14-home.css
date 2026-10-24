@@ -1,0 +1,25 @@
+/* R14: chapter-one progression belongs to the real home entry, not an overlay. */
+.campaign-card{margin-top:24px;width:min(445px,100%);padding:18px 20px 16px;border:1px solid #ddd6c9;border-radius:19px;background:linear-gradient(135deg,rgba(255,254,249,.94),rgba(244,238,226,.92));box-shadow:0 15px 36px rgba(57,48,40,.055);text-align:left;position:relative}
+.campaign-eyebrow{display:flex;justify-content:space-between;gap:10px;color:#a05445;font-size:10px;font-weight:900;letter-spacing:.10em}
+.campaign-eyebrow #campaign-counter{color:#667887;letter-spacing:.03em;font-variant-numeric:tabular-nums}
+.campaign-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:12px 0 16px}
+.campaign-heading h2{font:800 20px/1.45 var(--serif);letter-spacing:-.02em;margin:0;color:#24384c}
+.campaign-heading p{font-size:11px;line-height:1.55;color:#75818c;margin:5px 0 0}
+.campaign-next-glyph{display:grid;place-items:center;flex:0 0 55px;width:55px;height:55px;border-radius:14px;border:1px solid #e2d7c7;background:#fffcf6;color:#bc6954;font:800 33px var(--serif);box-shadow:0 3px 0 rgba(151,118,86,.12)}
+.campaign-progress{width:100%;height:8px;border-radius:99px;background:#e0ded7;overflow:hidden}
+.campaign-progress>span{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#bd6950,#dfb46e);transition:width .24s ease}
+.campaign-steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:12px}
+.campaign-step{position:relative;display:flex;align-items:center;gap:5px;justify-content:center;min-height:30px;border-radius:8px;background:#e9e7e2;color:#8c9296;font-weight:800;font-size:11px;letter-spacing:.04em}
+.campaign-step.is-cleared{color:#3e7050;background:#e2efe2}
+.campaign-step.is-cleared::before{content:'✓';font-size:11px}
+.campaign-step.is-next{color:#ae5943;background:#fae4d5;box-shadow:inset 0 0 0 1px #dba78c}
+.campaign-step.is-locked{opacity:.65}
+.campaign-foot{margin:13px 0 0;color:#78838d;font-size:10px;line-height:1.6;letter-spacing:.015em}
+.campaign-card.is-complete .campaign-next-glyph{color:#43845e;background:#e7f2e8;border-color:#c5dcc8}
+.campaign-card.is-unavailable{border-style:dashed}
+@media(max-width:800px){.campaign-card{margin:20px auto 0}.campaign-heading h2{font-size:19px}}
+@media(max-width:500px){.campaign-card{padding:14px 15px;width:100%;margin-top:17px}.campaign-eyebrow{font-size:9px}.campaign-heading{margin:9px 0 13px}.campaign-heading h2{font-size:17px}.campaign-next-glyph{width:48px;height:48px;flex-basis:48px;font-size:29px}.campaign-steps{gap:6px}.campaign-foot{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.campaign-progress>span{transition:none}}
+/* R14 mobile home: prevent the pre-existing 420px glyph-entry min-content
+   size from widening the single-column grid on 320–390px devices. */
+@media(max-width:920px){.hero-copy{min-width:0;width:100%}.home-glyph-form,.home-glyph-field,.hero-buttons{min-width:0;max-width:100%}.campaign-card{max-width:100%}}

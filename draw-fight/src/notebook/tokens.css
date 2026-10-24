@@ -1,0 +1,46 @@
+/* D1 - Rakugaki Fighter visual tokens / japanese notebook arcade */
+:host {
+  display: block;
+  min-height: 100dvh;
+  margin: 0;
+  background: var(--desk);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  color-scheme: light;
+  --paper:#fbf7ec;
+  --paper-strong:#fffdf7;
+  --desk:#dce8e5;
+  --grid:rgba(106,159,184,.13);
+  --ink:#27364e;
+  --ink-soft:#62748a;
+  --red:#e4544a;
+  --red-deep:#b83c37;
+  --yellow:#f6ca58;
+  --mint:#87cac4;
+  --blue:#9dd3e1;
+  --pink:#f2bec6;
+  --line:#27364e;
+  --edge-soft:#cbd6d5;
+  --shadow-ink:rgba(42,55,75,.15);
+  --font-game:"Hiragino Maru Gothic ProN","Zen Maru Gothic","Yu Gothic","BIZ UDPGothic",ui-rounded,system-ui,sans-serif;
+  --font-ui:"Noto Sans JP","Hiragino Kaku Gothic ProN",Meiryo,system-ui,sans-serif;
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:20px;
+  --space-6:24px; --space-7:32px; --space-8:40px; --space-9:48px;
+  --radius-s:10px; --radius-m:17px; --radius-l:25px; --radius-paper:13px 20px 18px 23px / 18px 13px 22px 17px;
+  --border-hand:2.5px solid var(--ink);
+  --ease-pop:cubic-bezier(.17,1.45,.47,1);
+  --ease-natural:cubic-bezier(.2,.75,.2,1);
+  --duration-press:110ms; --duration-transition:220ms; --duration-panel:260ms;
+}
+*,*::before,*::after {box-sizing:border-box;}
+button,a {font:inherit; -webkit-tap-highlight-color:transparent;}
+button {cursor:pointer;}
+a {color:inherit; text-decoration:none;}
+button:focus-visible,a:focus-visible,input:focus-visible {outline:3px solid #247cce;outline-offset:4px;}
+button:active,.btn:active {transform:translateY(3px) scale(.985);}
+button:disabled {cursor:not-allowed; opacity:.5;}
+::selection {background:#ffe08b;color:#26364b;}
+.sr-only {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after {animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important;}}
+html.reduce-motion *,html.reduce-motion *::before,html.reduce-motion *::after {animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}

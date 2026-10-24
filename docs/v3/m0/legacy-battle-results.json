@@ -1,0 +1,1118 @@
+{
+  "status": "node-replay-deterministic",
+  "physicsVersion": "moji-blade-rapier021-r16-app-inner1",
+  "ruleset": "classic-v2.4.1",
+  "runtime": "node v20.20.2",
+  "note": "Consecutive runs match. Impact records now include the raw contact force. State hashes are unchanged. Browser parity is checked by packages/verification/browser-replay.html.",
+  "sampleEvery": 480,
+  "cases": [
+    {
+      "id": "standard-bun-ji-gothic",
+      "hashAtRest": "d7796b8e",
+      "steps": 1965,
+      "time": 3.8988095238095104,
+      "result": {
+        "winner": 0,
+        "reason": "回転停止",
+        "losses": [
+          null,
+          "回転停止"
+        ]
+      },
+      "samples": [
+        "890d4951",
+        "26358018",
+        "a76521c6",
+        "fc406484",
+        "851b954c",
+        "4573bd52"
+      ],
+      "legacyEvents": {
+        "impacts": [
+          {
+            "tick": 116,
+            "position": {
+              "x": 0.4607837200164795,
+              "y": 0.8043820261955261,
+              "z": -0.18205386400222778
+            },
+            "strength": 1,
+            "force": 3533.61572265625,
+            "critical": true,
+            "criticalAttackers": [
+              1
+            ]
+          },
+          {
+            "tick": 1041,
+            "position": {
+              "x": -0.28944045305252075,
+              "y": 1.0020447969436646,
+              "z": -0.12442895770072937
+            },
+            "strength": 1,
+            "force": 1783.6964111328125,
+            "critical": true,
+            "criticalAttackers": [
+              0,
+              1
+            ]
+          },
+          {
+            "tick": 1812,
+            "position": {
+              "x": -0.7168001532554626,
+              "y": 1.0166434049606323,
+              "z": -1.4336607456207275
+            },
+            "strength": 1,
+            "force": 1167.89453125,
+            "critical": false,
+            "criticalAttackers": []
+          }
+        ],
+        "boosts": [],
+        "ropes": []
+      },
+      "battleEvents": [
+        {
+          "type": "classic-launch",
+          "tick": 0,
+          "actions": [
+            {
+              "angle": 0,
+              "power": 0.8,
+              "spinDirection": 1
+            },
+            {
+              "angle": 0.3,
+              "power": 0.82,
+              "spinDirection": 1
+            }
+          ]
+        },
+        {
+          "type": "collision",
+          "tick": 116,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": true
+        },
+        {
+          "type": "collision",
+          "tick": 1041,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": true
+        },
+        {
+          "type": "collision",
+          "tick": 1812,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": false
+        },
+        {
+          "type": "finished",
+          "tick": 1965,
+          "classicReason": "回転停止",
+          "reason": "spin-exhausted",
+          "winner": 0
+        }
+      ]
+    },
+    {
+      "id": "standard-bun-ji-opposite-spin",
+      "hashAtRest": "d7796b8e",
+      "steps": 1499,
+      "time": 2.974206349206339,
+      "result": {
+        "winner": 0,
+        "reason": "回転停止",
+        "losses": [
+          null,
+          "回転停止"
+        ]
+      },
+      "samples": [
+        "317bf631",
+        "81d75587",
+        "531f5692",
+        "c646539d",
+        "4c0317f5"
+      ],
+      "legacyEvents": {
+        "impacts": [
+          {
+            "tick": 107,
+            "position": {
+              "x": 0.4717235267162323,
+              "y": 1.0052310228347778,
+              "z": -0.1291109323501587
+            },
+            "strength": 1,
+            "force": 3822.786865234375,
+            "critical": false,
+            "criticalAttackers": []
+          },
+          {
+            "tick": 851,
+            "position": {
+              "x": 0.9329277276992798,
+              "y": 1.0855169296264648,
+              "z": 0.054064393043518066
+            },
+            "strength": 1,
+            "force": 3388.873046875,
+            "critical": true,
+            "criticalAttackers": [
+              1
+            ]
+          },
+          {
+            "tick": 1037,
+            "position": {
+              "x": -0.14185374975204468,
+              "y": 0.895295262336731,
+              "z": -1.1768560409545898
+            },
+            "strength": 1,
+            "force": 1561.427490234375,
+            "critical": false,
+            "criticalAttackers": []
+          },
+          {
+            "tick": 1135,
+            "position": {
+              "x": -1.2466830015182495,
+              "y": 0.6796079874038696,
+              "z": -1.3039448261260986
+            },
+            "strength": 1,
+            "force": 333.05718994140625,
+            "critical": false,
+            "criticalAttackers": []
+          },
+          {
+            "tick": 1249,
+            "position": {
+              "x": -1.7670559883117676,
+              "y": 0.5329020023345947,
+              "z": -1.4214565753936768
+            },
+            "strength": 0.18791436767578126,
+            "force": 46.97859191894531,
+            "critical": false,
+            "criticalAttackers": []
+          },
+          {
+            "tick": 1360,
+            "position": {
+              "x": -2.2063961029052734,
+              "y": 0.548423707485199,
+              "z": -1.5003416538238525
+            },
+            "strength": 1,
+            "force": 1068.3084716796875,
+            "critical": false,
+            "criticalAttackers": []
+          }
+        ],
+        "boosts": [],
+        "ropes": []
+      },
+      "battleEvents": [
+        {
+          "type": "classic-launch",
+          "tick": 0,
+          "actions": [
+            {
+              "angle": 0,
+              "power": 0.8,
+              "spinDirection": -1
+            },
+            {
+              "angle": 0.3,
+              "power": 0.82,
+              "spinDirection": -1
+            }
+          ]
+        },
+        {
+          "type": "collision",
+          "tick": 107,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": false
+        },
+        {
+          "type": "collision",
+          "tick": 851,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": true
+        },
+        {
+          "type": "collision",
+          "tick": 1037,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": false
+        },
+        {
+          "type": "collision",
+          "tick": 1135,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": false
+        },
+        {
+          "type": "collision",
+          "tick": 1249,
+          "a": 0,
+          "b": 1,
+          "impulse": 0.18791436767578126,
+          "critical": false
+        },
+        {
+          "type": "collision",
+          "tick": 1360,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": false
+        },
+        {
+          "type": "finished",
+          "tick": 1499,
+          "classicReason": "回転停止",
+          "reason": "spin-exhausted",
+          "winner": 0
+        }
+      ]
+    },
+    {
+      "id": "standard-light-vs-heavy",
+      "hashAtRest": "d7796b8e",
+      "steps": 296,
+      "time": 0.5873015873015854,
+      "result": {
+        "winner": 1,
+        "reason": "転倒",
+        "losses": [
+          "転倒",
+          null
+        ]
+      },
+      "samples": [
+        "ae590c6b",
+        "ce6720a1"
+      ],
+      "legacyEvents": {
+        "impacts": [
+          {
+            "tick": 103,
+            "position": {
+              "x": 0.08741262555122375,
+              "y": 0.9041498899459839,
+              "z": -0.5441300272941589
+            },
+            "strength": 1,
+            "force": 2124.91162109375,
+            "critical": true,
+            "criticalAttackers": [
+              0,
+              1
+            ]
+          }
+        ],
+        "boosts": [],
+        "ropes": []
+      },
+      "battleEvents": [
+        {
+          "type": "classic-launch",
+          "tick": 0,
+          "actions": [
+            {
+              "angle": 0.2,
+              "power": 1,
+              "spinDirection": 1
+            },
+            {
+              "angle": 0,
+              "power": 0.7,
+              "spinDirection": 1
+            }
+          ]
+        },
+        {
+          "type": "collision",
+          "tick": 103,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": true
+        },
+        {
+          "type": "finished",
+          "tick": 296,
+          "classicReason": "転倒",
+          "reason": null,
+          "winner": 1
+        }
+      ]
+    },
+    {
+      "id": "mincho-vs-brush",
+      "hashAtRest": "d7796b8e",
+      "steps": 845,
+      "time": 1.6765873015872959,
+      "result": {
+        "winner": 1,
+        "reason": "回転停止",
+        "losses": [
+          "回転停止",
+          null
+        ]
+      },
+      "samples": [
+        "c6a2065a",
+        "ecd2d979",
+        "745ebd50"
+      ],
+      "legacyEvents": {
+        "impacts": [
+          {
+            "tick": 101,
+            "position": {
+              "x": 0.02228689007461071,
+              "y": 0.8249631524085999,
+              "z": -0.17408311367034912
+            },
+            "strength": 1,
+            "force": 21726.24609375,
+            "critical": false,
+            "criticalAttackers": []
+          }
+        ],
+        "boosts": [],
+        "ropes": []
+      },
+      "battleEvents": [
+        {
+          "type": "classic-launch",
+          "tick": 0,
+          "actions": [
+            {
+              "angle": 0,
+              "power": 0.8,
+              "spinDirection": 1
+            },
+            {
+              "angle": 0.3,
+              "power": 0.82,
+              "spinDirection": 1
+            }
+          ]
+        },
+        {
+          "type": "collision",
+          "tick": 101,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": false
+        },
+        {
+          "type": "finished",
+          "tick": 845,
+          "classicReason": "回転停止",
+          "reason": "spin-exhausted",
+          "winner": 1
+        }
+      ]
+    },
+    {
+      "id": "boost-bowl",
+      "hashAtRest": "da185fbc",
+      "steps": 680,
+      "time": 1.3492063492063446,
+      "result": {
+        "winner": 1,
+        "reason": "回転停止",
+        "losses": [
+          "回転停止",
+          null
+        ]
+      },
+      "samples": [
+        "77fdba6d",
+        "8093b192",
+        "6eb4b3ac"
+      ],
+      "legacyEvents": {
+        "impacts": [
+          {
+            "tick": 117,
+            "position": {
+              "x": 0.32583868503570557,
+              "y": 0.8065717220306396,
+              "z": -0.3545706868171692
+            },
+            "strength": 1,
+            "force": 3388.166015625,
+            "critical": true,
+            "criticalAttackers": [
+              1
+            ]
+          }
+        ],
+        "boosts": [],
+        "ropes": []
+      },
+      "battleEvents": [
+        {
+          "type": "classic-launch",
+          "tick": 0,
+          "actions": [
+            {
+              "angle": 0.4,
+              "power": 0.9,
+              "spinDirection": 1
+            },
+            {
+              "angle": -0.2,
+              "power": 0.75,
+              "spinDirection": 1
+            }
+          ]
+        },
+        {
+          "type": "collision",
+          "tick": 117,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": true
+        },
+        {
+          "type": "finished",
+          "tick": 680,
+          "classicReason": "回転停止",
+          "reason": "spin-exhausted",
+          "winner": 1
+        }
+      ]
+    },
+    {
+      "id": "square-ring",
+      "hashAtRest": "c32ae0cc",
+      "steps": 4701,
+      "time": 9.327380952381517,
+      "result": {
+        "winner": 0,
+        "reason": "回転停止",
+        "losses": [
+          null,
+          "回転停止"
+        ]
+      },
+      "samples": [
+        "759a8d3a",
+        "b2d616c2",
+        "959bf24f",
+        "2e143279",
+        "0e62cfc7",
+        "da74f742",
+        "321104c1",
+        "dbaecca0",
+        "4c3b80e8",
+        "db1f27a6",
+        "a0603f98"
+      ],
+      "legacyEvents": {
+        "impacts": [
+          {
+            "tick": 113,
+            "position": {
+              "x": 0.5534631013870239,
+              "y": 0.9850013852119446,
+              "z": -0.06310367584228516
+            },
+            "strength": 1,
+            "force": 9885.91015625,
+            "critical": false,
+            "criticalAttackers": []
+          },
+          {
+            "tick": 1297,
+            "position": {
+              "x": 0.3062629699707031,
+              "y": 1.018578052520752,
+              "z": -0.07082396745681763
+            },
+            "strength": 1,
+            "force": 2571.915283203125,
+            "critical": false,
+            "criticalAttackers": []
+          },
+          {
+            "tick": 1389,
+            "position": {
+              "x": 0.44327378273010254,
+              "y": 0.8459636569023132,
+              "z": 0.4419843554496765
+            },
+            "strength": 0.7290230102539063,
+            "force": 182.25575256347656,
+            "critical": false,
+            "criticalAttackers": []
+          },
+          {
+            "tick": 2655,
+            "position": {
+              "x": -0.48828279972076416,
+              "y": 0.9079797267913818,
+              "z": 0.46454551815986633
+            },
+            "strength": 1,
+            "force": 909.0650024414062,
+            "critical": true,
+            "criticalAttackers": [
+              0
+            ]
+          },
+          {
+            "tick": 3516,
+            "position": {
+              "x": 0.7000434398651123,
+              "y": 1.0704199075698853,
+              "z": 0.28497326374053955
+            },
+            "strength": 1,
+            "force": 2172.717041015625,
+            "critical": true,
+            "criticalAttackers": [
+              0
+            ]
+          }
+        ],
+        "boosts": [],
+        "ropes": []
+      },
+      "battleEvents": [
+        {
+          "type": "classic-launch",
+          "tick": 0,
+          "actions": [
+            {
+              "angle": 0.6,
+              "power": 1,
+              "spinDirection": 1
+            },
+            {
+              "angle": 0,
+              "power": 0.82,
+              "spinDirection": 1
+            }
+          ]
+        },
+        {
+          "type": "collision",
+          "tick": 113,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": false
+        },
+        {
+          "type": "collision",
+          "tick": 1297,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": false
+        },
+        {
+          "type": "collision",
+          "tick": 1389,
+          "a": 0,
+          "b": 1,
+          "impulse": 0.7290230102539063,
+          "critical": false
+        },
+        {
+          "type": "collision",
+          "tick": 2655,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": true
+        },
+        {
+          "type": "collision",
+          "tick": 3516,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": true
+        },
+        {
+          "type": "finished",
+          "tick": 4701,
+          "classicReason": "回転停止",
+          "reason": "spin-exhausted",
+          "winner": 0
+        }
+      ]
+    },
+    {
+      "id": "rotating-floor",
+      "hashAtRest": "a1751ab2",
+      "steps": 2578,
+      "time": 5.1150793650795965,
+      "result": {
+        "winner": 0,
+        "reason": "回転停止",
+        "losses": [
+          null,
+          "回転停止"
+        ]
+      },
+      "samples": [
+        "f3ead0d4",
+        "dc942b91",
+        "afa2d8f4",
+        "8b818312",
+        "2628a82f",
+        "8be75060",
+        "1e569534"
+      ],
+      "legacyEvents": {
+        "impacts": [
+          {
+            "tick": 149,
+            "position": {
+              "x": 0.03942796587944031,
+              "y": 0.7282750606536865,
+              "z": -0.22648131847381592
+            },
+            "strength": 1,
+            "force": 2642.173828125,
+            "critical": true,
+            "criticalAttackers": [
+              1
+            ]
+          },
+          {
+            "tick": 2234,
+            "position": {
+              "x": -0.2388889193534851,
+              "y": 0.9447797536849976,
+              "z": -0.24974340200424194
+            },
+            "strength": 1,
+            "force": 2357.361572265625,
+            "critical": true,
+            "criticalAttackers": [
+              0
+            ]
+          },
+          {
+            "tick": 2548,
+            "position": {
+              "x": -0.17088675498962402,
+              "y": 1.0931274890899658,
+              "z": -0.3294050693511963
+            },
+            "strength": 1,
+            "force": 1203.1810302734375,
+            "critical": true,
+            "criticalAttackers": [
+              0
+            ]
+          }
+        ],
+        "boosts": [],
+        "ropes": []
+      },
+      "battleEvents": [
+        {
+          "type": "classic-launch",
+          "tick": 0,
+          "actions": [
+            {
+              "angle": 0,
+              "power": 0.55,
+              "spinDirection": 1
+            },
+            {
+              "angle": 0,
+              "power": 0.55,
+              "spinDirection": 1
+            }
+          ]
+        },
+        {
+          "type": "collision",
+          "tick": 149,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": true
+        },
+        {
+          "type": "collision",
+          "tick": 2234,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": true
+        },
+        {
+          "type": "collision",
+          "tick": 2548,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": true
+        },
+        {
+          "type": "finished",
+          "tick": 2578,
+          "classicReason": "回転停止",
+          "reason": "spin-exhausted",
+          "winner": 0
+        }
+      ]
+    },
+    {
+      "id": "weak-com-default",
+      "hashAtRest": "d7796b8e",
+      "steps": 2292,
+      "time": 4.547619047619154,
+      "result": {
+        "winner": 0,
+        "reason": "回転停止",
+        "losses": [
+          null,
+          "回転停止"
+        ]
+      },
+      "samples": [
+        "3a2e41ea",
+        "7966ed33",
+        "abf363b4",
+        "7dd570be",
+        "f3654f0f",
+        "5217186f"
+      ],
+      "legacyEvents": {
+        "impacts": [
+          {
+            "tick": 171,
+            "position": {
+              "x": 0.4416578710079193,
+              "y": 0.8583304286003113,
+              "z": -0.21032500267028809
+            },
+            "strength": 1,
+            "force": 2902.68701171875,
+            "critical": false,
+            "criticalAttackers": []
+          },
+          {
+            "tick": 966,
+            "position": {
+              "x": 0.5822367072105408,
+              "y": 1.033704400062561,
+              "z": -0.22044962644577026
+            },
+            "strength": 1,
+            "force": 1811.3497314453125,
+            "critical": false,
+            "criticalAttackers": []
+          },
+          {
+            "tick": 1842,
+            "position": {
+              "x": -0.40762805938720703,
+              "y": 1.1378145217895508,
+              "z": 0.42423391342163086
+            },
+            "strength": 1,
+            "force": 1495.2440185546875,
+            "critical": false,
+            "criticalAttackers": []
+          }
+        ],
+        "boosts": [],
+        "ropes": []
+      },
+      "battleEvents": [
+        {
+          "type": "classic-launch",
+          "tick": 0,
+          "actions": [
+            {
+              "angle": 0,
+              "power": 0.4,
+              "spinDirection": 1
+            },
+            {
+              "angle": 0.5,
+              "power": 0.3,
+              "spinDirection": 1
+            }
+          ]
+        },
+        {
+          "type": "collision",
+          "tick": 171,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": false
+        },
+        {
+          "type": "collision",
+          "tick": 966,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": false
+        },
+        {
+          "type": "collision",
+          "tick": 1842,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": false
+        },
+        {
+          "type": "finished",
+          "tick": 2292,
+          "classicReason": "回転停止",
+          "reason": "spin-exhausted",
+          "winner": 0
+        }
+      ]
+    },
+    {
+      "id": "boost-bowl-contact",
+      "hashAtRest": "da185fbc",
+      "steps": 748,
+      "time": 1.484126984126979,
+      "result": {
+        "winner": 0,
+        "reason": "回転停止",
+        "losses": [
+          null,
+          "回転停止"
+        ]
+      },
+      "samples": [
+        "0fabef8a",
+        "b8e01e9f",
+        "1131c4cc"
+      ],
+      "legacyEvents": {
+        "impacts": [
+          {
+            "tick": 362,
+            "position": {
+              "x": 0.1963934302330017,
+              "y": 0.9523894190788269,
+              "z": -3.4463818073272705
+            },
+            "strength": 0.41794711303710935,
+            "force": 104.48677825927734,
+            "critical": true,
+            "criticalAttackers": [
+              0
+            ]
+          }
+        ],
+        "boosts": [
+          {
+            "tick": 151,
+            "index": 0,
+            "position": {
+              "x": 2.2830042839050293,
+              "y": 1.0661413669586182,
+              "z": 1.8950388431549072
+            }
+          },
+          {
+            "tick": 326,
+            "index": 0,
+            "position": {
+              "x": 2.039235830307007,
+              "y": 1.0566505193710327,
+              "z": -2.334656000137329
+            }
+          }
+        ],
+        "ropes": []
+      },
+      "battleEvents": [
+        {
+          "type": "classic-launch",
+          "tick": 0,
+          "actions": [
+            {
+              "angle": 1.23,
+              "power": 1,
+              "spinDirection": 1
+            },
+            {
+              "angle": 3.141592653589793,
+              "power": 0.2,
+              "spinDirection": 1
+            }
+          ]
+        },
+        {
+          "type": "boost",
+          "tick": 151,
+          "slot": 0,
+          "effectId": "boost-board"
+        },
+        {
+          "type": "boost",
+          "tick": 326,
+          "slot": 0,
+          "effectId": "boost-board"
+        },
+        {
+          "type": "collision",
+          "tick": 362,
+          "a": 0,
+          "b": 1,
+          "impulse": 0.41794711303710935,
+          "critical": true
+        },
+        {
+          "type": "finished",
+          "tick": 748,
+          "classicReason": "回転停止",
+          "reason": "spin-exhausted",
+          "winner": 0
+        }
+      ]
+    },
+    {
+      "id": "square-rope-contact",
+      "hashAtRest": "c32ae0cc",
+      "steps": 770,
+      "time": 1.5277777777777726,
+      "result": {
+        "winner": 0,
+        "reason": "回転停止",
+        "losses": [
+          null,
+          "回転停止"
+        ]
+      },
+      "samples": [
+        "6b2963b0",
+        "8c57dca4",
+        "7d870540"
+      ],
+      "legacyEvents": {
+        "impacts": [
+          {
+            "tick": 572,
+            "position": {
+              "x": -0.9039722084999084,
+              "y": 0.9154742360115051,
+              "z": 0.08228975534439087
+            },
+            "strength": 1,
+            "force": 5304.958984375,
+            "critical": true,
+            "criticalAttackers": [
+              0,
+              1
+            ]
+          }
+        ],
+        "boosts": [],
+        "ropes": [
+          {
+            "tick": 270,
+            "phase": "impact",
+            "side": 0,
+            "otherSide": null,
+            "position": {
+              "x": 5.3,
+              "y": 1.1371583938598633,
+              "z": 2.2654639083502017
+            },
+            "width": 2.2858982062041004,
+            "depth": 0.2700218896181515,
+            "amount": 0.04450899652801986,
+            "speed": 3.0478637267449598
+          },
+          {
+            "tick": 312,
+            "phase": "impact",
+            "side": 2,
+            "otherSide": null,
+            "position": {
+              "x": -5.3,
+              "y": 1.1252931356430054,
+              "z": -2.034594759359015
+            },
+            "width": 2.2301818395581403,
+            "depth": 0.20939996097551036,
+            "amount": 0.04450899652801986,
+            "speed": 2.4329603833124693
+          }
+        ]
+      },
+      "battleEvents": [
+        {
+          "type": "classic-launch",
+          "tick": 0,
+          "actions": [
+            {
+              "angle": 1.5707963267948966,
+              "power": 1,
+              "spinDirection": 1
+            },
+            {
+              "angle": 4.71238898038469,
+              "power": 1,
+              "spinDirection": 1
+            }
+          ]
+        },
+        {
+          "type": "collision",
+          "tick": 572,
+          "a": 0,
+          "b": 1,
+          "impulse": 1,
+          "critical": true
+        },
+        {
+          "type": "finished",
+          "tick": 770,
+          "classicReason": "回転停止",
+          "reason": "spin-exhausted",
+          "winner": 0
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+MOJI BLADE R26 — REGRESSION RESULTS
+Date: 2026-10-24
+
+R26 path/SSR/SEO test suite:
+  node --test tests/r26-indexable-routes.test.mjs
+  9 PASS / 0 FAIL / 0 SKIP
+
+Full suite:
+  npm run test:r25
+  126 PASS / 3 SKIP / 0 FAIL
+  The 3 skips are native-font dependent tests requiring the separately licensed original font pack.
+
+Static and SEO checks:
+  npm run check:r9      PASS
+  npm run check:r25     4 PASS / 0 FAIL
+  npm run audit:r25     PASS
+  node --check app.js   PASS
+  node --check r2-flow.js PASS
+  node --check src/seo/landing-content.mjs PASS
+  node --check scripts/r26-generate-sitemap.mjs PASS
+
+Route/indexability assertions:
+  - Six Japanese/default SEO intent routes and three localized home routes exist.
+  - Dynamic localized route allows only en/zh/ko and six known SEO slugs; invalid combinations throw notFound().
+  - SSR enabled on SEO routes; root renders R9Shell during SSR instead of a client-only placeholder.
+  - Unique localized titles/descriptions, canonical URLs, hreflang alternates, x-default and WebPage JSON-LD are defined.
+  - Home pages link to all six intent pages using ordinary anchors.
+  - Sitemap has 28 unique canonical URLs and no hash-fragment URLs.
+  - robots.txt references the base-path sitemap.
+  - Sitemap generation also synchronizes the standalone home canonical and hreflang tags to the configured site base.
+  - Router base path and trailing-slash behavior are explicit.
+
+Not verified:
+  - `npm run build` failed before build execution because Vite is not installed (`vite: not found`).
+  - `corepack pnpm install --frozen-lockfile` was blocked by registry DNS/network (`EAI_AGAIN registry.npmjs.org`).
+  - Actual generated prerendered HTML, production HTTP direct requests, browser navigation, original licensed fonts and WebGL device gameplay were not validated in this runtime.

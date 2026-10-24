@@ -1,0 +1,170 @@
+[
+  {
+    "overflow": 0,
+    "page": true,
+    "filters": [
+      {
+        "visible": true,
+        "width": 293
+      },
+      {
+        "visible": true,
+        "width": 200
+      },
+      {
+        "visible": true,
+        "width": 200
+      }
+    ],
+    "cards": 36,
+    "buttonsVisible": [
+      true,
+      true,
+      true
+    ],
+    "panelWidth": 434,
+    "size": "1440x900",
+    "fixture": "r21-collection-zh-all-fixture.html",
+    "screenshot": "r21-collection-desktop-1440.png"
+  },
+  {
+    "overflow": 0,
+    "page": true,
+    "filters": [
+      {
+        "visible": true,
+        "width": 322
+      },
+      {
+        "visible": true,
+        "width": 156
+      },
+      {
+        "visible": true,
+        "width": 156
+      }
+    ],
+    "cards": 36,
+    "buttonsVisible": [
+      true,
+      true,
+      true
+    ],
+    "panelWidth": 350,
+    "size": "390x844",
+    "fixture": "r21-collection-zh-all-fixture.html",
+    "screenshot": "r21-collection-mobile-390.png"
+  },
+  {
+    "overflow": 0,
+    "page": true,
+    "filters": [
+      {
+        "visible": true,
+        "width": 252
+      },
+      {
+        "visible": true,
+        "width": 121
+      },
+      {
+        "visible": true,
+        "width": 121
+      }
+    ],
+    "cards": 36,
+    "buttonsVisible": [
+      true,
+      true,
+      true
+    ],
+    "panelWidth": 280,
+    "size": "320x700",
+    "fixture": "r21-collection-zh-all-fixture.html",
+    "screenshot": "r21-collection-mobile-320.png"
+  },
+  {
+    "overflow": 0,
+    "page": true,
+    "filters": [
+      {
+        "visible": true,
+        "width": 294
+      },
+      {
+        "visible": true,
+        "width": 200
+      },
+      {
+        "visible": true,
+        "width": 200
+      }
+    ],
+    "cards": 3,
+    "buttonsVisible": [
+      true,
+      true,
+      true
+    ],
+    "panelWidth": 756,
+    "size": "800x900",
+    "fixture": "r21-collection-en-favorites-fixture.html",
+    "screenshot": "r21-collection-tablet-800.png"
+  },
+  {
+    "overflow": 0,
+    "page": true,
+    "filters": [
+      {
+        "visible": true,
+        "width": 322
+      },
+      {
+        "visible": true,
+        "width": 156
+      },
+      {
+        "visible": true,
+        "width": 156
+      }
+    ],
+    "cards": 5,
+    "buttonsVisible": [
+      true,
+      true,
+      true
+    ],
+    "panelWidth": 350,
+    "size": "390x844",
+    "fixture": "r21-collection-ja-discovered-fixture.html",
+    "screenshot": "r21-collection-discovered-ja-390.png"
+  },
+  {
+    "overflow": 0,
+    "page": true,
+    "filters": [
+      {
+        "visible": true,
+        "width": 322
+      },
+      {
+        "visible": true,
+        "width": 156
+      },
+      {
+        "visible": true,
+        "width": 156
+      }
+    ],
+    "cards": 0,
+    "buttonsVisible": [
+      true,
+      true,
+      true
+    ],
+    "panelWidth": 350,
+    "size": "390x844",
+    "fixture": "r21-collection-ko-all-fixture.html",
+    "screenshot": "r21-collection-empty-ko-390.png"
+  }
+]

@@ -1,0 +1,23 @@
+{
+  "storageKey": "tsukuruum.moji-blade.scout-run.v3",
+  "kind": "synthetic-schema-sample",
+  "value": {
+    "version": 3,
+    "stage": "standard",
+    "phase": "select",
+    "started": false,
+    "wins": 0,
+    "victories": [],
+    "serial": 1,
+    "party": [
+      { "id": "u0", "glyph": "文", "font": "gothic", "rare": false },
+      null,
+      null
+    ],
+    "seen": ["[\"文\",\"gothic\",\"normal\"]"],
+    "enemy": null,
+    "selected": null,
+    "last": { "id": "u0", "glyph": "文", "font": "gothic", "rare": false },
+    "endReason": null
+  }
+}
