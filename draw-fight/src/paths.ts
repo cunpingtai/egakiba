@@ -9,6 +9,7 @@ export function drawHref(suffix = '') {
 
 export function prefixDrawLinks(html: string) {
   return html
+    .replaceAll('href="__SITE_HOME__"', `href="${siteRoot()}"`)
     .replaceAll('href="/studio', `href="${drawHref('studio')}`)
     .replaceAll('href="/gpu-check"', `href="${drawHref('gpu-check/')}"`)
     .replaceAll('href="/"', `href="${drawHref()}"`)

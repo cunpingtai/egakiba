@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import { studioShell } from '../../../draw-fight/src/pages/shells'
 import { openDrawFrame } from '../../draw-fight/frame'
 import { rakugakiPathCanonical } from '../../draw-fight/seo'
+import { SiteIndexLinks } from '../../site-links'
 
 type StudioSearch = {
   demo?: 1
@@ -49,5 +50,10 @@ function DrawFightStudio() {
       shadow.innerHTML = ''
     }
   }, [])
-  return <div ref={hostRef} style={{ minHeight: '100dvh', background: '#d9e5e3' }} />
+  return (
+    <>
+      <div ref={hostRef} style={{ minHeight: '100dvh', background: '#d9e5e3' }} />
+      <SiteIndexLinks current="draw-fight/studio" />
+    </>
+  )
 }

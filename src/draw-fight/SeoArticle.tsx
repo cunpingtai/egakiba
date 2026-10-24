@@ -1,5 +1,6 @@
 import { Fragment, type ReactNode } from 'react'
 
+import { SiteIndexLinks } from '../site-links'
 import { GUIDE_PAGES, rakugakiHref, type RakugakiPage, type SeoBlock } from './seo'
 
 export function SeoBlocks({ blocks }: { blocks: SeoBlock[] }) {
@@ -8,12 +9,15 @@ export function SeoBlocks({ blocks }: { blocks: SeoBlock[] }) {
 
 export function GuideNav({ current }: { current: string }) {
   return (
-    <nav className="rf-seo-nav" aria-label="ラクガキファイターのガイド">
-      {current === 'home' ? <span>ゲーム</span> : <a href={rakugakiHref('/draw-fight')}>ラクガキファイターをプレイ</a>}
-      {GUIDE_PAGES.map(([slug, label]) => slug === current
-        ? <span key={slug}>{label}</span>
-        : <a key={slug} href={rakugakiHref(`/draw-fight/${slug}`)}>{label}</a>)}
-    </nav>
+    <>
+      <nav className="rf-seo-nav" aria-label="ラクガキファイターのガイド">
+        {current === 'home' ? <span>ゲーム</span> : <a href={rakugakiHref('/draw-fight')}>ラクガキファイターをプレイ</a>}
+        {GUIDE_PAGES.map(([slug, label]) => slug === current
+          ? <span key={slug}>{label}</span>
+          : <a key={slug} href={rakugakiHref(`/draw-fight/${slug}`)}>{label}</a>)}
+      </nav>
+      <SiteIndexLinks current={current === 'home' ? 'draw-fight' : `draw-fight/${current}`} />
+    </>
   )
 }
 

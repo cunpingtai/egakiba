@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(drawFightHref: string): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -21,11 +21,27 @@ export function siteGames(drawFightHref: string): SiteGame[] {
     },
     {
       id: 'rakugaki-fighter',
-      href: drawFightHref,
+      href: links.drawFight,
       mark: '絵',
       kicker: 'お絵描き格闘',
       title: 'ラクガキファイター',
       description: '描いたキャラが動き出して、そのままバトル。',
+    },
+    {
+      id: 'typhoon-escape',
+      href: links.typhoonEscape,
+      mark: '風',
+      kicker: '台風回避',
+      title: 'タイフーンエスケープ',
+      description: '日本列島を動かして、台風から逃げる。',
+    },
+    {
+      id: 'zipper-finger',
+      href: links.zipperFinger,
+      mark: '開',
+      kicker: '写真ジッパー',
+      title: 'ジッパーフィンガー',
+      description: '好きな場所にジッパーを描いて、中の写真を開く。',
     },
   ]
 }

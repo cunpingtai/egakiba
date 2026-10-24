@@ -20,6 +20,10 @@ import { Route as DrawFightIndexRouteImport } from './routes/draw-fight/index'
 import { Route as DrawFightSlugRouteImport } from './routes/draw-fight/$slug'
 import { Route as DrawFightGpuCheckRouteImport } from './routes/draw-fight/gpu-check'
 import { Route as DrawFightStudioRouteImport } from './routes/draw-fight/studio'
+import { Route as TyphoonEscapeIndexRouteImport } from './routes/typhoon-escape/index'
+import { Route as TyphoonEscapeSlugRouteImport } from './routes/typhoon-escape/$slug'
+import { Route as ZipperFingerIndexRouteImport } from './routes/zipper-finger/index'
+import { Route as ZipperFingerSlugRouteImport } from './routes/zipper-finger/$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -76,6 +80,26 @@ const DrawFightStudioRoute = DrawFightStudioRouteImport.update({
   path: '/draw-fight/studio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TyphoonEscapeIndexRoute = TyphoonEscapeIndexRouteImport.update({
+  id: '/typhoon-escape/',
+  path: '/typhoon-escape/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TyphoonEscapeSlugRoute = TyphoonEscapeSlugRouteImport.update({
+  id: '/typhoon-escape/$slug',
+  path: '/typhoon-escape/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ZipperFingerIndexRoute = ZipperFingerIndexRouteImport.update({
+  id: '/zipper-finger/',
+  path: '/zipper-finger/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ZipperFingerSlugRoute = ZipperFingerSlugRouteImport.update({
+  id: '/zipper-finger/$slug',
+  path: '/zipper-finger/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -88,7 +112,11 @@ export interface FileRoutesByFullPath {
   '/draw-fight/$slug': typeof DrawFightSlugRoute
   '/draw-fight/gpu-check': typeof DrawFightGpuCheckRoute
   '/draw-fight/studio': typeof DrawFightStudioRoute
+  '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
+  '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/draw-fight/': typeof DrawFightIndexRoute
+  '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
+  '/zipper-finger/': typeof ZipperFingerIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -101,7 +129,11 @@ export interface FileRoutesByTo {
   '/draw-fight/$slug': typeof DrawFightSlugRoute
   '/draw-fight/gpu-check': typeof DrawFightGpuCheckRoute
   '/draw-fight/studio': typeof DrawFightStudioRoute
+  '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
+  '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/draw-fight': typeof DrawFightIndexRoute
+  '/typhoon-escape': typeof TyphoonEscapeIndexRoute
+  '/zipper-finger': typeof ZipperFingerIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -115,7 +147,11 @@ export interface FileRoutesById {
   '/draw-fight/$slug': typeof DrawFightSlugRoute
   '/draw-fight/gpu-check': typeof DrawFightGpuCheckRoute
   '/draw-fight/studio': typeof DrawFightStudioRoute
+  '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
+  '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/draw-fight/': typeof DrawFightIndexRoute
+  '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
+  '/zipper-finger/': typeof ZipperFingerIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -130,7 +166,11 @@ export interface FileRouteTypes {
     | '/draw-fight/$slug'
     | '/draw-fight/gpu-check'
     | '/draw-fight/studio'
+    | '/typhoon-escape/$slug'
+    | '/zipper-finger/$slug'
     | '/draw-fight/'
+    | '/typhoon-escape/'
+    | '/zipper-finger/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -143,7 +183,11 @@ export interface FileRouteTypes {
     | '/draw-fight/$slug'
     | '/draw-fight/gpu-check'
     | '/draw-fight/studio'
+    | '/typhoon-escape/$slug'
+    | '/zipper-finger/$slug'
     | '/draw-fight'
+    | '/typhoon-escape'
+    | '/zipper-finger'
   id:
     | '__root__'
     | '/'
@@ -156,7 +200,11 @@ export interface FileRouteTypes {
     | '/draw-fight/$slug'
     | '/draw-fight/gpu-check'
     | '/draw-fight/studio'
+    | '/typhoon-escape/$slug'
+    | '/zipper-finger/$slug'
     | '/draw-fight/'
+    | '/typhoon-escape/'
+    | '/zipper-finger/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -170,7 +218,11 @@ export interface RootRouteChildren {
   DrawFightSlugRoute: typeof DrawFightSlugRoute
   DrawFightGpuCheckRoute: typeof DrawFightGpuCheckRoute
   DrawFightStudioRoute: typeof DrawFightStudioRoute
+  TyphoonEscapeSlugRoute: typeof TyphoonEscapeSlugRoute
+  ZipperFingerSlugRoute: typeof ZipperFingerSlugRoute
   DrawFightIndexRoute: typeof DrawFightIndexRoute
+  TyphoonEscapeIndexRoute: typeof TyphoonEscapeIndexRoute
+  ZipperFingerIndexRoute: typeof ZipperFingerIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -252,6 +304,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DrawFightStudioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/typhoon-escape/': {
+      id: '/typhoon-escape/'
+      path: '/typhoon-escape'
+      fullPath: '/typhoon-escape/'
+      preLoaderRoute: typeof TyphoonEscapeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/typhoon-escape/$slug': {
+      id: '/typhoon-escape/$slug'
+      path: '/typhoon-escape/$slug'
+      fullPath: '/typhoon-escape/$slug'
+      preLoaderRoute: typeof TyphoonEscapeSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/zipper-finger/': {
+      id: '/zipper-finger/'
+      path: '/zipper-finger'
+      fullPath: '/zipper-finger/'
+      preLoaderRoute: typeof ZipperFingerIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/zipper-finger/$slug': {
+      id: '/zipper-finger/$slug'
+      path: '/zipper-finger/$slug'
+      fullPath: '/zipper-finger/$slug'
+      preLoaderRoute: typeof ZipperFingerSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -266,7 +346,11 @@ const rootRouteChildren: RootRouteChildren = {
   DrawFightSlugRoute: DrawFightSlugRoute,
   DrawFightGpuCheckRoute: DrawFightGpuCheckRoute,
   DrawFightStudioRoute: DrawFightStudioRoute,
+  TyphoonEscapeSlugRoute: TyphoonEscapeSlugRoute,
+  ZipperFingerSlugRoute: ZipperFingerSlugRoute,
   DrawFightIndexRoute: DrawFightIndexRoute,
+  TyphoonEscapeIndexRoute: TyphoonEscapeIndexRoute,
+  ZipperFingerIndexRoute: ZipperFingerIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

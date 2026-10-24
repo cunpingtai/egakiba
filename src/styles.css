@@ -110,6 +110,20 @@
     color: #ffd0c4;
     text-shadow: 3px 3px #8a4a55, 5px 8px 15px #060b30;
   }
+  .game-card--typhoon-escape {
+    background: linear-gradient(145deg, #2f6ea8, #1b2f5e 58%, #0e1a36);
+  }
+  .game-card--typhoon-escape .game-card-mark {
+    color: #f5b400;
+    text-shadow: 3px 3px #0b3a66, 5px 8px 15px #060b30;
+  }
+  .game-card--zipper-finger {
+    background: linear-gradient(145deg, #423028, #2a1e1b 58%, #140d0b);
+  }
+  .game-card--zipper-finger .game-card-mark {
+    color: #f2c14e;
+    text-shadow: 3px 3px #542b14, 5px 8px 15px #060b30;
+  }
   .game-card-body {
     position: relative;
     z-index: 1;

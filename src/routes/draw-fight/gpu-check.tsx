@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react'
 import { gpuShell } from '../../../draw-fight/src/pages/shells'
 import { openDrawFrame } from '../../draw-fight/frame'
 import { rakugakiPathCanonical } from '../../draw-fight/seo'
+import { SiteIndexLinks } from '../../site-links'
 
 export const Route = createFileRoute('/draw-fight/gpu-check')({
   ssr: true,
@@ -36,5 +37,10 @@ function DrawFightGpu() {
       shadow.innerHTML = ''
     }
   }, [])
-  return <div ref={hostRef} style={{ minHeight: '100dvh', background: '#faf5e8' }} />
+  return (
+    <>
+      <div ref={hostRef} style={{ minHeight: '100dvh', background: '#faf5e8' }} />
+      <SiteIndexLinks current="draw-fight/gpu-check" />
+    </>
+  )
 }

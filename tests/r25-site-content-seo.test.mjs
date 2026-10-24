@@ -37,7 +37,7 @@ test('R25 Japanese homepage has at least 3% exact primary-keyword density in bot
     assert.ok(d.percent >= 3, `${name}: ${d.hits}/${d.wordCount} = ${d.percent.toFixed(2)}%`);
     assert.ok(d.percent <= 4.5, `${name}: avoid excessive stuffing (${d.percent.toFixed(2)}%)`);
   }
-  assert.match(html, /文字ブレード｜漢字ブレード・文字ゲームを無料ブラウザで遊ぶ/);
+  assert.match(html, /文字ブレード｜漢字ブレード・無料ブラウザ文字ゲーム/);
   assert.match(html, /application\/ld\+json/);
   assert.match(jsx, /application\/ld\+json/);
 });

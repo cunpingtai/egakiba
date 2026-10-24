@@ -3,8 +3,11 @@ import { useEffect } from 'react'
 import { bootR9 } from '../game/boot'
 import { seoRouteHead, ROUTE_BASE } from '../seo/route-head'
 import { drawHref } from '../../draw-fight/src/paths'
+import { typhoonHref } from '../typhoon-escape/seo'
+import { zipperHref } from '../zipper-finger/seo'
 import { routeHref } from '../seo/landing-content.mjs'
 import { siteGames } from '../site-games'
+import { SiteIndexLinks } from '../site-links'
 
 export const Route = createFileRoute('/')({
   ssr: true,
@@ -120,7 +123,7 @@ function R9Shell() {
               <div><span className="section-kicker">GAMES</span><h2 id="game-shelf-title">あそべるゲーム</h2></div>
             </div>
             <div className="game-shelf-grid">
-              {siteGames(drawHref()).map((game) => (
+              {siteGames({ drawFight: drawHref(), typhoonEscape: typhoonHref(), zipperFinger: zipperHref() }).map((game) => (
                 <a className={`game-card game-card--${game.id}`} href={game.href} key={game.id} aria-current={game.here ? 'page' : undefined}>
                   <span className="game-card-mark" aria-hidden="true">{game.mark}</span>
                   <span className="game-card-body">
@@ -141,7 +144,7 @@ function R9Shell() {
             <a href={routeHref('play', 'ja', ROUTE_BASE)}><strong data-t="seoLinkPlayTitle">文字ブレードの遊び方</strong><span data-t="seoLinkPlayDesc">ストーリーとVS COMの違いを確認。</span></a>
             <a href={routeHref('how-to-play', 'ja', ROUTE_BASE)}><strong data-t="seoLinkGuideTitle">初心者ガイド</strong><span data-t="seoLinkGuideDesc">発射パワー、角度、Dashの基本。</span></a>
           </nav>
-          <h2 className="seo-faq-heading" data-t="seoFaqTitle">文字ブレードについてよくある質問</h2><div className="seo-faq"><section><h3 data-t="seoFaq1Q">文字ブレードは無料で遊べますか？</h3><p data-t="seoFaq1A">はい。文字ブレードはブラウザですぐに遊べる無料の文字ゲームです。アカウント登録やアプリのインストールは必要ありません。</p></section><section><h3 data-t="seoFaq2Q">最強の文字はどれですか？</h3><p data-t="seoFaq2A">文字ブレードでは、絶対に勝てる最強文字を断定していません。書体別の属性研究で候補を比較し、実際の文字バトルで自分の操作に合う文字を試してください。</p></section><section><h3 data-t="seoFaq3Q">スマートフォンでも遊べますか？</h3><p data-t="seoFaq3A">はい。文字ブレードはスマートフォンとPCのブラウザに対応しています。操作感は画面サイズや端末によって異なる場合があります。</p></section><section><h3 data-t="seoFaq4Q">世界一難しい漢字や画数の多い漢字も使えますか？</h3><p data-t="seoFaq4A">文字ブレードでは、入力した漢字が選んだ書体の原本データに対応しているかを確認します。画数の多い漢字や難読漢字でも、対応が確認できなければ対戦には進めません。</p></section></div></div></section>
+          <h2 className="seo-faq-heading" data-t="seoFaqTitle">文字ブレードについてよくある質問</h2><div className="seo-faq"><section><h3 data-t="seoFaq1Q">文字ブレードは無料で遊べますか？</h3><p data-t="seoFaq1A">はい。文字ブレードはブラウザですぐに遊べる無料の文字ゲームです。アカウント登録やアプリのインストールは必要ありません。</p></section><section><h3 data-t="seoFaq2Q">最強の文字はどれですか？</h3><p data-t="seoFaq2A">文字ブレードでは、絶対に勝てる最強文字を断定していません。書体別の属性研究で候補を比較し、実際の文字バトルで自分の操作に合う文字を試してください。</p></section><section><h3 data-t="seoFaq3Q">スマートフォンでも遊べますか？</h3><p data-t="seoFaq3A">はい。文字ブレードはスマートフォンとPCのブラウザに対応しています。操作感は画面サイズや端末によって異なる場合があります。</p></section><section><h3 data-t="seoFaq4Q">世界一難しい漢字や画数の多い漢字も使えますか？</h3><p data-t="seoFaq4A">文字ブレードでは、入力した漢字が選んだ書体の原本データに対応しているかを確認します。画数の多い漢字や難読漢字でも、対応が確認できなければ対戦には進めません。</p></section></div><SiteIndexLinks current="home" /></div></section>
           <footer className="home-footer"><span data-t="footerLine">文字ブレード · 文字の形が、バトルを変える。</span><span id="prototype-caption">STORY CHAPTER 01 · LOCAL PLAY</span></footer>
         </main>
         <main id="flow-page" className="flow-page" hidden aria-live="polite">

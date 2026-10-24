@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { SiteIndexLinks } from '../site-links'
 import {
   getSeoPage,
   routeHref,
@@ -22,15 +23,10 @@ const LINK_PAGES: { key: Exclude<SeoPageKey, 'home'>; labelKey: 'play' | 'stages
   { key: 'how-to-play', labelKey: 'guide', description: { ja: '発射パワーと角度を学ぶ', en: 'Learn power and angle control', zh: '学习发射力度与角度', ko: '발사 파워와 각도 배우기' } },
 ]
 
-const PLAY_HASH: Partial<Record<SeoPageKey, string>> = {
-  play: '#modes', stages: '#stages', glyphs: '#collection', compare: '#lab', strongest: '#glyph-ranking', 'how-to-play': '#modes',
-}
-
 export function SeoLandingPage({ pageKey, locale, routeBase }: { pageKey: SeoPageKey; locale: SeoLocale; routeBase: string }) {
   const copy = getSeoPage(pageKey, locale)
   const nav = NAV_COPY[locale] || NAV_COPY.ja
   const homeHref = routeHref('home', locale, routeBase)
-  const playHref = `${routeBase}${PLAY_HASH[pageKey] || '#modes'}`
   const sections: ReactNode[] = copy.sections.map((section, index) => (
     <section className="seo-landing-section" key={`${pageKey}-section-${index}`} aria-labelledby={`seo-section-${index}`}>
       <h2 id={`seo-section-${index}`}>{section.title}</h2>
@@ -53,7 +49,7 @@ export function SeoLandingPage({ pageKey, locale, routeBase }: { pageKey: SeoPag
           <a href={routeHref('compare', locale, routeBase)}>{nav.compare}</a>
           <a href={routeHref('strongest', locale, routeBase)}>{nav.strongest}</a>
         </nav>
-        <a className="seo-landing-header-cta" href={playHref}>{nav.playNow} ↗</a>
+        <a className="seo-landing-header-cta" href={homeHref}>{nav.playNow} ↗</a>
       </header>
 
       <article className="seo-landing-article">
@@ -82,11 +78,12 @@ export function SeoLandingPage({ pageKey, locale, routeBase }: { pageKey: SeoPag
           <h2 id="seo-related-title">{nav.explore}</h2>
           <div className="seo-related-grid">{LINK_PAGES.filter((item) => item.key !== pageKey).map((item) => <a href={routeHref(item.key, locale, routeBase)} key={item.key}><strong>{nav[item.labelKey]}</strong><span>{item.description[locale]}</span><span className="seo-related-arrow" aria-hidden="true">↗</span></a>)}</div>
         </nav>
-        <div className="seo-landing-cta"><div><p>{copy.eyebrow}</p><h2>{nav.playNow}</h2><span>{locale === 'ja' ? '文字を選び、対応書体を確認してから対戦を始めましょう。' : locale === 'zh' ? '选择文字并验证字体支持后，即可开始对战。' : locale === 'ko' ? '글자를 선택하고 서체 지원을 확인한 뒤 배틀을 시작하세요.' : 'Choose a glyph, verify typeface support, and start a battle.'}</span></div><a href={playHref}>{nav.playNow} ↗</a></div>
+        <div className="seo-landing-cta"><div><p>{copy.eyebrow}</p><h2>{nav.playNow}</h2><span>{locale === 'ja' ? '文字を選び、対応書体を確認してから対戦を始めましょう。' : locale === 'zh' ? '选择文字并验证字体支持后，即可开始对战。' : locale === 'ko' ? '글자를 선택하고 서체 지원을 확인한 뒤 배틀을 시작하세요.' : 'Choose a glyph, verify typeface support, and start a battle.'}</span></div><a href={homeHref}>{nav.playNow} ↗</a></div>
       </article>
 
       <footer className="seo-landing-footer">
         <span>MOJI BLADE · 文字の形が、バトルを変える。</span>
+        <SiteIndexLinks current={pageKey} />
       </footer>
     </main>
   )

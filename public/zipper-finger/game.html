@@ -1,0 +1,125 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<title>ジッパーフィンガー</title>
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://egakiba.com/zipper-finger/">
+<style>
+  :root{
+    --bg:#222; --fg:#eee; --panel:#333; --line:#555;
+    --front:#888; --back:#444;
+    --tape:#2a2a2a; --tooth:#c8c8c8; --slider:#d8d8d8;
+    --danger:#e53935;                                              /* 削除がオンのときのアイコン */
+    --del-tape:#6e1414; --del-tooth:#e53935; --del-slider:#ef6a66;  /* 削除がオンのときのジッパー */
+    --gold-tooth:#f2c14e; --gold-slider:#ffd86b;  /* 黄金のジッパー（布はふつうと同じ黒） */
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%;overflow:hidden}
+  body{
+    background:var(--bg); color:var(--fg);
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",system-ui,sans-serif;
+    touch-action:manipulation;
+    -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+  }
+  #app{
+    position:relative;
+    width:100%;max-width:420px;height:100vh;height:100dvh;margin:0 auto;
+    display:flex;flex-direction:column;
+    padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  #top{display:flex;justify-content:flex-end;gap:8px;padding:8px 8px 0}
+  #bar{display:flex;gap:8px;padding:8px}
+  .pick,.btn{position:relative;min-height:44px;display:flex;align-items:center;justify-content:center;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:8px;font:inherit;font-size:14px;cursor:pointer;padding:0 4px}
+  .pick{flex:1;min-width:0;white-space:nowrap}
+  .icon{width:44px;flex:none;padding:0}
+  .icon svg{width:24px;height:24px;display:block}
+  .btn:focus-visible{outline:2px solid var(--fg);outline-offset:2px}
+  /* 削除：オフはふたの閉じたゴミ箱、オンは赤いふたの開いたゴミ箱 */
+  #del .on{display:none}
+  #del[aria-pressed="true"]{color:var(--danger);border-color:var(--danger)}
+  /* カメラ：オンのときは反転表示し、どちらの写真をカメラにしているか（外・中）を添える */
+  #cam{gap:2px;width:auto;min-width:44px;padding:0 8px}
+  #cam[aria-pressed="true"]{background:var(--fg);color:var(--bg)}
+  #cam-label{font-size:13px}
+  #cam-label:empty{display:none}
+  #cam-video{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+  #del[aria-pressed="true"] .on{display:block}
+  #del[aria-pressed="true"] .off{display:none}
+  /* 音：オンとオフでアイコンを切り替える */
+  #sound .off{display:none}
+  #sound[aria-pressed="false"] .on{display:none}
+  #sound[aria-pressed="false"] .off{display:block}
+  .hidden{display:none !important}
+  /* 共有される内容の画面（共有シートが出ない環境用） */
+  #share-view{position:absolute;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5)}
+  #share-view .panel{width:min(90%,340px);max-height:94%;overflow:auto;touch-action:pan-y;background:var(--panel);border-radius:10px;padding:12px}
+  #share-img{display:block;width:100%;height:auto}
+  #share-text{white-space:pre-wrap;word-break:break-all;-webkit-user-select:text;user-select:text;font-size:14px}
+  #share-close{width:100%}
+  /* カメラを使う前の確認 */
+  #cam-view{position:absolute;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5)}
+  #cam-view .panel{width:min(90%,340px);background:var(--panel);border-radius:10px;padding:16px}
+  #cam-title{margin:0 0 8px;font-size:16px;font-weight:bold}
+  #cam-text{margin:0 0 16px;font-size:14px;line-height:1.6}
+  #cam-actions{display:flex;gap:8px}
+  #cam-actions .btn{flex:1}
+  #cam-allow{background:var(--fg);color:var(--bg)}
+  /* inputは消さずに見えなくするだけ（display:noneにすると環境によってファイル選択が効かない） */
+  .pick input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+  .pick:focus-within{outline:2px solid var(--fg)}
+  #stage{flex:1;position:relative;min-height:0}
+  canvas{display:block;width:100%;height:100%;touch-action:none}
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="top">
+    <button id="cam" class="btn icon" type="button" aria-pressed="false" aria-label="カメラ：オフ">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13.5" r="3.5"/></svg>
+      <span id="cam-label" aria-hidden="true"></span>
+    </button>
+    <button id="sound" class="btn icon" type="button" aria-pressed="true" aria-label="効果音">
+      <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></svg>
+      <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9l5 6M21 9l-5 6"/></svg>
+    </button>
+  </div>
+  <div id="stage">
+    <canvas id="cv" role="img" aria-label="写真。なぞるとジッパーが付き、引き手を動かすと開け閉めできます"></canvas>
+  </div>
+  <div id="bar">
+    <label class="pick" id="pick0"><span id="pickText0">外の写真</span><input id="file0" type="file" accept="image/*"></label>
+    <label class="pick" id="pick1"><span id="pickText1">中の写真</span><input id="file1" type="file" accept="image/*"></label>
+    <button id="share" class="btn icon" type="button" aria-label="共有">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7.5 7.5L12 3l4.5 4.5M8 10H6a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-9a1 1 0 0 0-1-1h-2"/></svg>
+    </button>
+    <button id="del" class="btn icon" type="button" aria-pressed="false" aria-label="ジッパーを削除">
+      <svg class="off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 4h4M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg>
+      <svg class="on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 6.5l13.5-4M10.5 3.5l3.6-1.1M6 9l1 11h10l1-11M10 12v5M14 12v5"/></svg>
+    </button>
+  </div>
+  <video id="cam-video" playsinline muted autoplay></video>
+  <div id="cam-view" class="hidden" role="dialog" aria-modal="true" aria-labelledby="cam-title" aria-describedby="cam-text">
+    <div class="panel">
+      <p id="cam-title">カメラを使います</p>
+      <p id="cam-text">スマホの外カメラ（背面）と内カメラ（画面側）を使います。外の写真には外カメラ、中の写真には内カメラの映像が入ります。</p>
+      <div id="cam-actions">
+        <button id="cam-close" class="btn" type="button">閉じる</button>
+        <button id="cam-allow" class="btn" type="button">許可</button>
+      </div>
+    </div>
+  </div>
+  <div id="share-view" class="hidden" role="dialog" aria-label="共有される内容">
+    <div class="panel">
+      <img id="share-img" alt="共有される画像">
+      <p id="share-text"></p>
+      <button id="share-close" class="btn" type="button">閉じる</button>
+    </div>
+  </div>
+</div>
+<script src="./three.min.js"></script>
+<script src="./game.js"></script>
+</body>
+</html>

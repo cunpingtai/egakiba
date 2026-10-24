@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://egakiba.com/typhoon-escape/">
+<title>タイフーンエスケープ</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #1B2F5E; font-family: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif; }
+  #wrap { position: fixed; inset: 0; touch-action: none; user-select: none; -webkit-user-select: none; }
+  canvas { display: block; width: 100%; height: 100%; }
+  .hud { position: absolute; left: 12px; top: 12px; display: flex; gap: 8px; font-size: 14px; }
+  .hud div { background: rgba(4,44,83,0.7); color: #E6F1FB; border-radius: 8px; padding: 6px 10px; }
+  #popup { position: absolute; left: 50%; top: 45%; transform: translate(-50%, -50%); width: min(80vw, 320px); background: rgba(255,255,255,0.96); color: #1B2F5E; border-radius: 14px; padding: 22px 20px; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.45); }
+  #popup h1 { margin: 0 0 10px; font-size: 22px; font-weight: 500; }
+  #popup h1:empty { display: none; }
+  #popup p { margin: 0 0 18px; font-size: 15px; line-height: 1.6; white-space: pre-line; }
+  #popup button { height: 48px; width: 100%; font-size: 16px; background: #F5B400; color: #1B2F5E; border: none; border-radius: 8px; font-weight: 500; }
+  #popup.hidden { display: none; }
+  #menubtn { position: absolute; right: 12px; top: 12px; width: 44px; height: 44px; border-radius: 10px; background: rgba(4,44,83,0.7); color: #E6F1FB; border: none; font-size: 22px; line-height: 44px; text-align: center; padding: 0; }
+  #menu { position: absolute; inset: 0; background: rgba(4,20,45,0.96); color: #E6F1FB; padding: 20px 18px; overflow-y: auto; display: none; font-size: 14px; line-height: 1.7; }
+  #menu.open { display: block; }
+  #menu h2 { font-size: 18px; font-weight: 500; margin: 0 0 12px; }
+  #menu h3 { font-size: 15px; font-weight: 500; margin: 18px 0 6px; border-bottom: 1px solid rgba(255,255,255,0.25); padding-bottom: 4px; }
+  #menu p { margin: 0 0 8px; }
+  #menu pre { white-space: pre-wrap; font-size: 12px; background: rgba(255,255,255,0.08); padding: 10px; border-radius: 8px; }
+  #menuclose { position: absolute; right: 12px; top: 12px; width: 44px; height: 44px; border-radius: 10px; background: rgba(230,241,251,0.15); color: #E6F1FB; border: none; font-size: 22px; }
+  #pad { position: absolute; left: 16px; bottom: 16px; width: 150px; height: 150px; border-radius: 50%; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.5); }
+  #knob { width: 62px; height: 62px; border-radius: 50%; background: rgba(255,255,255,0.8); position: absolute; left: 44px; top: 44px; pointer-events: none; }
+  #ticker { position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; }
+  .row { height: 36px; display: flex; align-items: stretch; overflow: hidden; }
+  .row.red { background: rgba(226,75,74,0.92); color: #fff; }
+  .row.yellow { background: rgba(250,199,117,0.95); color: #412402; }
+  .tag { font-size: 14px; font-weight: 500; padding: 0 12px; display: flex; align-items: center; white-space: nowrap; flex: none; background: rgba(0,0,0,0.25); }
+  .track { flex: 1; position: relative; overflow: hidden; }
+  .ttext { position: absolute; top: 0; left: 100%; height: 36px; line-height: 36px; font-size: 16px; white-space: nowrap; animation: tk linear forwards; }
+  @keyframes tk { from { transform: translateX(0); } to { transform: translateX(var(--dist)); } }
+  #pad { bottom: calc(16px + var(--rows, 0) * 36px); }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="cv"></canvas>
+  <div class="hud"><div id="time">2026年8月1日</div></div>
+  <div id="popup"><h1 id="ptitle"></h1><p id="ptext"></p><button id="pbtn"></button></div>
+  <div id="pad"><div id="knob"></div></div>
+  <div id="ticker"></div>
+  <button id="menubtn" aria-label="メニュー">☰</button>
+  <div id="menu">
+    <button id="menuclose" aria-label="閉じる">×</button>
+    <h3>使用データ・ライセンス</h3>
+    <p>地図データ：Natural Earth（パブリックドメイン）を world-atlas で TopoJSON 化したものを使用しています。</p>
+    <p>タイフーンのアジア名：気象庁「台風の番号とアジア名の付け方」に掲載のリストを使用しています。</p>
+    <pre>world-atlas
+Copyright 2013-2019 Michael Bostock
+
+Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.</pre>
+  </div>
+</div>
+<script src="./game.js"></script>
+</body>
+</html>

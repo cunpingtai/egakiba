@@ -56,7 +56,10 @@
 .seo-landing-cta h2 { font-size: 1.25rem; margin: 0 0 .3rem; }
 .seo-landing-cta span { display: block; color: #39465b; font-size: .88rem; line-height: 1.65; }
 .seo-landing-cta > a { flex: 0 0 auto; background: var(--seo-accent); color: white; font-weight: 800; padding: .85rem 1rem; border-radius: .65rem; text-decoration: none; }
-.seo-landing-footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.2rem clamp(1rem, 4vw, 3.5rem); border-top: 1px solid var(--seo-line); color: var(--seo-muted); font-size: .78rem; }
+.seo-landing-footer { display: flex; align-items: flex-start; justify-content: space-between; flex-direction: column; gap: 1rem; padding: 1.2rem clamp(1rem, 4vw, 3.5rem); border-top: 1px solid var(--seo-line); color: var(--seo-muted); font-size: .78rem; }
+.site-index-links { display: flex; flex-wrap: wrap; gap: 8px 14px; width: 100%; margin-top: 22px; padding-top: 14px; border-top: 1px solid #c7bda9; }
+.site-index-links a, .site-index-links span { color: #1c2d40; font-size: 13px; font-weight: 800; line-height: 1.4; text-decoration: underline; text-underline-offset: 3px; }
+.site-index-links span { text-decoration: none; background: #ffe08a; border-radius: 999px; padding: 2px 8px; }
 .seo-landing-footer nav { display: flex; flex-wrap: wrap; gap: .8rem; }
 .seo-landing-footer a { text-decoration: none; }
 .seo-route-discovery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .7rem; margin: 1.2rem 0 0; }
