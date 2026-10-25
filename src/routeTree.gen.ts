@@ -16,10 +16,16 @@ import { Route as HowToPlayRouteImport } from './routes/how-to-play'
 import { Route as PlayRouteImport } from './routes/play'
 import { Route as StagesRouteImport } from './routes/stages'
 import { Route as StrongestRouteImport } from './routes/strongest'
+import { Route as DashimakiGameIndexRouteImport } from './routes/dashimaki-game/index'
+import { Route as DashimakiGameSlugRouteImport } from './routes/dashimaki-game/$slug'
 import { Route as DrawFightIndexRouteImport } from './routes/draw-fight/index'
 import { Route as DrawFightSlugRouteImport } from './routes/draw-fight/$slug'
 import { Route as DrawFightGpuCheckRouteImport } from './routes/draw-fight/gpu-check'
 import { Route as DrawFightStudioRouteImport } from './routes/draw-fight/studio'
+import { Route as LongPotatoIndexRouteImport } from './routes/long-potato/index'
+import { Route as LongPotatoSlugRouteImport } from './routes/long-potato/$slug'
+import { Route as OmuriceSimulatorIndexRouteImport } from './routes/omurice-simulator/index'
+import { Route as OmuriceSimulatorSlugRouteImport } from './routes/omurice-simulator/$slug'
 import { Route as ShodoSimulator3dIndexRouteImport } from './routes/shodo-simulator-3d/index'
 import { Route as ShodoSimulator3dSlugRouteImport } from './routes/shodo-simulator-3d/$slug'
 import { Route as TyphoonEscapeIndexRouteImport } from './routes/typhoon-escape/index'
@@ -62,6 +68,16 @@ const StrongestRoute = StrongestRouteImport.update({
   path: '/strongest',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashimakiGameIndexRoute = DashimakiGameIndexRouteImport.update({
+  id: '/dashimaki-game/',
+  path: '/dashimaki-game/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashimakiGameSlugRoute = DashimakiGameSlugRouteImport.update({
+  id: '/dashimaki-game/$slug',
+  path: '/dashimaki-game/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DrawFightIndexRoute = DrawFightIndexRouteImport.update({
   id: '/draw-fight/',
   path: '/draw-fight/',
@@ -80,6 +96,26 @@ const DrawFightGpuCheckRoute = DrawFightGpuCheckRouteImport.update({
 const DrawFightStudioRoute = DrawFightStudioRouteImport.update({
   id: '/draw-fight/studio',
   path: '/draw-fight/studio',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LongPotatoIndexRoute = LongPotatoIndexRouteImport.update({
+  id: '/long-potato/',
+  path: '/long-potato/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LongPotatoSlugRoute = LongPotatoSlugRouteImport.update({
+  id: '/long-potato/$slug',
+  path: '/long-potato/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OmuriceSimulatorIndexRoute = OmuriceSimulatorIndexRouteImport.update({
+  id: '/omurice-simulator/',
+  path: '/omurice-simulator/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OmuriceSimulatorSlugRoute = OmuriceSimulatorSlugRouteImport.update({
+  id: '/omurice-simulator/$slug',
+  path: '/omurice-simulator/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShodoSimulator3dIndexRoute = ShodoSimulator3dIndexRouteImport.update({
@@ -121,13 +157,19 @@ export interface FileRoutesByFullPath {
   '/play': typeof PlayRoute
   '/stages': typeof StagesRoute
   '/strongest': typeof StrongestRoute
+  '/dashimaki-game/$slug': typeof DashimakiGameSlugRoute
   '/draw-fight/$slug': typeof DrawFightSlugRoute
   '/draw-fight/gpu-check': typeof DrawFightGpuCheckRoute
   '/draw-fight/studio': typeof DrawFightStudioRoute
+  '/long-potato/$slug': typeof LongPotatoSlugRoute
+  '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
+  '/dashimaki-game/': typeof DashimakiGameIndexRoute
   '/draw-fight/': typeof DrawFightIndexRoute
+  '/long-potato/': typeof LongPotatoIndexRoute
+  '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
   '/zipper-finger/': typeof ZipperFingerIndexRoute
@@ -140,13 +182,19 @@ export interface FileRoutesByTo {
   '/play': typeof PlayRoute
   '/stages': typeof StagesRoute
   '/strongest': typeof StrongestRoute
+  '/dashimaki-game/$slug': typeof DashimakiGameSlugRoute
   '/draw-fight/$slug': typeof DrawFightSlugRoute
   '/draw-fight/gpu-check': typeof DrawFightGpuCheckRoute
   '/draw-fight/studio': typeof DrawFightStudioRoute
+  '/long-potato/$slug': typeof LongPotatoSlugRoute
+  '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
+  '/dashimaki-game': typeof DashimakiGameIndexRoute
   '/draw-fight': typeof DrawFightIndexRoute
+  '/long-potato': typeof LongPotatoIndexRoute
+  '/omurice-simulator': typeof OmuriceSimulatorIndexRoute
   '/shodo-simulator-3d': typeof ShodoSimulator3dIndexRoute
   '/typhoon-escape': typeof TyphoonEscapeIndexRoute
   '/zipper-finger': typeof ZipperFingerIndexRoute
@@ -160,13 +208,19 @@ export interface FileRoutesById {
   '/play': typeof PlayRoute
   '/stages': typeof StagesRoute
   '/strongest': typeof StrongestRoute
+  '/dashimaki-game/$slug': typeof DashimakiGameSlugRoute
   '/draw-fight/$slug': typeof DrawFightSlugRoute
   '/draw-fight/gpu-check': typeof DrawFightGpuCheckRoute
   '/draw-fight/studio': typeof DrawFightStudioRoute
+  '/long-potato/$slug': typeof LongPotatoSlugRoute
+  '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
+  '/dashimaki-game/': typeof DashimakiGameIndexRoute
   '/draw-fight/': typeof DrawFightIndexRoute
+  '/long-potato/': typeof LongPotatoIndexRoute
+  '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
   '/zipper-finger/': typeof ZipperFingerIndexRoute
@@ -181,13 +235,19 @@ export interface FileRouteTypes {
     | '/play'
     | '/stages'
     | '/strongest'
+    | '/dashimaki-game/$slug'
     | '/draw-fight/$slug'
     | '/draw-fight/gpu-check'
     | '/draw-fight/studio'
+    | '/long-potato/$slug'
+    | '/omurice-simulator/$slug'
     | '/shodo-simulator-3d/$slug'
     | '/typhoon-escape/$slug'
     | '/zipper-finger/$slug'
+    | '/dashimaki-game/'
     | '/draw-fight/'
+    | '/long-potato/'
+    | '/omurice-simulator/'
     | '/shodo-simulator-3d/'
     | '/typhoon-escape/'
     | '/zipper-finger/'
@@ -200,13 +260,19 @@ export interface FileRouteTypes {
     | '/play'
     | '/stages'
     | '/strongest'
+    | '/dashimaki-game/$slug'
     | '/draw-fight/$slug'
     | '/draw-fight/gpu-check'
     | '/draw-fight/studio'
+    | '/long-potato/$slug'
+    | '/omurice-simulator/$slug'
     | '/shodo-simulator-3d/$slug'
     | '/typhoon-escape/$slug'
     | '/zipper-finger/$slug'
+    | '/dashimaki-game'
     | '/draw-fight'
+    | '/long-potato'
+    | '/omurice-simulator'
     | '/shodo-simulator-3d'
     | '/typhoon-escape'
     | '/zipper-finger'
@@ -219,13 +285,19 @@ export interface FileRouteTypes {
     | '/play'
     | '/stages'
     | '/strongest'
+    | '/dashimaki-game/$slug'
     | '/draw-fight/$slug'
     | '/draw-fight/gpu-check'
     | '/draw-fight/studio'
+    | '/long-potato/$slug'
+    | '/omurice-simulator/$slug'
     | '/shodo-simulator-3d/$slug'
     | '/typhoon-escape/$slug'
     | '/zipper-finger/$slug'
+    | '/dashimaki-game/'
     | '/draw-fight/'
+    | '/long-potato/'
+    | '/omurice-simulator/'
     | '/shodo-simulator-3d/'
     | '/typhoon-escape/'
     | '/zipper-finger/'
@@ -239,13 +311,19 @@ export interface RootRouteChildren {
   PlayRoute: typeof PlayRoute
   StagesRoute: typeof StagesRoute
   StrongestRoute: typeof StrongestRoute
+  DashimakiGameSlugRoute: typeof DashimakiGameSlugRoute
   DrawFightSlugRoute: typeof DrawFightSlugRoute
   DrawFightGpuCheckRoute: typeof DrawFightGpuCheckRoute
   DrawFightStudioRoute: typeof DrawFightStudioRoute
+  LongPotatoSlugRoute: typeof LongPotatoSlugRoute
+  OmuriceSimulatorSlugRoute: typeof OmuriceSimulatorSlugRoute
   ShodoSimulator3dSlugRoute: typeof ShodoSimulator3dSlugRoute
   TyphoonEscapeSlugRoute: typeof TyphoonEscapeSlugRoute
   ZipperFingerSlugRoute: typeof ZipperFingerSlugRoute
+  DashimakiGameIndexRoute: typeof DashimakiGameIndexRoute
   DrawFightIndexRoute: typeof DrawFightIndexRoute
+  LongPotatoIndexRoute: typeof LongPotatoIndexRoute
+  OmuriceSimulatorIndexRoute: typeof OmuriceSimulatorIndexRoute
   ShodoSimulator3dIndexRoute: typeof ShodoSimulator3dIndexRoute
   TyphoonEscapeIndexRoute: typeof TyphoonEscapeIndexRoute
   ZipperFingerIndexRoute: typeof ZipperFingerIndexRoute
@@ -302,6 +380,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StrongestRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashimaki-game/': {
+      id: '/dashimaki-game/'
+      path: '/dashimaki-game'
+      fullPath: '/dashimaki-game/'
+      preLoaderRoute: typeof DashimakiGameIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashimaki-game/$slug': {
+      id: '/dashimaki-game/$slug'
+      path: '/dashimaki-game/$slug'
+      fullPath: '/dashimaki-game/$slug'
+      preLoaderRoute: typeof DashimakiGameSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/draw-fight/': {
       id: '/draw-fight/'
       path: '/draw-fight'
@@ -328,6 +420,34 @@ declare module '@tanstack/react-router' {
       path: '/draw-fight/studio'
       fullPath: '/draw-fight/studio'
       preLoaderRoute: typeof DrawFightStudioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/long-potato/': {
+      id: '/long-potato/'
+      path: '/long-potato'
+      fullPath: '/long-potato/'
+      preLoaderRoute: typeof LongPotatoIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/long-potato/$slug': {
+      id: '/long-potato/$slug'
+      path: '/long-potato/$slug'
+      fullPath: '/long-potato/$slug'
+      preLoaderRoute: typeof LongPotatoSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/omurice-simulator/': {
+      id: '/omurice-simulator/'
+      path: '/omurice-simulator'
+      fullPath: '/omurice-simulator/'
+      preLoaderRoute: typeof OmuriceSimulatorIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/omurice-simulator/$slug': {
+      id: '/omurice-simulator/$slug'
+      path: '/omurice-simulator/$slug'
+      fullPath: '/omurice-simulator/$slug'
+      preLoaderRoute: typeof OmuriceSimulatorSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/shodo-simulator-3d/': {
@@ -383,13 +503,19 @@ const rootRouteChildren: RootRouteChildren = {
   PlayRoute: PlayRoute,
   StagesRoute: StagesRoute,
   StrongestRoute: StrongestRoute,
+  DashimakiGameSlugRoute: DashimakiGameSlugRoute,
   DrawFightSlugRoute: DrawFightSlugRoute,
   DrawFightGpuCheckRoute: DrawFightGpuCheckRoute,
   DrawFightStudioRoute: DrawFightStudioRoute,
+  LongPotatoSlugRoute: LongPotatoSlugRoute,
+  OmuriceSimulatorSlugRoute: OmuriceSimulatorSlugRoute,
   ShodoSimulator3dSlugRoute: ShodoSimulator3dSlugRoute,
   TyphoonEscapeSlugRoute: TyphoonEscapeSlugRoute,
   ZipperFingerSlugRoute: ZipperFingerSlugRoute,
+  DashimakiGameIndexRoute: DashimakiGameIndexRoute,
   DrawFightIndexRoute: DrawFightIndexRoute,
+  LongPotatoIndexRoute: LongPotatoIndexRoute,
+  OmuriceSimulatorIndexRoute: OmuriceSimulatorIndexRoute,
   ShodoSimulator3dIndexRoute: ShodoSimulator3dIndexRoute,
   TyphoonEscapeIndexRoute: TyphoonEscapeIndexRoute,
   ZipperFingerIndexRoute: ZipperFingerIndexRoute,

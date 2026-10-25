@@ -131,6 +131,27 @@
     color: #f4efe4;
     text-shadow: 3px 3px #2a211c, 5px 8px 15px #060b30;
   }
+  .game-card--dashimaki-game {
+    background: linear-gradient(145deg, #c47a22, #6a3b18 58%, #1c1410);
+  }
+  .game-card--dashimaki-game .game-card-mark {
+    color: #ffe08a;
+    text-shadow: 3px 3px #5a2a10, 5px 8px 15px #060b30;
+  }
+  .game-card--omurice-simulator {
+    background: linear-gradient(145deg, #e0a020, #b23a2f 58%, #2a1612);
+  }
+  .game-card--omurice-simulator .game-card-mark {
+    color: #fff3c4;
+    text-shadow: 3px 3px #7a241c, 5px 8px 15px #060b30;
+  }
+  .game-card--long-potato {
+    background: linear-gradient(145deg, #e0b15a, #8a5a2a 58%, #2a1c12);
+  }
+  .game-card--long-potato .game-card-mark {
+    color: #fff1c9;
+    text-shadow: 3px 3px #5a3414, 5px 8px 15px #060b30;
+  }
   .game-card-body {
     position: relative;
     z-index: 1;

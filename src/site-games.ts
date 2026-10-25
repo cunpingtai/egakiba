@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -50,6 +50,30 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: '書道',
       title: '書道シミュレーター3D',
       description: '半紙に筆で書いて、点数を見る。',
+    },
+    {
+      id: 'dashimaki-game',
+      href: links.dashimaki,
+      mark: '卵',
+      kicker: '料理',
+      title: 'だし巻きゲーム',
+      description: '火加減と油で卵焼きを巻く。',
+    },
+    {
+      id: 'omurice-simulator',
+      href: links.omurice,
+      mark: '皿',
+      kicker: '料理',
+      title: 'オムライスシミュレーター',
+      description: '卵を折って、チキンライスの上で開く。',
+    },
+    {
+      id: 'long-potato',
+      href: links.potato,
+      mark: '芋',
+      kicker: '料理',
+      title: 'ぐるぐるポテトメーカー',
+      description: 'じゃがいもをぐるぐる切って、長さを競う。',
     },
   ]
 }

@@ -1,6 +1,9 @@
 import { drawHref } from '../draw-fight/src/paths'
 import { routeHref } from './seo/landing-content.mjs'
 import { typhoonHref } from './typhoon-escape/seo'
+import { dashimakiHref } from './dashimaki-game/seo'
+import { omuriceHref } from './omurice-simulator/seo'
+import { potatoHref } from './long-potato/seo'
 import { shodoHref } from './shodo-simulator-3d/seo'
 import { zipperHref } from './zipper-finger/seo'
 
@@ -39,6 +42,21 @@ export function siteIndexLinks() {
     { id: 'zipper-finger/jojo', href: zipperHref('jojo/'), label: 'ジョジョとの関係' },
     { id: 'shodo-simulator-3d', href: shodoHref(), label: '書道シミュレーター3D' },
     { id: 'shodo-simulator-3d/how-to-play', href: shodoHref('how-to-play/'), label: '書道の遊び方' },
+    { id: 'dashimaki-game', href: dashimakiHref(), label: 'だし巻きゲーム' },
+    { id: 'dashimaki-game/how-to-play', href: dashimakiHref('how-to-play/'), label: 'だし巻きの遊び方' },
+    { id: 'dashimaki-game/phantom-dashimaki', href: dashimakiHref('phantom-dashimaki/'), label: '幻の出し巻き' },
+    { id: 'dashimaki-game/failures', href: dashimakiHref('failures/'), label: 'だし巻きの失敗' },
+    { id: 'dashimaki-game/faq', href: dashimakiHref('faq/'), label: 'だし巻きの質問' },
+    { id: 'omurice-simulator', href: omuriceHref(), label: 'オムライスシミュレーター' },
+    { id: 'omurice-simulator/how-to-play', href: omuriceHref('how-to-play/'), label: 'オムライスの遊び方' },
+    { id: 'omurice-simulator/high-score', href: omuriceHref('high-score/'), label: 'オムライスの高得点' },
+    { id: 'omurice-simulator/fold-and-flip', href: omuriceHref('fold-and-flip/'), label: 'オムライスの合わせ目' },
+    { id: 'omurice-simulator/faq', href: omuriceHref('faq/'), label: 'オムライスの質問' },
+    { id: 'long-potato', href: potatoHref(), label: 'ぐるぐるポテトメーカー' },
+    { id: 'long-potato/how-to-play', href: potatoHref('how-to-play/'), label: 'ぐるぐるポテトの遊び方' },
+    { id: 'long-potato/tips', href: potatoHref('tips/'), label: 'ぐるぐるポテトのコツ' },
+    { id: 'long-potato/records', href: potatoHref('records/'), label: 'ぐるぐるポテトの称号' },
+    { id: 'long-potato/faq', href: potatoHref('faq/'), label: 'ぐるぐるポテトの質問' },
   ]
 }
 

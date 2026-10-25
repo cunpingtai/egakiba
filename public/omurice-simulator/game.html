@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://egakiba.com/omurice-simulator/">
+<title>オムライスシミュレーター</title>
+<script type="importmap">
+{ "imports": { "three": "./vendor/three.module.min.js" } }
+</script>
+<style>
+* { box-sizing: border-box; }
+html, body { margin: 0; background: #1b1b1b; color: #eee; }
+body { font-family: "Yu Gothic", "Hiragino Sans", sans-serif; }
+#app { position: relative; max-width: 480px; margin: 0 auto; padding: 8px 16px 24px; }
+#cv { display: block; width: min(100%, calc((100svh - 60px) * 9 / 16)); margin: 0 auto; aspect-ratio: 9 / 16; touch-action: none; user-select: none; -webkit-user-select: none; background: #7a5c40; }
+#msg { min-height: 1.5em; margin: 10px 2px 0; font-weight: 700; }
+.howto, .credit { margin: 8px 2px 0; font-size: 15px; line-height: 1.7; }
+.howto { opacity: .85; }
+.howto a { color: inherit; }
+.credit { font-size: 13px; opacity: .7; }
+.modal { position: fixed; inset: 0; display: grid; place-items: end center; padding: 16px 16px 20px; background: linear-gradient(rgba(20, 20, 22, 0) 45%, rgba(20, 20, 22, .45)); z-index: 10; }
+.modal[hidden] { display: none; }
+.modal-box { width: min(100%, 360px); display: grid; gap: 8px; padding: 14px 16px; background: #262626; color: #eee; border-radius: 6px; box-shadow: 0 10px 30px rgba(0, 0, 0, .25); text-align: center; }
+.modal-label { margin: 0; font-size: 13px; letter-spacing: .1em; opacity: .7; }
+.modal-main { margin: 0; font-size: 21px; font-weight: 900; line-height: 1.35; overflow-wrap: anywhere; }
+.modal-sub { margin: 0; white-space: pre-line; font-size: 13px; font-weight: 700; opacity: .8; }
+.modal-sub:empty { display: none; }
+.modal-post, .modal-again { font-family: inherit; cursor: pointer; }
+.modal-post { display: block; width: 100%; padding: 11px; border: 0; border-radius: 4px; background: #111; color: #fff; font-weight: 900; font-size: 18px; }
+.modal-again { padding: 10px; border: 1px solid #666; border-radius: 4px; background: transparent; color: #eee; font-weight: 700; font-size: 16px; line-height: 1; }
+.modal-post:focus-visible, .modal-again:focus-visible { outline: 3px solid #5d7d96; outline-offset: 2px; }
+.modal.guard .modal-post, .modal.guard .modal-again { pointer-events: none; opacity: .55; }
+.result-ok { position: absolute; left: 50%; transform: translate(-50%, -50%); min-width: 160px; min-height: 52px; padding: 0 28px; border: 1px solid #666; border-radius: 4px; background: #111; color: #fff; font-weight: 900; font-size: 20px; line-height: 1; font-family: inherit; cursor: pointer; z-index: 5; }
+.result-ok[hidden] { display: none; }
+</style>
+</head>
+<body>
+<main id="app">
+  <canvas id="cv" aria-label="フライパンで溶き卵を菜箸で混ぜて折り、フライパンを振って転がしてオムレツにし、皿のチキンライスに乗せて包丁で切り開くようす"></canvas>
+  <p id="msg" role="status">タップで卵を流す</p>
+  <p class="howto">卵を混ぜて折り、フライパンを振って転がし、チキンライスに載せて切る。タップで卵を流す。右下のつまみで火加減。①菜箸でなぞって混ぜる ②混ぜるのをやめて底が固まるのを待つ（火を弱めるのはこのころ）③フライ返しで奥から手前へなぞって折る ④指を下へ払ってフライパンを振り、卵を転がす ⑤合わせ目（巻き終わりのふち）が下に来たら「完成」（Enter）。最後は皿のチキンライスに載せて包丁を入れる。</p>
+  <p class="howto"><a href="/omurice-simulator/how-to-play/" target="_top">もっと詳しい遊び方・高得点のコツ →</a></p>
+  <p class="credit">ver 1.0.1 · 2026/10/18 折るなぞりを短くした。制作：よりみちゲーム</p>
+  <button type="button" id="result-ok" class="result-ok" hidden>OK</button>
+  <div id="result" class="modal" role="dialog" aria-modal="true" aria-labelledby="result-title" hidden>
+    <div class="modal-box">
+      <p class="modal-label" id="result-title">結果</p>
+      <p class="modal-main" id="result-main"></p>
+      <p class="modal-sub" id="result-sub"></p>
+      <button type="button" id="result-post" class="modal-post">共有</button>
+      <button type="button" id="result-again" class="modal-again">もう一度</button>
+    </div>
+  </div>
+</main>
+<script type="module" src="./game.js"></script>
+</body>
+</html>

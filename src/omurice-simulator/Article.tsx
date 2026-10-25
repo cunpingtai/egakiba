@@ -1,0 +1,54 @@
+import { Fragment, type ReactNode } from 'react'
+
+import { SiteIndexLinks } from '../site-links'
+import { OMURICE_GUIDES, type OmuriceBlock } from './content'
+import { omuriceHref } from './seo'
+
+export function OmuriceBlocks({ blocks }: { blocks: OmuriceBlock[] }) {
+  return blocks.map((block, index) => <Fragment key={index}>{renderBlock(block)}</Fragment>)
+}
+
+export function OmuriceNav({ current }: { current: string }) {
+  return (
+    <>
+      <nav className="rf-seo-nav" aria-label="オムライスシミュレーターの案内">
+        {current === 'home' ? <span>ガイド</span> : <a href={omuriceHref()}>オムライスシミュレーター</a>}
+        {OMURICE_GUIDES.map(([slug, label]) => slug === current
+          ? <span key={slug}>{label}</span>
+          : <a key={slug} href={omuriceHref(`${slug}/`)}>{label}</a>)}
+        <a href={omuriceHref('#play')}>オムライスをつくる</a>
+      </nav>
+      <SiteIndexLinks current={current === 'home' ? 'omurice-simulator' : `omurice-simulator/${current}`} />
+    </>
+  )
+}
+
+function renderBlock(block: OmuriceBlock) {
+  if (block.type === 'h1') return <h1>{inline(block.text)}</h1>
+  if (block.type === 'h2') return <h2>{inline(block.text)}</h2>
+  if (block.type === 'h3') return <h3>{inline(block.text)}</h3>
+  return <p>{inline(block.text)}</p>
+}
+
+function inline(text: string): ReactNode[] {
+  const nodes: ReactNode[] = []
+  const pattern = /\*\*\[([^\]]+)\]\(([^)]+)\)\*\*|\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*/g
+  let last = 0
+  let key = 0
+  for (const match of text.matchAll(pattern)) {
+    const index = match.index ?? 0
+    if (index > last) nodes.push(text.slice(last, index))
+    if (match[5]) nodes.push(<strong key={key += 1}>{match[5]}</strong>)
+    else if (match[1]) nodes.push(<strong key={key += 1}><a {...linkProps(match[2])}>{match[1]}</a></strong>)
+    else nodes.push(<a key={key += 1} {...linkProps(match[4])}>{match[3]}</a>)
+    last = index + match[0].length
+  }
+  if (last < text.length) nodes.push(text.slice(last))
+  return nodes
+}
+
+function linkProps(href: string) {
+  if (href === '#play') return { href: omuriceHref('#play') }
+  const slug = href.replace(/^\/omurice-simulator\/?/, '')
+  return { href: omuriceHref(slug ? `${slug.replace(/\/$/, '')}/` : '') }
+}

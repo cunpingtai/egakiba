@@ -1,0 +1,1155 @@
+<!doctype html>
+<html lang="ja" translate="no"><head><meta charset="utf-8">
+<script>var ADS={enabled:false,banner:false,h5:"off",bannerSlot:"",test:false};</script>
+<!-- ブラウザの自動翻訳を止める（英語の文言が機械翻訳され「完成」が「終わり」などに変わっていたため。2026-10-12）。言語は右上のボタンで切り替える -->
+<meta name="google" content="notranslate">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>だし巻き</title>
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://egakiba.com/dashimaki-game/">
+<style>
+html,body{margin:0;height:100%;background:#0d0b0a;overflow:hidden;color:#f3e6cf;font-family:system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+canvas{display:block;touch-action:none}
+button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+.pill{background:#0008;border:1px solid #f3e6cf55;border-radius:16px;padding:6px 14px;font-size:14px}
+/* 右上に言語、その下に「？」。「完成」は左下（2026-10-11） */
+#top{position:fixed;right:12px;top:calc(12px + env(safe-area-inset-top));display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+#finish{position:fixed;left:12px;bottom:calc(14px + env(safe-area-inset-bottom));font-size:16px;padding:7px 20px;border-color:#f3e6cfaa}
+/* 火加減のつまみ：周りの帯が「消 → 強」へ赤く太くなる。下に今の火加減の名前 */
+#knob{position:fixed;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));width:124px;text-align:center;touch-action:none}
+#scale{position:relative;width:124px;height:124px;border-radius:50%;
+  background:conic-gradient(from -135deg,#4a90d9 0deg,#f0a030 135deg,#e8401c 270deg,transparent 270deg);
+  -webkit-mask:radial-gradient(circle,transparent 52px,#000 53px);mask:radial-gradient(circle,transparent 52px,#000 53px);opacity:.85}
+#dial{position:absolute;left:18px;top:18px;width:88px;height:88px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#55504a,#1c1a18 70%);box-shadow:0 2px 10px #000,inset 0 1px 1px #fff4}
+#dial::after{content:"";position:absolute;left:50%;top:7px;width:6px;height:30px;margin-left:-3px;border-radius:3px;background:#f3e6cf}
+.end{position:absolute;bottom:2px;font-size:15px;font-weight:bold;text-shadow:0 1px 3px #000}
+#lo{left:4px;color:#8cc0f0}#hi{right:4px;color:#ff8a5c}
+/* 触れる所のマーク（道具・巻いた卵・持ち手）。丸と名前を出し、3Dの位置に合わせて毎フレーム動かす。常に薄く、マウスを乗せると濃く */
+.mark{position:fixed;left:0;top:0;pointer-events:none;opacity:.6;transition:opacity .15s}
+.mark.hover,.mark.on{opacity:1}
+.ring{position:absolute;width:30px;height:30px;left:-15px;top:-15px;border:2px solid #fff;border-radius:50%;box-sizing:border-box;animation:pulse 1.6s ease-in-out infinite}
+.mark.on .ring{border-color:#f3c060}
+.label{position:absolute;left:0;top:18px;transform:translateX(-50%);white-space:nowrap;font-size:14px;padding:1px 8px;border-radius:9px;background:#000a;text-shadow:0 1px 2px #000}
+.mark.on .label{color:#f3c060}
+/* 道具の名前：〇なしで、物の上に少し大きく */
+.mark.tool .label{top:-12px;font-size:16px;padding:2px 10px;border-radius:11px}
+/* 巻いた卵：菜箸を持っている間は、前後にスライドして動かせることを上下の矢印で示す */
+#slideHint{position:absolute;left:44px;top:-26px;display:none;align-items:center;gap:4px;white-space:nowrap}
+#slideHint .sArrow{font-size:22px;line-height:1;text-shadow:0 1px 3px #000}
+#slideHint .label{position:static;transform:none}
+#liftMark.slide #slideHint{display:flex}
+#handleArrows .arrow{position:absolute;width:20px;height:20px;margin:-10px 0 0 -10px;text-align:center;font-size:22px;line-height:20px;text-shadow:0 1px 3px #000}
+#handleArrows .label{top:44px}
+@keyframes pulse{50%{transform:scale(.75);opacity:.6}}
+#result{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));transform:translate(-50%,20px);width:calc(100% - 24px);max-width:440px;box-sizing:border-box;
+  background:#1c1814ee;border:1px solid #f3e6cf44;border-radius:16px;padding:16px 18px 14px;text-align:center;opacity:0;pointer-events:none;transition:opacity .6s,transform .6s}
+#result.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#resName{font-size:22px;font-weight:bold;letter-spacing:.06em;margin-bottom:6px;word-break:keep-all;overflow-wrap:anywhere} /* 名前は区切り（<wbr>）でだけ改行。収まらないときだけ途中で */
+#resAdvice{font-size:15px;line-height:1.6;opacity:.92}
+#result .row{display:flex;gap:10px;justify-content:center;margin-top:14px}
+#result .row button{padding:9px 20px;font-size:15px}
+#result .row.acts{gap:8px}
+#result .acts button{padding:8px 12px;font-size:14px;white-space:nowrap}
+#result .row.tip{margin-top:10px}
+#result .tip a{display:inline-block;padding:7px 22px;font-size:14px;color:#f3c060;border-color:#f3c06099;background:#2a1d0ccc;text-decoration:none} /* 応援は金色で、ほかのボタンと見分けやすく（太字のシェアより目立たせない） */
+#result #share{background:#000;border-color:#f3e6cfaa;font-weight:bold}
+#result #share:disabled{opacity:.6}
+/* 結果画面の上の広告の帯：3D の画面に重ねず、ページの上に並べ、3D の画面はその下に縮める（広告をゲームの画面に重ねる置き方は AdSense のルールに反するため。2026-10-24）。
+   大きさは最初から固定（読み込めなくても結果カードが動かない）。境目の線で、広告がゲームの一部に見えないように */
+#adTop{box-sizing:border-box;padding:calc(4px + env(safe-area-inset-top)) 0 6px;background:#15110e;border-bottom:1px solid #f3e6cf40;display:flex;justify-content:center;overflow:hidden}
+#adTop .adLabel{font-size:10px;line-height:14px;opacity:.6}
+#adTop ins{display:block}
+/* 盛り付けの場面を作っている間（数秒止まる）に画面いっぱいに出す */
+/* 起動時の読み込み中（だし巻き準備中）も同じ見た目。説明より手前に出す */
+#plating,#loading,#lost{background:#0d0b0af2;flex-direction:column;gap:14px}
+#lost{z-index:30;text-align:center;padding:0 24px}
+#loading{background:#0d0b0a;z-index:20}
+.loadT{font-size:28px;letter-spacing:.12em;text-shadow:0 2px 8px #000}
+.dots{display:flex;gap:10px}.dots i{width:10px;height:10px;border-radius:50%;background:#f3c060;animation:plt 1.2s infinite ease-in-out}
+.dots i:nth-child(2){animation-delay:.2s}.dots i:nth-child(3){animation-delay:.4s}
+@keyframes plt{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1)}}
+#prompt{position:fixed;left:50%;bottom:calc(28px + env(safe-area-inset-bottom));transform:translateX(-50%);width:calc(100% - 32px);max-width:520px;text-align:center;line-height:1.5;font-size:16px;opacity:.85;text-shadow:0 1px 3px #000;pointer-events:none}
+.overlay{position:fixed;inset:0;z-index:10;background:#000b;display:none;align-items:center;justify-content:center;padding:16px;box-sizing:border-box}
+.card{background:#1c1814;border:1px solid #f3e6cf33;border-radius:14px;padding:18px 18px 16px;max-width:440px;max-height:100%;overflow:auto;font-size:15px;line-height:1.55}
+.card h2{font-size:19px;margin:0 0 8px}.card h3{font-size:16px;margin:12px 0 4px}
+.card ol,.card ul{margin:0;padding-left:1.3em}
+.card .row{display:flex;gap:10px;justify-content:center;margin-top:14px}
+.card .row button{padding:9px 24px;font-size:16px}
+#pageNo{text-align:center;font-size:13px;opacity:.6;margin-top:8px}
+/* 文言は HTML に日英の両方を書き、<html lang> と違う言語のほうを隠す */
+html[lang="ja"] [lang="en"],html[lang="en"] [lang="ja"]{display:none!important}
+/* 検索エンジン向けのゲーム名の見出し（画面には出さない） */
+.vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+#liftMark:not(.lifted) .down,#liftMark.lifted .up{display:none}
+.waqk-guide{display:block;text-align:center;font-size:13px;margin-top:10px;color:#f3c060}
+#debug{position:fixed;left:8px;top:56px;max-width:calc(100% - 100px);max-height:50%;overflow:auto;font:11px/1.35 monospace;background:#000a;padding:6px;white-space:pre-wrap;display:none;pointer-events:none}
+</style>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/addons/"}}</script>
+</head><body>
+<h1 class="vh"><span lang="ja">だし巻き</span><span lang="en">DASHIMAKI</span></h1>
+<div id="loading" class="overlay" style="display:flex"><div class="loadT"><span lang="ja">だし巻き準備中</span><span lang="en">Preparing dashimaki</span></div><div class="dots"><i></i><i></i><i></i></div></div>
+<script>document.documentElement.lang="ja";</script>
+<div id="top"><button id="help" class="pill">?</button></div>
+<button id="finish" class="pill"><span lang="ja">完成</span><span lang="en">Done</span></button>
+<div id="knob"><div id="scale"></div><div id="dial"></div><span id="lo" class="end"><span lang="ja">弱</span><span lang="en">Low</span></span><span id="hi" class="end"><span lang="ja">強</span><span lang="en">High</span></span></div>
+<div id="handleArrows" class="mark"><span class="arrow" style="left:-34px;top:0">‹</span><span class="arrow" style="left:34px;top:0">›</span><span class="arrow" style="left:0;top:-30px;transform:rotate(90deg)">‹</span><span class="arrow" style="left:0;top:30px;transform:rotate(90deg)">›</span><span class="label"><span lang="ja">フライパンを傾ける</span><span lang="en">Tilt the pan</span></span></div>
+<div id="liftMark" class="mark"><div class="ring"></div><span class="label"><span class="up"><span lang="ja">卵を持ち上げる</span><span lang="en">Lift the roll</span></span><span class="down"><span lang="ja">卵を下ろす</span><span lang="en">Lower the roll</span></span></span><span id="slideHint"><span class="sArrow">⇅</span><span class="label"><span lang="ja">スライドで動かす</span><span lang="en">Slide to move</span></span></span></div>
+<div id="mark-egg" class="mark tool"><span class="label"><span lang="ja">卵液</span><span lang="en">Egg</span></span></div>
+<div id="mark-oil" class="mark tool"><span class="label"><span lang="ja">油</span><span lang="en">Oil</span></span></div>
+<div id="mark-sticks" class="mark tool"><span class="label"><span lang="ja">菜箸</span><span lang="en">Chopsticks</span></span></div>
+<div id="prompt"></div>
+<div id="lost" class="overlay"><div class="loadT" id="lostText"></div></div>
+<div id="plating" class="overlay"><div class="loadT"><span lang="ja">盛り付け中</span><span lang="en">Plating</span></div><div class="dots"><i></i><i></i><i></i></div></div>
+<div id="result"><div id="resName"></div><div id="resAdvice"></div>
+  <!-- 1行目：Xでシェア（太字）・もう一度・ほかのゲーム。2行目：開発者を応援（2026-10-12） -->
+  <div class="row acts"><button id="share" class="pill"><span lang="ja">共有</span><span lang="en">Share on X</span></button><button id="again" class="pill"><span lang="ja">もう一度</span><span lang="en">Play again</span></button></div>
+  <!-- 投げ銭（HP と同じ OFUSE のリンク。2026-10-12） -->
+</div>
+<div id="intro" class="overlay"><div class="card">
+  <h2><span lang="ja">だし巻きをつくろう</span><span lang="en">Let's make dashimaki!</span></h2>
+  <div id="introP1"><h3><span lang="ja">操作方法</span><span lang="en">Controls</span></h3><ul id="ops">
+    <li lang="ja">奥の素材や道具はタップで手にとり使える</li>
+    <li lang="ja">卵液：押している間だけ流れる／タップで戻す</li>
+    <li lang="ja">菜箸：泡をタップ／奥から手前へドラッグで巻く／卵をドラッグで動かす</li>
+    <li lang="ja">油：なぞって油をひく</li>
+    <li lang="ja">持ち手の矢印：前後左右にドラッグで傾ける</li>
+    <li lang="ja">焼けた卵：タップで持ち上げる／もう一度タップで下ろす（持ち上げている間は火が入らない）</li>
+    <li lang="en">Tap the ingredients and tools at the back to pick them up</li>
+    <li lang="en">Egg: hold to pour / tap to put it back</li>
+    <li lang="en">Chopsticks: tap bubbles / drag back-to-front to roll / drag the roll to move it</li>
+    <li lang="en">Oil: drag to wipe on oil</li>
+    <li lang="en">Handle arrows: drag in any direction to tilt</li>
+    <li lang="en">Cooked egg: tap to lift / tap again to lower (it stops cooking while lifted)</li>
+  </ul></div>
+  <div id="introP2" hidden><h3><span lang="ja">ざっくりレシピ</span><span lang="en">Quick recipe</span></h3><ol id="steps">
+    <li lang="ja">強めの中火でフライパンを熱する</li>
+    <li lang="ja">油をフライパンになじませる</li>
+    <li lang="ja">卵液を垂らし「ジュッ」と鳴ったら適温</li>
+    <li lang="ja">卵液を流し込む</li>
+    <li lang="ja">気泡を菜箸でつぶす</li>
+    <li lang="ja">菜箸で奥から手前に巻く</li>
+    <li lang="ja">巻いた卵を奥へ移す</li>
+    <li lang="ja">油を足して卵を持ち上げ、卵液を流し込む</li>
+    <li lang="ja">卵液がなくなるまで工程を繰り返す</li>
+    <li lang="ja">美味しそうに見えたら「完成」を押す</li>
+    <li lang="en">Heat the pan over medium-high</li>
+    <li lang="en">Wipe oil over the pan</li>
+    <li lang="en">Drop in a little egg. A sizzle means it's ready</li>
+    <li lang="en">Pour in some egg</li>
+    <li lang="en">Pop the bubbles with the chopsticks</li>
+    <li lang="en">Roll it from the back toward you with the chopsticks</li>
+    <li lang="en">Push the roll to the back</li>
+    <li lang="en">Add oil, lift the roll, and pour egg underneath</li>
+    <li lang="en">Repeat until the egg is gone</li>
+    <li lang="en">When it looks delicious, tap Done</li>
+  </ol></div>
+  <div class="row"><button id="prev" class="pill" hidden><span lang="ja">戻る</span><span lang="en">Back</span></button><button id="next" class="pill"><span lang="ja">次へ</span><span lang="en">Next</span></button><button id="start" class="pill" hidden><span lang="ja">はじめる</span><span lang="en">Start</span></button></div>
+  <div id="pageNo"></div>
+  <a class="waqk-guide" href="/dashimaki-game/how-to-play/" target="_top"><span lang="ja">もっと詳しい遊び方・コツ →</span><span lang="en">More tips &amp; full guide (Japanese) →</span></a>
+</div></div>
+<div id="confirm" class="overlay"><div class="card">
+  <div><span lang="ja">完成にして、皿に移しますか？</span><span lang="en">Finish and move it to the plate?</span></div>
+  <div class="row"><button id="no" class="pill"><span lang="ja">まだ</span><span lang="en">Not yet</span></button><button id="yes" class="pill"><span lang="ja">完成</span><span lang="en">Plate it</span></button></div>
+</div></div>
+<div id="debug"></div>
+<script type="module">
+import * as THREE from 'three';
+import { createRenderer, buildScene, randomDeform, prewarmPlate } from './kitchen.js';
+import { judge, parseNames } from './judge.js';
+
+// ---------- 調整する場所（数値は仮。試遊びで決める） ----------
+const CFG = {
+  heatLag: 0.35,      // 鉄の温度が火加減に追いつく速さ（/秒）
+  fireOff: 0.03,      // つまみがこれ未満なら消火（火加減の名前も「消火」）。消火の間は卵液も巻いた卵も焼けず、泡も出ない
+  idealKnob: 0.7,     // 強めの中火（つまみ 0〜1）
+  cookRate: 6,        // 理想の火加減での、1秒あたりの火の通り（100で巻きどき＝約17秒、200で焦げ＝約33秒。2026-10-11 初めてでも間に合うよう 9→6）
+  sizzleTemp: 0.45,   // 鉄の温度がこれ以上なら、一滴で「ジュッ」と鳴る
+  pourRate: 0.12,     // 押している間に1秒で流れる卵液（全体＝1）
+  layerIdeal: 0.22,   // 1回に流す理想の量
+  bubbleRate: 1.6,    // 1秒あたりに泡が出る数（弱火ほど増える）
+  flowStop: 60,       // 火の通りがこれに近づくほど流れにくくなり、超えると流れない（半熟）
+  film: 0.4,          // 傾けて卵液が流れ去った所に残る膜の厚み（見える下限は約0.3）
+  tiltMax: 0.3,       // 鉄を傾ける最大角（ラジアン）
+  rollStartPx: 28,    // 菜箸で巻き始めるのに必要な、手前方向へのドラッグ量（px）。これ未満で離したらタップ
+  rollMinDist: 0.4,   // 巻いたとみなす菜箸の移動距離（鍋の長さは 2.9）。これ未満なら巻かない
+  cookUneven: 0.8,    // 固まり方の場所ごとのムラ（0 でむらなし、1 で ±35%）
+  rollCookRate: 1,    // 巻いた卵を鍋に置いている間の火の通り（理想の火加減で1秒あたり。厚いので卵液よりゆっくり）。持ち上げている間は入らない。
+                      // 150を超えた分が火入れの減点になる（judge.js の J.rollCookOk）。2026-10-11 普通のペースでは減点されないよう 4→1
+  smokeFrom: 150,     // 卵液の火の通りがこれを超えた所から煙が上がる（焦げのサイン。文字は出さない）
+  smokeRollFrom: 120, // 巻いた卵の焼きすぎ（rollCook）がこれを超えたら、巻いた卵からも煙
+  oilRadius: 0.24,    // 油引きでなぞったときに塗れる半径（鍋の幅は 2.1）
+  oilColor: 0x5c4220, // 油を塗った所の色（黒い鉄の上で分かるよう、明るい琥珀色のツヤ。2026-10-11 分かりにくいとの指摘で強めた）
+  stoveColor: 0x4a4744, // コンロの面の色（鍋を背景から浮かせる。明るくするなら 0x6a6662）
+  bgColor: 0x262422,     // 奥の背景と霧の色（明るくするなら 0x34312f）
+  seVolume: 0.8,      // 効果音の全体の音量
+  handleMarkBottom: 110, // 「フライパンを傾ける」のマークは持ち手の位置に置き、画面の下からこのpx以内には来ないようにする（下からのスワイプ対策。2026-10-13 に 170→110：
+                        // 170 だとマークと触れる範囲が鍋の手前に乗り、手前の泡をつぶせなかったため）
+  panHeatColor: 0x7a2408, // 鉄が一番熱いとき（つまみ最大）の底の色づき。理想の強めの中火で、この半分くらい
+  aperture: 0.0012,   // ピントぼかしの強さ（静止画は 0.004。奥の道具が見えるよう弱める）
+};
+
+// ---------- 言語 ----------
+// 画面に最初から出ている文字（遊び方・ボタン・道具の名前など）は HTML に日英の両方を書き、ここには書かない。ここは JS が途中で出す文字だけ
+const DICT = {
+  ja: {
+    title: 'だし巻き｜卵を焼いて巻く料理の無料ブラウザゲーム', liteReload: '軽い表示で読み込み直します', liteFailed: 'この端末では表示できませんでした',
+    sharing: '画像を作成中…', shareText: '「{name}」ができました #だし巻きゲーム', shareSite: 'だし巻き',
+  },
+  en: {
+    title: 'DASHIMAKI', liteReload: 'Reloading in a lighter mode', liteFailed: 'This device couldn\'t display the game',
+    sharing: 'Making image…', shareText: 'I made "{name}" #dashimaki', shareSite: 'DASHIMAKI',
+  },
+};
+const q = new URLSearchParams(location.search);
+const LS_LANG = 'dashimaki_lang';
+// 軽い表示（?lite=1、または一度 3D 描画が落ちた端末）：効果（隙間の影・ぼかし・光のにじみなど）を切り、描く細かさを下げ、盛り付けの模様を先に作らない
+const LS_LITE = 'dashimaki_lite';
+const LITE = q.get('lite') === '1' || (() => { try { return localStorage.getItem(LS_LITE) === '1'; } catch { return false; } })();
+let lang = 'ja';
+const $ = (id) => document.getElementById(id);
+const T = (key) => DICT[lang][key];
+function applyLang() {
+  document.documentElement.lang = lang; document.title = T('title'); // 言語に合わないほうの文字は CSS で隠れる
+  if (ended) showResult();
+}
+// 焼き始めた後・結果の画面では、やり直しにならないよう、その場で切り替える（次に開いたときは保存した言語の URL になる）
+let ended = false, paused = true; // 作り方・確認を開いている間は焼き時間を止める
+applyLang();
+const show = (id, on) => { $(id).style.display = on ? 'flex' : 'none'; paused = on || (id === 'intro' ? false : paused); };
+show('intro', true);
+// 盛り付けで使う模様（皿・台・包丁など）を、遊び方を読んでいる間に先に作っておく（「盛り付け中」を短くする）
+var holdRender = false;
+if (!LITE) setTimeout(() => prewarmPlate(), 600);
+$('start').onclick = () => show('intro', false);
+$('help').onclick = () => { introPage(1); show('intro', true); };
+// 遊び方は2ページ：1ページ目が操作方法、2ページ目がざっくりレシピ（2026-10-11 ユーザー指定）
+function introPage(n) {
+  $('introP1').hidden = n !== 1; $('introP2').hidden = n !== 2;
+  $('prev').hidden = n === 1; $('next').hidden = n === 2; $('start').hidden = n !== 2;
+  $('pageNo').textContent = `${n} / 2`;
+}
+$('next').onclick = () => introPage(2);
+$('prev').onclick = () => introPage(1);
+introPage(1);
+$('finish').onclick = () => { if (!ended) { show('confirm', true); paused = true; } };
+$('no').onclick = () => { $('confirm').style.display = 'none'; paused = false; };
+$('yes').onclick = () => { $('confirm').style.display = 'none'; finish(); };
+
+// 道具：奥に置いた物をタップで手に取り、もう一度タップで戻す（手ぶら）
+let tool = null;
+const TOOLS = ['egg', 'oil', 'sticks'];
+// GA4（GTM 経由）：1プレイで最初に意味のある操作（道具を手に取る・つまみに触れる。予備に「完成」）をしたとき1回だけ game_start
+let gaStarted = false;
+const gaStart = () => { if (!gaStarted) { gaStarted = true; (window.dataLayer = window.dataLayer || []).push({ event: 'game_start', game_id: 'dashimaki' }); } };
+function selectTool(t) { const prev = tool; tool = tool === t ? null : t; if (tool) { pickSE(); gaStart(); } else if (prev) putSE(); TOOLS.forEach(x => $('mark-' + x).classList.toggle('on', x === tool)); }
+
+// ---------- シーン ----------
+const FX = q.get('fx') !== '0' && !LITE, DEBUG = q.get('debug') === '1';
+// 完成品の名前の表（data/names.csv）。起動時に1回だけ読む。読めなければ段階の名前（ありそうな／ありえないだし巻き）になる
+let NAMES = [];
+fetch('data/names.csv').then(r => (r.ok ? r.text() : '')).then(t => { NAMES = parseNames(t); }).catch(() => {});
+const renderer = createRenderer(window.innerWidth, window.innerHeight);
+const canvas = renderer.domElement; document.body.prepend(canvas);
+// 3D 描画が落ちたとき（GPU の力が足りない一部の端末。Android の Chrome では困り顔のアイコンが出る）：
+// 軽い表示を覚えて読み込み直す。軽い表示でも落ちたら、読み込み直しを繰り返さずに知らせるだけ
+canvas.addEventListener('webglcontextlost', (e) => {
+  e.preventDefault();
+  $('lostText').textContent = T(LITE ? 'liteFailed' : 'liteReload'); $('lost').style.display = 'flex';
+  if (LITE) return;
+  try { localStorage.setItem(LS_LITE, '1'); } catch {}
+  // 保存できないブラウザ（プライベートモードなど）でも繰り返さないよう、URL にも ?lite=1 を付けて読み込み直す
+  setTimeout(() => { const u = new URL(location.href); u.searchParams.set('lite', '1'); location.replace(u); }, 1500);
+});
+// 軽くする：描く画素数に上限を設け（大きなウィンドウでは粗く描いて引き伸ばす）、
+// 隙間の影とピント用の奥行きは半分の解像度、影は動いたときだけ描き直す
+const MAX_PIXELS = LITE ? 250000 : 400000;
+// 3D の画面の高さ：結果画面で上に広告の帯を出したら、その分だけ縮める
+var bandH = 0; // var：起動直後の resize からも読むため
+const viewH = () => window.innerHeight - bandH;
+const fitPixels = () => renderer.setPixelRatio(Math.min(1, Math.sqrt(MAX_PIXELS / (window.innerWidth * viewH()))));
+const resize = () => { fitPixels(); view.setSize(window.innerWidth, viewH()); renderer.shadowMap.needsUpdate = true; if (revealed) placeReveal(undefined, true); };
+renderer.shadowMap.autoUpdate = false;
+const k = buildScene(renderer, { stage: 'pour', fx: FX, fxScale: 0.5 });
+let view = k;
+resize();
+const { pan, PW, PL, liquidMat, oilMat, roll, RHY, RHZ, sticks } = k;
+window.addEventListener('resize', resize);
+k.bubbles.forEach(b => { b.visible = false; });
+k.setFire(0); // 点火するまで火は消えている
+k.bokeh.uniforms.aperture.value = CFG.aperture;
+// スマホの画面でも鍋の輪郭が見えるよう、コンロの面（静止画では黒に近い模様）を無地の灰色にし、奥の背景も灰色寄りに。鉄の縁に少し映り込みを足す
+Object.assign(k.stove.material, { map: null, color: new THREE.Color(CFG.stoveColor) }); k.stove.material.needsUpdate = true;
+k.scene.background.set(CFG.bgColor); k.scene.fog.color.set(CFG.bgColor); k.scene.environmentIntensity = 0.55;
+k.rollMat.color.setRGB(0.86, 0.76, 0.62); k.rollMat.sheen = 0; k.rollMat.clearcoat = 0.12; // cook 場面と同じ色味
+const rollColor0 = k.rollMat.color.clone(), rollBurnt = new THREE.Color(0.5, 0.3, 0.16);
+
+// 鍋底の格子（卵液・油の塗れ具合を持つ）。z が負＝奥、正＝手前
+const NX = 42, NZ = 58, DX = PW / NX, DZ = PL / NZ, NC = NX * NZ;
+const VC = CFG.layerIdeal / (NC * 0.95 * 0.95); // 1マスの厚み1あたりの卵液の量（理想の1回分を広げきると、鍋のほぼ全体を厚み0.95で覆う）
+const cellX = (i) => -PW / 2 + (i + 0.5) * DX, cellZ = (j) => -PL / 2 + (j + 0.5) * DZ;
+function gridCanvas(w, h) { const c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
+function maskTex(c) { const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.NoColorSpace; return t; }
+
+// 卵液：マスごとに厚み h と火の通り ck（0＝生、100＝巻きどき、200＝焦げ）を持つ。
+// 1枚のテクスチャに、G＝透明度のマスク（流れた所だけ見せる）、R＝火の通り を入れてシェーダーで色を変える
+const h = new Float32Array(NC), hNext = new Float32Array(NC);
+const ck = new Float32Array(NC), cm = new Float32Array(NC);
+// 固まりやすさ：鍋の縁ほど熱く（縁から 0.15 くらいまで）、場所ごとにムラ（なめらかな乱数）
+const heatAt = new Float32Array(NC);
+{
+  const rnd = Float32Array.from({ length: NC }, () => Math.random()), smooth = new Float32Array(NC);
+  for (let j = 0; j < NZ; j++) for (let i = 0; i < NX; i++) {
+    let v = 0, n = 0;
+    for (let b = -3; b <= 3; b++) for (let a = -3; a <= 3; a++) { const ii = i + a, jj = j + b; if (ii >= 0 && jj >= 0 && ii < NX && jj < NZ) { v += rnd[jj * NX + ii]; n++; } }
+    smooth[j * NX + i] = v / n;
+  }
+  // ならすと振れ幅が小さくなるので、−1〜1 に広げ直す
+  const mean = smooth.reduce((a, b) => a + b) / NC, dev = Math.max(...smooth.map(v => Math.abs(v - mean)));
+  for (let j = 0; j < NZ; j++) for (let i = 0; i < NX; i++) {
+    const c = j * NX + i, wall = Math.min(cellX(i) + PW / 2, PW / 2 - cellX(i), cellZ(j) + PL / 2, PL / 2 - cellZ(j));
+    heatAt[c] = (1 + (smooth[c] - mean) / dev * 0.35 * CFG.cookUneven) * (1 + 0.5 * Math.exp(-wall / 0.15));
+  }
+}
+const liqCanvas = gridCanvas(NX, NZ), liqCtx = liqCanvas.getContext('2d'), liqImg = liqCtx.createImageData(NX, NZ);
+const liqTex = maskTex(liqCanvas);
+// 巻くとシートの裏側がこちらを向くので、両面を描く
+Object.assign(liquidMat, { alphaMap: liqTex, alphaTest: 0.5, clearcoat: 0.7, side: THREE.DoubleSide }); liquidMat.needsUpdate = true;
+// 火の通りで色・ツヤを変える：生（ツヤのある卵液）→ 固まる（マットなクリーム色）→ 縁はレースのように白っぽく → 焼きすぎると茶色
+const lin = (r, g, b) => new THREE.Color().setRGB(r, g, b, THREE.SRGBColorSpace);
+const cookUniforms = { uSet: { value: lin(0.97, 0.75, 0.25) }, uLace: { value: lin(1.0, 0.9, 0.6) }, uBurn: { value: lin(0.5, 0.27, 0.08) } };
+// 巻く：菜箸の位置（鍋の z）より奥のシートを、そこを接点にした渦巻き（半径 uR0 から1周ごとに uThick ずつ太る）に沿って曲げる。uRollZ が -99 なら曲げない
+const curlUniforms = { uRollZ: { value: -99 }, uR0: { value: 0.12 }, uThick: { value: 0.035 } };
+const CURL_VERT = `
+  // 鍋のローカル座標で、奥（z が小さい側）から接点までの長さ s を、渦巻きの角度に直す（s = r0θ + kθ²/2, k = 厚み/2π）
+  float curlS = max( 0.0, uRollZ - ( - position.y ) );
+  float curlK = uThick / 6.2832;
+  float curlT = curlS > 0.0 ? ( - uR0 + sqrt( uR0 * uR0 + 2.0 * curlK * curlS ) ) / curlK : 0.0;
+  float curlR = uR0 + curlK * curlT;
+`;
+liquidMat.onBeforeCompile = (sh) => {
+  Object.assign(sh.uniforms, cookUniforms, curlUniforms);
+  sh.vertexShader = 'uniform float uRollZ, uR0, uThick;\n' + sh.vertexShader
+    .replace('#include <beginnormal_vertex>', `#include <beginnormal_vertex>
+      ${CURL_VERT}
+      // 面の向きも角度ぶん回す（平らなとき上向き → 巻くと渦の中心向き）
+      if ( curlT > 0.0 ) objectNormal = vec3( objectNormal.x, - sin( curlT ), cos( curlT ) );`)
+    .replace('#include <begin_vertex>', `#include <begin_vertex>
+      if ( curlT > 0.0 ) {
+        // 板はローカルで x-y 平面（y が奥向きの逆、z が高さ）。接点 (uRollZ, 高さ) の上に渦の中心がある
+        float cz = uRollZ, cy = position.z + uR0;
+        transformed.y = - ( cz - curlR * sin( curlT ) );
+        transformed.z = cy - curlR * cos( curlT );
+      }`);
+  sh.fragmentShader = 'uniform vec3 uSet, uLace, uBurn;\n' + sh.fragmentShader
+    .replace('#include <color_fragment>', `#include <color_fragment>
+      vec4 cookTex = texture2D( alphaMap, vAlphaMapUv );
+      float cookV = cookTex.r * 2.0;                            // 火の通り（1.0 が巻きどき）
+      float setK = smoothstep( 0.2, 0.95, cookV );              // 固まり具合
+      float edgeK = 1.0 - smoothstep( 0.55, 0.95, cookTex.g );  // 流れた範囲の縁
+      vec3 base = diffuseColor.rgb;
+      diffuseColor.rgb = mix( base, uSet * ( 0.85 + 0.3 * smoothstep( 0.1, 0.6, base.g ) ), setK * 0.9 ); // 卵液の色むらを少し残す
+      diffuseColor.rgb = mix( diffuseColor.rgb, uLace, edgeK * smoothstep( 0.1, 0.5, cookV ) * 0.75 );
+      diffuseColor.rgb = mix( diffuseColor.rgb, uBurn, smoothstep( 1.25, 2.0, cookV ) * 0.85 );`)
+    .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
+      roughnessFactor = mix( roughnessFactor, 0.5, setK );`)
+    .replace('#include <lights_physical_fragment>', `#include <lights_physical_fragment>
+      #ifdef USE_CLEARCOAT
+        material.clearcoat *= 1.0 - setK * 0.65; // 巻きどきでも表面は少ししっとり
+      #endif`);
+};
+function drawLiquid() {
+  for (let i = 0; i < NC; i++) {
+    const a = THREE.MathUtils.smoothstep(h[i], 0.15, 0.45) * 255, c = Math.min(255, ck[i] / 200 * 255);
+    liqImg.data.set([c, a, a, 255], i * 4);
+  }
+  liqCtx.putImageData(liqImg, 0, 0); liqTex.needsUpdate = true;
+}
+const liquidInPan = () => { let v = 0; for (let i = 0; i < NC; i++) v += h[i]; return v * VC; };
+// 鍋の中の卵液の、量で平均した火の通り
+const meanCook = () => { let v = 0, w = 0; for (let i = 0; i < NC; i++) { v += h[i] * ck[i]; w += h[i]; } return w > 0 ? v / w : 0; };
+// 高い所から低い所へ流す（傾きで高さが変わる）。厚みが薄い所と、固まった所は流れない。流れた卵液は火の通りも一緒に運ぶ
+function flowStep() {
+  const g = pan.rotation.z * 4, gz = -pan.rotation.x * 4; // rotation.z が正だと +x 側が上がる。rotation.x が正だと手前（+z）が下がる
+  // 平らなときは厚み 0.9 未満は表面張力でとどまるが、傾けると薄い所も低い方へ流れる
+  const minH = Math.max(0.25, 0.9 - 2.2 * Math.max(Math.abs(pan.rotation.z), Math.abs(pan.rotation.x)));
+  hNext.set(h);
+  for (let i = 0; i < NC; i++) cm[i] = h[i] * ck[i];
+  for (let j = 0; j < NZ; j++) for (let i = 0; i < NX; i++) {
+    const c = j * NX + i; if (h[c] < minH) continue;
+    const fluid = 1 - (ck[c] / CFG.flowStop) ** 2; if (fluid <= 0) continue; // 固まりかけでもしばらくは流れる
+    const L = h[c] + g * i + gz * j;
+    for (const [ii, jj] of [[i + 1, j], [i - 1, j], [i, j + 1], [i, j - 1]]) {
+      if (ii < 0 || jj < 0 || ii >= NX || jj >= NZ) continue;
+      const n = jj * NX + ii, d = L - (h[n] + g * ii + gz * jj);
+      // 流れ去った所にも薄い膜（厚み CFG.film）が残る（鍋に卵液が張り付く）
+      if (d > 0) { const m = Math.min(d * 0.25 * fluid, Math.max(0, h[c] - CFG.film) * 0.24); hNext[c] -= m; hNext[n] += m; cm[c] -= m * ck[c]; cm[n] += m * ck[c]; }
+    }
+  }
+  h.set(hNext);
+  for (let i = 0; i < NC; i++) ck[i] = h[i] > 1e-4 ? cm[i] / h[i] : 0;
+}
+// 火を通す：薄い所・縁・流れた範囲の端（隣が空）ほど早く固まる
+function cookStep(dt) {
+  const base = CFG.cookRate * (cookHeat() / CFG.idealKnob) ** 2 * dt;
+  for (let j = 0; j < NZ; j++) for (let i = 0; i < NX; i++) {
+    const c = j * NX + i; if (h[c] < 0.05) { ck[c] = 0; continue; }
+    const thin = THREE.MathUtils.clamp(1.5 - 0.5 * h[c], 0.6, 1.4);
+    const rim = (i > 0 && h[c - 1] < 0.15) || (i < NX - 1 && h[c + 1] < 0.15) || (j > 0 && h[c - NX] < 0.15) || (j < NZ - 1 && h[c + NX] < 0.15) ? 1.5 : 1;
+    ck[c] += base * thin * rim * heatAt[c];
+  }
+}
+// 巻き取る：その層の卵の量と火の通りを足し込む（巻いたときの火の通り＝量で平均）
+function absorb(c) {
+  const v = h[c] * VC; if (v <= 0) return;
+  inRoll += v;
+  if (layer) { layer.absorbVol = (layer.absorbVol || 0) + v; layer.absorbCook = (layer.absorbCook || 0) + v * ck[c]; }
+  h[c] = 0; ck[c] = 0;
+}
+
+// 油：なぞった所に油のツヤ（alphaMap）を描く
+const oilCanvas = gridCanvas(256, 352), oilCtx = oilCanvas.getContext('2d');
+oilCtx.fillStyle = '#000'; oilCtx.fillRect(0, 0, 256, 352);
+const oilTex = maskTex(oilCanvas);
+// 塗った所が分かるよう、静止画より明るくツヤを強くする
+Object.assign(oilMat, { alphaMap: oilTex, color: new THREE.Color(CFG.oilColor), roughness: 0.05, envMapIntensity: 7 }); oilMat.needsUpdate = true;
+const oiled = new Uint8Array(NC); let oilLayer = 0; // 塗れた所（層が変わるまで、なぞるたびに足していく）
+function paintOil(p) {
+  const cx = (p.x / PW + 0.5) * 256, cy = (p.z / PL + 0.5) * 352, r = CFG.oilRadius / PW * 256;
+  const grd = oilCtx.createRadialGradient(cx, cy, 0, cx, cy, r);
+  grd.addColorStop(0, 'rgba(255,255,255,0.75)'); grd.addColorStop(0.7, 'rgba(255,255,255,0.5)'); grd.addColorStop(1, 'rgba(255,255,255,0)');
+  oilCtx.fillStyle = grd; oilCtx.fillRect(cx - r, cy - r, r * 2, r * 2); oilTex.needsUpdate = true;
+  for (let j = 0; j < NZ; j++) for (let i = 0; i < NX; i++) if (Math.hypot(cellX(i) - p.x, cellZ(j) - p.z) < CFG.oilRadius * 0.85) oiled[j * NX + i] = 1;
+}
+
+// ---------- 小物 ----------
+const eggMat = new THREE.MeshPhysicalMaterial({ color: 0xf2b23a, roughness: 0.08, clearcoat: 1 });
+const blisterMat = new THREE.MeshPhysicalMaterial({ color: 0xf7d684, roughness: 0.35, clearcoat: 0.6, sheen: 0.4, sheenColor: new THREE.Color(0xfff0c0) });
+const stream = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.03, 1.6, 12), eggMat);
+stream.visible = false; k.scene.add(stream);
+const drops = [];
+
+// ---------- 道具（鍋の奥の板の上に置く）：卵液のボウル・油壺と油引き・箸置きの菜箸 ----------
+// 縦長の画面で鍋の奥（画面の上）に見える範囲：z が −4.5〜−2.7 あたり。置き場所はワールド座標
+const V = (x, y, z) => new THREE.Vector3(x, y, z);
+const TABLE = -0.25 + 0.06; // 板の上面
+const board = new THREE.Mesh(new THREE.BoxGeometry(3.9, 0.06, 1.8), new THREE.MeshStandardMaterial({ color: 0x7e5e3e, roughness: 0.7 }));
+board.position.set(0.05, -0.22, -3.6); board.receiveShadow = true; k.scene.add(board);
+const PLACE = { egg: V(-0.85, TABLE, -3.6), oil: V(0.75, TABLE, -3.6), sticks: V(-1.45, TABLE + 0.07, -2.92) }; // 菜箸は手前、ボウルと油壺は奥
+const yUp = V(0, 1, 0), qFrom = (dir) => new THREE.Quaternion().setFromUnitVectors(yUp, dir.clone().normalize());
+const ceramic = new THREE.MeshPhysicalMaterial({ color: 0xe6dfd2, roughness: 0.32, clearcoat: 0.5, clearcoatRoughness: 0.2 });
+// 卵液のボウル（中の卵液の高さ＝ボウルの残り）
+const bowl = new THREE.Group();
+const bowlProfile = [[0.001, 0], [0.13, 0], [0.14, 0.025], [0.2, 0.035], [0.29, 0.1], [0.36, 0.22], [0.35, 0.235], [0.335, 0.215], [0.27, 0.11], [0.15, 0.05], [0.001, 0.045]].map(([r, y]) => new THREE.Vector2(r, y));
+const bowlMesh = new THREE.Mesh(new THREE.LatheGeometry(bowlProfile, 48), ceramic); bowlMesh.castShadow = bowlMesh.receiveShadow = true; bowl.add(bowlMesh);
+const bowlEgg = new THREE.Mesh(new THREE.CircleGeometry(1, 40), eggMat); bowlEgg.rotation.x = -Math.PI / 2; bowl.add(bowlEgg);
+function setBowlLevel() {
+  const y = 0.05 + 0.15 * remaining, r = 0.15 + (0.335 - 0.15) * (y - 0.05) / 0.165;
+  bowlEgg.visible = remaining > 0.005; bowlEgg.position.y = y; bowlEgg.scale.setScalar(r);
+}
+bowl.scale.setScalar(1.5); bowl.position.copy(PLACE.egg); k.scene.add(bowl);
+// 油壺と油引き（綿を布でくるんだ柄付き）。手に取るのは油引き
+const pot = new THREE.Group();
+const potMat = new THREE.MeshPhysicalMaterial({ color: 0x3a2c22, roughness: 0.4, clearcoat: 0.6, side: THREE.DoubleSide });
+const potBody = new THREE.Mesh(new THREE.CylinderGeometry(0.13, 0.14, 0.2, 32, 1, true), potMat); potBody.position.y = 0.1; potBody.castShadow = true;
+const potOil = new THREE.Mesh(new THREE.CircleGeometry(0.125, 32), new THREE.MeshPhysicalMaterial({ color: 0x8a5a14, roughness: 0.05, clearcoat: 1 }));
+potOil.rotation.x = -Math.PI / 2; potOil.position.y = 0.16;
+pot.add(potBody, potOil); pot.scale.setScalar(1.6); pot.position.copy(PLACE.oil); k.scene.add(pot);
+const brush = new THREE.Group(); // 原点＝綿の先、+Y が柄の向き
+const brushHandle = new THREE.Mesh(new THREE.CylinderGeometry(0.016, 0.02, 0.6, 12), new THREE.MeshStandardMaterial({ color: 0xc9a46a, roughness: 0.6 }));
+brushHandle.position.y = 0.36; brushHandle.castShadow = true;
+const brushTip = new THREE.Mesh(new THREE.SphereGeometry(0.055, 20, 12), new THREE.MeshStandardMaterial({ color: 0xeee6d6, roughness: 0.95 }));
+brushTip.scale.set(1.5, 1.4, 1.5); brushTip.position.y = 0.06; brushTip.castShadow = true;
+brush.add(brushHandle, brushTip); brush.scale.setScalar(1.5); k.scene.add(brush);
+// 菜箸：使うときは静止画と同じ向き（手元から斜めに）、置いているときは箸置きの上に横向き
+const stickUseQ = sticks.map(m => m.quaternion.clone());
+const stickRestQ = qFrom(V(1, -0.025, 0));
+const hashioki = new THREE.Mesh(new THREE.CapsuleGeometry(0.04, 0.16, 6, 12), ceramic);
+hashioki.rotation.x = Math.PI / 2; hashioki.position.set(PLACE.sticks.x + 0.35, TABLE + 0.04, PLACE.sticks.z); hashioki.castShadow = true; k.scene.add(hashioki);
+const STICK_HOLD = V(0.55, 0.45, 0.6);   // 手に持って構えている位置（鍋の右手前。画面に入る所）
+const stickOffset = V(0.18, -0.01, 0.06), stickRestOffset = V(0, 0, 0.08);
+const stickTip = STICK_HOLD.clone(); let stickUseUntil = 0;
+// 菜箸の先を指の所へ（少しの間だけ。離すと構えの位置に戻る）
+function placeSticks(worldTip) { stickTip.copy(worldTip); stickUseUntil = clock() + 0.4; }
+// 奥の台を照らす小さな明かり
+const tableLight = new THREE.PointLight(0xffd9a8, 2.2, 5, 2); tableLight.position.set(0, 1.6, -3.2); k.scene.add(tableLight);
+// 選べる物のマークの位置（ボウルの上、油壺の上、箸置きの少し右）と、当たり判定に使う物
+const markAt = {
+  egg: () => PLACE.egg.clone().add(V(0, tool === 'egg' ? 0.8 : 0.45, 0)),
+  oil: () => pot.position.clone().add(V(0, 0.6, 0)),
+  sticks: () => PLACE.sticks.clone().add(V(1.5, 0.1, 0)),
+};
+const pickObjs = { egg: [bowl], oil: [pot, brush] };
+let pourWorld = null, dropWorld = null, dropUntil = 0;
+// 毎フレーム、道具を「置いている／持っている／使っている」位置へなめらかに動かす
+function updateProps(now, dt) {
+  const kk = 1 - Math.exp(-dt * 14);
+  let moved = false;
+  const go = (obj, pos, quat, snap) => {
+    const before = obj.position.clone();
+    if (snap) { obj.position.copy(pos); obj.quaternion.copy(quat); } else { obj.position.lerp(pos, kk); obj.quaternion.slerp(quat, kk); }
+    if (before.distanceToSquared(obj.position) > 1e-7) moved = true;
+  };
+  // ボウル：注ぐときは指の少し右上で傾ける
+  const at = drag && drag.kind === 'pour' && pourWorld ? pourWorld : now < dropUntil ? dropWorld : null;
+  if (at) go(bowl, at.clone().add(V(0.5, 0.85, 0.05)), new THREE.Quaternion().setFromEuler(new THREE.Euler(0, 0, drag && drag.kind === 'pour' ? 1.05 : 0.7)));
+  else go(bowl, PLACE.egg.clone().add(V(0, tool === 'egg' ? 0.35 : 0, 0)), new THREE.Quaternion());
+  // 油引き：なぞっている間は綿の先が指の所、柄は手前へ
+  if (drag && drag.kind === 'oil' && drag.lastWorld) go(brush, drag.lastWorld.clone().add(V(0, 0.05, 0)), qFrom(V(0.25, 1, 0.75)), true);
+  else go(brush, PLACE.oil.clone().add(V(0, tool === 'oil' ? 0.7 : 0.15, 0)), qFrom(V(0.35, 1, -0.15)));
+  // 菜箸
+  const using = now < stickUseUntil || (drag && (drag.kind === 'roll' || drag.kind === 'move'));
+  sticks.forEach((m, i) => {
+    if (tool === 'sticks' || using) go(m, (using ? stickTip : STICK_HOLD).clone().addScaledVector(stickOffset, i), stickUseQ[i], using);
+    else go(m, PLACE.sticks.clone().addScaledVector(stickRestOffset, i), stickRestQ);
+  });
+  // ボウルを傾けても、中の卵液の面は水平のまま（少し縮めて縁からはみ出さないように）
+  setBowlLevel();
+  bowlEgg.quaternion.copy(bowl.quaternion).invert().multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(-Math.PI / 2, 0, 0)));
+  bowlEgg.scale.multiplyScalar(1 - 0.35 * Math.min(1, bowl.rotation.z));
+  if (moved) renderer.shadowMap.needsUpdate = true;
+}
+
+// ---------- 効果音：すべて Web Audio で作る（音のファイルは読まないので、リクエストが増えない） ----------
+// 最初のタップで AudioContext を作り、ノイズを1回だけ作って使い回す。iOS は最初のタップで resume が要る
+let audio = null, noiseBuf = null, master = null, sizzleGain = null, kotoBufs = null;
+function unlockAudio() {
+  if (!audio) {
+    audio = new (window.AudioContext || window.webkitAudioContext)();
+    master = audio.createGain(); master.gain.value = CFG.seVolume; master.connect(audio.destination);
+    noiseBuf = audio.createBuffer(1, audio.sampleRate * 3, audio.sampleRate);
+    const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    // 卵が焼ける音：ノイズを鳴らし続け、音量だけを毎フレーム変える
+    const src = audio.createBufferSource(), hp = audio.createBiquadFilter(), pk = audio.createBiquadFilter();
+    src.buffer = noiseBuf; src.loop = true; hp.type = 'highpass'; hp.frequency.value = 1800;
+    pk.type = 'peaking'; pk.frequency.value = 5200; pk.Q.value = 0.8; pk.gain.value = 6;
+    sizzleGain = audio.createGain(); sizzleGain.gain.value = 0;
+    src.connect(hp).connect(pk).connect(sizzleGain).connect(master); src.start();
+  }
+  if (audio.state === 'suspended') audio.resume();
+}
+document.addEventListener('pointerdown', unlockAudio);
+// ノイズを1回鳴らす（filter: 種類, 周波数、att・rel: 立ち上がり・消えるまでの秒、at: 何秒後）
+function noiseHit({ vol = 0.5, type = 'highpass', freq = 2500, q = 0.7, att = 0.005, rel = 0.2, at = 0 }) {
+  if (!audio) return;
+  const src = audio.createBufferSource(), f = audio.createBiquadFilter(), g = audio.createGain(), t = audio.currentTime + at;
+  src.buffer = noiseBuf; f.type = type; f.frequency.value = freq; f.Q.value = q;
+  g.gain.setValueAtTime(0.0001, t); g.gain.linearRampToValueAtTime(vol, t + att); g.gain.exponentialRampToValueAtTime(0.0001, t + att + rel);
+  src.connect(f).connect(g).connect(master); src.start(t, Math.random() * 2); src.stop(t + att + rel + 0.05);
+}
+// 短い音程のある音（木を軽くたたいた「コト」の芯）
+function tone({ vol = 0.3, freq = 400, to = freq, rel = 0.08, at = 0, type = 'sine' }) {
+  if (!audio) return;
+  const o = audio.createOscillator(), g = audio.createGain(), t = audio.currentTime + at;
+  o.type = type; o.frequency.setValueAtTime(freq, t); o.frequency.exponentialRampToValueAtTime(to, t + rel);
+  g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.0001, t + rel);
+  o.connect(g).connect(master); o.start(t); o.stop(t + rel + 0.02);
+}
+// 卵液を一滴：ジュッ
+function sizzle(vol = 0.5) { noiseHit({ vol, freq: 2500, att: 0.02, rel: 1.1 }); }
+// 火をつける：カチカチッ（点火の火花）→ ボッ（ガスに火がつく）
+function igniteSE() {
+  for (const at of [0, 0.09, 0.17]) noiseHit({ vol: 0.35, type: 'bandpass', freq: 3800, q: 2, att: 0.001, rel: 0.025, at });
+  noiseHit({ vol: 0.55, type: 'lowpass', freq: 700, att: 0.03, rel: 0.45, at: 0.22 });
+  tone({ vol: 0.25, freq: 120, to: 60, rel: 0.25, at: 0.22 });
+}
+// 道具を手に取る（軽いコッ）／置く（低いコトッ）
+function pickSE() { tone({ vol: 0.22, freq: 1150, to: 900, rel: 0.05 }); noiseHit({ vol: 0.12, type: 'bandpass', freq: 3000, q: 1.5, att: 0.001, rel: 0.03 }); }
+function putSE() { tone({ vol: 0.35, freq: 520, to: 380, rel: 0.09 }); noiseHit({ vol: 0.18, type: 'bandpass', freq: 1400, q: 1.2, att: 0.001, rel: 0.05 }); tone({ vol: 0.12, freq: 780, to: 600, rel: 0.05, at: 0.06 }); }
+// 油がはねる「パチッ」
+function popSE(vol) { noiseHit({ vol, type: 'bandpass', freq: 2500 + Math.random() * 3000, q: 3, att: 0.001, rel: 0.02 + Math.random() * 0.03 }); }
+// 卵が焼ける音の大きさ（0〜1）。卵液・巻いた卵が鍋にあって、火が入っている間だけ鳴る。ときどき油がはねる
+function updateSizzle(level, dt) {
+  if (!audio) return;
+  sizzleGain.gain.setTargetAtTime(level * 0.32, audio.currentTime, 0.12);
+  if (Math.random() < level * 10 * dt) popSE(0.12 + 0.25 * level * Math.random());
+}
+// 完成：琴の「じゃららーん」。平調子の音を下から順にすばやく鳴らす（弦をはじいた音は Karplus-Strong で作る）
+const KOTO = [293.66, 311.13, 392.0, 440.0, 466.16, 587.33, 622.25, 783.99, 880.0];
+function pluck(freq) {
+  const sr = audio.sampleRate, len = Math.floor(sr * 3), buf = audio.createBuffer(1, len, sr), d = buf.getChannelData(0);
+  const N = Math.round(sr / freq), ring = new Float32Array(N);
+  for (let i = 0; i < N; i++) ring[i] = (Math.random() * 2 - 1) * (0.6 + 0.4 * Math.sin(Math.PI * i / N)); // 爪で弦の途中をはじいた形
+  let p = 0, prev = 0;
+  for (let i = 0; i < len; i++) {
+    const cur = ring[p], next = ring[(p + 1) % N];
+    ring[p] = (cur + next) * 0.5 * 0.9965; // 平均して少しずつ減らす（高い音から先に消える）
+    d[i] = cur * 0.8 + prev * 0.2; prev = cur; p = (p + 1) % N;
+  }
+  return buf;
+}
+function kotoSE() {
+  if (!audio) return;
+  kotoBufs = kotoBufs || KOTO.map(pluck); // 初めて鳴らすときに1回だけ作る
+  const t = audio.currentTime + 0.05;
+  kotoBufs.forEach((b, i) => {
+    const src = audio.createBufferSource(), g = audio.createGain(), pan = audio.createStereoPanner ? audio.createStereoPanner() : null;
+    src.buffer = b; g.gain.value = 0.42 - i * 0.02;
+    if (pan) { pan.pan.value = -0.5 + i / (KOTO.length - 1); src.connect(g).connect(pan).connect(master); } else src.connect(g).connect(master);
+    src.start(t + i * 0.055);
+  });
+}
+
+// ---------- 状態と記録（採点は「次にやること」4で作る） ----------
+// 手順は強制しない。どの道具をいつ使っても、そのとおりの結果になり、記録に残る
+var knob = 0; let temp = 0;  // 火加減のつまみ・鉄の温度（0〜1）。knob は文言の切り替えでも読むので var
+const fireOn = () => knob >= CFG.fireOff;
+// 焼ける強さ：消火の間は0（鉄の余熱では焼けない。2026-10-11、火が消えていても焼けるとの指摘）
+const cookHeat = () => (fireOn() ? temp : 0);
+let remaining = 1;       // ボウルに残った卵液（全体＝1）
+let inRoll = 0;          // 巻いた卵の量
+let layer = null;        // 今焼いている層（卵液を流してから巻くまで）
+let lastRollAt = null, rollBaseY = 0, lifted = false, gameTime = 0;
+let rollCook = 0; // 巻いた卵に鍋から入った火（置いている間だけ増える。100 を超えると焼き色が付いていく）
+const bubbles = [];
+const rec = { oil: [], drops: [], heat: { time: 0, sum: 0 }, layers: [], end: null };
+const clock = () => performance.now() / 1000;
+const r2 = (x) => +x.toFixed(2);
+
+function rollScale() { return THREE.MathUtils.clamp(Math.sqrt(inRoll), 0.25, 1.2); }
+function updateRoll() {
+  const s = rollScale(); roll.scale.set(1, s, s); rollBaseY = 0.06 + RHY * s; renderer.shadowMap.needsUpdate = true;
+  if (!roll.parent) { pan.add(roll); roll.castShadow = roll.receiveShadow = true; roll.position.y = rollBaseY; }
+}
+const rollBackZ = () => -PL / 2 + RHZ * rollScale() + 0.01;
+const rollFrontZ = () => PL / 2 - RHZ * rollScale() - 0.01;
+
+// ---------- 入力 ----------
+const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+const hitPlane = new THREE.Mesh(new THREE.PlaneGeometry(PW, PL), new THREE.MeshBasicMaterial({ visible: false }));
+hitPlane.rotation.x = -Math.PI / 2; hitPlane.position.y = 0.07; pan.add(hitPlane);
+function aim(e) { ndc.set(e.clientX / window.innerWidth * 2 - 1, -(e.clientY / window.innerHeight) * 2 + 1); ray.setFromCamera(ndc, view.camera); }
+// 鍋底の上の点（鍋のローカル座標）。外れたら null
+function panPoint(e) { aim(e); const hit = ray.intersectObject(hitPlane)[0]; return hit ? { local: pan.worldToLocal(hit.point.clone()), world: hit.point } : null; }
+function onRoll(e) { if (!roll.parent) return false; aim(e); return ray.intersectObject(roll).length > 0; }
+function toScreen(v) { const s = v.clone().project(view.camera); return [(s.x + 1) / 2 * window.innerWidth, (1 - s.y) / 2 * window.innerHeight]; }
+// 持ち手の矢印の位置（鍋の手前、口金のあたり）と、卵のマークの位置（卵の上面の中央）
+// 画面の縦横比によっては持ち手が画面の外に出るので、画面の下から 90px 以内には来ないようにする（下の矢印と名前の分）
+const handleScreen = () => { const [x, y] = toScreen(pan.localToWorld(new THREE.Vector3(0, 0.45, PL / 2 + 0.35))); return [x, Math.min(y, window.innerHeight - CFG.handleMarkBottom)]; };
+const markScreen = () => toScreen(roll.localToWorld(new THREE.Vector3(0, RHY, 0)));
+
+// 火加減のつまみ：中心からの角度で −135°（消火）〜 +135°（最大）
+const dial = $('dial');
+function setKnob(v) {
+  const wasOn = fireOn();
+  knob = THREE.MathUtils.clamp(v, 0, 1);
+  $('dial').style.transform = `rotate(${-135 + knob * 270}deg)`;
+  if (!wasOn && fireOn()) igniteSE(); // 火がついた
+}
+setKnob(0);
+let knobId = null;
+function turnKnob(e) {
+  const r = dial.getBoundingClientRect(), ang = Math.atan2(e.clientX - (r.left + r.width / 2), (r.top + r.height / 2) - e.clientY) * 180 / Math.PI;
+  setKnob((THREE.MathUtils.clamp(ang, -135, 135) + 135) / 270);
+}
+$('knob').addEventListener('pointerdown', e => { if (ended) return; gaStart(); knobId = e.pointerId; $('knob').setPointerCapture(e.pointerId); turnKnob(e); });
+$('knob').addEventListener('pointermove', e => { if (e.pointerId === knobId) turnKnob(e); });
+$('knob').addEventListener('pointerup', () => { knobId = null; });
+
+// 指（マウス）の下にある道具。マークから 34px 以内か、物そのものに当たったら
+function toolAt(e) {
+  for (const t of TOOLS) { const [x, y] = toScreen(markAt[t]()); if (Math.hypot(e.clientX - x, e.clientY - y) < 34) return t; }
+  aim(e);
+  const objs = TOOLS.flatMap(t => (t === 'sticks' ? (tool === 'sticks' ? [] : sticks) : pickObjs[t]).map(o => [t, o]));
+  const hit = ray.intersectObjects(objs.map(([, o]) => o), true)[0];
+  if (!hit) return null;
+  const found = objs.find(([, o]) => o === hit.object || o.getObjectById(hit.object.id));
+  return found ? found[0] : null;
+}
+const nearHandle = (e) => { const [hx, hy] = handleScreen(); return Math.abs(e.clientX - hx) < 60 && Math.abs(e.clientY - hy) < 50; };
+const nearLiftMark = (e) => { if (!roll.parent || $('liftMark').style.display === 'none') return false; const [mx, my] = markScreen(); return Math.hypot(e.clientX - mx, e.clientY - my) < 26; };
+// マウスを乗せたマークを濃くする（タッチでは出ない）
+canvas.addEventListener('pointermove', e => {
+  if (drag || e.pointerType !== 'mouse') return;
+  const live = !ended && !paused, t = live ? toolAt(e) : null, lm = live && !t && nearLiftMark(e), hd = live && !t && !lm && nearHandle(e);
+  TOOLS.forEach(x => $('mark-' + x).classList.toggle('hover', x === t));
+  $('liftMark').classList.toggle('hover', lm);
+  $('handleArrows').classList.toggle('hover', hd);
+  canvas.style.cursor = t || lm ? 'pointer' : hd ? 'move' : '';
+});
+
+// 指から 40px 以内でいちばん近い（まだつぶしていない）泡
+function bubbleNear(e) {
+  let best = null, bd = 40;
+  for (const b of bubbles) {
+    if (b.popped || b.gone) continue;
+    const [sx, sy] = toScreen(b.mesh.getWorldPosition(new THREE.Vector3()));
+    const d = Math.hypot(sx - e.clientX, sy - e.clientY);
+    if (d < bd) { bd = d; best = b; }
+  }
+  return best;
+}
+let drag = null;
+canvas.addEventListener('pointerdown', e => {
+  if (drag || ended || paused) return;
+  canvas.setPointerCapture(e.pointerId);
+  drag = { id: e.pointerId, x0: e.clientX, y0: e.clientY, t0: clock(), e, kind: null };
+  const t = toolAt(e);
+  if (t) { drag.kind = 'select'; selectTool(t); return; }
+  if (nearHandle(e) && !(tool === 'sticks' && bubbleNear(e))) { drag.kind = 'tilt'; return; } // 菜箸で泡に触れたときは、傾けるより泡をつぶすのを優先
+  // 卵のマークはタップだけに反応する（ドラッグなら菜箸で巻く・動かすほうになる）
+  drag.onMark = nearLiftMark(e);
+  const p = panPoint(e);
+  if (tool === 'oil' && p && !drag.onMark) { drag.kind = 'oil'; drag.len = 0; drag.last = p.local; drag.lastWorld = p.world; if (oilLayer !== rec.layers.length + 1) { oiled.fill(0); oilLayer = rec.layers.length + 1; } paintOil(p.local); }
+  if (tool === 'sticks') drag.roll = onRoll(e);
+});
+canvas.addEventListener('pointermove', e => {
+  if (!drag || e.pointerId !== drag.id) return;
+  drag.e = e;
+  const dx = e.clientX - drag.x0, dy = e.clientY - drag.y0;
+  const moved = Math.hypot(dx, dy);
+  if (!drag.kind) {
+    if (tool === 'egg' && moved > 10) startPour();
+    // 菜箸：卵液があって、はっきり手前へ引いたら巻く（タップの指のぶれで巻かないよう、向きと量を厳しく）。卵をつかんでそれ以外なら卵を動かす
+    else if (tool === 'sticks') {
+      if (dy > Math.abs(dx) && liquidInPan() > 0.002) { if (moved > CFG.rollStartPx) startRoll(e); }
+      else if (drag.roll && moved > 10) drag.kind = 'move';
+    }
+  }
+  const p = panPoint(e);
+  if (drag.kind === 'oil' && p) { drag.len += p.local.distanceTo(drag.last); drag.last = p.local; drag.lastWorld = p.world; paintOil(p.local); }
+  if (drag.kind === 'tilt') {
+    // 左右のドラッグで左右に、上下のドラッグで奥・手前に傾ける（手前へ引くと手前が下がる）。
+    // 傾きはドラッグの向きと量だけで決める（直前の傾きが戻りきっていなくても、引いた向きに傾く）
+    const lim = (v) => THREE.MathUtils.clamp(v, -CFG.tiltMax, CFG.tiltMax);
+    pan.rotation.z = lim(-dx / (window.innerWidth * 0.35) * CFG.tiltMax);
+    pan.rotation.x = lim(dy / (window.innerHeight * 0.2) * CFG.tiltMax);
+    if (layer && Math.max(Math.abs(pan.rotation.z), Math.abs(pan.rotation.x)) > 0.1) layer.tilted = true;
+  }
+  if (drag.kind === 'roll' && p) moveRoll(p);
+  if (drag.kind === 'move' && p) { roll.position.z = THREE.MathUtils.clamp(p.local.z, rollBackZ(), rollFrontZ()); placeSticks(roll.localToWorld(new THREE.Vector3(0.3, 0, RHZ))); }
+});
+function endDrag(e) {
+  if (!drag || e.pointerId !== drag.id) return;
+  const d = drag; drag = null;
+  const moved = Math.hypot(e.clientX - d.x0, e.clientY - d.y0);
+  if (!d.kind && moved < CFG.rollStartPx) { if (d.onMark) lift(); else tap(e); }
+  if (d.kind === 'oil') {
+    // 塗れた割合は、卵の下を除いた鉄の面に対して数える
+    let n = 0, free = 0;
+    for (let j = 0; j < NZ; j++) for (let i = 0; i < NX; i++) { if (roll.parent && cellZ(j) < roll.position.z + RHZ * rollScale() && cellZ(j) > roll.position.z - RHZ * rollScale()) continue; free++; n += oiled[j * NX + i]; }
+    rec.oil.push({ at: r2(gameTime), layer: rec.layers.length + 1, coverage: r2(n / free), length: r2(d.len), onEgg: liquidInPan() > 0.002 });
+  }
+  if (d.kind === 'pour') { stream.visible = false; pourWorld = null; }
+  if (d.kind === 'roll') { rollZBefore = d.rollZ0; hadRollBefore = d.hadRoll; endRoll(d.pts); }
+}
+canvas.addEventListener('pointerup', endDrag);
+canvas.addEventListener('pointercancel', endDrag);
+
+function tap(e) {
+  const p = panPoint(e);
+  if (tool === 'egg' && p && remaining > 0) {
+    // 一滴たらして温度を確かめる
+    const m = new THREE.Mesh(new THREE.SphereGeometry(0.05, 16, 8), eggMat); m.scale.y = 0.3;
+    m.position.set(p.local.x, 0.075, p.local.z); pan.add(m); drops.push(m);
+    dropWorld = p.world.clone(); dropUntil = clock() + 0.5;
+    const hot = temp >= CFG.sizzleTemp; if (hot) sizzle(0.5);
+    remaining = Math.max(0, remaining - 0.002);
+    rec.drops.push({ at: r2(gameTime), temp: r2(temp), sizzle: hot });
+  }
+  if (tool === 'sticks') {
+    const best = bubbleNear(e);
+    if (best) { best.popped = true; best.mesh.visible = false; layer.popped++; if (p) placeSticks(p.world); }
+  }
+}
+// 卵を持ち上げる／下ろす（タップごとに切り替え）。持ち上げている間に、焼いている層がまだ流れるうちなら「下にも流した」とみなす
+function lift() {
+  lifted = !lifted; (lifted ? pickSE : putSE)();
+  $('liftMark').classList.toggle('lifted', lifted);
+}
+
+// ---------- 卵液を流す ----------
+function startPour() {
+  drag.kind = 'pour';
+  if (!layer) {
+    layer = { at: r2(gameTime), pour: 0, pours: 0, cook: 0, bubbles: 0, popped: 0, tilted: false, lifted: false, temp: r2(temp), oiled: rec.oil.some(o => o.layer === rec.layers.length + 1), gapSec: lastRollAt == null ? null : r2(gameTime - lastRollAt) };
+    drops.forEach(m => pan.remove(m)); drops.length = 0;
+  }
+  layer.pours++;
+}
+function pourAt(p, dt) {
+  const v = Math.min(remaining, CFG.pourRate * dt); if (v <= 0) return;
+  remaining -= v; layer.pour += v;
+  const R = 0.2; let wsum = 0; const cells = [];
+  for (let j = 0; j < NZ; j++) for (let i = 0; i < NX; i++) {
+    const d = Math.hypot(cellX(i) - p.x, cellZ(j) - p.z); if (d < R) { const w = 1 - d / R; cells.push([j * NX + i, w]); wsum += w; }
+  }
+  for (const [c, w] of cells) { const add = v / VC * w / wsum; ck[c] = ck[c] * h[c] / (h[c] + add); h[c] += add; }
+}
+
+// ---------- 巻く ----------
+function startRoll(e) {
+  const p = panPoint(e); if (!p) return;
+  drag.kind = 'roll'; drag.pts = [];
+  if (lifted) lift(); // 巻くときは下ろす
+  drag.hadRoll = !!roll.parent; drag.rollZ0 = roll.position.z;
+  updateRoll();
+  // 渦の芯：巻いた卵があればそれを包む太さ、なければ細い芯から巻き始める
+  curlUniforms.uR0.value = drag.hadRoll ? RHZ * rollScale() : 0.08;
+  roll.visible = drag.hadRoll;
+  moveRoll(p);
+}
+let rollZBefore = 0, hadRollBefore = false;
+// 菜箸の位置まで、奥からシートを巻き上げる（戻せば広がる）。巻いた卵は渦の芯として一緒に動く
+function moveRoll(p) {
+  drag.pts.push({ x: +p.local.x.toFixed(3), z: +p.local.z.toFixed(3), t: +(clock() - drag.t0).toFixed(3) });
+  const z = THREE.MathUtils.clamp(p.local.z, rollBackZ(), rollFrontZ());
+  curlUniforms.uRollZ.value = z;
+  roll.position.z = z; roll.position.y = 0.06 + curlUniforms.uR0.value; // 渦の中心
+  for (const b of bubbles) b.mesh.visible = !b.popped && !b.gone && b.mesh.position.z > z; // 巻き込まれた泡は消す
+  placeSticks(p.world);
+}
+// 指を離したとき：ほとんど動かしていなければ巻いたことにしない（シートは元に戻る）。
+// 動かしていれば、巻いた所（菜箸が通った所と巻いた卵の下）だけを卵にまとめ、手前に残ったシートはそのまま。
+// 続けて巻けば残りを巻き取り、卵液がなくなったら（手前まで巻ききったら）その層を巻き終わりにする
+function endRoll(pts) {
+  curlUniforms.uRollZ.value = -99;
+  const a = pts[0], b = pts[pts.length - 1];
+  if (Math.hypot(b.x - a.x, b.z - a.z) <= CFG.rollMinDist) {
+    for (const bb of bubbles) bb.mesh.visible = !bb.popped && !bb.gone;
+    if (hadRollBefore) { roll.position.z = rollZBefore; roll.visible = true; } else pan.remove(roll);
+    renderer.shadowMap.needsUpdate = true;
+    return;
+  }
+  const front = roll.position.z + RHZ * rollScale();
+  for (let j = 0; j < NZ; j++) { if (cellZ(j) > front) break; for (let i = 0; i < NX; i++) absorb(j * NX + i); }
+  for (const bb of bubbles) if (bb.mesh.position.z < front) { bb.gone = true; bb.mesh.visible = false; } // 巻き込まれた泡
+  updateRoll(); roll.visible = true; roll.position.z = THREE.MathUtils.clamp(roll.position.z, rollBackZ(), rollFrontZ());
+  if (layer) (layer.strokes = layer.strokes || []).push(pts);
+  renderer.shadowMap.needsUpdate = true;
+  if (liquidInPan() < 0.004) finishRoll();
+}
+// 手前まで巻ききったら、わずかに残った卵液もまとめて、層を締める
+function finishRoll() {
+  for (let c = 0; c < NC; c++) absorb(c);
+  updateRoll(); roll.visible = true;
+  closeLayer({ rolled: true, roll: rollMetrics(layer.strokes) });
+  lastRollAt = gameTime;
+  // 油は焼くたびに減る
+  oilCtx.fillStyle = 'rgba(0,0,0,0.6)'; oilCtx.fillRect(0, 0, 256, 352); oilTex.needsUpdate = true;
+}
+function closeLayer(extra) {
+  if (!layer) return;
+  for (const b of bubbles) pan.remove(b.mesh);
+  layer.bubbles = bubbles.length; bubbles.length = 0;
+  // 巻いたときの火の通り：巻き取った卵の量で平均（巻かずに完成したときは、鍋に残った卵液の平均）
+  layer.cookAtRoll = Math.round(layer.absorbVol > 0 ? layer.absorbCook / layer.absorbVol : meanCook());
+  layer.cook = layer.absorbVol = layer.absorbCook = undefined;
+  rec.layers.push(Object.assign(layer, extra)); layer = null;
+}
+// 軌跡の要約：距離・斜め具合（0°＝まっすぐ手前）・横ぶれ・速さとその揺れ
+function rollMetrics(strokes) {
+  const pts = strokes.flat();
+  const a = pts[0], b = pts[pts.length - 1], dx = b.x - a.x, dz = b.z - a.z, dist = Math.hypot(dx, dz) || 1e-6;
+  const off = pts.map(p => ((p.x - a.x) * dz - (p.z - a.z) * dx) / dist);
+  const sp = []; for (const st of strokes) for (let i = 1; i < st.length; i++) { const t = st[i].t - st[i - 1].t; if (t > 0) sp.push(Math.hypot(st[i].x - st[i - 1].x, st[i].z - st[i - 1].z) / t); }
+  const mean = (v) => v.reduce((s, x) => s + x, 0) / (v.length || 1), sd = (v) => Math.sqrt(mean(v.map(x => (x - mean(v)) ** 2)));
+  const r3 = (x) => +x.toFixed(3);
+  return { strokes: strokes.length, dist: r3(dist), angle: r3(Math.atan2(dx, dz) * 180 / Math.PI), wobble: r3(sd(off)), speed: r3(mean(sp)), speedSd: r3(sd(sp)), pts };
+}
+
+// ---------- 完成：押した時点の状態のまま皿に移す ----------
+// 結果発表：完成形の名前と一言アドバイスだけ（点数は出さない）。?debug=1 では5項目の評価も記録に出る
+// 完成名を、区切りに改行できる位置（<wbr>）を入れて並べる。日本語は 原因｜比喩｜だし巻き（固定の名前は「だし巻き」の前）、英語は単語の間で改行される
+function nameNodes(name) {
+  const text = name[lang];
+  const parts = lang !== 'ja' ? [text] : name.parts || (text.endsWith('だし巻き') && text !== 'だし巻き' ? [text.slice(0, -4), 'だし巻き'] : [text]);
+  return parts.flatMap((p, i) => (i ? [document.createElement('wbr'), p] : [p]));
+}
+function fillResult() { const r = rec.result; $('resName').replaceChildren(...nameNodes(r.name)); $('resAdvice').textContent = r.advice[lang]; }
+function showResult() {
+  if (!rec.result || !revealed) return;
+  fillResult(); $('result').classList.add('show');
+  showBanner();
+}
+// 結果画面の上の広告の帯（設定は head の ADS）：結果カードが出たときに1ページ1回だけ作り、一度出したら消さない（「もう一度」は reload）。
+// 帯の下端から結果カードまで 150px 取れる大きさ（PC 728×90、スマホ 320×50）を選び、取れない（横向きのスマホなど）なら作らない
+function showBanner() {}
+// 「もう一度」：H5 を使うときは区切りの広告（出すか・間隔は Google 任せ）を挟んでから読み込み直す。
+// adBreakDone は広告が出ても出なくても呼ばれる。来なかったときの保険に、広告が出ていなければ数秒で読み込み直す
+$('again').onclick = () => {
+  (window.dataLayer = window.dataLayer || []).push({ event: 'game_retry', game_id: 'dashimaki' });
+  if (ADS.h5 === 'off') { location.reload(); return; }
+  $('again').disabled = true;
+  let t = setTimeout(() => location.reload(), 3000);
+  adBreak({
+    type: 'next', name: 'retry',
+    beforeAd: () => { clearTimeout(t); audio?.suspend(); },
+    afterAd: () => { t = setTimeout(() => location.reload(), 2000); },
+    adBreakDone: (info) => { clearTimeout(t); window.dataLayer.push({ event: 'ad_break', game_id: 'dashimaki', ad_status: info.breakStatus }); location.reload(); },
+  });
+};
+// 切るアニメーションの進み（秒）と、断面へ寄るカメラ
+var cutT = 0, revealT = -1, revealed = false; // var：起動直後の resize からも読むため
+const camFrom = { p: new THREE.Vector3(), t: new THREE.Vector3(-0.05, -0.1, -0.05) }, camTo = { p: new THREE.Vector3(), t: new THREE.Vector3() };
+// 料理の範囲が画面に収まる、断面が見える低めの角度（手前やや右から）。fit：横幅のどれだけを画面に入れるか
+// 特殊な完成（皿に何も載せない・油だけ）は、皿の全体が見えるよう引いて、上から見下ろす
+// frame：寄りきったときのカメラ。料理が 3D の画面の左右の端と結果カードにかからないよう、引いて中心をずらす（frameFood）
+function revealCamera(fit = rec.result?.special ? 0.62 : 0.42, dir = rec.result?.special ? new THREE.Vector3(0.12, 1.3, 0.9) : new THREE.Vector3(0.25, 0.62, 0.95), frame = false) {
+  const box = view.foodBox(), c = box.getCenter(new THREE.Vector3()), size = box.getSize(new THREE.Vector3());
+  const cam = view.camera, vf = THREE.MathUtils.degToRad(cam.fov), hf = 2 * Math.atan(Math.tan(vf / 2) * cam.aspect);
+  // 距離：横幅が画面に収まる距離。ただし料理を包む球より外に置く（巨大化して奥行きのあるときに、カメラが料理の中に入らないよう）
+  const halfW = Math.max(0.3, Math.max(size.x, size.z) * fit), radius = size.length() / 2;
+  let dist = THREE.MathUtils.clamp(Math.max(halfW / Math.tan(hf / 2), radius * 1.15), 1.0, 30);
+  camTo.t.copy(c); dir.normalize();
+  if (frame) dist = frameFood(dir, dist, vf);
+  camTo.p.copy(camTo.t).addScaledVector(dir, dist);
+  // 遠くまで引いたときに霧で暗く沈まないよう、霧の距離もカメラに合わせる
+  view.scene.fog.near = Math.max(4.5, dist * 0.9); view.scene.fog.far = Math.max(9, dist * 2);
+  camFrom.p.copy(cam.position); camFrom.t.copy(cutCamT);
+}
+// 料理の形の点を画面に映し、左右の端から side px、3D の画面の上から top px、結果カードの上から gap px の内側に収まるまで引き（近づけるのは元の距離 dist0 まで）、
+// 収まる範囲の真ん中に来るよう注視点をずらす。横に長い・巨大化した料理が、正方形に近い画面で右端と結果カードにかかっていた（2026-10-24）
+function frameFood(dir, dist0, vf) {
+  const sz = renderer.getSize(new THREE.Vector2()), W = sz.x, H = sz.y, side = 24, top = 16, gap = 16;
+  const bottom = Math.max(H * 0.5, Math.min(H, $('result').offsetTop - bandH) - gap); // 結果カードの上（3D の画面の中の px。offsetTop は動き途中の transform を含まない）
+  const pts = view.foodPoints(), c2 = view.camera.clone(), right = new THREE.Vector3(), up = new THREE.Vector3(), s = new THREE.Vector3();
+  let dist = dist0;
+  for (let k = 0; k < 6; k++) {
+    c2.position.copy(camTo.t).addScaledVector(dir, dist); c2.lookAt(camTo.t); c2.updateMatrixWorld();
+    let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+    for (const p of pts) { s.copy(p).project(c2); const x = (s.x + 1) / 2 * W, y = (1 - s.y) / 2 * H; x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y); }
+    // ずらす：画面で右へ d px 動かしたい物は、カメラを左へ（d × 1px あたりの長さ）動かす。上下も同じ
+    const px = 2 * dist * Math.tan(vf / 2) / H; // 注視点の距離での 1px あたりの長さ
+    right.setFromMatrixColumn(c2.matrixWorld, 0); up.setFromMatrixColumn(c2.matrixWorld, 1);
+    camTo.t.addScaledVector(right, ((x0 + x1) / 2 - W / 2) * px).addScaledVector(up, ((top + bottom) / 2 - (y0 + y1) / 2) * px);
+    dist = Math.max(dist0, dist * Math.max((x1 - x0) / (W - 2 * side), (y1 - y0) / (bottom - top)));
+  }
+  return dist;
+}
+// 切っている間のカメラ：切る前の1本と包丁が大きく見える、やや低い角度。垂直に入る刃の面が見えるよう、右から斜めに
+const cutCamT = new THREE.Vector3();
+function cutCamera() {
+  revealCamera(0.62, new THREE.Vector3(0.65, 0.85, 0.75));
+  const cam = view.camera; cam.position.copy(camTo.p); cam.lookAt(camTo.t); cutCamT.copy(camTo.t);
+  view.bokeh.uniforms.focus.value = camTo.p.distanceTo(camTo.t);
+}
+function stepResult(dt) {
+  const a = view.cutAnim; // 切る物がない（特殊な完成）ときは、すぐに寄るカメラへ
+  if (a && cutT < a.duration) { cutT = Math.min(a.duration, cutT + dt); a.update(cutT); renderer.shadowMap.needsUpdate = true; return; }
+  if (revealT < 0) { fillResult(); revealCamera(undefined, undefined, true); revealT = 0; } // 結果カードの高さを決めてから（まだ見えない）
+  if (revealT < 1) {
+    revealT = Math.min(1, revealT + dt / 1.4);
+    const u = revealT < 0.5 ? 2 * revealT * revealT : 1 - ((-2 * revealT + 2) ** 2) / 2;
+    const cam = view.camera, tgt = camFrom.t.clone().lerp(camTo.t, u);
+    cam.position.copy(camFrom.p).lerp(camTo.p, u); cam.lookAt(tgt);
+    view.bokeh.uniforms.focus.value = cam.position.distanceTo(tgt);
+    if (revealT >= 1) { revealed = true; showResult(); view.startSoap(); kotoSE(); (window.dataLayer = window.dataLayer || []).push({ event: 'game_end', game_id: 'dashimaki', result: rec.result.id }); }
+  }
+}
+// 断面を見るカメラにすぐ置く（fit：横幅のどれだけを画面に入れるか）
+function placeReveal(fit, frame = false) {
+  revealCamera(fit, undefined, frame); const cam = view.camera; cam.position.copy(camTo.p); cam.lookAt(camTo.t);
+  view.bokeh.uniforms.focus.value = camTo.p.distanceTo(camTo.t);
+}
+
+// ---------- Xシェア：1200×630 の画像を作って Worker（R2）に送り、その共有ページの URL でポストする ----------
+// その場で 1200×630 に描き直し、下に名前と一言を重ねる。描いたら画面の大きさに戻す
+function shareImage(r) {
+  const W = 1200, H = 630;
+  renderer.setPixelRatio(1); view.setSize(W, H); placeReveal(0.62); view.tick(0);
+  renderer.shadowMap.needsUpdate = true; view.render();
+  const c = gridCanvas(W, H), g = c.getContext('2d');
+  g.drawImage(canvas, 0, 0, W, H);
+  resize(); view.render();
+  const grad = g.createLinearGradient(0, H - 230, 0, H); grad.addColorStop(0, '#0000'); grad.addColorStop(0.45, '#000a'); grad.addColorStop(1, '#000d');
+  g.fillStyle = grad; g.fillRect(0, H - 230, W, 230);
+  const font = '"Hiragino Sans","Noto Sans JP","Yu Gothic",system-ui,sans-serif';
+  g.textAlign = 'center'; g.fillStyle = '#f3e6cf'; g.shadowColor = '#000'; g.shadowBlur = 8;
+  let size = 64; do g.font = `bold ${size}px ${font}`; while (g.measureText(r.name[lang]).width > W - 80 && (size -= 2) > 34); // 長い名前は小さくして1行に
+  g.fillText(r.name[lang], W / 2, H - 92, W - 80);
+  g.font = `30px ${font}`; g.globalAlpha = 0.9; g.fillText(r.advice[lang], W / 2, H - 40, W - 80);
+  g.textAlign = 'right'; g.font = `24px ${font}`; g.globalAlpha = 0.75; g.fillText(T('shareSite'), W - 24, 40);
+  return new Promise(res => c.toBlob(res, 'image/jpeg', 0.85));
+}
+const shareIds = {}; // 言語ごとに1回だけ送る（何度押しても同じ URL）
+$('share').onclick = async () => {
+  const r = rec.result; if (!r) return;
+  const btn = $('share'), label = btn.innerHTML; btn.disabled = true; btn.textContent = T('sharing');
+  const page = new URL('./', location.href).href;
+  const text = T('shareText').replace('{name}', r.name[lang]);
+  try {
+    const blob = await shareImage(r);
+    const file = new File([blob], 'dashimaki.jpg', { type: 'image/jpeg' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) await navigator.share({ files: [file], text, url: page });
+    else if (navigator.share) await navigator.share({ text, url: page });
+    else { await navigator.clipboard.writeText(text + '\n' + page); btn.textContent = 'コピーしました'; setTimeout(() => { btn.disabled = false; btn.innerHTML = label; }, 1200); return; }
+  } catch (e) { console.warn('share', e); }
+  btn.disabled = false; btn.innerHTML = label;
+};
+if (DEBUG) window.__shareImage = () => shareImage(rec.result).then(b => URL.createObjectURL(b)); // 確認用：シェア画像を見る
+
+// 切っている途中にタップしたら、最後まで飛ばす
+// （場面を作っている間は画面が止まり、その間のクリックが後から届くので、アニメーションが始まる前に押されたものは無視する）
+let animStartAt = Infinity;
+canvas.addEventListener('pointerdown', (e) => { if (ended && view.cutAnim && cutT < view.cutAnim.duration && e.timeStamp > animStartAt + 300) { cutT = view.cutAnim.duration; view.cutAnim.update(cutT); renderer.shadowMap.needsUpdate = true; } });
+function finish() {
+  gaStart(); ended = true; paused = false; drag = null;
+  rec.end = { at: r2(gameTime), bowl: r2(remaining), unrolled: r2(liquidInPan()), inRoll: r2(inRoll), rollCook: Math.round(rollCook) };
+  closeLayer({ rolled: false, roll: layer?.strokes ? rollMetrics(layer.strokes) : undefined });
+  for (const id of ['knob', 'top', 'finish', 'handleArrows', 'liftMark', ...TOOLS.map(t => 'mark-' + t)]) $(id).style.display = 'none';
+  $('plating').style.display = 'flex';
+  setTimeout(async () => { // 盛り付けの場面を作る（重いので、UIを消して「盛り付け中…」を画面いっぱいに出し、描かれてから）
+    // 判定して、その見た目で盛り付ける（C段階の変化は担当する部分ごとに重ねる）
+    const res = rec.result = judge(rec, Math.random, NAMES);
+    const has = (c) => res.changes.some(x => x.change === c);
+    // 盛り付けは崩さない：失敗作も重ねず、普通に切って少し斜めに断面を見せて並べる（2026-10-11 ユーザー指定。以前の「失敗するほどぐちゃぐちゃに」はやめた）
+    const mess = 0;
+    // 形のゆがみ：全部Aでも、Cがあるのでもないとき（一流料亭・B段階）だけ、Bが多いほど強く
+    const nB = Object.values(res.items).filter(x => x.grade === 'B').length;
+    let deform = res.stage === 'ryotei' || res.stage === 'B' ? randomDeform(Math.min(1, 0.3 + 0.15 * nB)) : null;
+    // Bの項目の欠点：判定で決めた種類と強さ（C段階でも、ほかのBの項目の欠点は重ねる）。こびりつきの場所はランダム
+    const sgn = () => (Math.random() < 0.5 ? -1 : 1);
+    const defects = res.defects.map(d => ({ ...d, at: (Math.random() - 0.5) * 1.4 }));
+    for (const d of defects) {
+      if (d.defect === 'bent') (deform ??= {}).bend = sgn() * (0.1 + 0.06 * d.strength);
+      if (d.defect === 'thickEnd') (deform ??= {}).taper = sgn() * (0.14 + 0.08 * d.strength);
+    }
+    const pick = (...cs) => cs.find(has) || null;
+    const look = { k: res.intensity, mess, deform, defects, size: (DEBUG && q.get('size')) || pick('huge', 'tiny'), // ?debug=1&size=huge|tiny で大きさを決め打ち（確認用）
+      color: pick('char', 'jelly'), shape: pick('drill', 'wave', 'zigzag', 'flat'),
+      surface: pick('batter', 'crumbs'), inner: pick('cheese', 'balloon'), nenrin: has('nenrin'), animate: true,
+      gold: res.stage === 'phantom',                                         // 全部A：金色に光り、後光が差す
+      soap: (DEBUG && q.get('soap') === '1') || (res.items.bubble.grade === 'C' && Math.random() < 0.2) }; // 泡がCのとき、20%でシャボン玉（?debug=1&soap=1 で必ず）
+    // 卵状と年輪は同時に出せないので、両方当たったらどちらか片方をランダムに（2026-10-11 ユーザー指定）
+    const eggOrRing = has('egg') && has('nenrin') ? (Math.random() < 0.5 ? 'egg' : 'nenrin') : null;
+    if (eggOrRing === 'egg') look.nenrin = false;
+    const variant = has('egg') && eggOrRing !== 'nenrin' ? 'tamago' : has('nenrin') ? 'nenrin' : 'normal';
+    if (res.special) for (const key of Object.keys(look)) if (key !== 'animate') delete look[key]; // 特殊な完成は、ふつうの変化を何も付けない
+    look.special = res.special;
+    holdRender = true; // シェーダーを準備し終えるまで描かない（描くと、その場で準備して画面が止まる）
+    view = buildScene(renderer, { stage: 'plate', variant, fx: FX, fxScale: 0.5, look });
+    resize(); cutCamera();
+    // シェーダーを、画面を止めずに並行して準備する（「盛り付け中」の点は動いたまま。2026-10-11）
+    try { await renderer.compileAsync(view.scene, view.camera); } catch (e) { console.warn('compileAsync', e); }
+    holdRender = false;
+    $('plating').style.display = 'none'; animStartAt = performance.now(); last = clock(); // 作るのにかかった時間は進めない
+    console.log('記録', rec);
+  }, 120);
+}
+
+// ---------- 毎フレーム ----------
+let last = clock(), fps = 0;
+function step() {
+  const now = clock(), dt = Math.min(0.05, now - last); fps += ((1 / Math.max(1e-3, now - last)) - fps) * 0.1; last = now;
+  if (!paused && !ended) simulate(now, dt);
+  // 卵が焼ける音：鍋の卵液（巻いた卵は少し）× 火の入り方。止めている間・完成後は鳴らさない
+  const heatSE = THREE.MathUtils.smoothstep(cookHeat(), 0.2, 0.7);
+  const eggSE = Math.min(1, liquidInPan() / 0.06) + (roll.parent && roll.visible && !lifted ? 0.3 : 0);
+  updateSizzle(paused || ended ? 0 : heatSE * Math.min(1, eggSE), dt);
+  if (!ended) updateProps(now, dt);
+  if (holdRender) return; // 盛り付けの場面のシェーダーを準備している間
+  if (ended && view !== k) { stepResult(dt); view.tick(dt); }
+  if (!ended) {
+    const [hx, hy] = handleScreen(); Object.assign($('handleArrows').style, { left: hx + 'px', top: hy + 'px' });
+    const showMark = !!roll.parent && !(drag && (drag.kind === 'roll' || drag.kind === 'move'));
+    $('liftMark').style.display = showMark ? 'block' : 'none';
+    $('liftMark').classList.toggle('slide', tool === 'sticks'); // 卵を動かせるのは菜箸を持っているときだけ
+    if (showMark) { const [mx, my] = markScreen(); $('liftMark').style.left = mx + 'px'; $('liftMark').style.top = my + 'px'; }
+    for (const t of TOOLS) { const [x, y] = toScreen(markAt[t]()); Object.assign($('mark-' + t).style, { left: x + 'px', top: y + 'px' }); }
+  }
+  if (DEBUG) {
+    $('debug').style.display = 'block';
+    $('debug').textContent = `${fps.toFixed(0)}fps ${renderer.domElement.width}x${renderer.domElement.height}  tool ${tool}  knob ${knob.toFixed(2)}  temp ${temp.toFixed(2)}  t ${gameTime.toFixed(0)}\nbowl ${remaining.toFixed(2)}  pan ${liquidInPan().toFixed(2)}  inRoll ${inRoll.toFixed(2)}  rollCook ${rollCook.toFixed(0)}${lifted ? ' (lifted)' : ''}\n` +
+      (layer ? `layer pour ${layer.pour.toFixed(2)} cook ${layer.cook.toFixed(0)} bubbles ${bubbles.length} popped ${layer.popped}\n` : '') +
+      JSON.stringify(rec, (key, v) => key === 'pts' || (key === 'strokes' && Array.isArray(v)) ? undefined : v, 1);
+  }
+  view.render();
+}
+// ---------- 焦げの煙：焼きすぎると、焦げている所から灰色の煙が上がる（文字は出さず、見た目で気付かせる。2026-10-11） ----------
+const smokeTex = new THREE.CanvasTexture((() => {
+  const c = gridCanvas(64, 64), g = c.getContext('2d'), gr = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gr.addColorStop(0, 'rgba(255,255,255,0.9)'); gr.addColorStop(0.5, 'rgba(255,255,255,0.35)'); gr.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = gr; g.fillRect(0, 0, 64, 64); return c;
+})());
+const smoke = Array.from({ length: 44 }, () => {
+  const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: smokeTex, color: 0xd2ccc4, transparent: true, depthWrite: false, opacity: 0 }));
+  s.visible = false; k.steamScene.add(s); return { s, age: 0, life: 0, v: new THREE.Vector3(), peak: 0 };
+});
+let smokeLive = 0;
+function updateSmoke(dt) {
+  // 焦げの強さ：鍋の卵液のうち、焼きすぎの所の割合と、巻いた卵の焼きすぎ。煙を出す場所は焦げている所からランダムに選ぶ
+  let n = 0, burnt = 0, nb = 0, at = -1;
+  for (let c = 0; c < NC; c++) if (h[c] > 0.05) {
+    n++;
+    if (ck[c] > CFG.smokeFrom) { burnt += Math.min(1, (ck[c] - CFG.smokeFrom) / 50); if (Math.random() * ++nb < 1) at = c; }
+  }
+  const rollBurn = roll.parent && roll.visible ? THREE.MathUtils.clamp((rollCook - CFG.smokeRollFrom) / 100, 0, 1) : 0;
+  const level = Math.min(1, (n ? burnt / n * 4 : 0) + rollBurn * 0.6);
+  if (level > 0 && Math.random() < level * 14 * dt) {
+    const p = smoke.find(q => !q.s.visible);
+    if (p) {
+      const fromRoll = at < 0 || (rollBurn > 0 && Math.random() < rollBurn * 0.5);
+      const local = fromRoll ? new THREE.Vector3((Math.random() - 0.5) * 1.6, RHY * 2, 0).add(roll.position) : new THREE.Vector3(cellX(at % NX), 0.08, cellZ(Math.floor(at / NX)));
+      p.s.position.copy(pan.localToWorld(local)); p.s.visible = true; p.age = 0; p.life = 2 + Math.random() * 1.2;
+      p.v.set((Math.random() - 0.5) * 0.15, 0.35 + Math.random() * 0.2, (Math.random() - 0.5) * 0.1); p.peak = 0.45 + 0.4 * level;
+    }
+  }
+  smokeLive = 0;
+  for (const p of smoke) {
+    if (!p.s.visible) continue;
+    p.age += dt; if (p.age > p.life) { p.s.visible = false; continue; }
+    smokeLive++;
+    const t = p.age / p.life;
+    p.s.position.addScaledVector(p.v, dt); p.s.position.x += Math.sin(p.age * 2 + p.life * 9) * dt * 0.06;
+    p.s.scale.setScalar(0.35 + t * 1.3);
+    p.s.material.opacity = p.peak * Math.min(1, t * 5) * (1 - t);
+  }
+}
+
+function simulate(now, dt) {
+  gameTime += dt;
+  temp += ((fireOn() ? knob : 0) - temp) * Math.min(1, CFG.heatLag * dt);
+  if (knob > 0 || rec.heat.time > 0) { rec.heat.time += dt; rec.heat.sum += knob * dt; }
+
+  // 火：ガスの炎の長さ・明るさ（消火なら消える）
+  k.setFire(fireOn() ? knob : 0, dt);
+  k.setPanHeat(temp, CFG.panHeatColor); // 鉄が温まるほど、底が赤黒く色づく（火加減の数字は出さず、見た目で判断する）
+  updateSmoke(dt);
+  k.steamScene.visible = (temp > 0.4 && (!!layer || !!roll.parent)) || smokeLive > 0; // 湯気と焦げの煙（同じ場面に置いている）
+
+  if (drag && drag.kind === null && tool === 'egg' && now - drag.t0 > 0.25) startPour(); // 長押しでも流れる
+  if (drag && drag.kind === 'pour') {
+    const p = panPoint(drag.e);
+    stream.visible = !!p && remaining > 0;
+    pourWorld = p ? p.world.clone() : null;
+    if (p) { stream.position.copy(p.world).y += 0.8; pourAt(p.local, dt); }
+  }
+  if (layer) {
+    cookStep(dt);
+    if (!(drag && drag.kind === 'roll')) for (let n = 0; n < 6; n++) flowStep();
+    layer.cook = meanCook();
+    // 泡：半熟になるまでのあいだ、卵液の上にぷくっと出る（弱火ほど出やすい）
+    if (fireOn() && layer.cook > 3 && layer.cook < 45 && Math.random() < CFG.bubbleRate * (1 + 2 * Math.max(0, CFG.idealKnob - temp)) * dt) {
+      for (let tries = 0; tries < 20; tries++) {
+        const c2 = Math.floor(Math.random() * NC); if (h[c2] < 0.6 || ck[c2] > 45) continue; // まだ生の所にだけ出る
+        const m = new THREE.Mesh(new THREE.SphereGeometry(0.04 + Math.random() * 0.035, 20, 10, 0, Math.PI * 2, 0, Math.PI / 2), blisterMat);
+        m.position.set(cellX(c2 % NX), 0.072, cellZ(Math.floor(c2 / NX))); m.scale.setScalar(0.01); pan.add(m);
+        bubbles.push({ mesh: m, popped: false, born: now }); break;
+      }
+    }
+  }
+  drawLiquid();
+  for (const b of bubbles) { const s = Math.min(1, (now - b.born) / 0.4); b.mesh.scale.set(s, s * 0.7, s); }
+  if (!(drag && drag.kind === 'tilt')) { pan.rotation.z *= Math.pow(0.02, dt); pan.rotation.x *= Math.pow(0.02, dt); }
+  // 傾けるときは鍋を持ち上げる：一番低い角が五徳（鍋の底の高さ）より下に沈まないよう、傾けた分だけ浮かせる
+  pan.position.y = Math.abs(Math.sin(pan.rotation.z)) * (PW / 2 + 0.11) + Math.abs(Math.sin(pan.rotation.x)) * (PL / 2 + 0.11);
+  if (drag || Math.abs(pan.rotation.z) > 1e-3 || Math.abs(pan.rotation.x) > 1e-3 || (roll.parent && Math.abs(roll.position.y - rollBaseY) > 1e-3)) renderer.shadowMap.needsUpdate = true;
+  // 巻いた卵にも、鍋に置いている間は火が入る（持ち上げている間・巻いている間は入らない）。入りすぎると焼き色が付く
+  if (roll.parent && roll.visible && !lifted && !(drag && drag.kind === 'roll')) {
+    rollCook += CFG.rollCookRate * (cookHeat() / CFG.idealKnob) ** 2 * dt;
+    k.rollMat.color.copy(rollColor0).lerp(rollBurnt, THREE.MathUtils.clamp((rollCook - 100) / 150, 0, 0.8));
+  }
+  // 持ち上げ：もう一度タップするまで浮かせておく
+  if (lifted && layer && layer.lifted !== 'ok') layer.lifted = layer.cook < CFG.flowStop ? 'ok' : 'late';
+  if (roll.parent && !(drag && drag.kind === 'roll')) { // 巻いている間は渦の中心の高さ。離すと接地する
+    const up = lifted ? 0.22 : 0;
+    roll.position.y += (rollBaseY + up - roll.position.y) * Math.min(1, dt * 8);
+    roll.rotation.x = -(roll.position.y - rollBaseY) * 1.2;
+  }
+}
+function frame() { step(); requestAnimationFrame(frame); }
+requestAnimationFrame(frame);
+step(); $('loading').remove(); // 最初の絵を描いてから「だし巻き準備中」を消す
+if (DEBUG) Object.assign(window, { __step: step, __pan: pan, __roll: roll, __markAt: markAt, __h: h, __ck: ck, __view: () => view, __THREE: THREE }); // 確認用（画面が隠れて rAF が止まる環境でもフレームを進める）
+</script>
+</body></html>
