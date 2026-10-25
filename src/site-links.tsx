@@ -1,6 +1,7 @@
 import { drawHref } from '../draw-fight/src/paths'
 import { routeHref } from './seo/landing-content.mjs'
 import { typhoonHref } from './typhoon-escape/seo'
+import { shodoHref } from './shodo-simulator-3d/seo'
 import { zipperHref } from './zipper-finger/seo'
 
 function siteBase() {
@@ -36,6 +37,8 @@ export function siteIndexLinks() {
     { id: 'zipper-finger/how-to-play', href: zipperHref('how-to-play/'), label: 'ジッパーの遊び方' },
     { id: 'zipper-finger/photo-ideas', href: zipperHref('photo-ideas/'), label: '写真アイデア' },
     { id: 'zipper-finger/jojo', href: zipperHref('jojo/'), label: 'ジョジョとの関係' },
+    { id: 'shodo-simulator-3d', href: shodoHref(), label: '書道シミュレーター3D' },
+    { id: 'shodo-simulator-3d/how-to-play', href: shodoHref('how-to-play/'), label: '書道の遊び方' },
   ]
 }
 

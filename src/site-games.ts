@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -42,6 +42,14 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: '写真ジッパー',
       title: 'ジッパーフィンガー',
       description: '好きな場所にジッパーを描いて、中の写真を開く。',
+    },
+    {
+      id: 'shodo-simulator-3d',
+      href: links.shodo,
+      mark: '書',
+      kicker: '書道',
+      title: '書道シミュレーター3D',
+      description: '半紙に筆で書いて、点数を見る。',
     },
   ]
 }

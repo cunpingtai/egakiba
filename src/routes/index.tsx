@@ -5,6 +5,7 @@ import { seoRouteHead, ROUTE_BASE } from '../seo/route-head'
 import { drawHref } from '../../draw-fight/src/paths'
 import { typhoonHref } from '../typhoon-escape/seo'
 import { zipperHref } from '../zipper-finger/seo'
+import { shodoHref } from '../shodo-simulator-3d/seo'
 import { routeHref } from '../seo/landing-content.mjs'
 import { siteGames } from '../site-games'
 import { SiteIndexLinks } from '../site-links'
@@ -123,7 +124,7 @@ function R9Shell() {
               <div><span className="section-kicker">GAMES</span><h2 id="game-shelf-title">あそべるゲーム</h2></div>
             </div>
             <div className="game-shelf-grid">
-              {siteGames({ drawFight: drawHref(), typhoonEscape: typhoonHref(), zipperFinger: zipperHref() }).map((game) => (
+              {siteGames({ drawFight: drawHref(), typhoonEscape: typhoonHref(), zipperFinger: zipperHref(), shodo: shodoHref() }).map((game) => (
                 <a className={`game-card game-card--${game.id}`} href={game.href} key={game.id} aria-current={game.here ? 'page' : undefined}>
                   <span className="game-card-mark" aria-hidden="true">{game.mark}</span>
                   <span className="game-card-body">

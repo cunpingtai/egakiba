@@ -20,6 +20,8 @@ import { Route as DrawFightIndexRouteImport } from './routes/draw-fight/index'
 import { Route as DrawFightSlugRouteImport } from './routes/draw-fight/$slug'
 import { Route as DrawFightGpuCheckRouteImport } from './routes/draw-fight/gpu-check'
 import { Route as DrawFightStudioRouteImport } from './routes/draw-fight/studio'
+import { Route as ShodoSimulator3dIndexRouteImport } from './routes/shodo-simulator-3d/index'
+import { Route as ShodoSimulator3dSlugRouteImport } from './routes/shodo-simulator-3d/$slug'
 import { Route as TyphoonEscapeIndexRouteImport } from './routes/typhoon-escape/index'
 import { Route as TyphoonEscapeSlugRouteImport } from './routes/typhoon-escape/$slug'
 import { Route as ZipperFingerIndexRouteImport } from './routes/zipper-finger/index'
@@ -80,6 +82,16 @@ const DrawFightStudioRoute = DrawFightStudioRouteImport.update({
   path: '/draw-fight/studio',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShodoSimulator3dIndexRoute = ShodoSimulator3dIndexRouteImport.update({
+  id: '/shodo-simulator-3d/',
+  path: '/shodo-simulator-3d/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShodoSimulator3dSlugRoute = ShodoSimulator3dSlugRouteImport.update({
+  id: '/shodo-simulator-3d/$slug',
+  path: '/shodo-simulator-3d/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TyphoonEscapeIndexRoute = TyphoonEscapeIndexRouteImport.update({
   id: '/typhoon-escape/',
   path: '/typhoon-escape/',
@@ -112,9 +124,11 @@ export interface FileRoutesByFullPath {
   '/draw-fight/$slug': typeof DrawFightSlugRoute
   '/draw-fight/gpu-check': typeof DrawFightGpuCheckRoute
   '/draw-fight/studio': typeof DrawFightStudioRoute
+  '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/draw-fight/': typeof DrawFightIndexRoute
+  '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
   '/zipper-finger/': typeof ZipperFingerIndexRoute
 }
@@ -129,9 +143,11 @@ export interface FileRoutesByTo {
   '/draw-fight/$slug': typeof DrawFightSlugRoute
   '/draw-fight/gpu-check': typeof DrawFightGpuCheckRoute
   '/draw-fight/studio': typeof DrawFightStudioRoute
+  '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/draw-fight': typeof DrawFightIndexRoute
+  '/shodo-simulator-3d': typeof ShodoSimulator3dIndexRoute
   '/typhoon-escape': typeof TyphoonEscapeIndexRoute
   '/zipper-finger': typeof ZipperFingerIndexRoute
 }
@@ -147,9 +163,11 @@ export interface FileRoutesById {
   '/draw-fight/$slug': typeof DrawFightSlugRoute
   '/draw-fight/gpu-check': typeof DrawFightGpuCheckRoute
   '/draw-fight/studio': typeof DrawFightStudioRoute
+  '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/draw-fight/': typeof DrawFightIndexRoute
+  '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
   '/zipper-finger/': typeof ZipperFingerIndexRoute
 }
@@ -166,9 +184,11 @@ export interface FileRouteTypes {
     | '/draw-fight/$slug'
     | '/draw-fight/gpu-check'
     | '/draw-fight/studio'
+    | '/shodo-simulator-3d/$slug'
     | '/typhoon-escape/$slug'
     | '/zipper-finger/$slug'
     | '/draw-fight/'
+    | '/shodo-simulator-3d/'
     | '/typhoon-escape/'
     | '/zipper-finger/'
   fileRoutesByTo: FileRoutesByTo
@@ -183,9 +203,11 @@ export interface FileRouteTypes {
     | '/draw-fight/$slug'
     | '/draw-fight/gpu-check'
     | '/draw-fight/studio'
+    | '/shodo-simulator-3d/$slug'
     | '/typhoon-escape/$slug'
     | '/zipper-finger/$slug'
     | '/draw-fight'
+    | '/shodo-simulator-3d'
     | '/typhoon-escape'
     | '/zipper-finger'
   id:
@@ -200,9 +222,11 @@ export interface FileRouteTypes {
     | '/draw-fight/$slug'
     | '/draw-fight/gpu-check'
     | '/draw-fight/studio'
+    | '/shodo-simulator-3d/$slug'
     | '/typhoon-escape/$slug'
     | '/zipper-finger/$slug'
     | '/draw-fight/'
+    | '/shodo-simulator-3d/'
     | '/typhoon-escape/'
     | '/zipper-finger/'
   fileRoutesById: FileRoutesById
@@ -218,9 +242,11 @@ export interface RootRouteChildren {
   DrawFightSlugRoute: typeof DrawFightSlugRoute
   DrawFightGpuCheckRoute: typeof DrawFightGpuCheckRoute
   DrawFightStudioRoute: typeof DrawFightStudioRoute
+  ShodoSimulator3dSlugRoute: typeof ShodoSimulator3dSlugRoute
   TyphoonEscapeSlugRoute: typeof TyphoonEscapeSlugRoute
   ZipperFingerSlugRoute: typeof ZipperFingerSlugRoute
   DrawFightIndexRoute: typeof DrawFightIndexRoute
+  ShodoSimulator3dIndexRoute: typeof ShodoSimulator3dIndexRoute
   TyphoonEscapeIndexRoute: typeof TyphoonEscapeIndexRoute
   ZipperFingerIndexRoute: typeof ZipperFingerIndexRoute
 }
@@ -304,6 +330,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DrawFightStudioRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shodo-simulator-3d/': {
+      id: '/shodo-simulator-3d/'
+      path: '/shodo-simulator-3d'
+      fullPath: '/shodo-simulator-3d/'
+      preLoaderRoute: typeof ShodoSimulator3dIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shodo-simulator-3d/$slug': {
+      id: '/shodo-simulator-3d/$slug'
+      path: '/shodo-simulator-3d/$slug'
+      fullPath: '/shodo-simulator-3d/$slug'
+      preLoaderRoute: typeof ShodoSimulator3dSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/typhoon-escape/': {
       id: '/typhoon-escape/'
       path: '/typhoon-escape'
@@ -346,9 +386,11 @@ const rootRouteChildren: RootRouteChildren = {
   DrawFightSlugRoute: DrawFightSlugRoute,
   DrawFightGpuCheckRoute: DrawFightGpuCheckRoute,
   DrawFightStudioRoute: DrawFightStudioRoute,
+  ShodoSimulator3dSlugRoute: ShodoSimulator3dSlugRoute,
   TyphoonEscapeSlugRoute: TyphoonEscapeSlugRoute,
   ZipperFingerSlugRoute: ZipperFingerSlugRoute,
   DrawFightIndexRoute: DrawFightIndexRoute,
+  ShodoSimulator3dIndexRoute: ShodoSimulator3dIndexRoute,
   TyphoonEscapeIndexRoute: TyphoonEscapeIndexRoute,
   ZipperFingerIndexRoute: ZipperFingerIndexRoute,
 }

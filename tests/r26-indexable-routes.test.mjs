@@ -94,7 +94,7 @@ test('R26: sitemap contains the Japanese canonical landing URLs and no fragment 
   const sitemap = await read('public/sitemap.xml');
   const robots = await read('public/robots.txt');
   const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-  assert.equal(urls.length, 25);
+  assert.equal(urls.length, 27);
   assert.equal(new Set(urls).size, urls.length);
   assert.ok(urls.every((url) => !url.includes('#')));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}draw-fight/`));
@@ -105,6 +105,8 @@ test('R26: sitemap contains the Japanese canonical landing URLs and no fragment 
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}zipper-finger/how-to-play/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}zipper-finger/photo-ideas/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}zipper-finger/jojo/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}shodo-simulator-3d/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}shodo-simulator-3d/how-to-play/`));
   assert.equal(urls.some((url) => url.endsWith('game.html')), false);
   assert.equal(urls.some((url) => url.includes('/studio') || url.includes('/gpu-check')), false);
   assert.ok(urls.includes(canonicalUrl('home', 'ja', DEFAULT_SITE_URL)));

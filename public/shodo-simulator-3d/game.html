@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<title>書道シミュレーター3D</title>
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://egakiba.com/shodo-simulator-3d/">
+<style>
+  :root{
+    --bg:#2b2622;--fg:#fff;--sub:#bbb;--line:#0004;--panel:#000b;
+    --desk:#5c4a3c;--paper:#f6f2e8;--ink:#151515;--skin:#e2b190;--guess-mark:#3a2826;
+    --target:#8c8c8c;--gauge:#d23c2c;--shu:#d0362a;--bamboo:#c9a25b;--ferrule:#3c3c3c;--bristle:#151515;--dry:#e8e1d0;
+    --stone:#38383b;--pool:#0b0b0b;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%;overflow:hidden}
+  body{
+    background:var(--bg);color:var(--fg);
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",system-ui,sans-serif;
+    touch-action:manipulation;
+    -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+  }
+  #game{position:fixed;inset:0;height:100dvh}
+  #cv{display:block;width:100%;height:100%;touch-action:none}
+  .hidden{display:none !important}
+
+  /* 画面に浮かぶ操作ボタン */
+  .ui-btn{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    min-width:44px;height:44px;padding:0 16px;border:none;border-radius:22px;
+    background:#0008;color:#fff;font:15px "Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+    touch-action:manipulation;
+  }
+  .ui-btn.icon{width:44px;padding:0}
+  .ui-btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
+  /* デバッグ：出題一覧から選んで字を変える */
+  #dbg{position:absolute;top:calc(16px + env(safe-area-inset-top));right:calc(16px + env(safe-area-inset-right))}
+  #dbg[aria-expanded="true"]{border-radius:22px 22px 0 0}
+  #dbg span{font:22px "Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;line-height:1}
+  #dbg-list{
+    position:absolute;top:calc(60px + env(safe-area-inset-top));right:calc(16px + env(safe-area-inset-right));
+    display:grid;grid-template-columns:repeat(5,44px);column-gap:8px;padding:0 8px 8px;   /* 余白・間隔は8の倍数 */
+    background:#0008;border-radius:22px 0 22px 22px;touch-action:manipulation;
+  }
+  #dbg-list.hidden{display:none}
+  #dbg-list button{
+    width:44px;height:44px;border:none;border-radius:22px;background:none;color:#fff;
+    font:20px "Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;touch-action:manipulation;
+  }
+  #dbg-list button[aria-pressed="true"]{background:#fffd;color:#000}
+  #custom-row{grid-column:1/-1;display:flex;gap:8px;padding-top:8px}
+  #custom-char::placeholder{color:#999}
+  #custom-char{
+    flex:1;min-width:0;height:40px;border:none;border-radius:20px;padding:0 16px;
+    font:20px "Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;touch-action:manipulation;
+  }
+  #dbg-list #custom-go{width:auto;height:40px;padding:0 16px;border-radius:20px;background:#fffd;color:#000;font:700 15px "Hiragino Sans","Noto Sans JP",system-ui,sans-serif}
+  #dbg-list #custom-go:disabled{opacity:.6}
+  #kvg-credit{grid-column:1/-1;margin:8px 8px 0;font-size:10px;line-height:16px;color:#fffa}
+  #dbg-list button:focus-visible{outline:2px solid #fff;outline-offset:-2px}
+  /* 開発者向け：筆順データが無く字の画像から推定しているとき、画面の左上の隅にだけ背景とわずかに違う色の小さな四角を出す */
+  #guess-mark{position:absolute;top:0;left:0;width:4px;height:4px;background:var(--guess-mark);pointer-events:none}
+  #done{
+    position:absolute;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));
+    height:60px;min-width:168px;border-radius:30px;font-size:20px;font-weight:700;
+  }
+
+  /* 結果 */
+  #result{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;gap:16px;
+    background:var(--bg);touch-action:none;
+    padding:calc(16px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom));
+  }
+  #judge-cv{flex:1;min-height:0;width:100%;display:block}
+  #result .row{display:flex;gap:16px;transition:opacity .3s}
+  #result .row.wait{opacity:0;pointer-events:none}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .big{
+    height:56px;min-width:132px;padding:0 24px;border:none;border-radius:28px;
+    font:700 18px "Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+    background:#fff;color:#000;touch-action:manipulation;
+  }
+  .big.sub{background:#fff3;color:#fff}
+  .big:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
+  /* 共有できない環境で出す画面 */
+  #share-view{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);touch-action:none}
+  #share-view .panel{
+    width:min(90%,340px);max-height:94%;overflow:auto;touch-action:pan-y;
+    padding:16px;border-radius:16px;background:var(--bg);display:flex;flex-direction:column;gap:16px;
+  }
+  #share-img{display:block;width:auto;max-width:100%;max-height:50dvh;align-self:center;border-radius:8px}   /* 小さい画面でも閉じるボタンまで収める */
+  #share-text{margin:0;white-space:pre-wrap;word-break:break-all;-webkit-user-select:text;user-select:text;font-size:14px}
+  #share-close{align-self:center}
+</style>
+</head>
+<body>
+<div id="game">
+  <canvas id="cv" aria-label="半紙と筆を持つ手"></canvas>
+  <button id="dbg" class="ui-btn icon" type="button" aria-label="出題を選ぶ" aria-expanded="false"><span aria-hidden="true">永</span></button>
+  <div id="dbg-list" class="hidden" role="group" aria-label="出題一覧">
+    <div id="custom-row">
+      <input id="custom-char" type="text" maxlength="4" autocomplete="off" placeholder="好きな字" aria-label="書きたい字">
+      <button id="custom-go" type="button">決定</button>
+    </div>
+    <p id="kvg-credit">用意された字以外は、字形から筆順を推定します。</p>
+  </div>
+  <button id="done" class="ui-btn" type="button">
+    完成
+  </button>
+  <div id="result" class="hidden">
+    <canvas id="judge-cv" aria-hidden="true"></canvas>
+    <p id="score" class="sr" aria-live="polite"></p>
+    <div id="result-btns" class="row">
+      <button id="again" class="big" type="button">もう一回</button>
+      <button id="share" class="big sub" type="button">共有</button>
+    </div>
+  </div>
+  <div id="guess-mark" class="hidden" aria-hidden="true"></div>
+  <div id="share-view" class="hidden" role="dialog" aria-label="共有される内容">
+    <div class="panel">
+      <img id="share-img" alt="共有される結果画像">
+      <p id="share-text"></p>
+      <button id="share-close" class="big" type="button">閉じる</button>
+    </div>
+  </div>
+</div>
+<script src="./three.min.js"></script>
+<script src="./game.js"></script>
+</body>
+</html>

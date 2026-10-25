@@ -27,7 +27,8 @@ const urls = unique.map(([loc, item]) => {
 const drawPaths = ['draw-fight/', 'draw-fight/how-to-play/', 'draw-fight/create-fighter/', 'draw-fight/controls/', 'draw-fight/stages/', 'draw-fight/fighter-stats/', 'draw-fight/tips/', 'draw-fight/bosses/', 'draw-fight/faq/', 'draw-fight/save-data/'];
 const typhoonPaths = ['typhoon-escape/', 'typhoon-escape/how-to-play/', 'typhoon-escape/controls/', 'typhoon-escape/tips/'];
 const zipperPaths = ['zipper-finger/', 'zipper-finger/how-to-play/', 'zipper-finger/photo-ideas/', 'zipper-finger/jojo/'];
-const extraUrls = [...drawPaths, ...typhoonPaths, ...zipperPaths].map((path) => `  <url>\n    <loc>${escapeXml(new URL(path, base).toString())}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>${path === 'draw-fight/' || path === 'typhoon-escape/' || path === 'zipper-finger/' ? '0.8' : '0.6'}</priority>\n  </url>`).join('\n');
+const shodoPaths = ['shodo-simulator-3d/', 'shodo-simulator-3d/how-to-play/'];
+const extraUrls = [...drawPaths, ...typhoonPaths, ...zipperPaths, ...shodoPaths].map((path) => `  <url>\n    <loc>${escapeXml(new URL(path, base).toString())}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>${path === 'draw-fight/' || path === 'typhoon-escape/' || path === 'zipper-finger/' || path === 'shodo-simulator-3d/' ? '0.8' : '0.6'}</priority>\n  </url>`).join('\n');
 const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n${extraUrls}\n</urlset>\n`;
 const sitemapPath = join(root, 'public', base.pathname.replace(/^\/+|\/+$/g, ''), 'sitemap.xml');
 const publicRoot = join(root, 'public');

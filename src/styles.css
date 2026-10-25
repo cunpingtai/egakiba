@@ -124,6 +124,13 @@
     color: #f2c14e;
     text-shadow: 3px 3px #542b14, 5px 8px 15px #060b30;
   }
+  .game-card--shodo-simulator-3d {
+    background: linear-gradient(145deg, #6a5344, #3a2e28 58%, #1c1613);
+  }
+  .game-card--shodo-simulator-3d .game-card-mark {
+    color: #f4efe4;
+    text-shadow: 3px 3px #2a211c, 5px 8px 15px #060b30;
+  }
   .game-card-body {
     position: relative;
     z-index: 1;
