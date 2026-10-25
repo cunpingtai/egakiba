@@ -9,6 +9,7 @@ import { shodoHref } from '../shodo-simulator-3d/seo'
 import { dashimakiHref } from '../dashimaki-game/seo'
 import { omuriceHref } from '../omurice-simulator/seo'
 import { potatoHref } from '../long-potato/seo'
+import { breathHref } from '../one-breath/seo'
 import { routeHref } from '../seo/landing-content.mjs'
 import { siteGames } from '../site-games'
 import { SiteIndexLinks } from '../site-links'
@@ -127,7 +128,7 @@ function R9Shell() {
               <div><span className="section-kicker">GAMES</span><h2 id="game-shelf-title">あそべるゲーム</h2></div>
             </div>
             <div className="game-shelf-grid">
-              {siteGames({ drawFight: drawHref(), typhoonEscape: typhoonHref(), zipperFinger: zipperHref(), shodo: shodoHref(), dashimaki: dashimakiHref(), omurice: omuriceHref(), potato: potatoHref() }).map((game) => (
+              {siteGames({ drawFight: drawHref(), typhoonEscape: typhoonHref(), zipperFinger: zipperHref(), shodo: shodoHref(), dashimaki: dashimakiHref(), omurice: omuriceHref(), potato: potatoHref(), breath: breathHref() }).map((game) => (
                 <a className={`game-card game-card--${game.id}`} href={game.href} key={game.id} aria-current={game.here ? 'page' : undefined}>
                   <span className="game-card-mark" aria-hidden="true">{game.mark}</span>
                   <span className="game-card-body">

@@ -4,6 +4,7 @@ import { typhoonHref } from './typhoon-escape/seo'
 import { dashimakiHref } from './dashimaki-game/seo'
 import { omuriceHref } from './omurice-simulator/seo'
 import { potatoHref } from './long-potato/seo'
+import { breathHref } from './one-breath/seo'
 import { shodoHref } from './shodo-simulator-3d/seo'
 import { zipperHref } from './zipper-finger/seo'
 
@@ -57,6 +58,10 @@ export function siteIndexLinks() {
     { id: 'long-potato/tips', href: potatoHref('tips/'), label: 'ぐるぐるポテトのコツ' },
     { id: 'long-potato/records', href: potatoHref('records/'), label: 'ぐるぐるポテトの称号' },
     { id: 'long-potato/faq', href: potatoHref('faq/'), label: 'ぐるぐるポテトの質問' },
+    { id: 'one-breath', href: breathHref(), label: '一息で何歳まで' },
+    { id: 'one-breath/how-to-play', href: breathHref('how-to-play/'), label: '一息の遊び方' },
+    { id: 'one-breath/titles', href: breathHref('titles/'), label: '一息の称号' },
+    { id: 'one-breath/faq', href: breathHref('faq/'), label: '一息の質問' },
   ]
 }
 

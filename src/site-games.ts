@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -74,6 +74,14 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: '料理',
       title: 'ぐるぐるポテトメーカー',
       description: 'じゃがいもをぐるぐる切って、長さを競う。',
+    },
+    {
+      id: 'one-breath',
+      href: links.breath,
+      mark: '息',
+      kicker: 'マイク',
+      title: '一息で何歳まで',
+      description: 'ろうそく1000本を、一息で吹き消す。',
     },
   ]
 }

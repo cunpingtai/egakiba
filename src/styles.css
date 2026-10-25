@@ -152,6 +152,13 @@
     color: #fff1c9;
     text-shadow: 3px 3px #5a3414, 5px 8px 15px #060b30;
   }
+  .game-card--one-breath {
+    background: linear-gradient(145deg, #3a241c, #1a1214 58%, #0b0809);
+  }
+  .game-card--one-breath .game-card-mark {
+    color: #ffb35a;
+    text-shadow: 3px 3px #4a2418, 5px 8px 15px #060b30;
+  }
   .game-card-body {
     position: relative;
     z-index: 1;

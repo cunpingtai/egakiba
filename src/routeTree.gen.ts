@@ -26,6 +26,8 @@ import { Route as LongPotatoIndexRouteImport } from './routes/long-potato/index'
 import { Route as LongPotatoSlugRouteImport } from './routes/long-potato/$slug'
 import { Route as OmuriceSimulatorIndexRouteImport } from './routes/omurice-simulator/index'
 import { Route as OmuriceSimulatorSlugRouteImport } from './routes/omurice-simulator/$slug'
+import { Route as OneBreathIndexRouteImport } from './routes/one-breath/index'
+import { Route as OneBreathSlugRouteImport } from './routes/one-breath/$slug'
 import { Route as ShodoSimulator3dIndexRouteImport } from './routes/shodo-simulator-3d/index'
 import { Route as ShodoSimulator3dSlugRouteImport } from './routes/shodo-simulator-3d/$slug'
 import { Route as TyphoonEscapeIndexRouteImport } from './routes/typhoon-escape/index'
@@ -118,6 +120,16 @@ const OmuriceSimulatorSlugRoute = OmuriceSimulatorSlugRouteImport.update({
   path: '/omurice-simulator/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OneBreathIndexRoute = OneBreathIndexRouteImport.update({
+  id: '/one-breath/',
+  path: '/one-breath/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OneBreathSlugRoute = OneBreathSlugRouteImport.update({
+  id: '/one-breath/$slug',
+  path: '/one-breath/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShodoSimulator3dIndexRoute = ShodoSimulator3dIndexRouteImport.update({
   id: '/shodo-simulator-3d/',
   path: '/shodo-simulator-3d/',
@@ -163,6 +175,7 @@ export interface FileRoutesByFullPath {
   '/draw-fight/studio': typeof DrawFightStudioRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
+  '/one-breath/$slug': typeof OneBreathSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
@@ -170,6 +183,7 @@ export interface FileRoutesByFullPath {
   '/draw-fight/': typeof DrawFightIndexRoute
   '/long-potato/': typeof LongPotatoIndexRoute
   '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
+  '/one-breath/': typeof OneBreathIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
   '/zipper-finger/': typeof ZipperFingerIndexRoute
@@ -188,6 +202,7 @@ export interface FileRoutesByTo {
   '/draw-fight/studio': typeof DrawFightStudioRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
+  '/one-breath/$slug': typeof OneBreathSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
@@ -195,6 +210,7 @@ export interface FileRoutesByTo {
   '/draw-fight': typeof DrawFightIndexRoute
   '/long-potato': typeof LongPotatoIndexRoute
   '/omurice-simulator': typeof OmuriceSimulatorIndexRoute
+  '/one-breath': typeof OneBreathIndexRoute
   '/shodo-simulator-3d': typeof ShodoSimulator3dIndexRoute
   '/typhoon-escape': typeof TyphoonEscapeIndexRoute
   '/zipper-finger': typeof ZipperFingerIndexRoute
@@ -214,6 +230,7 @@ export interface FileRoutesById {
   '/draw-fight/studio': typeof DrawFightStudioRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
+  '/one-breath/$slug': typeof OneBreathSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
@@ -221,6 +238,7 @@ export interface FileRoutesById {
   '/draw-fight/': typeof DrawFightIndexRoute
   '/long-potato/': typeof LongPotatoIndexRoute
   '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
+  '/one-breath/': typeof OneBreathIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
   '/zipper-finger/': typeof ZipperFingerIndexRoute
@@ -241,6 +259,7 @@ export interface FileRouteTypes {
     | '/draw-fight/studio'
     | '/long-potato/$slug'
     | '/omurice-simulator/$slug'
+    | '/one-breath/$slug'
     | '/shodo-simulator-3d/$slug'
     | '/typhoon-escape/$slug'
     | '/zipper-finger/$slug'
@@ -248,6 +267,7 @@ export interface FileRouteTypes {
     | '/draw-fight/'
     | '/long-potato/'
     | '/omurice-simulator/'
+    | '/one-breath/'
     | '/shodo-simulator-3d/'
     | '/typhoon-escape/'
     | '/zipper-finger/'
@@ -266,6 +286,7 @@ export interface FileRouteTypes {
     | '/draw-fight/studio'
     | '/long-potato/$slug'
     | '/omurice-simulator/$slug'
+    | '/one-breath/$slug'
     | '/shodo-simulator-3d/$slug'
     | '/typhoon-escape/$slug'
     | '/zipper-finger/$slug'
@@ -273,6 +294,7 @@ export interface FileRouteTypes {
     | '/draw-fight'
     | '/long-potato'
     | '/omurice-simulator'
+    | '/one-breath'
     | '/shodo-simulator-3d'
     | '/typhoon-escape'
     | '/zipper-finger'
@@ -291,6 +313,7 @@ export interface FileRouteTypes {
     | '/draw-fight/studio'
     | '/long-potato/$slug'
     | '/omurice-simulator/$slug'
+    | '/one-breath/$slug'
     | '/shodo-simulator-3d/$slug'
     | '/typhoon-escape/$slug'
     | '/zipper-finger/$slug'
@@ -298,6 +321,7 @@ export interface FileRouteTypes {
     | '/draw-fight/'
     | '/long-potato/'
     | '/omurice-simulator/'
+    | '/one-breath/'
     | '/shodo-simulator-3d/'
     | '/typhoon-escape/'
     | '/zipper-finger/'
@@ -317,6 +341,7 @@ export interface RootRouteChildren {
   DrawFightStudioRoute: typeof DrawFightStudioRoute
   LongPotatoSlugRoute: typeof LongPotatoSlugRoute
   OmuriceSimulatorSlugRoute: typeof OmuriceSimulatorSlugRoute
+  OneBreathSlugRoute: typeof OneBreathSlugRoute
   ShodoSimulator3dSlugRoute: typeof ShodoSimulator3dSlugRoute
   TyphoonEscapeSlugRoute: typeof TyphoonEscapeSlugRoute
   ZipperFingerSlugRoute: typeof ZipperFingerSlugRoute
@@ -324,6 +349,7 @@ export interface RootRouteChildren {
   DrawFightIndexRoute: typeof DrawFightIndexRoute
   LongPotatoIndexRoute: typeof LongPotatoIndexRoute
   OmuriceSimulatorIndexRoute: typeof OmuriceSimulatorIndexRoute
+  OneBreathIndexRoute: typeof OneBreathIndexRoute
   ShodoSimulator3dIndexRoute: typeof ShodoSimulator3dIndexRoute
   TyphoonEscapeIndexRoute: typeof TyphoonEscapeIndexRoute
   ZipperFingerIndexRoute: typeof ZipperFingerIndexRoute
@@ -450,6 +476,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OmuriceSimulatorSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/one-breath/': {
+      id: '/one-breath/'
+      path: '/one-breath'
+      fullPath: '/one-breath/'
+      preLoaderRoute: typeof OneBreathIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/one-breath/$slug': {
+      id: '/one-breath/$slug'
+      path: '/one-breath/$slug'
+      fullPath: '/one-breath/$slug'
+      preLoaderRoute: typeof OneBreathSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shodo-simulator-3d/': {
       id: '/shodo-simulator-3d/'
       path: '/shodo-simulator-3d'
@@ -509,6 +549,7 @@ const rootRouteChildren: RootRouteChildren = {
   DrawFightStudioRoute: DrawFightStudioRoute,
   LongPotatoSlugRoute: LongPotatoSlugRoute,
   OmuriceSimulatorSlugRoute: OmuriceSimulatorSlugRoute,
+  OneBreathSlugRoute: OneBreathSlugRoute,
   ShodoSimulator3dSlugRoute: ShodoSimulator3dSlugRoute,
   TyphoonEscapeSlugRoute: TyphoonEscapeSlugRoute,
   ZipperFingerSlugRoute: ZipperFingerSlugRoute,
@@ -516,6 +557,7 @@ const rootRouteChildren: RootRouteChildren = {
   DrawFightIndexRoute: DrawFightIndexRoute,
   LongPotatoIndexRoute: LongPotatoIndexRoute,
   OmuriceSimulatorIndexRoute: OmuriceSimulatorIndexRoute,
+  OneBreathIndexRoute: OneBreathIndexRoute,
   ShodoSimulator3dIndexRoute: ShodoSimulator3dIndexRoute,
   TyphoonEscapeIndexRoute: TyphoonEscapeIndexRoute,
   ZipperFingerIndexRoute: ZipperFingerIndexRoute,

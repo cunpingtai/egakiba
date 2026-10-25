@@ -1,0 +1,1079 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>一息で何歳まで</title>
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://egakiba.com/one-breath/">
+<meta name="theme-color" content="#0b0809">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+/* Layout: full-bleed candlelit canvas; headline floats at the top, controls sit at the bottom edge where the phone's mic is */
+:root{
+  --night:#0b0809;
+  --ink:#f3e9dc;
+  --ink-dim:rgba(243,233,220,.64);
+  --ink-faint:rgba(243,233,220,.32);
+  --flame:#ffb35a;
+  --btn-ink:#1c1311;
+  --font-display:"Shippori Mincho","Hiragino Mincho ProN","Yu Mincho","Noto Serif JP",serif;
+  --font-ui:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+  color-scheme:dark;
+}
+[hidden]{display:none!important}
+html,body{margin:0;height:100%;background:var(--night);color:var(--ink);overflow:hidden}
+body{font-family:var(--font-ui);-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+#scene{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.ui{position:fixed;inset:0;pointer-events:none;display:flex;flex-direction:column;justify-content:space-between;
+  padding-top:calc(env(safe-area-inset-top,0px) + 26px);
+  padding-bottom:calc(env(safe-area-inset-bottom,0px) + 18px);
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  text-shadow:0 1px 14px rgba(0,0,0,.7)}
+.ui button,.ui a{pointer-events:auto}
+.top,.bottom{display:flex;flex-direction:column;align-items:center;text-align:center}
+.top section{display:flex;flex-direction:column;align-items:center;gap:8px}
+.bottom > div{display:flex;flex-direction:column;align-items:center;gap:12px}
+.eyebrow{margin:0;font:500 11px/1.4 var(--font-ui);letter-spacing:.34em;text-transform:uppercase;color:var(--flame)}
+h1{margin:0;font:700 clamp(28px,7.6vw,48px)/1.28 var(--font-display);letter-spacing:.05em;text-wrap:balance}
+.lead{margin:0;max-width:26em;font:400 14px/1.75 var(--font-ui);color:var(--ink-dim);text-wrap:balance}
+.age{display:flex;align-items:baseline;justify-content:center;gap:.14em;font-family:var(--font-display);font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+#ageNum{font-size:clamp(54px,15vw,92px)}
+.age .unit{font-size:clamp(18px,4.6vw,28px);color:var(--ink-dim);font-weight:500}
+#resNum{font-size:clamp(68px,min(23vw,15vh),136px)}
+.tier{margin:2px 0 0;font:700 clamp(17px,4.6vw,22px)/1.45 var(--font-display);letter-spacing:.08em}
+.count-line{margin:0;font:400 12px/1.5 var(--font-ui);letter-spacing:.16em;color:var(--ink-dim);font-variant-numeric:tabular-nums}
+.tag{margin:0;font-size:11px;letter-spacing:.12em;color:var(--ink-faint)}
+.btn{appearance:none;-webkit-appearance:none;border:1px solid rgba(243,233,220,.42);background:rgba(11,8,9,.4);color:var(--ink);
+  font:500 15px/1 var(--font-ui);letter-spacing:.08em;padding:16px 26px;border-radius:3px;cursor:pointer;text-decoration:none;
+  display:inline-flex;align-items:center;justify-content:center;gap:.5em;text-shadow:none;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);transition:background .2s,border-color .2s}
+.btn:hover{border-color:var(--ink)}
+.btn.primary{background:var(--ink);color:var(--btn-ink);border-color:var(--ink)}
+.btn.primary:hover{background:#fff}
+.btn:disabled{opacity:.5;cursor:default}
+.btn:focus-visible{outline:2px solid var(--flame);outline-offset:3px}
+.btn.quiet{padding:12px 18px;font-size:13px}
+.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.note{margin:0;font-size:11px;letter-spacing:.06em;color:var(--ink-faint)}
+.status{margin:0;font:700 17px/1.5 var(--font-display);letter-spacing:.1em}
+.sub{margin:-6px 0 0;font-size:12px;letter-spacing:.06em;color:var(--ink-dim)}
+.msg{margin:0;max-width:24em;font-size:13px;line-height:1.7;color:var(--ink-dim);text-wrap:balance}
+.msg strong{display:block;color:var(--ink);font-weight:500;font-size:14px}
+.bar,.meter{width:min(220px,60vw);height:3px;background:rgba(243,233,220,.14);border-radius:2px;overflow:hidden}
+.bar i,.meter i{display:block;height:100%;width:100%;transform-origin:left center;transform:scaleX(0);background:linear-gradient(90deg,#ffd9a0,var(--flame))}
+.guide{display:flex;flex-direction:column;align-items:center;gap:4px;margin:2px 0 0;font:500 13px/1.4 var(--font-ui);letter-spacing:.06em;color:var(--flame)}
+.arrow{display:block;width:14px;height:20px;animation:nudge 1.4s ease-in-out infinite}
+@keyframes nudge{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(7px);opacity:1}}
+@media (prefers-reduced-motion:reduce){.arrow{animation:none;opacity:1}}
+.rotate{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:var(--night);color:var(--ink);font:500 15px/1.6 var(--font-ui);letter-spacing:.06em;text-align:center;padding:24px;z-index:5}
+</style>
+</head>
+<body>
+<canvas id="scene"></canvas>
+
+<div class="ui">
+  <header class="top">
+    <section id="titleBlock">
+      <p class="eyebrow" data-t="eyebrow"></p>
+      <h1 data-t="title"></h1>
+      <p class="lead" data-t="lead"></p>
+    </section>
+    <section id="counter" hidden>
+      <div class="age" aria-live="polite"><span id="ageNum">0</span><span class="unit" data-t="unit"></span></div>
+    </section>
+    <section id="result" hidden>
+      <p class="eyebrow" data-t="resultPre"></p>
+      <div class="age"><span id="resNum">0</span><span class="unit" data-t="unit"></span></div>
+      <p class="tier" id="tier"></p>
+      <p class="count-line" id="countLine"></p>
+      <p class="tag" id="noMicTag" data-t="noMicTag" hidden></p>
+    </section>
+  </header>
+
+  <footer class="bottom">
+    <div id="startBlock">
+      <button id="startBtn" class="btn primary" type="button" data-t="start"></button>
+      <p class="note" data-t="micNote"></p>
+      <p class="note" id="inApp" data-t="inApp" hidden></p>
+    </div>
+
+    <div id="calibBlock" hidden>
+      <p class="status" data-t="calib"></p>
+      <p class="sub" data-t="calibSub"></p>
+      <div class="bar"><i id="calibFill"></i></div>
+    </div>
+
+    <div id="guideBlock" hidden>
+      <p class="status" id="guideMain"></p>
+      <p class="sub" id="guideSub"></p>
+      <div class="meter" id="meter"><i id="meterFill"></i></div>
+      <p class="guide" id="guideWhere">
+        <span id="whereText"></span>
+        <svg class="arrow" viewBox="0 0 14 20" aria-hidden="true"><path d="M7 1v16M1.5 11.5 7 17l5.5-5.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </p>
+    </div>
+
+    <div id="resultBtns" hidden>
+      <div class="row">
+        <button id="shareBtn" class="btn primary" type="button" data-t="share"></button>
+        <button id="retryBtn" class="btn" type="button" data-t="retry"></button>
+      </div>
+    </div>
+
+    <div id="failBlock" hidden>
+      <p class="msg"><strong id="failTitle"></strong><span data-t="failHint"></span></p>
+      <div class="row">
+        <button id="retryMicBtn" class="btn" type="button" data-t="retryMic"></button>
+        <button id="holdBtn" class="btn quiet" type="button" data-t="holdBtn"></button>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<div id="rotate" class="rotate" hidden><p data-t="rotate"></p></div>
+
+<script>
+(() => {
+'use strict';
+
+/* ================= 調整用の設定 ================= */
+const CONFIG = {
+  N: 1000,                // ろうそくの本数
+  SHARE_URL: '',
+
+  // --- 息の判定 ---
+  FLOOR_MARGIN_DB: 9,     // まわりの音より何dB大きければ「息」とみなすか
+  LO_MIN_DB: -54,         // 静かな部屋でも、これより小さい音は息とみなさない
+  SPAN_DB: 32,            // 息の強さが最大になるまでの幅(dB)
+  TONAL_LO: 0.008,        // 声（はっきりした音程）を弱めに判定するしきい値
+  TONAL_RANGE: 0.03,
+  START_LEVEL: 0.16,      // この強さを超えたらスタート
+  END_LEVEL: 0.05,        // この強さを下回ったら息つぎ扱い
+  END_GAP: 0.45,          // 息つぎがこの秒数続いたら終了
+  DIP_RATIO: 0.12,        // 最大の強さのこの割合まで一瞬でも落ちたら息つぎ扱い（大きいほど厳しい）
+  DIP_TIME: 0.16,         // その落ち込みが何秒続いたら終了にするか（小さいほど厳しい）
+  WIND_HZ: 700,           // これより低い音を「息が当たった風の音」とみなす
+  REF_TIME: 0.5,          // 吹き始めのこの秒数の音質を「その人の吐く息」の基準にする
+  WIND_REL: 0.6,          // 基準のこの割合以上の風の音があれば、ふつうの強さで判定
+  WIND_MIN: 0.45,         // 風の音がない音の判定の強さ（小さいほど吸う音に反応しない）
+  INHALE_REL: 0.3,        // 風の音が基準のこの割合を下回ったら「吸っている」とみなす（大きいほど厳しい）
+  INHALE_TIME: 0.22,      // 吸っている状態が何秒続いたら終了にするか
+  MAX_BREATH: 20,         // 1回の最長時間(秒)
+
+  // --- 難易度 ---
+  REACH_SPEED: 0.2,       // 風が奥まで届く速さ（大きいほど簡単）
+  FAR_FALLOFF: 0.5,       // 奥のろうそくほど風が弱まる割合（大きいほど難しい）
+  BASE_N: 100,            // 手前からこの本数までは100本版と同じ難しさ
+  BEYOND_STEP: 0.35,      // それより奥は100本ごとにこれだけ遠い扱い（大きいほど難しい）
+  BEYOND_FALLOFF: 0.6,    // 遠い扱いのろうそくほど風が届きにくくなる度合い
+  RES_MIN: 0.12,          // ろうそくの消えにくさ（最小）
+  RES_RANGE: 0.22,        // 消えにくさのばらつき
+  DAMAGE: 6,              // 炎が弱るスピード
+  RECOVER: 0.5,           // 風が弱まった時に炎が戻るスピード
+
+  // --- 見た目（1000本用） ---
+  HALO_ALPHA: 0.09,       // 1本ごとの炎の光の強さ
+  SMOKE_RATE: 0.3,        // 消えたろうそくのうち煙を出す割合
+  SMOKE_MAX: 160          // 同時に出す煙の最大数
+};
+
+/* ================= 文言 ================= */
+const STR = {
+  ja: {
+    docTitle: '一息で何歳まで',
+    eyebrow: '1000 Candles',
+    title: '一息で、何歳まで？',
+    lead: 'ろうそく1000本。息つぎなしで、何本消せる？',
+    start: 'マイクをオンにしてはじめる',
+    micNote: '音声は録音も送信もされません',
+    inApp: 'アプリ内ブラウザではマイクが使えないことがあります',
+    calib: '少しのあいだ、静かに',
+    calibSub: 'まわりの音をはかっています',
+    ready: '一息で、吹き消して',
+    readySub: '息つぎしたら、そこで終わり',
+    playing: 'そのまま、そのまま',
+    lighting: '火をつけています',
+    wherePhone: 'スマホの下のほうに向かって',
+    wherePC: 'マイクに向かって',
+    whereHold: '画面を長押しして吹く',
+    unit: '歳',
+    resultPre: '一息で',
+    countLine: (n, N) => `ろうそく ${n} / ${N} 本`,
+    share: '共有',
+    retry: 'もう一回',
+    noMicTag: 'マイクなしの記録',
+    failDenied: 'マイクが許可されませんでした。',
+    failInsecure: 'このページはHTTPSで開く必要があります。',
+    failGeneric: 'マイクが使えませんでした。',
+    failHint: 'Xなどのアプリ内ブラウザでは動かないことがあります。メニューから「ブラウザで開く」を選んでください。',
+    retryMic: 'もう一度試す',
+    holdBtn: 'マイクなしで遊ぶ',
+    rotate: '縦向きにして遊んでください',
+    shareText: (n, tier) => `一息でろうそく${n}本消せた。\n${tier}\n#一息で何歳まで`,
+    tier(n) {
+      if (n === 0) return 'まだ生まれていない';
+      if (n <= 6) return '未就学児の一息';
+      if (n <= 12) return '小学生の一息';
+      if (n <= 15) return '中学生の一息';
+      if (n <= 18) return '高校生の一息';
+      if (n <= 19) return '十代最後の一息';
+      if (n <= 29) return '二十代の一息';
+      if (n <= 39) return '三十代の一息';
+      if (n <= 49) return '四十代の一息';
+      if (n <= 59) return '五十代の一息';
+      if (n <= 69) return '還暦の一息';
+      if (n <= 76) return '古希の一息';
+      if (n <= 79) return '喜寿の一息';
+      if (n <= 87) return '傘寿の一息';
+      if (n <= 89) return '米寿の一息';
+      if (n <= 98) return '卒寿の一息';
+      if (n === 99) return '白寿の一息';
+      if (n <= 107) return '百寿の一息';
+      if (n <= 110) return '茶寿の一息';
+      if (n <= 119) return '皇寿の一息';
+      if (n <= 122) return '大還暦の一息';
+      if (n <= 199) return '人類の最高齢を超えた一息';
+      if (n <= 299) return '仙人の一息';
+      if (n <= 399) return '浦島太郎の一息';
+      if (n <= 599) return '妖怪の一息';
+      if (n <= 799) return 'ご神木の一息';
+      if (n <= 999) return '鶴にあと少しの一息';
+      return '鶴は千年。全部消えた';
+    }
+  },
+  en: {
+    docTitle: 'One Breath',
+    eyebrow: '1000 Candles',
+    title: 'How old are you in one breath?',
+    lead: '1,000 candles. No second breath. How many can you blow out?',
+    start: 'Turn on mic and start',
+    micNote: 'Audio is never recorded or sent',
+    inApp: 'In-app browsers may block the microphone',
+    calib: 'Stay quiet for a moment',
+    calibSub: 'Measuring the room',
+    ready: 'Blow them out in one breath',
+    readySub: 'Stop to breathe and it’s over',
+    playing: 'Keep going',
+    lighting: 'Lighting the candles',
+    wherePhone: 'Blow toward the bottom of your phone',
+    wherePC: 'Blow toward your microphone',
+    whereHold: 'Press and hold to blow',
+    unit: 'years',
+    resultPre: 'In one breath',
+    countLine: (n, N) => `${n} of ${N} candles`,
+    share: 'Post on X',
+    retry: 'Try again',
+    noMicTag: 'Played without a mic',
+    failDenied: 'Microphone access was denied.',
+    failInsecure: 'This page has to be opened over HTTPS.',
+    failGeneric: 'Couldn’t access the microphone.',
+    failHint: 'In-app browsers like X’s often block it. Open this page in Safari or Chrome.',
+    retryMic: 'Try again',
+    holdBtn: 'Play without a mic',
+    rotate: 'Turn your phone upright to play',
+    shareText: (n, tier) => `I blew out ${n} candles in one breath.\n${tier}\n#OneBreathChallenge`,
+    tier(n) {
+      if (n === 0) return 'Not even born yet';
+      if (n <= 12) return 'Kid lungs';
+      if (n <= 19) return 'Teenage lungs';
+      if (n <= 29) return 'Twenty-something lungs';
+      if (n <= 39) return 'Thirty-something lungs';
+      if (n <= 49) return 'Forty-something lungs';
+      if (n <= 64) return 'Half a century of air';
+      if (n <= 79) return 'Retired, not tired';
+      if (n <= 99) return 'Legendary lungs';
+      if (n <= 122) return 'Centenarian lungs';
+      if (n <= 199) return 'Beyond the human record';
+      if (n <= 399) return 'Ancient sage lungs';
+      if (n <= 599) return 'Folklore-creature lungs';
+      if (n <= 799) return 'Sacred-tree lungs';
+      if (n <= 999) return 'Nearly immortal';
+      return 'A full millennium. Every candle.';
+    }
+  }
+};
+const LANG = 'ja';
+const S = STR[LANG];
+document.documentElement.lang = LANG;
+document.title = S.docTitle;
+document.querySelectorAll('[data-t]').forEach(el => {
+  const v = S[el.dataset.t];
+  if (typeof v === 'string') el.textContent = v;
+});
+
+/* ================= 共通 ================= */
+const $ = id => document.getElementById(id);
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+const mix = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
+const rgba = (c, a = 1) => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${a})`;
+const shade = (c, k) => [c[0] * k, c[1] * k, c[2] * k];
+const tint = (c, k) => [c[0] + (255 - c[0]) * k, c[1] + (255 - c[1]) * k, c[2] + (255 - c[2]) * k];
+function makeCanvas(w, h) { const c = document.createElement('canvas'); c.width = Math.max(1, Math.round(w)); c.height = Math.max(1, Math.round(h)); return c; }
+function ellipse(g, x, y, rx, ry) { g.beginPath(); g.ellipse(x, y, Math.max(.01, rx), Math.max(.01, ry), 0, 0, Math.PI * 2); }
+
+const coarse = matchMedia('(pointer: coarse)').matches;
+$('whereText').textContent = coarse ? S.wherePhone : S.wherePC;
+if (/Twitter|FBAN|FBAV|Instagram|Line\//i.test(navigator.userAgent)) $('inApp').hidden = false;
+
+/* ================= ろうそく ================= */
+const N = CONFIG.N;
+const COLORS = [[240, 160, 178], [150, 196, 230], [160, 214, 186], [240, 214, 130], [192, 172, 228], [242, 236, 224]];
+const candles = [];
+(function makeCandles() {
+  const ga = Math.PI * (3 - Math.sqrt(5));
+  const micZ = 1.75; // 息の来る位置（ケーキの手前）
+  let minD = 1e9, maxD = -1e9;
+  for (let i = 0; i < N; i++) {
+    const r = Math.sqrt((i + 0.5) / N) * 0.86;
+    const th = i * ga;
+    const gx = r * Math.cos(th) + (Math.random() - 0.5) * 0.025;
+    const gz = r * Math.sin(th) + (Math.random() - 0.5) * 0.025;
+    const dist = Math.hypot(gx, gz - micZ);
+    candles.push({
+      gx, gz, dist, side: gx / dist,
+      col: Math.floor(Math.random() * COLORS.length),
+      hf: 0.9 + Math.random() * 0.14,
+      ph: Math.random() * 100,
+      bend: (Math.random() - 0.5) * 0.9,
+      state: 'waiting', igniteAt: 0, grow: 0, hp: 1, w: 0, ember: 0, res: 0.2,
+      sx: 0, sy: 0
+    });
+    minD = Math.min(minD, dist); maxD = Math.max(maxD, dist);
+  }
+  for (const c of candles) c.d = (c.dist - minD) / (maxD - minD);
+  // 難しさ用の距離 vd：手前から BASE_N 本目までは、100本版と同じ難しさで 0〜1 に並べる。
+  // それより奥は、さらに強く長く吹き続けないと届かない
+  const byDist = candles.slice().sort((a, c) => a.dist - c.dist);
+  const qd = byDist.map(c => c.d);
+  const B = CONFIG.BASE_N;
+  byDist.forEach((c, r) => {
+    c.vd = r < B ? qd[Math.min(qd.length - 1, Math.floor(r / B * (qd.length - 1)))]
+                 : 1 + (r - B) / 100 * CONFIG.BEYOND_STEP;
+  });
+  candles.sort((a, b) => a.gz - b.gz);
+})();
+
+/* ================= 状態 ================= */
+let state = 'title', mode = 'none', audio = null;
+let b = 0, rawLvl = 0, peakB = 0, dipT = 0, clock = 0, lastNow = 0;
+let lowNow = 0, refLow = 0, refSamples = [], inhaleT = 0;
+let calibT = 0, calibSamples = [], aboveT = 0, playT = 0, lowT = 0, reach = 0, settleT = 0;
+let outCount = 0, relightDone = 0, shownAge = -1;
+let holding = false, holdT = 0, holdPeak = 1, holdTau = 3;
+let lightLevel = 0, lcx = 0, lcy = 0, lightInit = false;
+const smokes = [];
+const SMOKE_LIFE = 2.6;
+
+/* ================= 描画の準備 ================= */
+const cv = $('scene');
+const ctx = cv.getContext('2d');
+let W = 0, H = 0, DPR = 1, L = null;
+let staticBack = null, staticFront = null, sprites = [], flame = null, halo = null, grain = null;
+
+function computeLayout() {
+  const topUI = W > H ? Math.max(170, H * 0.33) : Math.max(150, H * 0.22);
+  const botUI = 150;
+  const avail = Math.max(200, H - topUI - botUI);
+  const rx = clamp(Math.min(W * 0.48, avail / 1.45, 420), 90, 420);
+  const ry = rx * 0.36, cakeH = rx * 0.44, candleH = rx * 0.2, flameH = rx * 0.072;
+  const above = ry * 0.86 + candleH * 1.05 + flameH * 1.7;
+  const plateRy = ry * 1.24;
+  const below = cakeH + plateRy + rx * 0.03;
+  const top = topUI + Math.max(0, (avail - (above + below)) / 2);
+  const cy = top + above;
+  L = {
+    cx: W / 2, cy, rx, ry, cakeH, candleH, flameH,
+    candleW: Math.max(1.3, rx * 0.0115),
+    plateRx: rx * 1.24, plateRy, plateY: cy + cakeH,
+    horizon: cy - ry * 2.6, scale: rx / 170
+  };
+}
+
+function bead(g, x, y, r) {
+  g.save(); g.translate(x, y); g.scale(1, 0.82);
+  g.fillStyle = 'rgba(90,60,40,0.2)'; g.beginPath(); g.arc(r * 0.15, r * 0.38, r * 1.02, 0, Math.PI * 2); g.fill();
+  const gr = g.createRadialGradient(-r * 0.35, -r * 0.42, r * 0.1, 0, 0, r * 1.05);
+  gr.addColorStop(0, '#fffbf4'); gr.addColorStop(0.55, '#eee2d2'); gr.addColorStop(1, '#bba893');
+  g.fillStyle = gr; g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2); g.fill();
+  g.strokeStyle = 'rgba(150,128,108,0.28)'; g.lineWidth = r * 0.13;
+  g.beginPath(); g.arc(r * 0.12, r * 0.05, r * 0.55, -0.5, 2.3); g.stroke();
+  g.restore();
+}
+
+function buildStatic() {
+  const { cx, cy, rx, ry, cakeH, plateRx, plateRy, plateY, horizon } = L;
+  staticBack = makeCanvas(W * DPR, H * DPR);
+  const g = staticBack.getContext('2d');
+  g.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+  // 壁
+  if (horizon > 0) {
+    const gr = g.createLinearGradient(0, 0, 0, horizon);
+    gr.addColorStop(0, '#15100f'); gr.addColorStop(1, '#2b201c');
+    g.fillStyle = gr; g.fillRect(0, 0, W, horizon + 1);
+  }
+  // テーブル（木目）
+  const ty = Math.max(0, horizon);
+  let gr = g.createLinearGradient(0, ty, 0, H);
+  gr.addColorStop(0, '#3a2418'); gr.addColorStop(0.45, '#4b2f1e'); gr.addColorStop(1, '#2a1910');
+  g.fillStyle = gr; g.fillRect(0, ty, W, H - ty);
+  g.save(); g.beginPath(); g.rect(0, ty, W, H - ty); g.clip();
+  for (let i = 0; i < 80; i++) {
+    const t = i / 80;
+    const y = horizon + (H - horizon) * Math.pow(t, 1.5);
+    g.strokeStyle = Math.random() < 0.55 ? `rgba(18,9,5,${0.06 + Math.random() * 0.1})` : `rgba(120,78,46,${0.05 + Math.random() * 0.07})`;
+    g.lineWidth = 0.5 + t * 2.4 * Math.random();
+    const amp = 1 + t * 5, ph = Math.random() * 10;
+    g.beginPath();
+    for (let x = -20; x <= W + 20; x += 18) {
+      const yy = y + Math.sin(x * 0.007 + ph) * amp + Math.sin(x * 0.029 + ph * 2) * amp * 0.35;
+      x === -20 ? g.moveTo(x, yy) : g.lineTo(x, yy);
+    }
+    g.stroke();
+  }
+  g.restore();
+  if (horizon > 0) { g.fillStyle = 'rgba(255,214,170,0.06)'; g.fillRect(0, horizon, W, 1.5); }
+
+  // 皿
+  g.save();
+  g.shadowColor = 'rgba(0,0,0,0.75)'; g.shadowBlur = rx * 0.14; g.shadowOffsetY = rx * 0.035;
+  g.fillStyle = '#16100c'; ellipse(g, cx, plateY + rx * 0.03, plateRx * 0.98, plateRy * 0.98); g.fill();
+  g.restore();
+  g.fillStyle = '#a9a198'; ellipse(g, cx, plateY + rx * 0.024, plateRx, plateRy); g.fill();
+  gr = g.createRadialGradient(cx - plateRx * 0.25, plateY - plateRy * 0.4, plateRx * 0.1, cx, plateY, plateRx);
+  gr.addColorStop(0, '#f5f2ed'); gr.addColorStop(0.7, '#e2dcd3'); gr.addColorStop(1, '#c8c0b5');
+  g.fillStyle = gr; ellipse(g, cx, plateY, plateRx, plateRy); g.fill();
+  g.strokeStyle = 'rgba(110,96,86,0.22)'; g.lineWidth = 1;
+  ellipse(g, cx, plateY, plateRx * 0.86, plateRy * 0.86); g.stroke();
+  // ケーキの接地影
+  g.save(); g.translate(cx, plateY + ry * 0.05); g.scale(1, ry / rx);
+  gr = g.createRadialGradient(0, 0, rx * 0.92, 0, 0, rx * 1.14);
+  gr.addColorStop(0, 'rgba(70,46,32,0.5)'); gr.addColorStop(1, 'rgba(70,46,32,0)');
+  g.fillStyle = gr; g.beginPath(); g.arc(0, 0, rx * 1.14, 0, Math.PI * 2); g.fill();
+  g.restore();
+
+  // ケーキ側面
+  const sidePath = () => {
+    g.beginPath();
+    g.moveTo(cx - rx, cy);
+    g.lineTo(cx - rx, cy + cakeH);
+    g.ellipse(cx, cy + cakeH, rx, ry, 0, Math.PI, 0, true);
+    g.lineTo(cx + rx, cy);
+    g.ellipse(cx, cy, rx, ry, 0, 0, Math.PI, false);
+    g.closePath();
+  };
+  sidePath();
+  gr = g.createLinearGradient(cx - rx, 0, cx + rx, 0);
+  gr.addColorStop(0, '#b19f8b'); gr.addColorStop(0.18, '#d8cab8'); gr.addColorStop(0.45, '#f2e8db');
+  gr.addColorStop(0.62, '#eee3d4'); gr.addColorStop(0.86, '#cfbfab'); gr.addColorStop(1, '#a8957f');
+  g.fillStyle = gr; g.fill();
+  g.save(); sidePath(); g.clip();
+  gr = g.createLinearGradient(0, cy, 0, cy + cakeH + ry);
+  gr.addColorStop(0, 'rgba(255,244,226,0.22)'); gr.addColorStop(1, 'rgba(60,38,26,0.22)');
+  g.fillStyle = gr; g.fillRect(cx - rx, cy - ry, rx * 2, cakeH + ry * 2.2);
+  for (let i = 0; i < 90; i++) { // スパチュラの跡
+    const a = Math.random() * Math.PI;
+    const x = cx + rx * Math.cos(a);
+    const y0 = cy + ry * Math.sin(a);
+    g.strokeStyle = Math.random() < 0.5 ? 'rgba(255,255,255,0.07)' : 'rgba(110,86,64,0.06)';
+    g.lineWidth = 0.6 + Math.random() * 1.6;
+    g.beginPath(); g.moveTo(x, y0 + Math.random() * 4); g.lineTo(x + (Math.random() - 0.5) * 2, y0 + cakeH - Math.random() * 6); g.stroke();
+  }
+  g.restore();
+
+  // 下の絞り
+  const br = rx * 0.045;
+  const nb = Math.max(24, Math.round(rx * 0.3));
+  const bottomBeads = [];
+  for (let i = 0; i <= nb / 2; i++) {
+    const a = (i / (nb / 2)) * Math.PI;
+    bottomBeads.push([cx + rx * Math.cos(a), cy + cakeH + ry * Math.sin(a) - br * 0.35]);
+  }
+  bottomBeads.sort((p, q) => p[1] - q[1]).forEach(p => bead(g, p[0], p[1], br * 1.12));
+
+  // 上面
+  gr = g.createRadialGradient(cx, cy - ry * 0.25, rx * 0.05, cx, cy, rx);
+  gr.addColorStop(0, '#fbf6ee'); gr.addColorStop(0.75, '#f0e7da'); gr.addColorStop(1, '#dacdbc');
+  g.fillStyle = gr; ellipse(g, cx, cy, rx, ry); g.fill();
+  for (let i = 0; i < 14; i++) { // クリームのうねり
+    g.strokeStyle = `rgba(150,124,100,${0.03 + Math.random() * 0.03})`;
+    g.lineWidth = 1 + Math.random() * 2;
+    const rr = 0.2 + Math.random() * 0.7, a0 = Math.random() * 6.28;
+    g.beginPath(); g.ellipse(cx, cy, rx * rr, ry * rr, 0, a0, a0 + 0.6 + Math.random() * 1.2); g.stroke();
+  }
+
+  // 上の絞り（奥側）
+  const topBeads = [];
+  for (let i = 0; i < nb; i++) {
+    const a = (i / nb) * Math.PI * 2;
+    topBeads.push([cx + rx * 0.965 * Math.cos(a), cy + ry * 0.965 * Math.sin(a), Math.sin(a)]);
+  }
+  topBeads.filter(p => p[2] < 0).sort((p, q) => p[1] - q[1]).forEach(p => bead(g, p[0], p[1], br));
+
+  // 上の絞り（手前側）は別レイヤー
+  const fx0 = Math.floor(cx - rx - br * 2), fy0 = Math.floor(cy - br * 2);
+  const fw = Math.ceil(rx * 2 + br * 4), fh = Math.ceil(ry + br * 4);
+  staticFront = makeCanvas(fw * DPR, fh * DPR);
+  const f = staticFront.getContext('2d');
+  f.setTransform(DPR, 0, 0, DPR, -fx0 * DPR, -fy0 * DPR);
+  topBeads.filter(p => p[2] >= 0).sort((p, q) => p[1] - q[1]).forEach(p => bead(f, p[0], p[1], br));
+  L.front = { x: fx0, y: fy0, w: fw, h: fh };
+}
+
+function buildSprites() {
+  const cw = L.candleW, ch = L.candleH;
+  sprites = COLORS.map(col => {
+    const pad = 1, sw = cw + pad * 2, topY = cw * 0.32, sh = ch + cw * 0.64;
+    const c = makeCanvas(sw * DPR, sh * DPR);
+    const g = c.getContext('2d'); g.setTransform(DPR, 0, 0, DPR, 0, 0);
+    const x0 = pad;
+    g.save(); g.beginPath(); g.rect(x0, topY, cw, ch); g.clip();
+    let gr = g.createLinearGradient(x0, 0, x0 + cw, 0);
+    gr.addColorStop(0, rgba(shade(col, 0.6))); gr.addColorStop(0.35, rgba(col));
+    gr.addColorStop(0.55, rgba(tint(col, 0.28))); gr.addColorStop(1, rgba(shade(col, 0.55)));
+    g.fillStyle = gr; g.fillRect(x0, topY, cw, ch);
+    g.strokeStyle = 'rgba(255,255,255,0.72)'; g.lineWidth = cw * 0.5;
+    for (let y = topY - cw * 2; y < topY + ch + cw * 2; y += cw * 1.9) {
+      g.beginPath(); g.moveTo(x0 - 1, y + cw * 0.95); g.lineTo(x0 + cw + 1, y); g.stroke();
+    }
+    gr = g.createLinearGradient(x0, 0, x0 + cw, 0);
+    gr.addColorStop(0, 'rgba(0,0,0,0.34)'); gr.addColorStop(0.45, 'rgba(0,0,0,0)'); gr.addColorStop(1, 'rgba(0,0,0,0.4)');
+    g.fillStyle = gr; g.fillRect(x0, topY, cw, ch);
+    gr = g.createLinearGradient(0, topY + ch - cw * 1.4, 0, topY + ch);
+    gr.addColorStop(0, 'rgba(70,46,30,0)'); gr.addColorStop(1, 'rgba(70,46,30,0.4)');
+    g.fillStyle = gr; g.fillRect(x0, topY, cw, ch);
+    g.restore();
+    g.fillStyle = rgba(tint(col, 0.38)); ellipse(g, x0 + cw / 2, topY, cw / 2, cw * 0.3); g.fill();
+    g.fillStyle = rgba(shade(col, 0.82), 0.6); ellipse(g, x0 + cw / 2, topY, cw * 0.27, cw * 0.15); g.fill();
+    return { c, sw, sh, topY };
+  });
+}
+
+function buildFlame() {
+  const SC = 2, w = 48, h = 128, X = 24, BY = 112;
+  const c = makeCanvas(w * SC, h * SC);
+  const g = c.getContext('2d'); g.scale(SC, SC);
+  const tear = (r, by, ty) => {
+    g.beginPath(); g.moveTo(X, ty);
+    g.bezierCurveTo(X + r * 0.25, ty + (by - ty) * 0.35, X + r * 1.15, by - r * 1.9, X + r, by - r * 0.15);
+    g.arc(X, by - r * 0.15, r, 0, Math.PI, false);
+    g.bezierCurveTo(X - r * 1.15, by - r * 1.9, X - r * 0.25, ty + (by - ty) * 0.35, X, ty);
+    g.closePath();
+  };
+  g.save(); g.shadowColor = 'rgba(255,120,30,0.9)'; g.shadowBlur = 16;
+  g.fillStyle = 'rgba(255,140,50,0.45)'; tear(12, BY + 2, 4); g.fill(); g.restore();
+  let gr = g.createLinearGradient(0, BY + 8, 0, 8);
+  gr.addColorStop(0, 'rgba(255,214,150,0.95)'); gr.addColorStop(0.25, 'rgba(255,194,94,0.95)');
+  gr.addColorStop(0.6, 'rgba(255,148,52,0.8)'); gr.addColorStop(1, 'rgba(255,100,30,0)');
+  g.fillStyle = gr; tear(10, BY, 8); g.fill();
+  gr = g.createRadialGradient(X, BY - 2, 1, X, BY - 2, 10);
+  gr.addColorStop(0, 'rgba(60,90,255,0)'); gr.addColorStop(0.6, 'rgba(70,110,255,0.45)'); gr.addColorStop(1, 'rgba(70,110,255,0)');
+  g.fillStyle = gr; g.beginPath(); g.ellipse(X, BY - 2, 10, 8, 0, 0, Math.PI * 2); g.fill();
+  gr = g.createLinearGradient(0, BY - 4, 0, 46);
+  gr.addColorStop(0, 'rgba(255,255,248,1)'); gr.addColorStop(0.5, 'rgba(255,248,220,0.95)'); gr.addColorStop(1, 'rgba(255,236,180,0)');
+  g.fillStyle = gr; tear(6.2, BY - 5, 44); g.fill();
+  gr = g.createRadialGradient(X, BY - 3, 0, X, BY - 3, 5);
+  gr.addColorStop(0, 'rgba(110,56,28,0.5)'); gr.addColorStop(1, 'rgba(110,56,28,0)');
+  g.fillStyle = gr; g.beginPath(); g.arc(X, BY - 3, 5, 0, Math.PI * 2); g.fill();
+  flame = { c, w, h, ax: X, ay: BY - 2 };
+
+  const hc = makeCanvas(64, 64), hg = hc.getContext('2d');
+  gr = hg.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gr.addColorStop(0, 'rgba(255,190,100,0.9)'); gr.addColorStop(0.3, 'rgba(255,150,60,0.32)'); gr.addColorStop(1, 'rgba(255,120,40,0)');
+  hg.fillStyle = gr; hg.fillRect(0, 0, 64, 64);
+  halo = hc;
+
+  const nc = makeCanvas(128, 128), ng = nc.getContext('2d');
+  const img = ng.createImageData(128, 128);
+  for (let i = 0; i < img.data.length; i += 4) {
+    const v = Math.random() < 0.5 ? 0 : 255;
+    img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
+    img.data[i + 3] = Math.random() * 22;
+  }
+  ng.putImageData(img, 0, 0);
+  grain = ctx.createPattern(nc, 'repeat');
+}
+
+function resize() {
+  W = window.innerWidth; H = window.innerHeight;
+  DPR = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(2.6e6 / Math.max(1, W * H)));
+  DPR = Math.max(1, DPR);
+  cv.width = Math.round(W * DPR); cv.height = Math.round(H * DPR);
+  computeLayout(); buildStatic(); buildSprites();
+  lightInit = false;
+  $('rotate').hidden = !(coarse && W > H && H < 520);
+}
+
+/* ================= マイク ================= */
+function measure() {
+  const { an, td, fd, binHz } = audio;
+  an.getFloatTimeDomainData(td);
+  let s = 0;
+  for (let i = 0; i < td.length; i++) s += td[i] * td[i];
+  const db = 20 * Math.log10(Math.sqrt(s / td.length) + 1e-9);
+  an.getFloatFrequencyData(fd);
+  const k0 = Math.max(2, Math.floor(100 / binHz)), k1 = Math.min(fd.length - 1, Math.floor(8000 / binHz));
+  let lnSum = 0, sum = 0, n = 0;
+  for (let k = k0; k <= k1; k++) {
+    let v = fd[k]; if (!isFinite(v)) v = -160;
+    const p = Math.pow(10, v / 10);
+    lnSum += Math.log(p + 1e-20); sum += p; n++;
+  }
+  const flat = n ? Math.exp(lnSum / n) / (sum / n + 1e-20) : 1;
+  // マイクに息が当たると低い風切り音（ボボボ）が強く出る。吸う音は高いシューッが中心
+  const w0 = Math.max(1, Math.floor(60 / binHz)), w1 = Math.floor(CONFIG.WIND_HZ / binHz);
+  let low = 0, all = 0;
+  for (let k = w0; k <= k1; k++) {
+    let v = fd[k]; if (!isFinite(v)) v = -160;
+    const p = Math.pow(10, v / 10);
+    all += p; if (k <= w1) low += p;
+  }
+  const lowRatio = all > 0 ? low / all : 0;
+  return { db, flat, lowRatio };
+}
+
+async function startMic() {
+  let ac = null;
+  try {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    ac = new AC();
+    ac.resume();
+  } catch (e) { ac = null; }
+  if (!ac || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    return fail(window.isSecureContext === false ? 'insecure' : 'generic');
+  }
+  $('startBtn').disabled = true;
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
+      video: false
+    });
+    await ac.resume();
+    const src = ac.createMediaStreamSource(stream);
+    const an = ac.createAnalyser();
+    an.fftSize = 2048; an.smoothingTimeConstant = 0.15;
+    const mute = ac.createGain(); mute.gain.value = 0;
+    src.connect(an); an.connect(mute); mute.connect(ac.destination);
+    audio = { ac, an, stream, td: new Float32Array(an.fftSize), fd: new Float32Array(an.frequencyBinCount), lo: null, span: CONFIG.SPAN_DB, binHz: ac.sampleRate / an.fftSize };
+    mode = 'mic';
+    calibSamples = []; calibT = 0;
+    setState('calib');
+  } catch (err) {
+    try { ac.close(); } catch (e) {}
+    const kind = err && (err.name === 'NotAllowedError' || err.name === 'SecurityError') ? 'denied'
+      : (window.isSecureContext === false ? 'insecure' : 'generic');
+    fail(kind);
+  } finally {
+    $('startBtn').disabled = false;
+  }
+}
+
+function finishCalib() {
+  const arr = calibSamples.filter(Number.isFinite).sort((a, c) => a - c);
+  const floor = arr.length ? arr[Math.floor(arr.length * 0.7)] : -60;
+  const lo = clamp(floor + CONFIG.FLOOR_MARGIN_DB, CONFIG.LO_MIN_DB, -20);
+  audio.lo = lo;
+  audio.span = clamp(-2 - lo, 14, CONFIG.SPAN_DB);
+  setState('ready');
+}
+
+function fail(kind) {
+  $('failTitle').textContent = kind === 'denied' ? S.failDenied : kind === 'insecure' ? S.failInsecure : S.failGeneric;
+  setState('fail');
+}
+
+/* ================= 進行 ================= */
+function setState(s) {
+  state = s;
+  $('titleBlock').hidden = !(s === 'title' || s === 'calib' || s === 'fail');
+  $('counter').hidden = !(s === 'ready' || s === 'play' || s === 'settle' || s === 'relight');
+  $('result').hidden = s !== 'result';
+  $('startBlock').hidden = s !== 'title';
+  $('calibBlock').hidden = s !== 'calib';
+  $('guideBlock').hidden = !(s === 'ready' || s === 'play' || s === 'relight');
+  $('resultBtns').hidden = s !== 'result';
+  $('failBlock').hidden = s !== 'fail';
+  const main = $('guideMain'), sub = $('guideSub');
+  if (s === 'relight') { main.textContent = S.lighting; sub.textContent = ''; }
+  if (s === 'ready') { main.textContent = S.ready; sub.textContent = S.readySub; aboveT = 0; }
+  if (s === 'play') { main.textContent = S.playing; sub.textContent = S.readySub; }
+  $('meter').hidden = s === 'relight';
+  $('guideWhere').hidden = s === 'relight';
+  sub.hidden = !sub.textContent;
+}
+
+function relight(delay = 0.25) {
+  let maxT = 0;
+  for (const c of candles) {
+    c.state = 'waiting';
+    c.igniteAt = clock + delay + c.d * 1.1 + Math.random() * 0.15;
+    c.hp = 1; c.w = 0; c.grow = 0;
+    c.res = CONFIG.RES_MIN + Math.random() * CONFIG.RES_RANGE + 0.04 * Math.min(1, c.vd);
+    maxT = Math.max(maxT, c.igniteAt);
+  }
+  relightDone = maxT + 0.35;
+  outCount = 0;
+}
+
+function startPlay() {
+  reach = 0.04; playT = 0; lowT = 0; outCount = 0; peakB = 0; dipT = 0;
+  refLow = 0; refSamples = []; inhaleT = 0;
+  for (const c of candles) c.hp = 1;
+  setState('play');
+}
+
+function endPlay() { settleT = 0; setState('settle'); }
+
+function showResult() {
+  const n = outCount;
+  const tier = S.tier(n);
+  $('resNum').textContent = n;
+  $('tier').textContent = tier;
+  $('countLine').textContent = S.countLine(n, N);
+  $('noMicTag').hidden = mode !== 'hold';
+  const url = new URL('./', location.href).href;
+  const text = S.shareText(n, tier) + (mode === 'hold' ? '（マイクなし）' : '');
+  window.__shareNote = { text, url };
+  $('shareBtn').textContent = S.share;
+  setState('result');
+}
+
+function extinguish(c) {
+  c.state = 'dying';
+  c.ember = 1;
+  outCount++;
+  // 煙は一部のろうそくからだけ出す（1000本ぶん出すと重いので）
+  if (smokes.length >= CONFIG.SMOKE_MAX || Math.random() > CONFIG.SMOKE_RATE) return;
+  smokes.push({
+    x: c.sx + c.side * c.w * L.candleW * 0.4, y: c.sy - L.candleW * 0.85,
+    side: c.side, t: 0, emit: 1.4 + Math.random() * 0.8, acc: 0,
+    seed: Math.random() * 10, pts: []
+  });
+}
+
+function updateAudio(dt) {
+  let raw = 0;
+  if (mode === 'mic' && audio) {
+    const m = measure();
+    if (state === 'calib') calibSamples.push(m.db);
+    if (audio.lo !== null) {
+      const lvl = clamp((m.db - audio.lo) / audio.span, 0, 1.15);
+      const tonal = 0.5 + 0.5 * clamp((m.flat - CONFIG.TONAL_LO) / CONFIG.TONAL_RANGE, 0, 1);
+      lowNow = m.lowRatio;
+      // 最初に吐いた息の音質を基準にして、そこから大きく変わった音（吸う音など）は弱く扱う
+      const wind = refLow > 0
+        ? CONFIG.WIND_MIN + (1 - CONFIG.WIND_MIN) * clamp(m.lowRatio / (refLow * CONFIG.WIND_REL), 0, 1)
+        : 1;
+      raw = lvl * tonal * wind;
+    }
+  } else if (mode === 'hold' && holding) {
+    holdT += dt;
+    raw = holdPeak * Math.exp(-holdT / holdTau) * (1 + 0.06 * Math.sin(holdT * 11));
+  }
+  rawLvl = raw;
+  const rate = raw > b ? 30 : 9;
+  b += (raw - b) * (1 - Math.exp(-dt * rate));
+}
+
+function updateGame(dt) {
+  if (state === 'calib') {
+    calibT += dt;
+    if (calibT >= 1.3) finishCalib();
+  } else if (state === 'relight') {
+    if (clock >= relightDone) setState('ready');
+  } else if (state === 'ready') {
+    if (b > CONFIG.START_LEVEL) { aboveT += dt; if (aboveT > 0.06) startPlay(); }
+    else aboveT = 0;
+  } else if (state === 'play') {
+    playT += dt;
+    reach += CONFIG.REACH_SPEED * Math.pow(Math.min(b, 1.1), 1.2) * dt;
+    if (b < CONFIG.END_LEVEL) { lowT += dt; if (lowT > CONFIG.END_GAP) endPlay(); }
+    else lowT = 0;
+    // 吐く→吸うの切り替わりで一瞬だけ息が途切れる。その瞬間を息つぎとみなす
+    peakB = Math.max(peakB, b);
+    if (mode === 'mic') {
+      if (playT < CONFIG.REF_TIME) { if (rawLvl > CONFIG.START_LEVEL) refSamples.push(lowNow); }
+      else if (refLow === 0 && refSamples.length) {
+        const sorted = refSamples.slice().sort((p, q) => p - q);
+        refLow = Math.max(0.02, sorted[sorted.length >> 1]);
+      }
+      // 音質が吐く息と明らかに違う（吸う音）状態が続いたら息つぎ
+      if (refLow > 0 && rawLvl > 0.02 && lowNow < refLow * CONFIG.INHALE_REL) {
+        inhaleT += dt; if (inhaleT > CONFIG.INHALE_TIME && state === 'play') endPlay();
+      } else inhaleT = 0;
+    }
+    if (playT > 0.25 && rawLvl < Math.max(CONFIG.END_LEVEL, peakB * CONFIG.DIP_RATIO)) {
+      dipT += dt; if (dipT > CONFIG.DIP_TIME && state === 'play') endPlay();
+    } else dipT = 0;
+    if (state === 'play' && (playT > CONFIG.MAX_BREATH || outCount >= N)) endPlay();
+  } else if (state === 'settle') {
+    settleT += dt;
+    if (settleT > 1.0) showResult();
+  }
+}
+
+function updateCandles(dt) {
+  const playing = state === 'play';
+  const k = 1 - Math.exp(-dt * 14);
+  for (const c of candles) {
+    if (c.ember > 0) c.ember = Math.max(0, c.ember - dt / 2.2);
+    if (c.state === 'waiting') {
+      if (clock >= c.igniteAt) { c.state = 'lit'; c.grow = 0; }
+      continue;
+    }
+    if (c.state === 'dying') {
+      c.grow -= dt / 0.12;
+      if (c.grow <= 0) { c.grow = 0; c.state = 'out'; }
+      continue;
+    }
+    if (c.state !== 'lit') continue;
+    if (c.grow < 1) c.grow = Math.min(1, c.grow + dt / 0.32);
+    const fall = c.vd <= 1 ? 1 - CONFIG.FAR_FALLOFF * c.vd
+      : (1 - CONFIG.FAR_FALLOFF) * Math.exp(-(c.vd - 1) * CONFIG.BEYOND_FALLOFF);
+    const w0 = b * fall;
+    let target;
+    if (playing) target = c.vd <= reach ? w0 : w0 * 0.3 * Math.max(0, 1 - (c.vd - reach) * 5);
+    else target = w0 * 0.5;
+    c.w += (target - c.w) * k;
+    if (playing && c.vd <= reach && c.w > c.res) {
+      c.hp -= (c.w - c.res) * CONFIG.DAMAGE * dt;
+      if (c.hp <= 0) extinguish(c);
+    } else {
+      c.hp = Math.min(1, c.hp + CONFIG.RECOVER * dt);
+    }
+  }
+}
+
+function updateSmoke(dt) {
+  const sc = L.scale;
+  for (let j = smokes.length - 1; j >= 0; j--) {
+    const s = smokes[j];
+    s.t += dt;
+    if (s.t < s.emit) {
+      s.acc += dt;
+      while (s.acc >= 0.025) {
+        s.acc -= 0.025;
+        s.pts.push({
+          x: s.x + (Math.random() - 0.5) * 0.6, y: s.y, a: 0,
+          vx: s.side * 12 * b + (Math.random() - 0.5) * 3,
+          vy: -(26 + Math.random() * 8),
+          str: Math.pow(1 - s.t / s.emit, 0.7)
+        });
+      }
+    }
+    for (const p of s.pts) {
+      p.a += dt;
+      p.x += (p.vx + Math.sin(p.a * 2.1 + s.seed + p.a * p.a * 0.8) * 9 * p.a) * dt * sc;
+      p.y += (p.vy - b * 30) * dt * sc;
+      p.vx *= Math.exp(-dt * 0.8);
+      p.vy *= Math.exp(-dt * 0.35);
+    }
+    while (s.pts.length && s.pts[0].a > SMOKE_LIFE) s.pts.shift();
+    if (s.t >= s.emit && s.pts.length === 0) smokes.splice(j, 1);
+  }
+}
+
+/* ================= 描画 ================= */
+function drawSmoke() {
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  const B = 6;
+  for (const s of smokes) {
+    const P = s.pts, n = P.length;
+    if (n < 2) continue;
+    for (let k = 0; k < B; k++) {
+      const i0 = Math.floor(k * (n - 1) / B), i1 = Math.floor((k + 1) * (n - 1) / B);
+      if (i1 <= i0) continue;
+      const mid = P[(i0 + i1) >> 1];
+      const al = 0.34 * (1 - mid.a / SMOKE_LIFE) * mid.str;
+      if (al <= 0.004) continue;
+      ctx.strokeStyle = `rgba(224,218,210,${al.toFixed(3)})`;
+      ctx.lineWidth = (0.7 + mid.a * 2.4) * L.scale;
+      ctx.beginPath(); ctx.moveTo(P[i0].x, P[i0].y);
+      for (let i = i0 + 1; i <= i1; i++) ctx.lineTo(P[i].x, P[i].y);
+      ctx.stroke();
+    }
+  }
+}
+
+function render(t, dt) {
+  const { cx, rx, candleW: cw, candleH: ch, flameH } = L;
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+  ctx.drawImage(staticBack, 0, 0);
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+  // ろうそく本体
+  for (const c of candles) {
+    const sp = sprites[c.col];
+    const x = cx + c.gx * rx, y = L.cy + c.gz * L.ry;
+    const dy = y - (sp.topY + ch) * c.hf;
+    ctx.drawImage(sp.c, x - sp.sw / 2, dy, sp.sw, sp.sh * c.hf);
+    c.sx = x; c.sy = dy + sp.topY * c.hf;
+  }
+  // 芯
+  ctx.strokeStyle = '#2a1d14'; ctx.lineWidth = Math.max(1, cw * 0.26); ctx.lineCap = 'round';
+  ctx.beginPath();
+  for (const c of candles) {
+    const lean = c.state === 'lit' ? c.side * c.w * cw * 0.4 : c.bend * cw * 0.35;
+    ctx.moveTo(c.sx, c.sy); ctx.lineTo(c.sx + lean, c.sy - cw * 0.85);
+  }
+  ctx.stroke();
+  // 手前の絞り
+  const fr = L.front;
+  ctx.drawImage(staticFront, fr.x, fr.y, fr.w, fr.h);
+  // 煙
+  drawSmoke();
+
+  // 明るさ（灯っている炎の量と重心）
+  let litW = 0, sx = 0, sy = 0;
+  for (const c of candles) {
+    if (c.state === 'lit' || c.state === 'dying') {
+      const k = c.grow * (0.5 + 0.5 * c.hp);
+      litW += k; sx += c.sx * k; sy += (c.sy - flameH) * k;
+    }
+  }
+  const lf = litW / N;
+  const tx = litW > 0.01 ? sx / litW : cx, ty = litW > 0.01 ? sy / litW : L.cy - ch;
+  const kk = 1 - Math.exp(-dt * 6);
+  if (!lightInit) { lcx = tx; lcy = ty; lightInit = true; }
+  lightLevel += (lf - lightLevel) * kk;
+  lcx += (tx - lcx) * kk; lcy += (ty - lcy) * kk;
+  const flick = 1 + 0.025 * Math.sin(t * 11.3) + 0.02 * Math.sin(t * 17.9 + 1.3) - 0.04 * Math.min(1, b);
+  const lv = clamp(lightLevel * flick, 0, 1.2);
+  const amb = [44, 34, 36];
+  const c0 = mix(amb, [255, 226, 190], Math.pow(lv, 0.6));
+  const c1 = mix(amb, [222, 166, 122], Math.pow(lv, 0.85));
+  const R = rx * (1.1 + 1.8 * Math.sqrt(lv)) + 40;
+  const gr = ctx.createRadialGradient(lcx, lcy, rx * 0.05, lcx, lcy, R);
+  gr.addColorStop(0, rgba(c0)); gr.addColorStop(0.5, rgba(c1)); gr.addColorStop(1, 'rgb(22,16,17)');
+  ctx.globalCompositeOperation = 'multiply';
+  ctx.fillStyle = gr; ctx.fillRect(0, 0, W, H);
+
+  // 炎のまわりの光（近くの炎をまとめて1つの光として描く。1本ずつだと重い）
+  ctx.globalCompositeOperation = 'lighter';
+  const cell = Math.max(10, rx * 0.16);
+  const hb = new Map();
+  for (const c of candles) {
+    if (c.state !== 'lit' && c.state !== 'dying') continue;
+    const k = c.grow * (0.6 + 0.4 * c.hp);
+    const key = Math.floor(c.sx / cell) * 4096 + Math.floor(c.sy / cell);
+    let e = hb.get(key);
+    if (!e) { e = [0, 0, 0]; hb.set(key, e); }
+    e[0] += k; e[1] += c.sx * k; e[2] += c.sy * k;
+  }
+  const hs = cell * 2.2 + flameH * 2;
+  for (const e of hb.values()) {
+    if (e[0] < 0.01) continue;
+    const x = e[1] / e[0], y = e[2] / e[0] - cw * 0.85 - flameH * 0.6;
+    ctx.globalAlpha = Math.min(0.9, CONFIG.HALO_ALPHA * 0.25 * e[0]);
+    ctx.drawImage(halo, x - hs / 2, y - hs / 2, hs, hs);
+  }
+  // 残り火（芯の先が赤く光って消えていく）
+  ctx.fillStyle = 'rgb(255,120,50)';
+  for (const c of candles) {
+    if (c.ember <= 0.01 || c.state === 'lit') continue;
+    const r = Math.max(1, cw * 0.55);
+    ctx.globalAlpha = 0.9 * c.ember * c.ember;
+    ctx.fillRect(c.sx + c.bend * cw * 0.35 - r / 2, c.sy - cw * 0.85 - r / 2, r, r);
+  }
+  // 炎
+  ctx.globalCompositeOperation = 'source-over';
+  const s = flameH / 100;
+  for (const c of candles) {
+    if ((c.state !== 'lit' && c.state !== 'dying') || c.grow <= 0) continue;
+    const ww = Math.min(1, c.w);
+    const ignite = c.state === 'lit' && c.grow < 1 ? 1 + 0.35 * Math.sin(c.grow * Math.PI) : 1;
+    const f = 1 + 0.06 * Math.sin(t * 9.1 + c.ph) + 0.04 * Math.sin(t * 23.7 + c.ph * 2.3);
+    const hpK = 0.45 + 0.55 * c.hp;
+    const sy2 = f * (1 - 0.55 * ww) * hpK * c.grow * ignite;
+    const sx2 = (1 + 0.35 * ww) * (0.75 + 0.25 * c.hp) * c.grow * (1 + 0.04 * Math.sin(t * 13 + c.ph));
+    const ang = c.side * ww * 0.9 + Math.sin(t * (18 + ww * 20) + c.ph) * (0.03 + 0.25 * ww);
+    const fx = c.sx + c.side * c.w * cw * 0.4;
+    const fy = c.sy - cw * 0.85 + cw * 0.35;
+    const cs = Math.cos(ang), sn = Math.sin(ang), a = s * sx2, d = s * sy2;
+    ctx.setTransform(DPR * cs * a, DPR * sn * a, -DPR * sn * d, DPR * cs * d, DPR * fx, DPR * fy);
+    ctx.globalAlpha = 0.75 + 0.25 * c.hp;
+    ctx.drawImage(flame.c, -flame.ax, -flame.ay, flame.w, flame.h);
+  }
+  // 粒子感
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalAlpha = 0.55;
+  const ox = (Math.random() * 128) | 0, oy = (Math.random() * 128) | 0;
+  ctx.translate(-ox, -oy);
+  ctx.fillStyle = grain; ctx.fillRect(ox, oy, cv.width, cv.height);
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.globalAlpha = 1;
+}
+
+function updateUI() {
+  $('meterFill').style.transform = `scaleX(${clamp(b, 0, 1).toFixed(3)})`;
+  if (state === 'calib') $('calibFill').style.transform = `scaleX(${clamp(calibT / 1.3, 0, 1).toFixed(3)})`;
+  if (outCount !== shownAge) { shownAge = outCount; $('ageNum').textContent = outCount; }
+}
+
+function frame(now) {
+  const t = now / 1000;
+  const dt = lastNow ? Math.min(0.05, Math.max(0, t - lastNow)) : 0.016;
+  lastNow = t;
+  clock += dt;
+  updateAudio(dt);
+  updateGame(dt);
+  updateCandles(dt);
+  updateSmoke(dt);
+  render(clock, dt);
+  updateUI();
+  requestAnimationFrame(frame);
+}
+
+/* ================= 操作 ================= */
+$('shareBtn').addEventListener('click', async () => {
+  const note = window.__shareNote;
+  if (!note) return;
+  const payload = note.text + '\n' + note.url;
+  try {
+    if (navigator.share) await navigator.share({ text: note.text, url: note.url });
+    else {
+      await navigator.clipboard.writeText(payload);
+      $('shareBtn').textContent = 'コピーしました';
+    }
+  } catch (err) {
+    if (err && err.name === 'AbortError') return;
+    try { await navigator.clipboard.writeText(payload); $('shareBtn').textContent = 'コピーしました'; } catch (e) {}
+  }
+});
+$('startBtn').addEventListener('click', startMic);
+$('retryMicBtn').addEventListener('click', () => { setState('title'); startMic(); });
+$('holdBtn').addEventListener('click', () => {
+  mode = 'hold';
+  $('whereText').textContent = S.whereHold;
+  setState('ready');
+});
+$('retryBtn').addEventListener('click', () => {
+  relight(0.2);
+  setState('relight');
+});
+cv.addEventListener('pointerdown', e => {
+  if (mode !== 'hold' || (state !== 'ready' && state !== 'play')) return;
+  e.preventDefault();
+  holding = true; holdT = 0;
+  holdPeak = 0.85 + Math.random() * 0.3;
+  holdTau = 2.6 + Math.random() * 1.4;
+});
+const release = () => { holding = false; };
+window.addEventListener('pointerup', release);
+window.addEventListener('pointercancel', release);
+window.addEventListener('contextmenu', e => e.preventDefault());
+window.addEventListener('resize', resize);
+
+resize();
+buildFlame();
+relight(0.5);
+setState('title');
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
