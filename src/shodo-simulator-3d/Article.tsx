@@ -29,6 +29,17 @@ function renderBlock(block: ShodoBlock) {
   return <p>{inline(block.text)}</p>
 }
 
+function linkHref(href: string) {
+  if (href.startsWith('/shodo-simulator-3d')) {
+    const slug = href.replace(/^\/shodo-simulator-3d\/?/, '')
+    return shodoHref(slug)
+  }
+  const base = import.meta.env.BASE_URL || '/'
+  const root = base.endsWith('/') ? base : `${base}/`
+  const path = href.replace(/^\//, '')
+  return `${root}${path.endsWith('/') ? path : `${path}/`}`
+}
+
 function inline(text: string): ReactNode[] {
   const nodes: ReactNode[] = []
   let rest = text
@@ -40,14 +51,13 @@ function inline(text: string): ReactNode[] {
       break
     }
     if (start > 0) nodes.push(rest.slice(0, start))
-    const link = rest.slice(start).match(/^\[([^\]]+)\]\((\/shodo-simulator-3d\/[^)]*)\)/)
+    const link = rest.slice(start).match(/^\[([^\]]+)\]\((\/[^)]*)\)/)
     if (!link) {
       nodes.push(rest[start])
       rest = rest.slice(start + 1)
       continue
     }
-    const slug = link[2].replace(/^\/shodo-simulator-3d\/?/, '')
-    nodes.push(<a key={key += 1} href={shodoHref(slug)}>{link[1]}</a>)
+    nodes.push(<a key={key += 1} href={linkHref(link[2])}>{link[1]}</a>)
     rest = rest.slice(start + link[0].length)
   }
   return nodes

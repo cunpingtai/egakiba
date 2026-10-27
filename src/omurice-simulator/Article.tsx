@@ -49,6 +49,14 @@ function inline(text: string): ReactNode[] {
 
 function linkProps(href: string) {
   if (href === '#play') return { href: omuriceHref('#play') }
+  if (href.startsWith('/') && !href.startsWith('/omurice-simulator')) return { href: sitePath(href) }
   const slug = href.replace(/^\/omurice-simulator\/?/, '')
   return { href: omuriceHref(slug ? `${slug.replace(/\/$/, '')}/` : '') }
+}
+
+function sitePath(href: string) {
+  const base = import.meta.env.BASE_URL || '/'
+  const root = base.endsWith('/') ? base : `${base}/`
+  const path = href.replace(/^\//, '')
+  return `${root}${path.endsWith('/') ? path : `${path}/`}`
 }

@@ -49,6 +49,14 @@ function inline(text: string): ReactNode[] {
 
 function linkProps(href: string) {
   if (href === '#play') return { href: dashimakiHref('#play') }
+  if (href.startsWith('/') && !href.startsWith('/dashimaki-game')) return { href: sitePath(href) }
   const slug = href.replace(/^\/dashimaki-game\/?/, '')
   return { href: dashimakiHref(slug ? `${slug.replace(/\/$/, '')}/` : '') }
+}
+
+function sitePath(href: string) {
+  const base = import.meta.env.BASE_URL || '/'
+  const root = base.endsWith('/') ? base : `${base}/`
+  const path = href.replace(/^\//, '')
+  return `${root}${path.endsWith('/') ? path : `${path}/`}`
 }
