@@ -94,7 +94,8 @@ test('R26: sitemap contains the Japanese canonical landing URLs and no fragment 
   const sitemap = await read('public/sitemap.xml');
   const robots = await read('public/robots.txt');
   const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-  assert.equal(urls.length, 46);
+  assert.equal(urls.length, 54);
+  assert.equal(sitemap.includes('<lastmod>'), false);
   assert.equal(new Set(urls).size, urls.length);
   assert.ok(urls.every((url) => !url.includes('#')));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}draw-fight/`));
@@ -126,6 +127,14 @@ test('R26: sitemap contains the Japanese canonical landing URLs and no fragment 
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}one-breath/how-to-play/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}one-breath/titles/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}one-breath/faq/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}hamburg/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}hamburg/how-to-play/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}hamburg/high-score/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}cooking-games/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}omurice/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}omurice/how-to-play/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}omurice/ketchup-art/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}drawing-games/`));
   assert.equal(urls.some((url) => url.endsWith('game.html')), false);
   assert.equal(urls.some((url) => url.includes('/studio') || url.includes('/gpu-check')), false);
   assert.ok(urls.includes(canonicalUrl('home', 'ja', DEFAULT_SITE_URL)));

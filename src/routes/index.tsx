@@ -10,6 +10,10 @@ import { dashimakiHref } from '../dashimaki-game/seo'
 import { omuriceHref } from '../omurice-simulator/seo'
 import { potatoHref } from '../long-potato/seo'
 import { breathHref } from '../one-breath/seo'
+import { hamburgHref } from '../hamburg/seo'
+import { ommojiHref } from '../ommoji/seo'
+import { cookingHref } from '../cooking-games/seo'
+import { drawingHref } from '../drawing-games/seo'
 import { routeHref } from '../seo/landing-content.mjs'
 import { siteGames } from '../site-games'
 import { SiteIndexLinks } from '../site-links'
@@ -128,7 +132,7 @@ function R9Shell() {
               <div><span className="section-kicker">GAMES</span><h2 id="game-shelf-title">あそべるゲーム</h2></div>
             </div>
             <div className="game-shelf-grid">
-              {siteGames({ drawFight: drawHref(), typhoonEscape: typhoonHref(), zipperFinger: zipperHref(), shodo: shodoHref(), dashimaki: dashimakiHref(), omurice: omuriceHref(), potato: potatoHref(), breath: breathHref() }).map((game) => (
+              {siteGames({ drawFight: drawHref(), typhoonEscape: typhoonHref(), zipperFinger: zipperHref(), shodo: shodoHref(), dashimaki: dashimakiHref(), omurice: omuriceHref(), potato: potatoHref(), breath: breathHref(), hamburg: hamburgHref(), ommoji: ommojiHref() }).map((game) => (
                 <a className={`game-card game-card--${game.id}`} href={game.href} key={game.id} aria-current={game.here ? 'page' : undefined}>
                   <span className="game-card-mark" aria-hidden="true">{game.mark}</span>
                   <span className="game-card-body">
@@ -140,6 +144,10 @@ function R9Shell() {
                 </a>
               ))}
             </div>
+            <p className="game-shelf-links">
+              <a href={cookingHref()}>料理ゲーム一覧：卵焼き・オムライス・ハンバーグ・ポテト</a>
+              <a href={drawingHref()}>お絵描きゲーム一覧</a>
+            </p>
           </section>
           <section className="seo-content" aria-labelledby="seo-heading"><div className="seo-content-inner"><p className="seo-eyebrow" data-t="seoEyebrow">無料ブラウザゲーム・文字バトル</p><h2 id="seo-heading" data-t="seoTitle">文字ブレードで最強の文字を探す</h2><p data-t="seoIntro1">文字ブレードは、好きな漢字・かな・英字を選び、3Dの文字コマで戦う無料ブラウザゲームです。文字の形と書体が、コマの動きやぶつかり方に影響します。</p><p data-t="seoIntro2">文字ブレードでは、ストーリーモードの4ステージで発射と角度を練習し、VS COMのフリーバトルで別の文字や書体を試せます。登録もインストールも不要で、ブラウザから文字バトルを始められます。</p><h2 data-t="seoFeatureTitle">文字ブレードでできること</h2><div className="seo-feature-grid"><article><h3 data-t="seoStoryTitle">4つのストーリーステージ</h3><p data-t="seoStoryDesc">文字ブレードの4つのストーリーステージで、発射パワー、角度、残りHPなどの目標を確認しながら攻略します。</p></article><article><h3 data-t="seoBattleTitle">漢字・文字で自由にバトル</h3><p data-t="seoBattleDesc">漢字ブレードや文字ゲームを探している人も、文字ブレードのVS COMで好きな漢字・かな・英字と書体を試せます。</p></article><article><h3 data-t="seoResearchTitle">最強の文字を属性で比較</h3><p data-t="seoResearchDesc">文字ブレードの文字図鑑、文字詳細、比較ラボ、文字能力研究で、対応する書体の速度・パワー・バランスを調べられます。属性値は字形からの計算値で、勝率を保証するものではありません。</p></article></div><nav className="seo-route-discovery" aria-label="文字ブレードの攻略・研究ページ">
             <a href={routeHref('stages', 'ja', ROUTE_BASE)}><strong data-t="seoLinkStagesTitle">文字ブレードのステージ攻略</strong><span data-t="seoLinkStagesDesc">第一章4ステージの相手、目標時間、星条件を確認。</span></a>

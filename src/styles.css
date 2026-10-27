@@ -72,6 +72,8 @@
   }
 
   .game-shelf { margin-top: 28px; padding: 0 5px; }
+  .game-shelf-links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 14px 2px 0; font-weight: 700; }
+  .game-shelf-links a { color: #ffe08a; }
   .game-shelf-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -158,6 +160,20 @@
   .game-card--one-breath .game-card-mark {
     color: #ffb35a;
     text-shadow: 3px 3px #4a2418, 5px 8px 15px #060b30;
+  }
+  .game-card--hamburg {
+    background: linear-gradient(145deg, #e07a4a, #9a3030 55%, #2a1410);
+  }
+  .game-card--hamburg .game-card-mark {
+    color: #ffe1b0;
+    text-shadow: 3px 3px #5a2018, 5px 8px 15px #060b30;
+  }
+  .game-card--ommoji {
+    background: linear-gradient(145deg, #f2d27a, #c4472f 55%, #3a1a12);
+  }
+  .game-card--ommoji .game-card-mark {
+    color: #fff4d2;
+    text-shadow: 3px 3px #7a2418, 5px 8px 15px #060b30;
   }
   .game-card-body {
     position: relative;

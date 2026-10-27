@@ -5,6 +5,10 @@ import { dashimakiHref } from './dashimaki-game/seo'
 import { omuriceHref } from './omurice-simulator/seo'
 import { potatoHref } from './long-potato/seo'
 import { breathHref } from './one-breath/seo'
+import { hamburgHref } from './hamburg/seo'
+import { cookingHref } from './cooking-games/seo'
+import { ommojiHref } from './ommoji/seo'
+import { drawingHref } from './drawing-games/seo'
 import { shodoHref } from './shodo-simulator-3d/seo'
 import { zipperHref } from './zipper-finger/seo'
 
@@ -43,6 +47,7 @@ export function siteIndexLinks() {
     { id: 'zipper-finger/jojo', href: zipperHref('jojo/'), label: 'ジョジョとの関係' },
     { id: 'shodo-simulator-3d', href: shodoHref(), label: '書道シミュレーター3D' },
     { id: 'shodo-simulator-3d/how-to-play', href: shodoHref('how-to-play/'), label: '書道の遊び方' },
+    { id: 'cooking-games', href: cookingHref(), label: '料理ゲーム（卵焼き・オムライス）' },
     { id: 'dashimaki-game', href: dashimakiHref(), label: 'だし巻きゲーム' },
     { id: 'dashimaki-game/how-to-play', href: dashimakiHref('how-to-play/'), label: 'だし巻きの遊び方' },
     { id: 'dashimaki-game/phantom-dashimaki', href: dashimakiHref('phantom-dashimaki/'), label: '幻の出し巻き' },
@@ -62,6 +67,13 @@ export function siteIndexLinks() {
     { id: 'one-breath/how-to-play', href: breathHref('how-to-play/'), label: '一息の遊び方' },
     { id: 'one-breath/titles', href: breathHref('titles/'), label: '一息の称号' },
     { id: 'one-breath/faq', href: breathHref('faq/'), label: '一息の質問' },
+    { id: 'hamburg', href: hamburgHref(), label: 'ハンバーグ作り' },
+    { id: 'hamburg/how-to-play', href: hamburgHref('how-to-play/'), label: 'ハンバーグの遊び方' },
+    { id: 'hamburg/high-score', href: hamburgHref('high-score/'), label: 'ハンバーグの高得点' },
+    { id: 'omurice', href: ommojiHref(), label: 'オム文字シミュレーター' },
+    { id: 'omurice/how-to-play', href: ommojiHref('how-to-play/'), label: 'オム文字の遊び方' },
+    { id: 'omurice/ketchup-art', href: ommojiHref('ketchup-art/'), label: 'ケチャップアート' },
+    { id: 'drawing-games', href: drawingHref(), label: '無料お絵描きゲーム' },
   ]
 }
 

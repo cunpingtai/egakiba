@@ -1,0 +1,91 @@
+/* 結果ボタンなどの共通アイコン。文字ラベルは操作の名前として残す。
+   ボタンを足すときは、ゲームごとに描かずここへ同じ線の太さで足す。 */
+(function(global){
+  'use strict';
+  function kind(label){return label==='もう一度'||label==='もう一度走る'?'retry':label==='Xでシェア'||label==='Xでポスト'?'share':label==='次'||label==='次へ'?'next':label==='戻る'?'back':label==='画像を選ぶ'||label==='背景'?'photo':label==='ガイドを消す'?'guide':label==='ガイドを出す'?'guideOff':label==='スプレー'?'spray':label==='ハサミ'?'scissors':label==='毛色'?'palette':label==='飾り'?'ribbon':label==='顔'?'face':label==='画像を保存'||label==='動画を保存'?'save':label==='カッター'?'cutter':label==='やすり'?'sand':label==='作り直す'?'refold':label==='もう一度投げる'?'rethrow':label==='書き直す'?'redraw':label==='力を直す'?'repower':label==='ひっくり返す'?'flip':null;}
+  function draw(ctx,label,x,y,size){
+    var id=kind(label);if(!id)return false;
+    ctx.save();ctx.translate(x,y);ctx.scale((size||30)/24,(size||30)/24);ctx.strokeStyle=ctx.fillStyle;ctx.lineWidth=2;ctx.lineCap='round';ctx.lineJoin='round';
+    if(id==='retry'){
+      ctx.beginPath();ctx.arc(0,0,8,-Math.PI*.8,Math.PI*.85);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(-8,-8);ctx.lineTo(-6.5,-3);ctx.lineTo(-1.5,-5);ctx.stroke();
+    }else if(id==='next'){
+      ctx.beginPath();ctx.moveTo(-9,0);ctx.lineTo(9,0);ctx.moveTo(2,-7);ctx.lineTo(9,0);ctx.lineTo(2,7);ctx.stroke();
+    }else if(id==='back'){
+      ctx.beginPath();ctx.moveTo(9,0);ctx.lineTo(-9,0);ctx.moveTo(-2,-7);ctx.lineTo(-9,0);ctx.lineTo(-2,7);ctx.stroke();
+    }else if(id==='photo'){
+      ctx.beginPath();ctx.moveTo(-8,-7);ctx.lineTo(8,-7);ctx.arcTo(10,-7,10,-5,2);ctx.lineTo(10,5);ctx.arcTo(10,7,8,7,2);ctx.lineTo(-8,7);ctx.arcTo(-10,7,-10,5,2);ctx.lineTo(-10,-5);ctx.arcTo(-10,-7,-8,-7,2);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(-10,5);ctx.lineTo(-4,-1);ctx.lineTo(1,4);ctx.lineTo(4,1);ctx.lineTo(10,6);ctx.stroke();
+      ctx.beginPath();ctx.arc(4,-3,1.6,0,Math.PI*2);ctx.stroke();
+    }else if(id==='spray'){
+      /* 缶とノズル、吹き出す粒 */
+      ctx.beginPath();ctx.moveTo(-8,-2);ctx.lineTo(-8,10);ctx.arcTo(-8,11,-7,11,1);ctx.lineTo(1,11);ctx.arcTo(2,11,2,10,1);ctx.lineTo(2,-2);ctx.closePath();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(-6,-2);ctx.lineTo(-6,-6);ctx.lineTo(0,-6);ctx.lineTo(0,-2);ctx.moveTo(0,-5);ctx.lineTo(3,-5);ctx.stroke();
+      ctx.beginPath();ctx.arc(7,-9,1,0,Math.PI*2);ctx.arc(9,-4,1,0,Math.PI*2);ctx.arc(7,1,1,0,Math.PI*2);ctx.fill();
+    }else if(id==='scissors'){
+      /* 交差した刃と2つの持ち手 */
+      ctx.beginPath();ctx.arc(-5,6,3.2,0,Math.PI*2);ctx.stroke();
+      ctx.beginPath();ctx.arc(5,6,3.2,0,Math.PI*2);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(-3,3.5);ctx.lineTo(6,-10);ctx.moveTo(3,3.5);ctx.lineTo(-6,-10);ctx.stroke();
+    }else if(id==='palette'){
+      /* 絵の具の板と、色の丸3つ */
+      ctx.beginPath();ctx.moveTo(1,-10);ctx.bezierCurveTo(10,-10,12,-2,11,3);ctx.bezierCurveTo(10,8,4,6,3,9);ctx.bezierCurveTo(1,12,-6,11,-9,7);ctx.bezierCurveTo(-13,1,-10,-10,1,-10);ctx.closePath();ctx.stroke();
+      ctx.beginPath();ctx.arc(-4,-4,1.6,0,Math.PI*2);ctx.arc(3,-5,1.6,0,Math.PI*2);ctx.moveTo(-3.4,3);ctx.arc(-5,3,1.6,0,Math.PI*2);ctx.fill();
+    }else if(id==='save'){
+      /* 下向きの矢印と受け皿（画像の保存） */
+      ctx.beginPath();ctx.moveTo(0,-10);ctx.lineTo(0,3);ctx.moveTo(-5,-2);ctx.lineTo(0,3);ctx.lineTo(5,-2);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(-9,4);ctx.lineTo(-9,10);ctx.lineTo(9,10);ctx.lineTo(9,4);ctx.stroke();
+    }else if(id==='cutter'){
+      /* 斜めの柄と、先のとがった刃 */
+      ctx.beginPath();ctx.moveTo(-10,10);ctx.lineTo(-2,2);ctx.lineTo(1,5);ctx.lineTo(-7,13);ctx.closePath();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(-1,1);ctx.lineTo(10,-10);ctx.lineTo(4,4);ctx.closePath();ctx.stroke();
+    }else if(id==='sand'){
+      /* 角の丸い当て木と、ざらざらの粒 */
+      ctx.beginPath();ctx.moveTo(-9,-4);ctx.lineTo(9,-4);ctx.arcTo(11,-4,11,-2,2);ctx.lineTo(11,4);ctx.lineTo(-11,4);ctx.lineTo(-11,-2);ctx.arcTo(-11,-4,-9,-4,2);ctx.stroke();
+      ctx.beginPath();for(var i=-9;i<=9;i+=4.5){ctx.moveTo(i+1,8);ctx.arc(i,8,1,0,Math.PI*2);}ctx.fill();
+    }else if(id==='face'){
+      /* 丸い顔に目と口 */
+      ctx.beginPath();ctx.arc(0,0,10,0,Math.PI*2);ctx.stroke();
+      ctx.beginPath();ctx.arc(-3.6,-2.5,1.5,0,Math.PI*2);ctx.arc(3.6,-2.5,1.5,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.moveTo(-4,3);ctx.quadraticCurveTo(0,7,4,3);ctx.stroke();
+    }else if(id==='ribbon'){
+      /* 蝶結びのリボン */
+      ctx.beginPath();ctx.moveTo(-2,0);ctx.lineTo(-10,-6);ctx.lineTo(-10,6);ctx.closePath();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(2,0);ctx.lineTo(10,-6);ctx.lineTo(10,6);ctx.closePath();ctx.stroke();
+      ctx.beginPath();ctx.arc(0,0,2.4,0,Math.PI*2);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(-1.5,2.2);ctx.lineTo(-4,10);ctx.moveTo(1.5,2.2);ctx.lineTo(4,10);ctx.stroke();
+    }else if(id==='flip'){
+      /* 上下を入れ替える2本の曲がった矢印 */
+      ctx.beginPath();ctx.arc(0,0,8,Math.PI*1.1,Math.PI*1.9);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(4,-10);ctx.lineTo(7.6,-4.6);ctx.lineTo(1.6,-3.6);ctx.stroke();
+      ctx.beginPath();ctx.arc(0,0,8,Math.PI*0.1,Math.PI*0.9);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(-4,10);ctx.lineTo(-7.6,4.6);ctx.lineTo(-1.6,3.6);ctx.stroke();
+    }else if(id==='refold'){
+      /* 角を折った紙（紙飛行機を作り直す） */
+      ctx.beginPath();ctx.moveTo(-8,-10);ctx.lineTo(3,-10);ctx.lineTo(8,-5);ctx.lineTo(8,10);ctx.lineTo(-8,10);ctx.closePath();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(3,-10);ctx.lineTo(3,-5);ctx.lineTo(8,-5);ctx.stroke();
+    }else if(id==='redraw'){
+      /* 斜めの鉛筆（描き直す） */
+      ctx.beginPath();ctx.moveTo(-9,9);ctx.lineTo(-8,4);ctx.lineTo(5,-9);ctx.lineTo(9,-5);ctx.lineTo(-4,8);ctx.closePath();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(2,-6);ctx.lineTo(6,-2);ctx.stroke();
+    }else if(id==='repower'){
+      /* つまみつきの目盛り3本（力を直す） */
+      ctx.beginPath();ctx.moveTo(-10,-6);ctx.lineTo(10,-6);ctx.moveTo(-10,0);ctx.lineTo(10,0);ctx.moveTo(-10,6);ctx.lineTo(10,6);ctx.stroke();
+      ctx.beginPath();ctx.arc(-4,-6,2.4,0,Math.PI*2);ctx.moveTo(7.4,0);ctx.arc(5,0,2.4,0,Math.PI*2);ctx.moveTo(1.4,6);ctx.arc(-1,6,2.4,0,Math.PI*2);ctx.fill();
+    }else if(id==='rethrow'){
+      /* 紙飛行機（同じ機体でもう一度投げる） */
+      ctx.beginPath();ctx.moveTo(11,-9);ctx.lineTo(-11,-1);ctx.lineTo(-3,2);ctx.closePath();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(11,-9);ctx.lineTo(-3,2);ctx.lineTo(1,10);ctx.closePath();ctx.stroke();
+    }else if(id==='guide'||id==='guideOff'){
+      /* 目の形。消えているときは斜線を引く */
+      ctx.beginPath();ctx.moveTo(-10,0);ctx.quadraticCurveTo(0,-10,10,0);ctx.quadraticCurveTo(0,10,-10,0);ctx.closePath();ctx.stroke();
+      ctx.beginPath();ctx.arc(0,0,3,0,Math.PI*2);ctx.stroke();
+      if(id==='guideOff'){ctx.beginPath();ctx.moveTo(-9,-9);ctx.lineTo(9,9);ctx.stroke();}
+    }else{
+      ctx.beginPath();ctx.moveTo(-9,-10);ctx.lineTo(-4,-10);ctx.lineTo(9,10);ctx.lineTo(4,10);ctx.closePath();ctx.stroke();
+      ctx.beginPath();ctx.moveTo(9,-10);ctx.lineTo(1,-1);ctx.moveTo(-1,1);ctx.lineTo(-9,10);ctx.stroke();
+    }
+    ctx.restore();return true;
+  }
+  global.zActionIcon=draw;
+})(window);

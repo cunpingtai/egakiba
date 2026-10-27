@@ -19,10 +19,9 @@ const locales = ['ja'];
 const pages = [{ key: 'home', locale: 'ja' }];
 for (const locale of locales) for (const key of SEO_INDEXABLE_PAGES) pages.push({ key, locale });
 const unique = [...new Map(pages.map((item) => [canonicalUrl(item.key, item.locale, base.toString()), item])).entries()];
-const today = new Date(Date.now() + 8 * 60 * 60 * 1000).toISOString().slice(0, 10);
 const urls = unique.map(([loc, item]) => {
   const priority = item.key === 'home' ? '1.0' : ['stages', 'strongest', 'glyphs', 'compare'].includes(item.key) ? '0.8' : '0.7';
-  return `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
+  return `  <url>\n    <loc>${escapeXml(loc)}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>${priority}</priority>\n  </url>`;
 }).join('\n');
 const drawPaths = ['draw-fight/', 'draw-fight/how-to-play/', 'draw-fight/create-fighter/', 'draw-fight/controls/', 'draw-fight/stages/', 'draw-fight/fighter-stats/', 'draw-fight/tips/', 'draw-fight/bosses/', 'draw-fight/faq/', 'draw-fight/save-data/'];
 const typhoonPaths = ['typhoon-escape/', 'typhoon-escape/how-to-play/', 'typhoon-escape/controls/', 'typhoon-escape/tips/'];
@@ -32,7 +31,12 @@ const dashimakiPaths = ['dashimaki-game/', 'dashimaki-game/how-to-play/', 'dashi
 const omuricePaths = ['omurice-simulator/', 'omurice-simulator/how-to-play/', 'omurice-simulator/high-score/', 'omurice-simulator/fold-and-flip/', 'omurice-simulator/faq/'];
 const potatoPaths = ['long-potato/', 'long-potato/how-to-play/', 'long-potato/tips/', 'long-potato/records/', 'long-potato/faq/'];
 const breathPaths = ['one-breath/', 'one-breath/how-to-play/', 'one-breath/titles/', 'one-breath/faq/'];
-const extraUrls = [...drawPaths, ...typhoonPaths, ...zipperPaths, ...shodoPaths, ...dashimakiPaths, ...omuricePaths, ...potatoPaths, ...breathPaths].map((path) => `  <url>\n    <loc>${escapeXml(new URL(path, base).toString())}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>${path === 'draw-fight/' || path === 'typhoon-escape/' || path === 'zipper-finger/' || path === 'shodo-simulator-3d/' || path === 'dashimaki-game/' || path === 'omurice-simulator/' || path === 'long-potato/' || path === 'one-breath/' ? '0.8' : '0.6'}</priority>\n  </url>`).join('\n');
+const hamburgPaths = ['hamburg/', 'hamburg/how-to-play/', 'hamburg/high-score/'];
+const cookingPaths = ['cooking-games/'];
+const ommojiPaths = ['omurice/', 'omurice/how-to-play/', 'omurice/ketchup-art/'];
+const drawingPaths = ['drawing-games/'];
+const hubPaths = new Set(['draw-fight/', 'typhoon-escape/', 'zipper-finger/', 'shodo-simulator-3d/', 'dashimaki-game/', 'omurice-simulator/', 'long-potato/', 'one-breath/', 'hamburg/', 'cooking-games/', 'omurice/', 'drawing-games/']);
+const extraUrls = [...drawPaths, ...typhoonPaths, ...zipperPaths, ...shodoPaths, ...dashimakiPaths, ...omuricePaths, ...potatoPaths, ...breathPaths, ...hamburgPaths, ...cookingPaths, ...ommojiPaths, ...drawingPaths].map((path) => `  <url>\n    <loc>${escapeXml(new URL(path, base).toString())}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>${hubPaths.has(path) ? '0.8' : '0.6'}</priority>\n  </url>`).join('\n');
 const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n${extraUrls}\n</urlset>\n`;
 const sitemapPath = join(root, 'public', base.pathname.replace(/^\/+|\/+$/g, ''), 'sitemap.xml');
 const publicRoot = join(root, 'public');
