@@ -1,5 +1,6 @@
 import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
 
+import { SiteFrame } from '../site-ads'
 import appCss from '../styles.css?url'
 
 export const Route = createRootRoute({
@@ -38,8 +39,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="min-h-dvh font-sans antialiased">
-        {children}
+        <SiteFrame>{children}</SiteFrame>
         <Scripts />
+        <script data-cfasync="false" src="https://bauval.org/14/3362c7c294cf1727cf40c02e534019ec" />
       </body>
     </html>
   )
