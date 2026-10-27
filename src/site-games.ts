@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; ommoji: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -90,6 +90,14 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: '料理',
       title: 'ハンバーグ作り',
       description: '玉ねぎを切って、こねて、焼く。',
+    },
+    {
+      id: 'soft-serve',
+      href: links.softServe,
+      mark: '氷',
+      kicker: 'スイーツ',
+      title: 'ソフトクリームシミュレーター',
+      description: 'コーンを動かして、高く巻く。',
     },
     {
       id: 'ommoji',

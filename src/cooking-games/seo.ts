@@ -31,6 +31,7 @@ export function cookingHead(page: CookingPage = COOKING_PAGE) {
   const canonical = cookingCanonical()
   const games = [
     ['ハンバーグ作り', 'hamburg/'],
+    ['ソフトクリームシミュレーター', 'soft-serve/'],
     ['だし巻きゲーム', 'dashimaki-game/'],
     ['オムライスシミュレーター', 'omurice-simulator/'],
     ['ぐるぐるポテトメーカー', 'long-potato/'],

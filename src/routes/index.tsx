@@ -11,6 +11,7 @@ import { omuriceHref } from '../omurice-simulator/seo'
 import { potatoHref } from '../long-potato/seo'
 import { breathHref } from '../one-breath/seo'
 import { hamburgHref } from '../hamburg/seo'
+import { softServeHref } from '../soft-serve/seo'
 import { ommojiHref } from '../ommoji/seo'
 import { cookingHref } from '../cooking-games/seo'
 import { drawingHref } from '../drawing-games/seo'
@@ -132,7 +133,7 @@ function R9Shell() {
               <div><span className="section-kicker">GAMES</span><h2 id="game-shelf-title">あそべるゲーム</h2></div>
             </div>
             <div className="game-shelf-grid">
-              {siteGames({ drawFight: drawHref(), typhoonEscape: typhoonHref(), zipperFinger: zipperHref(), shodo: shodoHref(), dashimaki: dashimakiHref(), omurice: omuriceHref(), potato: potatoHref(), breath: breathHref(), hamburg: hamburgHref(), ommoji: ommojiHref() }).map((game) => (
+              {siteGames({ drawFight: drawHref(), typhoonEscape: typhoonHref(), zipperFinger: zipperHref(), shodo: shodoHref(), dashimaki: dashimakiHref(), omurice: omuriceHref(), potato: potatoHref(), breath: breathHref(), hamburg: hamburgHref(), softServe: softServeHref(), ommoji: ommojiHref() }).map((game) => (
                 <a className={`game-card game-card--${game.id}`} href={game.href} key={game.id} aria-current={game.here ? 'page' : undefined}>
                   <span className="game-card-mark" aria-hidden="true">{game.mark}</span>
                   <span className="game-card-body">
@@ -145,7 +146,7 @@ function R9Shell() {
               ))}
             </div>
             <p className="game-shelf-links">
-              <a href={cookingHref()}>料理ゲーム一覧：卵焼き・オムライス・ハンバーグ・ポテト</a>
+              <a href={cookingHref()}>料理ゲーム一覧：卵焼き・オムライス・ハンバーグ・ソフトクリーム・ポテト</a>
               <a href={drawingHref()}>お絵描きゲーム一覧</a>
             </p>
           </section>

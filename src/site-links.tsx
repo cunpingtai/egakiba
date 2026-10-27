@@ -6,6 +6,7 @@ import { omuriceHref } from './omurice-simulator/seo'
 import { potatoHref } from './long-potato/seo'
 import { breathHref } from './one-breath/seo'
 import { hamburgHref } from './hamburg/seo'
+import { softServeHref } from './soft-serve/seo'
 import { cookingHref } from './cooking-games/seo'
 import { ommojiHref } from './ommoji/seo'
 import { drawingHref } from './drawing-games/seo'
@@ -70,6 +71,9 @@ export function siteIndexLinks() {
     { id: 'hamburg', href: hamburgHref(), label: 'ハンバーグ作り' },
     { id: 'hamburg/how-to-play', href: hamburgHref('how-to-play/'), label: 'ハンバーグの遊び方' },
     { id: 'hamburg/high-score', href: hamburgHref('high-score/'), label: 'ハンバーグの高得点' },
+    { id: 'soft-serve', href: softServeHref(), label: 'ソフトクリームシミュレーター' },
+    { id: 'soft-serve/how-to-play', href: softServeHref('how-to-play/'), label: 'ソフトクリームの遊び方' },
+    { id: 'soft-serve/high-score', href: softServeHref('high-score/'), label: 'ソフトクリームの5つ星' },
     { id: 'omurice', href: ommojiHref(), label: 'オム文字シミュレーター' },
     { id: 'omurice/how-to-play', href: ommojiHref('how-to-play/'), label: 'オム文字の遊び方' },
     { id: 'omurice/ketchup-art', href: ommojiHref('ketchup-art/'), label: 'ケチャップアート' },

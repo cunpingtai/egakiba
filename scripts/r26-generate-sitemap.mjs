@@ -32,11 +32,12 @@ const omuricePaths = ['omurice-simulator/', 'omurice-simulator/how-to-play/', 'o
 const potatoPaths = ['long-potato/', 'long-potato/how-to-play/', 'long-potato/tips/', 'long-potato/records/', 'long-potato/faq/'];
 const breathPaths = ['one-breath/', 'one-breath/how-to-play/', 'one-breath/titles/', 'one-breath/faq/'];
 const hamburgPaths = ['hamburg/', 'hamburg/how-to-play/', 'hamburg/high-score/'];
+const softServePaths = ['soft-serve/', 'soft-serve/how-to-play/', 'soft-serve/high-score/'];
 const cookingPaths = ['cooking-games/'];
 const ommojiPaths = ['omurice/', 'omurice/how-to-play/', 'omurice/ketchup-art/'];
 const drawingPaths = ['drawing-games/'];
-const hubPaths = new Set(['draw-fight/', 'typhoon-escape/', 'zipper-finger/', 'shodo-simulator-3d/', 'dashimaki-game/', 'omurice-simulator/', 'long-potato/', 'one-breath/', 'hamburg/', 'cooking-games/', 'omurice/', 'drawing-games/']);
-const extraUrls = [...drawPaths, ...typhoonPaths, ...zipperPaths, ...shodoPaths, ...dashimakiPaths, ...omuricePaths, ...potatoPaths, ...breathPaths, ...hamburgPaths, ...cookingPaths, ...ommojiPaths, ...drawingPaths].map((path) => `  <url>\n    <loc>${escapeXml(new URL(path, base).toString())}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>${hubPaths.has(path) ? '0.8' : '0.6'}</priority>\n  </url>`).join('\n');
+const hubPaths = new Set(['draw-fight/', 'typhoon-escape/', 'zipper-finger/', 'shodo-simulator-3d/', 'dashimaki-game/', 'omurice-simulator/', 'long-potato/', 'one-breath/', 'hamburg/', 'soft-serve/', 'cooking-games/', 'omurice/', 'drawing-games/']);
+const extraUrls = [...drawPaths, ...typhoonPaths, ...zipperPaths, ...shodoPaths, ...dashimakiPaths, ...omuricePaths, ...potatoPaths, ...breathPaths, ...hamburgPaths, ...softServePaths, ...cookingPaths, ...ommojiPaths, ...drawingPaths].map((path) => `  <url>\n    <loc>${escapeXml(new URL(path, base).toString())}</loc>\n    <changefreq>weekly</changefreq>\n    <priority>${hubPaths.has(path) ? '0.8' : '0.6'}</priority>\n  </url>`).join('\n');
 const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n${extraUrls}\n</urlset>\n`;
 const sitemapPath = join(root, 'public', base.pathname.replace(/^\/+|\/+$/g, ''), 'sitemap.xml');
 const publicRoot = join(root, 'public');

@@ -36,6 +36,8 @@ import { Route as OneBreathIndexRouteImport } from './routes/one-breath/index'
 import { Route as OneBreathSlugRouteImport } from './routes/one-breath/$slug'
 import { Route as ShodoSimulator3dIndexRouteImport } from './routes/shodo-simulator-3d/index'
 import { Route as ShodoSimulator3dSlugRouteImport } from './routes/shodo-simulator-3d/$slug'
+import { Route as SoftServeIndexRouteImport } from './routes/soft-serve/index'
+import { Route as SoftServeSlugRouteImport } from './routes/soft-serve/$slug'
 import { Route as TyphoonEscapeIndexRouteImport } from './routes/typhoon-escape/index'
 import { Route as TyphoonEscapeSlugRouteImport } from './routes/typhoon-escape/$slug'
 import { Route as ZipperFingerIndexRouteImport } from './routes/zipper-finger/index'
@@ -176,6 +178,16 @@ const ShodoSimulator3dSlugRoute = ShodoSimulator3dSlugRouteImport.update({
   path: '/shodo-simulator-3d/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SoftServeIndexRoute = SoftServeIndexRouteImport.update({
+  id: '/soft-serve/',
+  path: '/soft-serve/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SoftServeSlugRoute = SoftServeSlugRouteImport.update({
+  id: '/soft-serve/$slug',
+  path: '/soft-serve/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TyphoonEscapeIndexRoute = TyphoonEscapeIndexRouteImport.update({
   id: '/typhoon-escape/',
   path: '/typhoon-escape/',
@@ -215,6 +227,7 @@ export interface FileRoutesByFullPath {
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
+  '/soft-serve/$slug': typeof SoftServeSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/cooking-games/': typeof CookingGamesIndexRoute
@@ -227,6 +240,7 @@ export interface FileRoutesByFullPath {
   '/omurice/': typeof OmuriceIndexRoute
   '/one-breath/': typeof OneBreathIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
+  '/soft-serve/': typeof SoftServeIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
   '/zipper-finger/': typeof ZipperFingerIndexRoute
 }
@@ -248,6 +262,7 @@ export interface FileRoutesByTo {
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
+  '/soft-serve/$slug': typeof SoftServeSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/cooking-games': typeof CookingGamesIndexRoute
@@ -260,6 +275,7 @@ export interface FileRoutesByTo {
   '/omurice': typeof OmuriceIndexRoute
   '/one-breath': typeof OneBreathIndexRoute
   '/shodo-simulator-3d': typeof ShodoSimulator3dIndexRoute
+  '/soft-serve': typeof SoftServeIndexRoute
   '/typhoon-escape': typeof TyphoonEscapeIndexRoute
   '/zipper-finger': typeof ZipperFingerIndexRoute
 }
@@ -282,6 +298,7 @@ export interface FileRoutesById {
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
+  '/soft-serve/$slug': typeof SoftServeSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/cooking-games/': typeof CookingGamesIndexRoute
@@ -294,6 +311,7 @@ export interface FileRoutesById {
   '/omurice/': typeof OmuriceIndexRoute
   '/one-breath/': typeof OneBreathIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
+  '/soft-serve/': typeof SoftServeIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
   '/zipper-finger/': typeof ZipperFingerIndexRoute
 }
@@ -317,6 +335,7 @@ export interface FileRouteTypes {
     | '/omurice/$slug'
     | '/one-breath/$slug'
     | '/shodo-simulator-3d/$slug'
+    | '/soft-serve/$slug'
     | '/typhoon-escape/$slug'
     | '/zipper-finger/$slug'
     | '/cooking-games/'
@@ -329,6 +348,7 @@ export interface FileRouteTypes {
     | '/omurice/'
     | '/one-breath/'
     | '/shodo-simulator-3d/'
+    | '/soft-serve/'
     | '/typhoon-escape/'
     | '/zipper-finger/'
   fileRoutesByTo: FileRoutesByTo
@@ -350,6 +370,7 @@ export interface FileRouteTypes {
     | '/omurice/$slug'
     | '/one-breath/$slug'
     | '/shodo-simulator-3d/$slug'
+    | '/soft-serve/$slug'
     | '/typhoon-escape/$slug'
     | '/zipper-finger/$slug'
     | '/cooking-games'
@@ -362,6 +383,7 @@ export interface FileRouteTypes {
     | '/omurice'
     | '/one-breath'
     | '/shodo-simulator-3d'
+    | '/soft-serve'
     | '/typhoon-escape'
     | '/zipper-finger'
   id:
@@ -383,6 +405,7 @@ export interface FileRouteTypes {
     | '/omurice/$slug'
     | '/one-breath/$slug'
     | '/shodo-simulator-3d/$slug'
+    | '/soft-serve/$slug'
     | '/typhoon-escape/$slug'
     | '/zipper-finger/$slug'
     | '/cooking-games/'
@@ -395,6 +418,7 @@ export interface FileRouteTypes {
     | '/omurice/'
     | '/one-breath/'
     | '/shodo-simulator-3d/'
+    | '/soft-serve/'
     | '/typhoon-escape/'
     | '/zipper-finger/'
   fileRoutesById: FileRoutesById
@@ -417,6 +441,7 @@ export interface RootRouteChildren {
   OmuriceSlugRoute: typeof OmuriceSlugRoute
   OneBreathSlugRoute: typeof OneBreathSlugRoute
   ShodoSimulator3dSlugRoute: typeof ShodoSimulator3dSlugRoute
+  SoftServeSlugRoute: typeof SoftServeSlugRoute
   TyphoonEscapeSlugRoute: typeof TyphoonEscapeSlugRoute
   ZipperFingerSlugRoute: typeof ZipperFingerSlugRoute
   CookingGamesIndexRoute: typeof CookingGamesIndexRoute
@@ -429,6 +454,7 @@ export interface RootRouteChildren {
   OmuriceIndexRoute: typeof OmuriceIndexRoute
   OneBreathIndexRoute: typeof OneBreathIndexRoute
   ShodoSimulator3dIndexRoute: typeof ShodoSimulator3dIndexRoute
+  SoftServeIndexRoute: typeof SoftServeIndexRoute
   TyphoonEscapeIndexRoute: typeof TyphoonEscapeIndexRoute
   ZipperFingerIndexRoute: typeof ZipperFingerIndexRoute
 }
@@ -624,6 +650,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShodoSimulator3dSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/soft-serve/': {
+      id: '/soft-serve/'
+      path: '/soft-serve'
+      fullPath: '/soft-serve/'
+      preLoaderRoute: typeof SoftServeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/soft-serve/$slug': {
+      id: '/soft-serve/$slug'
+      path: '/soft-serve/$slug'
+      fullPath: '/soft-serve/$slug'
+      preLoaderRoute: typeof SoftServeSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/typhoon-escape/': {
       id: '/typhoon-escape/'
       path: '/typhoon-escape'
@@ -673,6 +713,7 @@ const rootRouteChildren: RootRouteChildren = {
   OmuriceSlugRoute: OmuriceSlugRoute,
   OneBreathSlugRoute: OneBreathSlugRoute,
   ShodoSimulator3dSlugRoute: ShodoSimulator3dSlugRoute,
+  SoftServeSlugRoute: SoftServeSlugRoute,
   TyphoonEscapeSlugRoute: TyphoonEscapeSlugRoute,
   ZipperFingerSlugRoute: ZipperFingerSlugRoute,
   CookingGamesIndexRoute: CookingGamesIndexRoute,
@@ -685,6 +726,7 @@ const rootRouteChildren: RootRouteChildren = {
   OmuriceIndexRoute: OmuriceIndexRoute,
   OneBreathIndexRoute: OneBreathIndexRoute,
   ShodoSimulator3dIndexRoute: ShodoSimulator3dIndexRoute,
+  SoftServeIndexRoute: SoftServeIndexRoute,
   TyphoonEscapeIndexRoute: TyphoonEscapeIndexRoute,
   ZipperFingerIndexRoute: ZipperFingerIndexRoute,
 }

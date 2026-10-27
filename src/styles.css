@@ -168,6 +168,13 @@
     color: #ffe1b0;
     text-shadow: 3px 3px #5a2018, 5px 8px 15px #060b30;
   }
+  .game-card--soft-serve {
+    background: linear-gradient(145deg, #fff4d8, #f0b4c4 48%, #7d4e3a);
+  }
+  .game-card--soft-serve .game-card-mark {
+    color: #fffaf2;
+    text-shadow: 3px 3px #8a3d52, 5px 8px 15px #060b30;
+  }
   .game-card--ommoji {
     background: linear-gradient(145deg, #f2d27a, #c4472f 55%, #3a1a12);
   }
