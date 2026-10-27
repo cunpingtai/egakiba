@@ -34,8 +34,12 @@ import { Route as OmuriceIndexRouteImport } from './routes/omurice/index'
 import { Route as OmuriceSlugRouteImport } from './routes/omurice/$slug'
 import { Route as OneBreathIndexRouteImport } from './routes/one-breath/index'
 import { Route as OneBreathSlugRouteImport } from './routes/one-breath/$slug'
+import { Route as RegionalDifferencesIndexRouteImport } from './routes/regional-differences/index'
+import { Route as RegionalDifferencesSlugRouteImport } from './routes/regional-differences/$slug'
 import { Route as ShodoSimulator3dIndexRouteImport } from './routes/shodo-simulator-3d/index'
 import { Route as ShodoSimulator3dSlugRouteImport } from './routes/shodo-simulator-3d/$slug'
+import { Route as ShusshinKenIndexRouteImport } from './routes/shusshin-ken/index'
+import { Route as ShusshinKenSlugRouteImport } from './routes/shusshin-ken/$slug'
 import { Route as SoftServeIndexRouteImport } from './routes/soft-serve/index'
 import { Route as SoftServeSlugRouteImport } from './routes/soft-serve/$slug'
 import { Route as TyphoonEscapeIndexRouteImport } from './routes/typhoon-escape/index'
@@ -168,6 +172,17 @@ const OneBreathSlugRoute = OneBreathSlugRouteImport.update({
   path: '/one-breath/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegionalDifferencesIndexRoute =
+  RegionalDifferencesIndexRouteImport.update({
+    id: '/regional-differences/',
+    path: '/regional-differences/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const RegionalDifferencesSlugRoute = RegionalDifferencesSlugRouteImport.update({
+  id: '/regional-differences/$slug',
+  path: '/regional-differences/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShodoSimulator3dIndexRoute = ShodoSimulator3dIndexRouteImport.update({
   id: '/shodo-simulator-3d/',
   path: '/shodo-simulator-3d/',
@@ -176,6 +191,16 @@ const ShodoSimulator3dIndexRoute = ShodoSimulator3dIndexRouteImport.update({
 const ShodoSimulator3dSlugRoute = ShodoSimulator3dSlugRouteImport.update({
   id: '/shodo-simulator-3d/$slug',
   path: '/shodo-simulator-3d/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShusshinKenIndexRoute = ShusshinKenIndexRouteImport.update({
+  id: '/shusshin-ken/',
+  path: '/shusshin-ken/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShusshinKenSlugRoute = ShusshinKenSlugRouteImport.update({
+  id: '/shusshin-ken/$slug',
+  path: '/shusshin-ken/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SoftServeIndexRoute = SoftServeIndexRouteImport.update({
@@ -226,7 +251,9 @@ export interface FileRoutesByFullPath {
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
+  '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
+  '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
@@ -239,7 +266,9 @@ export interface FileRoutesByFullPath {
   '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
   '/omurice/': typeof OmuriceIndexRoute
   '/one-breath/': typeof OneBreathIndexRoute
+  '/regional-differences/': typeof RegionalDifferencesIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
+  '/shusshin-ken/': typeof ShusshinKenIndexRoute
   '/soft-serve/': typeof SoftServeIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
   '/zipper-finger/': typeof ZipperFingerIndexRoute
@@ -261,7 +290,9 @@ export interface FileRoutesByTo {
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
+  '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
+  '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
@@ -274,7 +305,9 @@ export interface FileRoutesByTo {
   '/omurice-simulator': typeof OmuriceSimulatorIndexRoute
   '/omurice': typeof OmuriceIndexRoute
   '/one-breath': typeof OneBreathIndexRoute
+  '/regional-differences': typeof RegionalDifferencesIndexRoute
   '/shodo-simulator-3d': typeof ShodoSimulator3dIndexRoute
+  '/shusshin-ken': typeof ShusshinKenIndexRoute
   '/soft-serve': typeof SoftServeIndexRoute
   '/typhoon-escape': typeof TyphoonEscapeIndexRoute
   '/zipper-finger': typeof ZipperFingerIndexRoute
@@ -297,7 +330,9 @@ export interface FileRoutesById {
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
+  '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
+  '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
@@ -310,7 +345,9 @@ export interface FileRoutesById {
   '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
   '/omurice/': typeof OmuriceIndexRoute
   '/one-breath/': typeof OneBreathIndexRoute
+  '/regional-differences/': typeof RegionalDifferencesIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
+  '/shusshin-ken/': typeof ShusshinKenIndexRoute
   '/soft-serve/': typeof SoftServeIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
   '/zipper-finger/': typeof ZipperFingerIndexRoute
@@ -334,7 +371,9 @@ export interface FileRouteTypes {
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
     | '/one-breath/$slug'
+    | '/regional-differences/$slug'
     | '/shodo-simulator-3d/$slug'
+    | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
     | '/typhoon-escape/$slug'
     | '/zipper-finger/$slug'
@@ -347,7 +386,9 @@ export interface FileRouteTypes {
     | '/omurice-simulator/'
     | '/omurice/'
     | '/one-breath/'
+    | '/regional-differences/'
     | '/shodo-simulator-3d/'
+    | '/shusshin-ken/'
     | '/soft-serve/'
     | '/typhoon-escape/'
     | '/zipper-finger/'
@@ -369,7 +410,9 @@ export interface FileRouteTypes {
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
     | '/one-breath/$slug'
+    | '/regional-differences/$slug'
     | '/shodo-simulator-3d/$slug'
+    | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
     | '/typhoon-escape/$slug'
     | '/zipper-finger/$slug'
@@ -382,7 +425,9 @@ export interface FileRouteTypes {
     | '/omurice-simulator'
     | '/omurice'
     | '/one-breath'
+    | '/regional-differences'
     | '/shodo-simulator-3d'
+    | '/shusshin-ken'
     | '/soft-serve'
     | '/typhoon-escape'
     | '/zipper-finger'
@@ -404,7 +449,9 @@ export interface FileRouteTypes {
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
     | '/one-breath/$slug'
+    | '/regional-differences/$slug'
     | '/shodo-simulator-3d/$slug'
+    | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
     | '/typhoon-escape/$slug'
     | '/zipper-finger/$slug'
@@ -417,7 +464,9 @@ export interface FileRouteTypes {
     | '/omurice-simulator/'
     | '/omurice/'
     | '/one-breath/'
+    | '/regional-differences/'
     | '/shodo-simulator-3d/'
+    | '/shusshin-ken/'
     | '/soft-serve/'
     | '/typhoon-escape/'
     | '/zipper-finger/'
@@ -440,7 +489,9 @@ export interface RootRouteChildren {
   OmuriceSimulatorSlugRoute: typeof OmuriceSimulatorSlugRoute
   OmuriceSlugRoute: typeof OmuriceSlugRoute
   OneBreathSlugRoute: typeof OneBreathSlugRoute
+  RegionalDifferencesSlugRoute: typeof RegionalDifferencesSlugRoute
   ShodoSimulator3dSlugRoute: typeof ShodoSimulator3dSlugRoute
+  ShusshinKenSlugRoute: typeof ShusshinKenSlugRoute
   SoftServeSlugRoute: typeof SoftServeSlugRoute
   TyphoonEscapeSlugRoute: typeof TyphoonEscapeSlugRoute
   ZipperFingerSlugRoute: typeof ZipperFingerSlugRoute
@@ -453,7 +504,9 @@ export interface RootRouteChildren {
   OmuriceSimulatorIndexRoute: typeof OmuriceSimulatorIndexRoute
   OmuriceIndexRoute: typeof OmuriceIndexRoute
   OneBreathIndexRoute: typeof OneBreathIndexRoute
+  RegionalDifferencesIndexRoute: typeof RegionalDifferencesIndexRoute
   ShodoSimulator3dIndexRoute: typeof ShodoSimulator3dIndexRoute
+  ShusshinKenIndexRoute: typeof ShusshinKenIndexRoute
   SoftServeIndexRoute: typeof SoftServeIndexRoute
   TyphoonEscapeIndexRoute: typeof TyphoonEscapeIndexRoute
   ZipperFingerIndexRoute: typeof ZipperFingerIndexRoute
@@ -636,6 +689,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OneBreathSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/regional-differences/': {
+      id: '/regional-differences/'
+      path: '/regional-differences'
+      fullPath: '/regional-differences/'
+      preLoaderRoute: typeof RegionalDifferencesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/regional-differences/$slug': {
+      id: '/regional-differences/$slug'
+      path: '/regional-differences/$slug'
+      fullPath: '/regional-differences/$slug'
+      preLoaderRoute: typeof RegionalDifferencesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shodo-simulator-3d/': {
       id: '/shodo-simulator-3d/'
       path: '/shodo-simulator-3d'
@@ -648,6 +715,20 @@ declare module '@tanstack/react-router' {
       path: '/shodo-simulator-3d/$slug'
       fullPath: '/shodo-simulator-3d/$slug'
       preLoaderRoute: typeof ShodoSimulator3dSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shusshin-ken/': {
+      id: '/shusshin-ken/'
+      path: '/shusshin-ken'
+      fullPath: '/shusshin-ken/'
+      preLoaderRoute: typeof ShusshinKenIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shusshin-ken/$slug': {
+      id: '/shusshin-ken/$slug'
+      path: '/shusshin-ken/$slug'
+      fullPath: '/shusshin-ken/$slug'
+      preLoaderRoute: typeof ShusshinKenSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/soft-serve/': {
@@ -712,7 +793,9 @@ const rootRouteChildren: RootRouteChildren = {
   OmuriceSimulatorSlugRoute: OmuriceSimulatorSlugRoute,
   OmuriceSlugRoute: OmuriceSlugRoute,
   OneBreathSlugRoute: OneBreathSlugRoute,
+  RegionalDifferencesSlugRoute: RegionalDifferencesSlugRoute,
   ShodoSimulator3dSlugRoute: ShodoSimulator3dSlugRoute,
+  ShusshinKenSlugRoute: ShusshinKenSlugRoute,
   SoftServeSlugRoute: SoftServeSlugRoute,
   TyphoonEscapeSlugRoute: TyphoonEscapeSlugRoute,
   ZipperFingerSlugRoute: ZipperFingerSlugRoute,
@@ -725,7 +808,9 @@ const rootRouteChildren: RootRouteChildren = {
   OmuriceSimulatorIndexRoute: OmuriceSimulatorIndexRoute,
   OmuriceIndexRoute: OmuriceIndexRoute,
   OneBreathIndexRoute: OneBreathIndexRoute,
+  RegionalDifferencesIndexRoute: RegionalDifferencesIndexRoute,
   ShodoSimulator3dIndexRoute: ShodoSimulator3dIndexRoute,
+  ShusshinKenIndexRoute: ShusshinKenIndexRoute,
   SoftServeIndexRoute: SoftServeIndexRoute,
   TyphoonEscapeIndexRoute: TyphoonEscapeIndexRoute,
   ZipperFingerIndexRoute: ZipperFingerIndexRoute,

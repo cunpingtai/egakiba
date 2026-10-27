@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -106,6 +106,14 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: 'お絵描き',
       title: 'オム文字シミュレーター',
       description: 'ケチャップで、オムライスに絵や文字を描く。',
+    },
+    {
+      id: 'shusshin-ken',
+      href: links.shusshinKen,
+      mark: '県',
+      kicker: '診断',
+      title: '出身地、当てます',
+      description: '2択の質問で、出身県を当てる。',
     },
   ]
 }

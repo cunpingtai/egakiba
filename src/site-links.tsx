@@ -9,6 +9,8 @@ import { hamburgHref } from './hamburg/seo'
 import { softServeHref } from './soft-serve/seo'
 import { cookingHref } from './cooking-games/seo'
 import { ommojiHref } from './ommoji/seo'
+import { shusshinHref } from './shusshin-ken/seo'
+import { regionHref } from './regional-differences/seo'
 import { drawingHref } from './drawing-games/seo'
 import { shodoHref } from './shodo-simulator-3d/seo'
 import { zipperHref } from './zipper-finger/seo'
@@ -78,6 +80,13 @@ export function siteIndexLinks() {
     { id: 'omurice/how-to-play', href: ommojiHref('how-to-play/'), label: 'オム文字の遊び方' },
     { id: 'omurice/ketchup-art', href: ommojiHref('ketchup-art/'), label: 'ケチャップアート' },
     { id: 'drawing-games', href: drawingHref(), label: '無料お絵描きゲーム' },
+    { id: 'shusshin-ken', href: shusshinHref(), label: '出身地、当てます' },
+    { id: 'shusshin-ken/how-to-play', href: shusshinHref('how-to-play/'), label: '出身地の遊び方' },
+    { id: 'shusshin-ken/results', href: shusshinHref('results/'), label: '出身地の診断結果' },
+    { id: 'shusshin-ken/guess-mode', href: shusshinHref('guess-mode/'), label: '今日の出身地の当て方' },
+    { id: 'regional-differences', href: regionHref(), label: '日本の地域差クイズ' },
+    { id: 'regional-differences/nikujaga', href: regionHref('nikujaga/'), label: '肉じゃがの牛肉と豚肉' },
+    { id: 'regional-differences/ozoni', href: regionHref('ozoni/'), label: 'お雑煮の角餅と丸餅' },
   ]
 }
 

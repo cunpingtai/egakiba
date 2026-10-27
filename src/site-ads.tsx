@@ -1,5 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react'
 
+import { SiteHeader } from './site-header'
+
 const SMARTLINK = 'https://araplhn.org/4/6592007dd77d791e89fd655c5b78d309'
 const NATIVE_SRC = 'https://bauval.org/21/651f1cb8c89691de6b198c582cd46d10'
 const NATIVE_ID = 'container-651f1cb8c89691de6b198c582cd46d10'
@@ -76,6 +78,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
 
   return (
     <>
+      <SiteHeader />
       <div className="site-ads-top" ref={leader} aria-label="広告" />
       {children}
       <aside className="site-ad-rail site-ad-rail-left" ref={rectangle} aria-label="広告" />

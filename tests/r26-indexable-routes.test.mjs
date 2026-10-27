@@ -94,7 +94,7 @@ test('R26: sitemap contains the Japanese canonical landing URLs and no fragment 
   const sitemap = await read('public/sitemap.xml');
   const robots = await read('public/robots.txt');
   const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-  assert.equal(urls.length, 57);
+  assert.equal(urls.length, 64);
   assert.equal(sitemap.includes('<lastmod>'), false);
   assert.equal(new Set(urls).size, urls.length);
   assert.ok(urls.every((url) => !url.includes('#')));
@@ -138,6 +138,13 @@ test('R26: sitemap contains the Japanese canonical landing URLs and no fragment 
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}omurice/how-to-play/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}omurice/ketchup-art/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}drawing-games/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}shusshin-ken/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}shusshin-ken/how-to-play/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}shusshin-ken/results/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}shusshin-ken/guess-mode/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}regional-differences/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}regional-differences/nikujaga/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}regional-differences/ozoni/`));
   assert.equal(urls.some((url) => url.endsWith('game.html')), false);
   assert.equal(urls.some((url) => url.includes('/studio') || url.includes('/gpu-check')), false);
   assert.ok(urls.includes(canonicalUrl('home', 'ja', DEFAULT_SITE_URL)));

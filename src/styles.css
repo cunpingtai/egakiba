@@ -182,6 +182,13 @@
     color: #fff4d2;
     text-shadow: 3px 3px #7a2418, 5px 8px 15px #060b30;
   }
+  .game-card--shusshin-ken {
+    background: linear-gradient(145deg, #16304d, #0b1626 58%, #1a1208);
+  }
+  .game-card--shusshin-ken .game-card-mark {
+    color: #ffc93c;
+    text-shadow: 3px 3px #0b1626, 5px 8px 15px #060b30;
+  }
   .game-card-body {
     position: relative;
     z-index: 1;
@@ -231,6 +238,123 @@
   }
 }
 
+.site-header {
+  --site-header-bar: 52px;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: calc(var(--site-header-bar) + env(safe-area-inset-top));
+  padding-top: env(safe-area-inset-top);
+  background: #10172d;
+  color: #f4f7ff;
+  border-bottom: 1px solid #ffffff1f;
+}
+.site-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: var(--site-header-bar);
+  padding: 0 max(12px, env(safe-area-inset-right)) 0 max(12px, env(safe-area-inset-left));
+}
+.site-header-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.site-header-mark,
+.site-header-game-mark {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: linear-gradient(150deg, #ffe19b, #c45642);
+  color: #172536;
+  font-family: var(--font-serif), "Yu Mincho", serif;
+  font-weight: 700;
+  line-height: 1;
+}
+.site-header-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.site-header-menu { position: relative; }
+.site-header-menu summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: #243a54;
+  color: #ffe19b;
+  font-weight: 800;
+  list-style: none;
+  cursor: pointer;
+}
+.site-header-menu summary::-webkit-details-marker { display: none; }
+.site-header-menu summary::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+}
+.site-header-menu[open] summary::after { transform: translateY(2px) rotate(225deg); }
+.site-header-menu summary:focus-visible { outline: 3px solid #70e4ff; outline-offset: 3px; }
+.site-header-panel {
+  position: fixed;
+  z-index: 41;
+  top: calc(var(--site-header-bar) + env(safe-area-inset-top) + 8px);
+  right: max(12px, env(safe-area-inset-right));
+  width: min(380px, calc(100vw - 24px));
+  max-height: min(70dvh, 560px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 6px;
+  border-radius: 14px;
+  background: #172536;
+  box-shadow: 0 16px 40px #00000066;
+}
+.site-header-panel > a,
+.site-header-panel > span {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: #f4f7ff;
+  text-decoration: none;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.site-header-game-mark { width: 28px; height: 28px; font-size: 14px; }
+.site-header-panel > a:hover,
+.site-header-panel > a:focus-visible { background: #243a54; }
+.site-header-panel > a:focus-visible { outline: 3px solid #70e4ff; outline-offset: 2px; }
+.site-header-panel > span[aria-current="page"],
+.site-header-panel > a.is-section { background: #ffe19b; color: #172536; }
+@media (max-width: 640px) {
+  .site-header-panel {
+    left: max(8px, env(safe-area-inset-left));
+    right: max(8px, env(safe-area-inset-right));
+    width: auto;
+    max-height: calc(100dvh - var(--site-header-bar) - env(safe-area-inset-top) - 16px);
+  }
+}
 .site-ads-top,
 .site-ad-rail,
 .site-ad-link {
@@ -257,10 +381,10 @@
 }
 .site-ad-link a { color: inherit; }
 iframe#play {
-  height: calc(100dvh - 64px) !important;
+  height: calc(100dvh - 64px - 52px) !important;
 }
 #battle-root .r9-shell {
-  height: calc(100dvh - 64px);
+  height: calc(100dvh - 64px - 52px);
 }
 
 @media (min-width: 1200px) {
@@ -281,7 +405,7 @@ iframe#play {
   }
   .site-ad-rail {
     position: fixed;
-    top: 16px;
+    top: calc(52px + env(safe-area-inset-top) + 12px);
     width: 300px;
     margin: 0;
     z-index: 5;
@@ -289,7 +413,7 @@ iframe#play {
   .site-ad-rail-left { left: 16px; }
   .site-ad-rail-right { right: 16px; }
   iframe#play {
-    height: calc(100dvh - 88px) !important;
+    height: calc(100dvh - 88px - 52px) !important;
   }
 }
 
