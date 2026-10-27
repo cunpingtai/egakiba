@@ -1,0 +1,276 @@
+{
+  "_note": "夫の表情。keys は ARKit の名前と 0〜1 の値、gaze は目の向き [左右, 上下]（度。+は本人の左・上）。値は設計判断。tools/husband.py と web が読む",
+  "faces": {
+    "neutral": {
+      "label": "ふつう",
+      "keys": {}
+    },
+    "fear": {
+      "label": "怯え",
+      "keys": {
+        "browInnerUp": 1.0,
+        "browOuterUpLeft": 0.4,
+        "browOuterUpRight": 0.4,
+        "eyeWideLeft": 1.0,
+        "eyeWideRight": 1.0,
+        "mouthStretchLeft": 0.5,
+        "mouthStretchRight": 0.5,
+        "mouthFrownLeft": 0.25,
+        "mouthFrownRight": 0.25,
+        "jawOpen": 0.2
+      }
+    },
+    "pain": {
+      "label": "痛み",
+      "keys": {
+        "browDownLeft": 0.55,
+        "browDownRight": 0.55,
+        "browInnerUp": 0.45,
+        "eyeSquintLeft": 0.75,
+        "eyeSquintRight": 0.75,
+        "eyeBlinkLeft": 0.4,
+        "eyeBlinkRight": 0.4,
+        "cheekSquintLeft": 0.8,
+        "cheekSquintRight": 0.8,
+        "noseSneerLeft": 0.8,
+        "noseSneerRight": 0.8,
+        "mouthUpperUpLeft": 0.6,
+        "mouthUpperUpRight": 0.6,
+        "mouthStretchLeft": 0.6,
+        "mouthStretchRight": 0.6,
+        "jawOpen": 0.12
+      }
+    },
+    "cry": {
+      "label": "泣き",
+      "keys": {
+        "browInnerUp": 0.95,
+        "browDownLeft": 0.25,
+        "browDownRight": 0.25,
+        "eyeSquintLeft": 0.55,
+        "eyeSquintRight": 0.55,
+        "eyeBlinkLeft": 0.3,
+        "eyeBlinkRight": 0.3,
+        "cheekSquintLeft": 0.35,
+        "cheekSquintRight": 0.35,
+        "mouthFrownLeft": 0.85,
+        "mouthFrownRight": 0.85,
+        "mouthLowerDownLeft": 0.35,
+        "mouthLowerDownRight": 0.35,
+        "mouthStretchLeft": 0.35,
+        "mouthStretchRight": 0.35,
+        "mouthShrugLower": 0.35,
+        "jawOpen": 0.12
+      }
+    },
+    "surprise": {
+      "label": "驚き",
+      "keys": {
+        "browInnerUp": 0.8,
+        "browOuterUpLeft": 0.9,
+        "browOuterUpRight": 0.9,
+        "eyeWideLeft": 0.8,
+        "eyeWideRight": 0.8,
+        "jawOpen": 0.35,
+        "mouthFunnel": 0.12
+      }
+    },
+    "anger": {
+      "label": "逆ギレ",
+      "keys": {
+        "browDownLeft": 0.9,
+        "browDownRight": 0.9,
+        "eyeSquintLeft": 0.35,
+        "eyeSquintRight": 0.35,
+        "eyeWideLeft": 0.25,
+        "eyeWideRight": 0.25,
+        "noseSneerLeft": 0.45,
+        "noseSneerRight": 0.45,
+        "mouthPressLeft": 0.55,
+        "mouthPressRight": 0.55,
+        "mouthShrugLower": 0.35,
+        "jawForward": 0.2,
+        "mouthUpperUpLeft": 0.2,
+        "mouthUpperUpRight": 0.2
+      }
+    },
+    "shame": {
+      "label": "うつむく",
+      "gaze": [
+        0,
+        -16
+      ],
+      "keys": {
+        "browInnerUp": 0.55,
+        "eyeBlinkLeft": 0.1,
+        "eyeBlinkRight": 0.1,
+        "mouthPressLeft": 0.4,
+        "mouthPressRight": 0.4,
+        "mouthRollLower": 0.3,
+        "mouthFrownLeft": 0.25,
+        "mouthFrownRight": 0.25
+      }
+    },
+    "evasive": {
+      "label": "ごまかし",
+      "gaze": [
+        8,
+        -10
+      ],
+      "keys": {
+        "mouthSmileLeft": 0.5,
+        "mouthSmileRight": 0.18,
+        "mouthPressLeft": 0.3,
+        "mouthPressRight": 0.3,
+        "browInnerUp": 0.35,
+        "browOuterUpRight": 0.2,
+        "eyeSquintLeft": 0.25,
+        "cheekSquintLeft": 0.3
+      }
+    },
+    "confused": {
+      "label": "困惑",
+      "keys": {
+        "browDownLeft": 0.45,
+        "browOuterUpRight": 0.6,
+        "eyeSquintLeft": 0.3,
+        "mouthLeft": 0.3,
+        "mouthPressLeft": 0.25
+      }
+    },
+    "appease": {
+      "label": "愛想笑い",
+      "keys": {
+        "mouthSmileLeft": 0.6,
+        "mouthSmileRight": 0.6,
+        "mouthStretchLeft": 0.2,
+        "mouthStretchRight": 0.2,
+        "browInnerUp": 0.35,
+        "mouthPressLeft": 0.15,
+        "mouthPressRight": 0.15
+      }
+    },
+    "smile": {
+      "label": "本当の笑顔",
+      "keys": {
+        "mouthSmileLeft": 0.7,
+        "mouthSmileRight": 0.7,
+        "cheekSquintLeft": 0.65,
+        "cheekSquintRight": 0.65,
+        "eyeSquintLeft": 0.5,
+        "eyeSquintRight": 0.5,
+        "mouthDimpleLeft": 0.2,
+        "mouthDimpleRight": 0.2,
+        "jawOpen": 0.08
+      }
+    },
+    "relief": {
+      "label": "ほっとする",
+      "keys": {
+        "browInnerUp": 0.15,
+        "eyeBlinkLeft": 0.2,
+        "eyeBlinkRight": 0.2,
+        "mouthSmileLeft": 0.22,
+        "mouthSmileRight": 0.22,
+        "cheekSquintLeft": 0.12,
+        "cheekSquintRight": 0.12,
+        "jawOpen": 0.06
+      }
+    },
+    "exhausted": {
+      "label": "ぐったり",
+      "gaze": [
+        0,
+        -8
+      ],
+      "keys": {
+        "eyeBlinkLeft": 0.55,
+        "eyeBlinkRight": 0.55,
+        "browInnerUp": 0.25,
+        "jawOpen": 0.14,
+        "mouthFrownLeft": 0.15,
+        "mouthFrownRight": 0.15,
+        "mouthLowerDownLeft": 0.1,
+        "mouthLowerDownRight": 0.1
+      }
+    }
+  },
+  "tells": {
+    "lip_press": {
+      "label": "唇を結ぶ",
+      "dur": 0.8,
+      "keys": {
+        "mouthPressLeft": 0.85,
+        "mouthPressRight": 0.85,
+        "mouthRollLower": 0.35,
+        "mouthRollUpper": 0.2
+      }
+    },
+    "fake_smile": {
+      "label": "目が笑っていない笑い",
+      "dur": 0.9,
+      "keys": {
+        "mouthSmileLeft": 0.55,
+        "mouthSmileRight": 0.55,
+        "cheekSquintLeft": 0,
+        "cheekSquintRight": 0,
+        "eyeSquintLeft": 0,
+        "eyeSquintRight": 0
+      }
+    },
+    "smirk": {
+      "label": "片方の口角が上がる",
+      "dur": 0.5,
+      "keys": {
+        "mouthSmileLeft": 0.5,
+        "mouthDimpleLeft": 0.4
+      }
+    },
+    "gaze_away": {
+      "label": "目をそらす",
+      "dur": 1.0,
+      "gaze": [
+        -22,
+        -6
+      ],
+      "keys": {}
+    },
+    "blink_burst": {
+      "label": "まばたきが増える",
+      "dur": 1.4,
+      "blinks": 4,
+      "keys": {}
+    },
+    "micro_fear": {
+      "label": "一瞬の怯え",
+      "dur": 0.3,
+      "keys": {
+        "browInnerUp": 0.85,
+        "eyeWideLeft": 0.75,
+        "eyeWideRight": 0.75,
+        "mouthStretchLeft": 0.45,
+        "mouthStretchRight": 0.45
+      }
+    },
+    "nose_wrinkle": {
+      "label": "鼻にしわ",
+      "dur": 0.35,
+      "keys": {
+        "noseSneerLeft": 0.6,
+        "noseSneerRight": 0.6,
+        "mouthUpperUpLeft": 0.3,
+        "mouthUpperUpRight": 0.3
+      }
+    },
+    "lip_bite": {
+      "label": "唇を噛む",
+      "dur": 0.8,
+      "keys": {
+        "mouthRollLower": 0.85,
+        "mouthPressLeft": 0.3,
+        "mouthPressRight": 0.3,
+        "mouthShrugLower": 0.2
+      }
+    }
+  }
+}

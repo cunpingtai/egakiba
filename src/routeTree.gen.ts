@@ -26,6 +26,7 @@ import { Route as DrawFightStudioRouteImport } from './routes/draw-fight/studio'
 import { Route as DrawingGamesIndexRouteImport } from './routes/drawing-games/index'
 import { Route as HamburgIndexRouteImport } from './routes/hamburg/index'
 import { Route as HamburgSlugRouteImport } from './routes/hamburg/$slug'
+import { Route as InterrogationGamesIndexRouteImport } from './routes/interrogation-games/index'
 import { Route as LongPotatoIndexRouteImport } from './routes/long-potato/index'
 import { Route as LongPotatoSlugRouteImport } from './routes/long-potato/$slug'
 import { Route as OmuriceSimulatorIndexRouteImport } from './routes/omurice-simulator/index'
@@ -44,6 +45,8 @@ import { Route as SoftServeIndexRouteImport } from './routes/soft-serve/index'
 import { Route as SoftServeSlugRouteImport } from './routes/soft-serve/$slug'
 import { Route as TyphoonEscapeIndexRouteImport } from './routes/typhoon-escape/index'
 import { Route as TyphoonEscapeSlugRouteImport } from './routes/typhoon-escape/$slug'
+import { Route as UwakiJinmonIndexRouteImport } from './routes/uwaki-jinmon/index'
+import { Route as UwakiJinmonSlugRouteImport } from './routes/uwaki-jinmon/$slug'
 import { Route as ZipperFingerIndexRouteImport } from './routes/zipper-finger/index'
 import { Route as ZipperFingerSlugRouteImport } from './routes/zipper-finger/$slug'
 
@@ -130,6 +133,11 @@ const HamburgIndexRoute = HamburgIndexRouteImport.update({
 const HamburgSlugRoute = HamburgSlugRouteImport.update({
   id: '/hamburg/$slug',
   path: '/hamburg/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InterrogationGamesIndexRoute = InterrogationGamesIndexRouteImport.update({
+  id: '/interrogation-games/',
+  path: '/interrogation-games/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LongPotatoIndexRoute = LongPotatoIndexRouteImport.update({
@@ -223,6 +231,16 @@ const TyphoonEscapeSlugRoute = TyphoonEscapeSlugRouteImport.update({
   path: '/typhoon-escape/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UwakiJinmonIndexRoute = UwakiJinmonIndexRouteImport.update({
+  id: '/uwaki-jinmon/',
+  path: '/uwaki-jinmon/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UwakiJinmonSlugRoute = UwakiJinmonSlugRouteImport.update({
+  id: '/uwaki-jinmon/$slug',
+  path: '/uwaki-jinmon/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ZipperFingerIndexRoute = ZipperFingerIndexRouteImport.update({
   id: '/zipper-finger/',
   path: '/zipper-finger/',
@@ -256,12 +274,14 @@ export interface FileRoutesByFullPath {
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
+  '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/cooking-games/': typeof CookingGamesIndexRoute
   '/dashimaki-game/': typeof DashimakiGameIndexRoute
   '/draw-fight/': typeof DrawFightIndexRoute
   '/drawing-games/': typeof DrawingGamesIndexRoute
   '/hamburg/': typeof HamburgIndexRoute
+  '/interrogation-games/': typeof InterrogationGamesIndexRoute
   '/long-potato/': typeof LongPotatoIndexRoute
   '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
   '/omurice/': typeof OmuriceIndexRoute
@@ -271,6 +291,7 @@ export interface FileRoutesByFullPath {
   '/shusshin-ken/': typeof ShusshinKenIndexRoute
   '/soft-serve/': typeof SoftServeIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
+  '/uwaki-jinmon/': typeof UwakiJinmonIndexRoute
   '/zipper-finger/': typeof ZipperFingerIndexRoute
 }
 export interface FileRoutesByTo {
@@ -295,12 +316,14 @@ export interface FileRoutesByTo {
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
+  '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/cooking-games': typeof CookingGamesIndexRoute
   '/dashimaki-game': typeof DashimakiGameIndexRoute
   '/draw-fight': typeof DrawFightIndexRoute
   '/drawing-games': typeof DrawingGamesIndexRoute
   '/hamburg': typeof HamburgIndexRoute
+  '/interrogation-games': typeof InterrogationGamesIndexRoute
   '/long-potato': typeof LongPotatoIndexRoute
   '/omurice-simulator': typeof OmuriceSimulatorIndexRoute
   '/omurice': typeof OmuriceIndexRoute
@@ -310,6 +333,7 @@ export interface FileRoutesByTo {
   '/shusshin-ken': typeof ShusshinKenIndexRoute
   '/soft-serve': typeof SoftServeIndexRoute
   '/typhoon-escape': typeof TyphoonEscapeIndexRoute
+  '/uwaki-jinmon': typeof UwakiJinmonIndexRoute
   '/zipper-finger': typeof ZipperFingerIndexRoute
 }
 export interface FileRoutesById {
@@ -335,12 +359,14 @@ export interface FileRoutesById {
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
+  '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/cooking-games/': typeof CookingGamesIndexRoute
   '/dashimaki-game/': typeof DashimakiGameIndexRoute
   '/draw-fight/': typeof DrawFightIndexRoute
   '/drawing-games/': typeof DrawingGamesIndexRoute
   '/hamburg/': typeof HamburgIndexRoute
+  '/interrogation-games/': typeof InterrogationGamesIndexRoute
   '/long-potato/': typeof LongPotatoIndexRoute
   '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
   '/omurice/': typeof OmuriceIndexRoute
@@ -350,6 +376,7 @@ export interface FileRoutesById {
   '/shusshin-ken/': typeof ShusshinKenIndexRoute
   '/soft-serve/': typeof SoftServeIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
+  '/uwaki-jinmon/': typeof UwakiJinmonIndexRoute
   '/zipper-finger/': typeof ZipperFingerIndexRoute
 }
 export interface FileRouteTypes {
@@ -376,12 +403,14 @@ export interface FileRouteTypes {
     | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
     | '/typhoon-escape/$slug'
+    | '/uwaki-jinmon/$slug'
     | '/zipper-finger/$slug'
     | '/cooking-games/'
     | '/dashimaki-game/'
     | '/draw-fight/'
     | '/drawing-games/'
     | '/hamburg/'
+    | '/interrogation-games/'
     | '/long-potato/'
     | '/omurice-simulator/'
     | '/omurice/'
@@ -391,6 +420,7 @@ export interface FileRouteTypes {
     | '/shusshin-ken/'
     | '/soft-serve/'
     | '/typhoon-escape/'
+    | '/uwaki-jinmon/'
     | '/zipper-finger/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -415,12 +445,14 @@ export interface FileRouteTypes {
     | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
     | '/typhoon-escape/$slug'
+    | '/uwaki-jinmon/$slug'
     | '/zipper-finger/$slug'
     | '/cooking-games'
     | '/dashimaki-game'
     | '/draw-fight'
     | '/drawing-games'
     | '/hamburg'
+    | '/interrogation-games'
     | '/long-potato'
     | '/omurice-simulator'
     | '/omurice'
@@ -430,6 +462,7 @@ export interface FileRouteTypes {
     | '/shusshin-ken'
     | '/soft-serve'
     | '/typhoon-escape'
+    | '/uwaki-jinmon'
     | '/zipper-finger'
   id:
     | '__root__'
@@ -454,12 +487,14 @@ export interface FileRouteTypes {
     | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
     | '/typhoon-escape/$slug'
+    | '/uwaki-jinmon/$slug'
     | '/zipper-finger/$slug'
     | '/cooking-games/'
     | '/dashimaki-game/'
     | '/draw-fight/'
     | '/drawing-games/'
     | '/hamburg/'
+    | '/interrogation-games/'
     | '/long-potato/'
     | '/omurice-simulator/'
     | '/omurice/'
@@ -469,6 +504,7 @@ export interface FileRouteTypes {
     | '/shusshin-ken/'
     | '/soft-serve/'
     | '/typhoon-escape/'
+    | '/uwaki-jinmon/'
     | '/zipper-finger/'
   fileRoutesById: FileRoutesById
 }
@@ -494,12 +530,14 @@ export interface RootRouteChildren {
   ShusshinKenSlugRoute: typeof ShusshinKenSlugRoute
   SoftServeSlugRoute: typeof SoftServeSlugRoute
   TyphoonEscapeSlugRoute: typeof TyphoonEscapeSlugRoute
+  UwakiJinmonSlugRoute: typeof UwakiJinmonSlugRoute
   ZipperFingerSlugRoute: typeof ZipperFingerSlugRoute
   CookingGamesIndexRoute: typeof CookingGamesIndexRoute
   DashimakiGameIndexRoute: typeof DashimakiGameIndexRoute
   DrawFightIndexRoute: typeof DrawFightIndexRoute
   DrawingGamesIndexRoute: typeof DrawingGamesIndexRoute
   HamburgIndexRoute: typeof HamburgIndexRoute
+  InterrogationGamesIndexRoute: typeof InterrogationGamesIndexRoute
   LongPotatoIndexRoute: typeof LongPotatoIndexRoute
   OmuriceSimulatorIndexRoute: typeof OmuriceSimulatorIndexRoute
   OmuriceIndexRoute: typeof OmuriceIndexRoute
@@ -509,6 +547,7 @@ export interface RootRouteChildren {
   ShusshinKenIndexRoute: typeof ShusshinKenIndexRoute
   SoftServeIndexRoute: typeof SoftServeIndexRoute
   TyphoonEscapeIndexRoute: typeof TyphoonEscapeIndexRoute
+  UwakiJinmonIndexRoute: typeof UwakiJinmonIndexRoute
   ZipperFingerIndexRoute: typeof ZipperFingerIndexRoute
 }
 
@@ -631,6 +670,13 @@ declare module '@tanstack/react-router' {
       path: '/hamburg/$slug'
       fullPath: '/hamburg/$slug'
       preLoaderRoute: typeof HamburgSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/interrogation-games/': {
+      id: '/interrogation-games/'
+      path: '/interrogation-games'
+      fullPath: '/interrogation-games/'
+      preLoaderRoute: typeof InterrogationGamesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/long-potato/': {
@@ -759,6 +805,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TyphoonEscapeSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/uwaki-jinmon/': {
+      id: '/uwaki-jinmon/'
+      path: '/uwaki-jinmon'
+      fullPath: '/uwaki-jinmon/'
+      preLoaderRoute: typeof UwakiJinmonIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/uwaki-jinmon/$slug': {
+      id: '/uwaki-jinmon/$slug'
+      path: '/uwaki-jinmon/$slug'
+      fullPath: '/uwaki-jinmon/$slug'
+      preLoaderRoute: typeof UwakiJinmonSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/zipper-finger/': {
       id: '/zipper-finger/'
       path: '/zipper-finger'
@@ -798,12 +858,14 @@ const rootRouteChildren: RootRouteChildren = {
   ShusshinKenSlugRoute: ShusshinKenSlugRoute,
   SoftServeSlugRoute: SoftServeSlugRoute,
   TyphoonEscapeSlugRoute: TyphoonEscapeSlugRoute,
+  UwakiJinmonSlugRoute: UwakiJinmonSlugRoute,
   ZipperFingerSlugRoute: ZipperFingerSlugRoute,
   CookingGamesIndexRoute: CookingGamesIndexRoute,
   DashimakiGameIndexRoute: DashimakiGameIndexRoute,
   DrawFightIndexRoute: DrawFightIndexRoute,
   DrawingGamesIndexRoute: DrawingGamesIndexRoute,
   HamburgIndexRoute: HamburgIndexRoute,
+  InterrogationGamesIndexRoute: InterrogationGamesIndexRoute,
   LongPotatoIndexRoute: LongPotatoIndexRoute,
   OmuriceSimulatorIndexRoute: OmuriceSimulatorIndexRoute,
   OmuriceIndexRoute: OmuriceIndexRoute,
@@ -813,6 +875,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShusshinKenIndexRoute: ShusshinKenIndexRoute,
   SoftServeIndexRoute: SoftServeIndexRoute,
   TyphoonEscapeIndexRoute: TyphoonEscapeIndexRoute,
+  UwakiJinmonIndexRoute: UwakiJinmonIndexRoute,
   ZipperFingerIndexRoute: ZipperFingerIndexRoute,
 }
 export const routeTree = rootRouteImport

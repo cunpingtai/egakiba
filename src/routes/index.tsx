@@ -14,11 +14,14 @@ import { hamburgHref } from '../hamburg/seo'
 import { softServeHref } from '../soft-serve/seo'
 import { ommojiHref } from '../ommoji/seo'
 import { shusshinHref } from '../shusshin-ken/seo'
+import { uwakiHref } from '../uwaki-jinmon/seo'
 import { cookingHref } from '../cooking-games/seo'
 import { drawingHref } from '../drawing-games/seo'
 import { routeHref } from '../seo/landing-content.mjs'
 import { siteGames } from '../site-games'
 import { SiteIndexLinks } from '../site-links'
+import { BillionInvite } from '../billion-invite'
+import { SiteGameMenu } from '../site-header'
 
 export const Route = createFileRoute('/')({
   ssr: true,
@@ -58,7 +61,9 @@ function R9Shell() {
             <button type="button" className="nav-link" data-panel="collection" data-t="collection">文字図鑑</button>
             <button type="button" className="nav-link" data-panel="profile" data-t="profile">プレイ記録</button>
           </nav>
+          <BillionInvite placement="bar" />
           <div className="header-actions">
+            <SiteGameMenu />
             <span className="save-status" id="sync-status"><span className="signal-dot"></span><span data-t="localSaved">この端末にセーブ中</span></span>
             <button className="header-icon sound-toggle" id="sound-toggle" type="button" aria-label="サウンドを切り替える" title="Sound">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9H4zM16 9c2 1 2 5 0 6" /></svg>
@@ -72,6 +77,7 @@ function R9Shell() {
         <main id="home-page" className="page-home">
           <section className="hero" aria-labelledby="hero-title">
             <div className="hero-copy">
+              <BillionInvite placement="hero" />
               <div className="eyebrow"><span className="eyebrow-line"></span><span data-t="eyebrow">さあ、勝負の時間だ。</span></div>
               <h1 id="hero-title"><span data-t="headline1">文字ブレードで、</span><br /><em data-t="headline2">文字の形を武器にバトル</em></h1>
               <p className="hero-lead" data-t="heroLead">文字ブレードで、好きな漢字・かな・英字から一文字を選び、3Dの文字コマで戦おう。<br className="wide-only" />文字の形と書体を試せる無料ブラウザゲーム。</p>
@@ -134,7 +140,7 @@ function R9Shell() {
               <div><span className="section-kicker">GAMES</span><h2 id="game-shelf-title">あそべるゲーム</h2></div>
             </div>
             <div className="game-shelf-grid">
-              {siteGames({ drawFight: drawHref(), typhoonEscape: typhoonHref(), zipperFinger: zipperHref(), shodo: shodoHref(), dashimaki: dashimakiHref(), omurice: omuriceHref(), potato: potatoHref(), breath: breathHref(), hamburg: hamburgHref(), softServe: softServeHref(), ommoji: ommojiHref(), shusshinKen: shusshinHref() }).map((game) => (
+              {siteGames({ drawFight: drawHref(), typhoonEscape: typhoonHref(), zipperFinger: zipperHref(), shodo: shodoHref(), dashimaki: dashimakiHref(), omurice: omuriceHref(), potato: potatoHref(), breath: breathHref(), hamburg: hamburgHref(), softServe: softServeHref(), ommoji: ommojiHref(), shusshinKen: shusshinHref(), uwakiJinmon: uwakiHref() }).map((game) => (
                 <a className={`game-card game-card--${game.id}`} href={game.href} key={game.id} aria-current={game.here ? 'page' : undefined}>
                   <span className="game-card-mark" aria-hidden="true">{game.mark}</span>
                   <span className="game-card-body">

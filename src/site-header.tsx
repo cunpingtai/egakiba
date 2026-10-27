@@ -11,6 +11,8 @@ import { potatoHref } from './long-potato/seo'
 import { routeHref } from './seo/landing-content.mjs'
 import { shodoHref } from './shodo-simulator-3d/seo'
 import { shusshinHref } from './shusshin-ken/seo'
+import { BillionInvite } from './billion-invite'
+import { uwakiHref } from './uwaki-jinmon/seo'
 import { softServeHref } from './soft-serve/seo'
 import { typhoonHref } from './typhoon-escape/seo'
 import { zipperHref } from './zipper-finger/seo'
@@ -51,6 +53,7 @@ function headerGames(root: string): HeaderGame[] {
     { id: 'soft-serve', href: softServeHref(), mark: '氷', title: 'ソフトクリームシミュレーター', section: 'soft-serve' },
     { id: 'ommoji', href: ommojiHref(), mark: '絵', title: 'オム文字シミュレーター', section: 'omurice' },
     { id: 'shusshin-ken', href: shusshinHref(), mark: '県', title: '出身地、当てます', section: 'shusshin-ken' },
+    { id: 'uwaki-jinmon', href: uwakiHref(), mark: '問', title: '浮気した夫に全部吐かせる', section: 'uwaki-jinmon' },
   ]
 }
 
@@ -62,14 +65,11 @@ function inSection(path: string, game: HeaderGame) {
   return path === `/${game.section}/` || path.startsWith(`/${game.section}/`)
 }
 
-export function SiteHeader() {
+export function SiteGameMenu() {
   const pathname = useRouterState({ select: (state) => state.location.pathname })
   const menuRef = useRef<HTMLDetailsElement>(null)
-  const root = siteRoot()
-  const homeHref = routeHref('home', 'ja', root)
   const path = normalizePath(pathname)
-  const homeHere = path === normalizePath(homeHref)
-  const games = headerGames(root)
+  const games = headerGames(siteRoot())
 
   useEffect(() => {
     if (menuRef.current) menuRef.current.open = false
@@ -95,22 +95,33 @@ export function SiteHeader() {
   }, [])
 
   return (
+    <details className="site-header-menu" ref={menuRef}>
+      <summary>ゲーム</summary>
+      <nav className="site-header-panel" aria-label="ゲーム一覧">
+        {games.map((game) => {
+          const here = path === normalizePath(game.href)
+          const label = <><span className="site-header-game-mark" aria-hidden="true">{game.mark}</span><span>{game.title}</span></>
+          if (here) return <span key={game.id} aria-current="page">{label}</span>
+          return <a key={game.id} href={game.href} className={inSection(path, game) ? 'is-section' : undefined}>{label}</a>
+        })}
+      </nav>
+    </details>
+  )
+}
+
+export function SiteHeader() {
+  const pathname = useRouterState({ select: (state) => state.location.pathname })
+  const root = siteRoot()
+  const homeHref = routeHref('home', 'ja', root)
+  const path = normalizePath(pathname)
+  if (path === normalizePath(homeHref)) return null
+
+  return (
     <header className="site-header">
       <div className="site-header-inner">
-        {homeHere
-          ? <span className="site-header-brand" aria-current="page"><BrandMark /></span>
-          : <a className="site-header-brand" href={homeHref}><BrandMark /></a>}
-        <details className="site-header-menu" ref={menuRef}>
-          <summary>ゲーム</summary>
-          <nav className="site-header-panel" aria-label="ゲーム一覧">
-            {games.map((game) => {
-              const here = path === normalizePath(game.href)
-              const label = <><span className="site-header-game-mark" aria-hidden="true">{game.mark}</span><span>{game.title}</span></>
-              if (here) return <span key={game.id} aria-current="page">{label}</span>
-              return <a key={game.id} href={game.href} className={inSection(path, game) ? 'is-section' : undefined}>{label}</a>
-            })}
-          </nav>
-        </details>
+        <a className="site-header-brand" href={homeHref}><BrandMark /></a>
+        <BillionInvite placement="bar" />
+        <SiteGameMenu />
       </div>
     </header>
   )

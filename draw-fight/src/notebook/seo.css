@@ -101,3 +101,29 @@
   width: min(1540px, calc(100% - 24px));
   margin: 0 auto;
 }
+.uwaki-calc {
+  display: grid;
+  gap: 10px;
+  margin: 16px 0 20px;
+  padding: 16px;
+  border: 2px solid #27364e;
+  background: #fffdf8;
+}
+.uwaki-calc label {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+.uwaki-calc input[type="number"] {
+  width: 4.5em;
+  font: inherit;
+  padding: 6px 8px;
+  border: 2px solid #27364e;
+  border-radius: 8px;
+  background: #fff;
+}
+.uwaki-calc-check { font-weight: 700; }
+.uwaki-calc-result { margin: 4px 0 0; font-size: 18px; }
+.uwaki-calc-note { margin: 0; color: #5c5348; font-weight: 500; }

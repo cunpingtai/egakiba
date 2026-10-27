@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-i18n="浮気した夫に全部吐かせる">浮気した夫に全部吐かせる</title>
+<meta name="description" content="妻になって、椅子に縛った夫から浮気を全部吐かせる一晩。「もうない」は本当か嘘か。責めすぎると話にならない。ブラウザで遊べる3Dの尋問ゲーム。">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://egakiba.com/uwaki-jinmon/">
+<meta name="theme-color" content="#0b0a09">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/icon-180.png">
+<style>
+  /* 見た目: 夜の暗い部屋に溶ける、暖かい黒と朱。題名・字幕・札の見出しは明朝、ボタンと数字はゴシック */
+  :root {
+    --ink: #f3ece3; --dim: #a99f93; --faint: #6f675e;
+    --glass: rgba(18, 14, 12, 0.72); --glass2: rgba(28, 22, 19, 0.86); --line: rgba(255, 236, 214, 0.12); --line2: rgba(255, 236, 214, 0.22);
+    --accent: #c4553c; --accent2: #e07a5a; --cool: #6f8fb0; --good: #8fb07a; --warn: #d9a441;
+    --mincho: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif;
+    --sans: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", system-ui, sans-serif;
+  }
+  html, body { margin: 0; height: 100%; background: #0b0a09; color: var(--ink); font-family: var(--sans); overflow: hidden; -webkit-font-smoothing: antialiased; overscroll-behavior: none; } /* スマホで引っ張って更新しない（途中の対局が消える） */
+  canvas { display: block; }
+  button { font: inherit; color: var(--ink); cursor: pointer; touch-action: manipulation; }
+
+  /* 画面の縁を暗く・うっすら粒子（映画のような手触り） */
+  #vignette { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 42%, transparent 52%, rgba(0, 0, 0, 0.58) 100%); }
+  #grain { position: fixed; inset: -50%; pointer-events: none; opacity: 0.07; mix-blend-mode: overlay; animation: grain 0.9s steps(6) infinite; }
+  @keyframes grain { 0% { transform: translate(0, 0); } 20% { transform: translate(-3%, 2%); } 40% { transform: translate(2%, -3%); } 60% { transform: translate(-2%, -1%); } 80% { transform: translate(3%, 3%); } 100% { transform: translate(0, 0); } }
+
+  /* 時計と夫の具合（左上） */
+  #hud { position: fixed; top: 14px; left: 16px; display: flex; gap: 18px; align-items: flex-end; pointer-events: none; }
+  #hud .time { line-height: 1; }
+  #day { display: block; font-size: 12px; color: var(--dim); letter-spacing: 0.2em; margin-bottom: 4px; }
+  #clock { font-family: var(--mincho); font-size: 34px; font-weight: 700; letter-spacing: 0.04em; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6); font-variant-numeric: tabular-nums; }
+  /* 夫の様子と近所の様子は、数字やゲージでなく言葉で出す（いつ休ませればいいかが読めない緊張感） */
+  .meters { display: grid; grid-template-columns: auto auto; gap: 5px 10px; align-items: baseline; padding: 8px 12px; background: var(--glass); border: 1px solid var(--line); border-radius: 10px; backdrop-filter: blur(6px); }
+  .lab { color: var(--dim); font-size: 11px; letter-spacing: 0.06em; white-space: nowrap; }
+  .state { font-family: var(--mincho); font-size: 14px; letter-spacing: 0.04em; white-space: nowrap; transition: color .8s; }
+  .state.worse { color: var(--warn); }
+  .state.bad { color: #e0553f; animation: low 1.6s infinite; }
+  @keyframes low { 50% { opacity: .55; } }
+
+  /* 手帳（右上）: 自白したこと・手元の証拠 */
+  #notes { position: fixed; top: 14px; right: 16px; width: 250px; max-height: calc(100% - 290px); overflow: auto; background: var(--glass); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px 6px; font-size: 13px; backdrop-filter: blur(6px); }
+  #notes h3 { margin: 2px 0 8px; font-family: var(--mincho); font-size: 14px; font-weight: 700; letter-spacing: 0.08em; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+  #notes h3::before { content: ""; width: 3px; height: 13px; background: var(--accent); border-radius: 2px; }
+  #notes h3.ev::before { background: var(--cool); }
+  #notes ul { margin: 0 0 12px; padding: 0; }
+  #notes li { list-style: none; margin: 0 0 7px; padding: 6px 8px; background: rgba(255, 255, 255, 0.035); border-radius: 7px; line-height: 1.45; }
+  #notes li small { color: var(--dim); font-size: 11.5px; }
+  .tag { font-size: 11px; padding: 1px 6px; border-radius: 6px; border: 1px solid var(--line2); color: var(--dim); margin-left: 4px; white-space: nowrap; display: inline-block; }
+  .struck { text-decoration: line-through; color: var(--faint); }
+  em.str { font-style: normal; font-size: 10.5px; margin-left: 6px; padding: 1px 7px; border-radius: 8px; vertical-align: 1px; white-space: nowrap; } /* 証拠の強さの札（手帳・突きつける・スマホの中） */
+  em.str.s3 { background: var(--accent); color: #fff; }
+  em.str.s2 { background: var(--warn); color: #222; }
+  em.str.s1 { background: #6b6560; color: #fff; }
+  #notes li.struck { background: transparent; }
+
+  /* 字幕（下の真ん中。話す人の名前は小さく上に） */
+  #sub { position: fixed; left: 50%; bottom: var(--subBottom, 168px); transform: translateX(-50%); width: min(820px, calc(100% - 32px)); text-align: center; font-family: var(--mincho); font-size: 23px; font-weight: 500; line-height: 1.55; letter-spacing: 0.03em; text-shadow: 0 2px 8px #000, 0 0 3px #000; min-height: 64px; pointer-events: none; }
+  #sub b { display: block; font-family: var(--sans); font-size: 12px; color: var(--accent2); font-weight: 600; letter-spacing: 0.3em; margin-bottom: 4px; }
+
+  /* 行動のボタン（下）。聞く＝青・責める＝朱・ほか＝灰。判決は塗りつぶし */
+  #acts { position: fixed; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; gap: 6px; padding: 34px 16px 12px; background: linear-gradient(to top, rgba(8, 6, 5, 0.92), rgba(8, 6, 5, 0.6) 60%, transparent); }
+  .row { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; align-items: center; }
+  .row > span { font-size: 11px; color: var(--dim); width: 3.4em; text-align: right; margin-right: 4px; letter-spacing: 0.2em; }
+  #acts button { font-size: 13.5px; padding: 7px 12px; border-radius: 9px; border: 1px solid var(--line2); background: rgba(30, 24, 21, 0.85); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); transition: transform .12s, background .12s, border-color .12s; }
+  #acts button:hover:not(:disabled) { transform: translateY(-1px); background: rgba(52, 41, 35, 0.95); border-color: rgba(255, 236, 214, 0.4); }
+  #acts button.ask { border-color: rgba(111, 143, 176, 0.55); }
+  #acts button.hard { border-color: rgba(196, 85, 60, 0.6); }
+  #acts button.verdict { background: linear-gradient(180deg, #b24a33, #8e3424); border-color: #d06a4e; font-weight: 700; letter-spacing: 0.06em; }
+  #acts button:disabled { opacity: .3; cursor: default; }
+  /* 狭い画面では「聞く・責める・ほか」の札で1組ずつ出す（2026-10-26）。広い画面では札は出さず、全部の段を並べる */
+  #acts .tabs { display: none; justify-content: center; align-items: center; gap: 6px; margin-bottom: 2px; }
+  #acts .tabs button { font-size: 12px; padding: 5px 14px; border-radius: 999px; background: transparent; color: var(--dim); }
+  #acts .tabs button.on { color: var(--ink); border-color: var(--accent2); background: rgba(196, 85, 60, 0.14); }
+  #acts .tabs button.verdict { margin-left: 8px; color: var(--ink); background: linear-gradient(180deg, #b24a33, #8e3424); }
+  body.busy #acts button { pointer-events: none; opacity: .45; }
+  body.ending #acts, body.ending #notes { display: none; }
+
+  #flash { position: fixed; inset: 0; background: #fff; opacity: 0; pointer-events: none; }
+  #fade { position: fixed; inset: 0; background: #000; opacity: 0; pointer-events: none; display: grid; place-items: center; font-family: var(--mincho); font-size: 26px; letter-spacing: 0.3em; color: #cfc6ba; }
+
+  /* 札（選ぶ・判決・答え合わせ） */
+  .modal { position: fixed; inset: 0; display: none; place-items: center; background: rgba(0, 0, 0, .55); backdrop-filter: blur(2px); }
+  .modal.on { display: grid; animation: show .35s ease-out; }
+  @keyframes show { from { opacity: 0; } to { opacity: 1; } }
+  .card { position: relative; background: var(--glass2); border: 1px solid var(--line2); border-radius: 16px; padding: 22px 24px; width: min(540px, calc(100% - 32px)); max-height: calc(100% - 40px); overflow: auto; box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); }
+  .card h2 { margin: 0 0 10px; font-family: var(--mincho); font-size: 24px; font-weight: 700; letter-spacing: 0.06em; }
+  .card h3 { font-family: var(--mincho); font-size: 16px; margin: 18px 0 8px; letter-spacing: 0.04em; }
+  .card p { line-height: 1.75; color: #e2d8cc; }
+  .card .opts { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
+  .card .opts button { text-align: left; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--line2); background: rgba(255, 255, 255, 0.04); font-size: 15px; transition: background .12s, border-color .12s; }
+  .card .opts button:hover { background: rgba(196, 85, 60, 0.16); border-color: rgba(224, 122, 90, 0.6); }
+  .card .opts button small { color: var(--dim); }
+  .card .opts .share { display: flex; gap: 8px; } /* 答え合わせの「X に貼る」「結果をコピー」（2026-10-26 出す準備） */
+  .card .opts .share button { flex: 1; text-align: center; font-size: 14px; color: var(--dim); }
+
+  /* 答え合わせ */
+  #resultCard .rank { position: absolute; top: 18px; right: 22px; width: 74px; height: 74px; border-radius: 50%; display: grid; place-items: center; font-family: var(--mincho); font-size: 44px; font-weight: 800; color: var(--accent2); border: 2px solid rgba(224, 122, 90, 0.55); background: rgba(196, 85, 60, 0.08); }
+  #resultCard h2 { padding-right: 90px; }
+  #resultCard .story { padding-right: 70px; font-family: var(--mincho); font-size: 16px; }
+  #resultCard ul { margin: 0; padding: 0; }
+  #resultCard li { list-style: none; padding: 8px 10px; margin-bottom: 6px; border-radius: 8px; background: rgba(255, 255, 255, 0.04); font-size: 14px; line-height: 1.5; }
+  #resultCard li.hid { border-left: 3px solid var(--accent); }
+  #resultCard li.got { border-left: 3px solid var(--good); }
+  #resultCard .stats { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 13.5px; color: #d9cfc3; margin-top: 4px; }
+  #resultCard .stats dt { color: var(--dim); }
+  #resultCard .stats dd { margin: 0; }
+  #resultCard .praise { color: var(--warn); font-family: var(--mincho); }
+  #resultCard .fiction { font-size: 12px; color: var(--faint); margin: 16px 0 0; }
+
+  /* スマホの通知（証拠・見つけた物・光ったスマホ） */
+  #phoneui { position: fixed; right: 17%; bottom: 210px; width: 240px; background: #f6f5f2; color: #222; border-radius: 26px; border: 7px solid #111; padding: 16px 14px; display: none; box-shadow: 0 16px 50px rgba(0, 0, 0, 0.7); font-size: 14px; }
+  #phoneui.on { display: block; animation: rise .3s ease-out; }
+  @keyframes rise { from { transform: translateY(14px); opacity: 0; } to { transform: none; opacity: 1; } }
+  #phoneui .app { font-size: 11px; color: #777; margin-bottom: 8px; letter-spacing: 0.1em; }
+  #phoneui .msg { background: #9de089; border-radius: 14px; padding: 9px 11px; margin: 6px 0; line-height: 1.45; }
+  /* スマホの中を自分で探す画面（2026-10-26）: 家の画面（アプリ7つ）→ アプリの一覧 → 1行の中身 → 証拠にする。真ん中に大きく出す */
+  #phoneui.browse { right: 50%; bottom: auto; top: 50%; transform: translate(50%, -50%); width: min(340px, 92vw); max-height: min(620px, 88vh); overflow: auto; padding: 12px 12px 10px; animation: show .25s ease-out; z-index: 2; }
+  #phoneui.browse > .app { display: none; }
+  #phoneui .bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 11px; color: #777; letter-spacing: 0.06em; margin-bottom: 8px; min-height: 20px; }
+  #phoneui .home { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px 6px; margin: 8px 0 14px; }
+  #phoneui .home button { display: grid; justify-items: center; gap: 4px; background: none; border: 0; color: #222; font-size: 11px; padding: 0; line-height: 1.2; }
+  #phoneui .home button i { font-style: normal; width: 50px; height: 50px; border-radius: 13px; display: grid; place-items: center; font-size: 25px; background: #e4e2dd; box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.08); }
+  #phoneui .home button.opened i { outline: 3px solid var(--accent2); }
+  #phoneui .home button:disabled { opacity: .35; cursor: default; }
+  #phoneui .rows { background: #fff; border-radius: 12px; overflow: hidden; }
+  #phoneui .rows button { display: block; width: 100%; text-align: left; background: none; border: 0; border-bottom: 1px solid #ebe9e4; padding: 9px 11px; color: #222; font-size: 13.5px; line-height: 1.35; }
+  #phoneui .rows button:last-child { border-bottom: 0; }
+  #phoneui .rows button small { display: block; color: #888; font-size: 11px; margin-top: 2px; }
+  #phoneui .rows button.took { color: #aaa; }
+  #phoneui .detail { background: #fff; border-radius: 12px; padding: 12px; line-height: 1.55; min-height: 72px; font-size: 13.5px; }
+  #phoneui .detail h4 { margin: 0 0 6px; font-size: 14.5px; }
+  #phoneui .act { display: flex; gap: 8px; margin-top: 10px; }
+  #phoneui .act button { flex: 1; padding: 9px 8px; border-radius: 10px; border: 1px solid #c8c5bf; background: #fff; color: #222; font-size: 13px; }
+  #phoneui .act button.take { background: var(--accent2); border-color: var(--accent2); color: #fff; }
+  #phoneui .act button:disabled { opacity: .5; cursor: default; }
+  #phoneui .ret { display: block; width: 100%; margin-top: 10px; padding: 9px; border-radius: 10px; border: 1px solid #c8c5bf; background: #fff; color: #222; font-size: 13px; }
+
+  /* 題名の画面 */
+  #start { background: radial-gradient(ellipse at 50% 40%, rgba(20, 14, 11, 0.35), rgba(5, 4, 3, 0.9)); backdrop-filter: blur(3px); }
+  #start .card { background: transparent; border: none; box-shadow: none; backdrop-filter: none; text-align: center; width: min(620px, calc(100% - 32px)); }
+  #start .kicker { font-size: 12px; letter-spacing: 0.5em; color: var(--accent2); margin-bottom: 14px; }
+  #start h1 { font-family: var(--mincho); font-size: clamp(30px, 5.4vw, 52px); font-weight: 800; letter-spacing: 0.08em; line-height: 1.25; margin: 0 0 18px; text-shadow: 0 4px 30px rgba(0, 0, 0, 0.8); }
+  #start h1 span { display: block; font-size: 0.42em; font-weight: 500; letter-spacing: 0.3em; color: var(--dim); margin-top: 10px; }
+  #startText { font-family: var(--mincho); font-size: 17px; line-height: 1.9; color: #e8dfd4; margin: 0 auto 20px; max-width: 30em; }
+  #start .rules { display: grid; gap: 6px; text-align: left; max-width: 30em; margin: 0 auto 26px; padding: 12px 16px; border-top: 1px solid var(--line2); border-bottom: 1px solid var(--line2); font-size: 13px; color: var(--dim); line-height: 1.6; }
+  #start .rules b { color: var(--ink); font-weight: 600; }
+  #go { font-family: var(--mincho); font-size: 19px; font-weight: 700; letter-spacing: 0.3em; padding: 13px 44px 13px 50px; border-radius: 999px; border: 1px solid #d06a4e; background: linear-gradient(180deg, #b24a33, #8a3222); box-shadow: 0 10px 34px rgba(178, 74, 51, 0.35); transition: transform .15s, box-shadow .15s; }
+  #go:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(178, 74, 51, 0.5); }
+  #go:disabled { opacity: .5; cursor: default; transform: none; box-shadow: none; letter-spacing: 0.12em; } /* 読み込み中（進み具合を出す。2026-10-26） */
+  #resume { display: block; margin: 12px auto 0; font-family: var(--mincho); font-size: 14px; padding: 8px 22px; border-radius: 999px; border: 1px solid var(--line2); background: rgba(255, 255, 255, 0.04); color: var(--dim); letter-spacing: 0.1em; } /* 途中で消えた対局の続き */
+  #resume:hover { color: var(--ink); border-color: var(--accent2); }
+  #resume[hidden] { display: none; }
+  #start .fiction { font-size: 11px; color: var(--faint); margin-top: 22px; }
+  #start .nameRow { display: block; margin: 0 0 18px; font-size: 13px; color: var(--dim); letter-spacing: 0.1em; }
+  #start input { font: inherit; font-family: var(--mincho); font-size: 18px; width: 9em; margin-left: 10px; padding: 6px 10px; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line2); border-radius: 8px; color: var(--ink); text-align: center; letter-spacing: 0.08em; }
+  #start input::placeholder { color: var(--faint); font-size: 13px; letter-spacing: 0; }
+  #start .volRow { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px 16px; margin: 0 0 20px; font-size: 12px; color: var(--dim); letter-spacing: 0.08em; }
+  #start .volRow label { display: inline-flex; align-items: center; gap: 6px; }
+  #start .volRow input[type="range"] { width: 90px; margin: 0; padding: 0; background: transparent; border: none; accent-color: var(--accent2); }
+  #acts button small { font-size: 10px; color: var(--dim); margin-left: 7px; letter-spacing: 0.05em; } /* かかる時間 */
+  /* 言葉の切り替え（題名の画面の上。日本語・English・한국어。2026-10-26） */
+  #start .langRow { display: flex; justify-content: center; gap: 6px; margin: 0 0 16px; }
+  #start .langRow button { font-size: 12px; padding: 4px 12px; border-radius: 999px; border: 1px solid var(--line2); background: transparent; color: var(--dim); letter-spacing: 0.04em; }
+  #start .langRow button.on { color: var(--ink); border-color: var(--accent2); background: rgba(196, 85, 60, 0.12); }
+  /* 英語・韓国語の字体と字間（日本語向けの広い字間は詰める。様子の言葉は折り返す） */
+  html[lang="en"] { --mincho: "EB Garamond", "Iowan Old Style", Georgia, serif; --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  html[lang="ko"] { --mincho: "Noto Serif KR", "Apple SD Gothic Neo", "Malgun Gothic", serif; --sans: "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif; }
+  html[lang="ko"] body { word-break: keep-all; overflow-wrap: break-word; } /* 韓国語は語の途中で折り返さない（「러브호텔에 / 서」にならないように） */
+  html:not([lang="ja"]) #start h1, html:not([lang="ja"]) #start h1 span, html:not([lang="ja"]) #go, html:not([lang="ja"]) #start .kicker, html:not([lang="ja"]) #day, html:not([lang="ja"]) #sub b, html:not([lang="ja"]) #fade, html:not([lang="ja"]) .row > span, html:not([lang="ja"]) #acts button.verdict { letter-spacing: 0.06em; }
+  html:not([lang="ja"]) #go { padding: 13px 44px; }
+  html:not([lang="ja"]) .row > span { width: 5.2em; }
+  html:not([lang="ja"]) .state { white-space: normal; max-width: 230px; }
+  html:not([lang="ja"]) #fade { text-align: center; padding: 0 24px; line-height: 1.5; }
+  html[lang="en"] #start h1 { font-size: clamp(24px, 4vw, 40px); letter-spacing: 0.03em; } /* 「Make Your Cheating Husband」が1行に収まる大きさ */
+  html[lang="en"] #sub { font-size: 25px; }
+  html[lang="en"] #startText { font-size: 18px; }
+  html[lang="en"] #resultCard .story, html[lang="en"] .card p { font-size: 17px; }
+
+  /* 判決のあとの場面 */
+  #skip { position: fixed; right: 16px; bottom: 16px; display: none; font-size: 13px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line2); background: rgba(20, 16, 14, 0.7); color: var(--dim); }
+  #skip:hover { color: var(--ink); }
+  body.epiRun #skip { display: block; }
+  body.epi #hud { display: none; }
+  body.epi #sub { bottom: 44px; }
+
+  /* 狭い画面（スマホ。横向きの低い画面も）: ボタンは「聞く・責める・ほか」の札で1組ずつ出す（21個を全部並べると画面の半分を占め、横向きでは字幕が左上の様子に重なった。2026-10-26） */
+  @media (max-width: 760px), (max-height: 520px) {
+    #hud { top: 10px; left: 10px; gap: 10px; }
+    #clock { font-size: 26px; }
+    .meters { grid-template-columns: auto 70px; padding: 6px 8px; }
+    .lab { font-size: 10px; }
+    #notes { top: 64px; right: 10px; width: auto; max-width: 60%; max-height: 46%; padding: 7px 10px 1px; font-size: 12px; cursor: pointer; }
+    #notes:not(.open) ul { display: none; } /* たたんだ時は見出しと数だけ。押すと開く */
+    #notes h3 { font-size: 12px; margin: 2px 0 6px; }
+    #sub { font-size: 18px; }
+    #acts { padding: 20px 8px 8px; gap: 4px; }
+    .row { gap: 4px; }
+    .row > span, .row .verdict { display: none; } /* 段の名前と判決は札の方に */
+    .row:not(.on) { display: none; }
+    #acts .tabs { display: flex; }
+    #acts button { font-size: 12px; padding: 6px 8px; }
+    #phoneui { right: 50%; transform: translateX(50%); bottom: calc(var(--subBottom, 168px) + 72px); } /* 字幕の上 */
+  }
+</style>
+<!-- 自分の JS にも版（?v=）を付ける（2026-10-26 オーナー「治ってない」→ ブラウザが古い JS と声を使い続けた）。版は tools/bump_version.mjs で上げる。version.js はこの値を読む。importmap の中は JSON だけ -->
+<script type="importmap">
+{ "imports": { "three": "./lib/three/build/three.module.js", "three/addons/": "./lib/three/examples/jsm/", "./js/clips.js": "./js/clips.js?v=20261027-2317", "./js/epilogue.js": "./js/epilogue.js?v=20261027-2317", "./js/face.js": "./js/face.js?v=20261027-2317", "./js/game.js": "./js/game.js?v=20261027-2317", "./js/hand.js": "./js/hand.js?v=20261027-2317", "./js/husband.js": "./js/husband.js?v=20261027-2317", "./js/i18n.js": "./js/i18n.js?v=20261027-2317", "./js/main.js": "./js/main.js?v=20261027-2317", "./js/props.js": "./js/props.js?v=20261027-2317", "./js/puppet.js": "./js/puppet.js?v=20261027-2317", "./js/rooms.js": "./js/rooms.js?v=20261027-2317", "./js/se.js": "./js/se.js?v=20261027-2317", "./js/version.js": "./js/version.js?v=20261027-2317", "./js/view.js": "./js/view.js?v=20261027-2317", "./js/voice.js": "./js/voice.js?v=20261027-2317", "./js/wife.js": "./js/wife.js?v=20261027-2317" } }
+</script>
+</head>
+<body>
+<div id="vignette"></div>
+<div id="grain"></div>
+<div id="hud">
+  <div class="time"><span id="day">1日目</span><div id="clock">22:00</div></div>
+  <div class="meters">
+    <span class="lab" id="condLab" data-i18n="{H}の様子">夫の様子</span><div class="state" id="cond">平気な顔をしている</div>
+    <span class="lab" data-i18n="近所">近所</span><div class="state" id="hood">静かだ</div>
+  </div>
+</div>
+<div id="notes">
+  <h3 id="logHead">自白したこと</h3><ul id="log"><li class="struck">まだない</li></ul>
+  <h3 id="eviHead" class="ev">手元の証拠</h3><ul id="evi"></ul>
+</div>
+<div id="sub"></div>
+<div id="acts"></div>
+<div id="phoneui"><div class="app">LINE</div><div id="phonebody"></div></div>
+<div id="flash"></div>
+<div id="fade"></div>
+<button id="skip" data-i18n="スキップ ▶">スキップ ▶</button>
+<div class="modal" id="pick"><div class="card"><h2 id="pickTitle"></h2><div class="opts" id="pickOpts"></div></div></div>
+<div class="modal" id="result"><div class="card" id="resultCard"></div></div>
+<div class="modal on" id="start"><div class="card">
+  <div class="langRow modeRow"><button data-mode="h" data-i18n="夫が浮気した">夫が浮気した</button><button data-mode="w" data-i18n="妻が浮気した">妻が浮気した</button></div>
+  <div class="kicker" data-i18n="一晩の尋問">一晩の尋問</div>
+  <h1 data-i18n="浮気した夫に<br>全部吐かせる<span>ほんとに1回だけ？</span>">浮気した夫に<br>全部吐かせる<span>ほんとに1回だけ？</span></h1>
+  <p id="startText"></p>
+  <div class="rules">
+    <div data-i18n="<b>浮気は1回だけとは限らない。</b>「もうない」は本当かもしれないし、嘘かもしれない。"><b>浮気は1回だけとは限らない。</b>「もうない」は本当かもしれないし、嘘かもしれない。</div>
+    <div data-i18n="<b>夫には嘘をつく時の癖がある。</b>どうでもいい質問（晩ご飯のことなど）で、ふだんの顔を覚えておこう。"><b>夫には嘘をつく時の癖がある。</b>どうでもいい質問（晩ご飯のことなど）で、ふだんの顔を覚えておこう。</div>
+    <div data-i18n="<b>責めすぎると、話にならない。</b>頭が回らなくなり、体力が0になると夫は死ぬ。"><b>責めすぎると、話にならない。</b>頭が回らなくなり、体力が0になると夫は死ぬ。</div>
+  </div>
+  <label class="nameRow"><span data-i18n="夫の名前">夫の名前</span> <input id="hname" maxlength="8" placeholder="（空なら「夫」）" data-i18n-ph="（空なら「夫」）" autocomplete="off"></label>
+  <div class="volRow"><span data-i18n="音量">音量</span><label><span data-i18n="声">声</span><input type="range" id="vol_voice" min="0" max="100" value="100"></label><label><span data-i18n="効果音">効果音</span><input type="range" id="vol_se" min="0" max="100" value="100"></label><label><span data-i18n="部屋の音">部屋の音</span><input type="range" id="vol_amb" min="0" max="100" value="100"></label></div>
+  <button id="go" disabled data-i18n="読み込み中…">読み込み中…</button>
+  <button id="resume" hidden></button>
+  <div class="fiction" data-i18n="この物語はフィクションです。">この物語はフィクションです。</div>
+</div></div>
+<script type="module" src="./js/main.js?v=20261027-2317"></script>
+</body>
+</html>

@@ -10,6 +10,8 @@ import { softServeHref } from './soft-serve/seo'
 import { cookingHref } from './cooking-games/seo'
 import { ommojiHref } from './ommoji/seo'
 import { shusshinHref } from './shusshin-ken/seo'
+import { uwakiHref } from './uwaki-jinmon/seo'
+import { interrogationHref } from './interrogation-games/seo'
 import { regionHref } from './regional-differences/seo'
 import { drawingHref } from './drawing-games/seo'
 import { shodoHref } from './shodo-simulator-3d/seo'
@@ -87,6 +89,11 @@ export function siteIndexLinks() {
     { id: 'regional-differences', href: regionHref(), label: '日本の地域差クイズ' },
     { id: 'regional-differences/nikujaga', href: regionHref('nikujaga/'), label: '肉じゃがの牛肉と豚肉' },
     { id: 'regional-differences/ozoni', href: regionHref('ozoni/'), label: 'お雑煮の角餅と丸餅' },
+    { id: 'uwaki-jinmon', href: uwakiHref(), label: '浮気した夫に全部吐かせる' },
+    { id: 'uwaki-jinmon/s-rank', href: uwakiHref('s-rank/'), label: 'Sランク攻略' },
+    { id: 'uwaki-jinmon/evidence', href: uwakiHref('evidence/'), label: '証拠の探し方' },
+    { id: 'uwaki-jinmon/endings', href: uwakiHref('endings/'), label: 'エンディング' },
+    { id: 'interrogation-games', href: interrogationHref(), label: '尋問ゲーム' },
   ]
 }
 

@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -114,6 +114,14 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: '診断',
       title: '出身地、当てます',
       description: '2択の質問で、出身県を当てる。',
+    },
+    {
+      id: 'uwaki-jinmon',
+      href: links.uwakiJinmon,
+      mark: '問',
+      kicker: '尋問',
+      title: '浮気した夫に全部吐かせる',
+      description: '嘘の癖とスマホの証拠から、隠された回数を聞く。',
     },
   ]
 }
