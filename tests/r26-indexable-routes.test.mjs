@@ -94,7 +94,7 @@ test('R26: sitemap contains the Japanese canonical landing URLs and no fragment 
   const sitemap = await read('public/sitemap.xml');
   const robots = await read('public/robots.txt');
   const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-  assert.equal(urls.length, 69);
+  assert.equal(urls.length, 79);
   assert.equal(sitemap.includes('<lastmod>'), false);
   assert.equal(new Set(urls).size, urls.length);
   assert.ok(urls.every((url) => !url.includes('#')));
@@ -150,6 +150,16 @@ test('R26: sitemap contains the Japanese canonical landing URLs and no fragment 
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}uwaki-jinmon/evidence/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}uwaki-jinmon/endings/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}interrogation-games/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}ice-break/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}ice-break/how-to-play/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}ice-break/500-challenge/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}kuroi-ekitai/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}kuroi-ekitai/guide/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}kuroi-ekitai/titles/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}daruma/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}daruma/how-to-play/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}daruma/sensor-fix/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}daruma/speedrun/`));
   assert.equal(urls.some((url) => url.endsWith('game.html')), false);
   assert.equal(urls.some((url) => url.includes('/studio') || url.includes('/gpu-check')), false);
   assert.ok(urls.includes(canonicalUrl('home', 'ja', DEFAULT_SITE_URL)));

@@ -1,0 +1,904 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="robots" content="noindex,follow"><link rel="canonical" href="https://egakiba.com/daruma/"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="だるまさんがころんだ"><meta name="theme-color" content="#1a0f0c">
+<title>だるまさんがころんだ</title>
+<meta name="description" content="スマホを前後に倒して歩き、鬼がこちらを見ている間はピタッと止まれ。夕暮れの神社の参道で、だるまの鬼までたどり着くブラウザゲーム。ログイン不要・無料ですぐ遊べます。">
+<style>
+/* Layout: the shrine approach fills the screen in first person, a thin strip on top (distance and time),
+   the chant as big subtitles under it, and the finger point fixed near the bottom. */
+:root{
+  --bg:#1a0f0c; --panel:rgba(26,15,12,.8); --line:rgba(255,255,255,.16);
+  --ink:#f5ede2; --dim:#b3a596; --accent:#f2c66d; --red:#d8322a; --warn:#ff6a4d; --ok:#7fd6a8;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",sans-serif;
+  --f-jp:"Noto Serif JP","Hiragino Mincho ProN","Yu Mincho",serif;
+  --f-num:"IBM Plex Mono",ui-monospace,monospace;
+  color-scheme:dark;
+}
+html,body{height:100%}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);overflow:hidden;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+#app{position:relative;height:100%;overflow:hidden;background:var(--bg);touch-action:none}
+#c{position:absolute;inset:0;width:100%;height:100%;display:block}
+#vig{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .15s;background:radial-gradient(ellipse at center,transparent 40%,rgba(200,20,10,.65) 100%)}
+
+.hud{position:absolute;z-index:4;left:50%;transform:translateX(-50%);top:max(10px,env(safe-area-inset-top,0px));width:min(360px,calc(100% - 24px));
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:7px 14px;display:flex;justify-content:space-between;align-items:baseline;pointer-events:none;backdrop-filter:blur(6px)}
+.hud b{font-family:var(--f-num);font-weight:600;font-size:22px;font-variant-numeric:tabular-nums}
+.hud small{font-size:12px;color:var(--dim);margin-right:6px}
+.hud .t b{font-size:16px}
+
+/* the chant: one character at a time, cut off wherever the oni turns */
+/* the chant, the stare badge and the wobble meter sit just under the daruma, so the eyes stay mid-screen where it lunges */
+#mid{position:absolute;z-index:4;left:0;right:0;top:56%;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
+/* on short screens the wobble meter reaches the walking hint, which isn't needed while the oni looks anyway */
+#app:has(#shake:not([hidden])) #hint{visibility:hidden}
+#chant{align-self:stretch;text-align:center;
+  font-family:var(--f-jp);font-weight:900;font-size:min(8.2vw,50px);letter-spacing:.02em;white-space:nowrap;color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.6),0 0 18px rgba(0,0,0,.6);min-height:1.3em;line-height:1.3}
+#chant i{font-style:normal;display:inline-block;animation:chr .18s ease-out both}
+#chant.look{color:var(--warn)}
+@keyframes chr{from{transform:translateY(.3em) scale(1.3);opacity:0}}
+#eye{
+  font-weight:900;font-size:15px;color:#fff;background:var(--red);padding:6px 14px;border-radius:999px;white-space:nowrap;box-shadow:0 4px 0 #7a1712}
+#shake{width:min(220px,60%);display:grid;gap:4px;font-size:11px;font-weight:700;color:var(--dim);text-align:center}
+#shake i{display:block;height:8px;border-radius:4px;background:rgba(0,0,0,.5);border:1px solid var(--line);overflow:hidden}
+#shake i b{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ok),var(--accent) 60%,var(--warn))}
+
+/* the point the finger must stay on, fixed near the bottom */
+#pad{position:absolute;z-index:5;left:50%;bottom:calc(max(18px,env(safe-area-inset-bottom,0px)) + 26px);width:104px;height:104px;margin-left:-52px;border-radius:50%;
+  border:3px dashed rgba(255,255,255,.75);background:radial-gradient(circle,rgba(242,198,109,.35),rgba(242,198,109,.08) 70%);display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:900;color:#fff;text-align:center;line-height:1.35;touch-action:none;cursor:pointer}
+#pad.wait{animation:throb .7s ease-in-out infinite alternate}
+#pad.on{border-style:solid;border-color:var(--accent);background:radial-gradient(circle,rgba(242,198,109,.75),rgba(242,198,109,.2) 70%);color:#2a1d05}
+@keyframes throb{to{transform:scale(1.08)}}
+#hint{position:absolute;z-index:4;left:50%;transform:translateX(-50%);bottom:calc(max(18px,env(safe-area-inset-bottom,0px)) + 140px);width:max-content;max-width:calc(100% - 24px);
+  font-size:13px;font-weight:700;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 12px;text-align:center;pointer-events:none}
+#hint b{color:var(--accent)}
+#bigmsg{position:absolute;z-index:6;left:0;right:0;top:40%;transform:translateY(-50%);text-align:center;pointer-events:none;font-family:var(--f-jp);font-weight:900;font-size:min(15vw,64px);color:#fff;
+  text-shadow:0 4px 0 rgba(0,0,0,.6);animation:big .35s cubic-bezier(.2,1.6,.4,1) both}
+#bigmsg.out{color:var(--warn)}
+#bigmsg.win{color:var(--accent)}
+/* the oni's words after it catches you moving */
+#say{position:absolute;z-index:7;left:50%;transform:translateX(-50%);top:calc(max(10px,env(safe-area-inset-top,0px)) + 70px);width:min(340px,calc(100% - 32px));pointer-events:none;
+  background:#fff;color:#1a0f0c;border-radius:18px;padding:14px 16px;font-family:var(--f-jp);font-weight:900;font-size:19px;line-height:1.6;box-shadow:0 6px 0 rgba(0,0,0,.35)}
+/* gimmick: a fake camera app that pops up mid-chant. It ignores touches so the finger stays on the point underneath */
+#cam{position:absolute;inset:0;z-index:6;pointer-events:none;display:grid;grid-template-rows:auto 1fr auto;background:rgba(0,0,0,.35);-webkit-backdrop-filter:blur(16px) brightness(.75) saturate(.8);backdrop-filter:blur(16px) brightness(.75) saturate(.8);
+  font-family:-apple-system,"Hiragino Sans",system-ui,sans-serif;color:#fff;transform-origin:100% 100%;animation:camIn .38s cubic-bezier(.2,.9,.25,1) both}
+@keyframes camIn{from{transform:scale(.04);border-radius:40px;opacity:.6}70%{border-radius:18px}to{transform:none;border-radius:0;opacity:1}}
+#cam .top{background:#000;display:flex;justify-content:space-between;align-items:center;padding:calc(max(10px,env(safe-area-inset-top,0px)) + 6px) 22px 12px;font-size:20px}
+#cam .top i{font-style:normal;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:15px}
+#cam .view{position:relative}
+/* caught on the fake camera: the blur snaps into focus on the daruma, then the camera UI fades away */
+#cam.sharp{background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none;transition:background .2s,backdrop-filter .2s,-webkit-backdrop-filter .2s}
+#cam.sharp .focus{animation:focus .35s ease-out both;width:150px;height:150px;margin:-75px 0 0 -75px;top:40%}
+#cam.gone{opacity:0;transition:opacity .35s}
+#cam .focus{position:absolute;left:50%;top:46%;width:86px;height:86px;margin:-43px 0 0 -43px;border:1.5px solid #ffd60a;animation:focus .5s ease-out .35s both}
+@keyframes focus{from{transform:scale(1.6);opacity:0}60%{transform:scale(.92)}}
+#cam .zoom{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);display:flex;gap:8px;background:rgba(0,0,0,.3);border-radius:999px;padding:4px}
+#cam .zoom span{width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+#cam .zoom span.on{color:#ffd60a;font-size:13px}
+#cam .bot{background:#000;padding:12px 0 calc(max(18px,env(safe-area-inset-bottom,0px)) + 16px);display:grid;gap:14px}
+#cam .modes{display:flex;justify-content:center;gap:18px;font-size:13px;font-weight:600;letter-spacing:.06em;color:rgba(255,255,255,.85);white-space:nowrap;overflow:hidden}
+#cam .modes b{color:#ffd60a;font-weight:600}
+#cam .row{display:flex;justify-content:space-between;align-items:center;padding:0 34px}
+#cam .thumb{width:46px;height:46px;border-radius:8px;background:linear-gradient(135deg,#6b4a3a,#2a1a14)}
+#cam .shutter{width:72px;height:72px;border-radius:50%;border:4px solid #fff;display:flex;align-items:center;justify-content:center}
+#cam .shutter::after{content:"";width:58px;height:58px;border-radius:50%;background:#fff}
+/* gimmick: a fake full-screen game ad (made-up title). Only its ✕ takes touches */
+#ad{position:absolute;inset:0;z-index:6;pointer-events:none;display:flex;flex-direction:column;align-items:center;overflow:hidden;color:#fff;text-align:center;
+  font-family:-apple-system,"Hiragino Sans",system-ui,sans-serif;background:radial-gradient(120% 70% at 50% 30%,#ff8a3d 0%,#d63a5a 45%,#3b1460 100%);animation:adIn .25s ease-out both}
+@keyframes adIn{from{opacity:0;transform:scale(1.06)}}
+#ad .bar{position:absolute;left:0;right:0;top:0;height:3px;background:rgba(255,255,255,.25)}#ad .bar b{display:block;height:100%;width:0;background:#fff}
+#ad .tag{position:absolute;left:12px;top:calc(max(10px,env(safe-area-inset-top,0px)) + 8px);font-size:11px;font-weight:700;background:rgba(0,0,0,.45);padding:3px 8px;border-radius:4px}
+#adX{position:absolute;right:12px;top:calc(max(10px,env(safe-area-inset-top,0px)) + 4px);width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.55);border:1.5px solid rgba(255,255,255,.6);
+  display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;pointer-events:auto}
+#ad .hero{margin-top:calc(max(10px,env(safe-area-inset-top,0px)) + 64px);font-size:min(30vw,150px);line-height:1;filter:drop-shadow(0 10px 18px rgba(0,0,0,.4));animation:adBob .9s ease-in-out infinite alternate}
+@keyframes adBob{to{transform:translateY(-10px) rotate(-4deg) scale(1.04)}}
+#ad h2{margin:14px 0 0;font-size:min(10vw,44px);font-weight:900;letter-spacing:.04em;text-shadow:0 3px 0 #7a1030,0 6px 14px rgba(0,0,0,.4);transform:rotate(-3deg)}
+#ad h2 small{display:block;font-size:.42em;font-weight:800;letter-spacing:.1em;margin-top:6px;color:#ffe9a8}
+#ad .pop{margin-top:18px;font-size:min(8vw,32px);font-weight:900;color:#ffe14d;text-shadow:0 2px 0 #9a4a00;animation:adPop .6s ease-in-out infinite alternate}
+@keyframes adPop{to{transform:scale(1.12)}}
+#ad .gacha{margin:14px 22px 0;padding:10px 16px;border-radius:14px;background:rgba(0,0,0,.35);border:2px solid #ffe14d;font-size:min(5vw,19px);font-weight:800}
+#ad .gacha b{color:#ffe14d;font-size:1.35em}
+#ad .stars{margin-top:12px;font-size:13px;color:rgba(255,255,255,.9)}#ad .stars i{font-style:normal;color:#ffd60a;letter-spacing:1px}
+#ad .cta{margin-top:auto;margin-bottom:calc(max(18px,env(safe-area-inset-bottom,0px)) + 150px);width:min(78%,340px);padding:16px 0;border-radius:999px;background:linear-gradient(#3ee06a,#16a843);
+  font-size:20px;font-weight:900;letter-spacing:.08em;box-shadow:0 6px 0 #0b6b28,0 10px 24px rgba(0,0,0,.35);animation:adPop .7s ease-in-out infinite alternate}
+#ad .fine{position:absolute;bottom:calc(max(10px,env(safe-area-inset-bottom,0px)) + 4px);left:0;right:0;font-size:10px;color:rgba(255,255,255,.6)}
+#cam.torn,#ad.torn,.torn *{pointer-events:none!important}
+#cam .flip{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;font-size:20px}
+#say::after{content:"";position:absolute;left:50%;bottom:-14px;margin-left:-10px;border:10px solid transparent;border-top:14px solid #fff;border-bottom:0}
+@keyframes big{from{transform:translateY(-50%) scale(2.2);opacity:0}}
+
+.btn{appearance:none;border:0;border-radius:999px;padding:14px 18px;font:900 17px var(--f-body);color:#2a1d05;background:var(--accent);box-shadow:0 5px 0 #8a6a2a;cursor:pointer;width:100%}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 #8a6a2a}
+.btn.share{background:#fff;color:#111;box-shadow:0 5px 0 #888}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.over{position:absolute;inset:0;z-index:7;display:flex;align-items:center;justify-content:center;background:rgba(14,8,6,.55);overflow:auto;
+  padding-block:20px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.card{width:min(380px,100%);margin:auto;background:#24150f;border:1px solid var(--line);border-radius:18px;padding:20px;display:grid;gap:12px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.card h1{margin:0;font-family:var(--f-jp);font-size:27px;white-space:nowrap;font-weight:900;line-height:1.2;color:#fff}
+.card h1 small{display:block;font-family:var(--f-body);font-size:14px;color:var(--accent);margin-top:6px;font-weight:700}
+.card h2{margin:0;font-family:var(--f-jp);font-size:28px;font-weight:900}
+.card p{margin:0;font-size:13px;line-height:1.7;color:var(--dim)}
+.linkbtn{appearance:none;border:0;background:none;color:var(--dim);font:700 13px var(--f-body);text-decoration:underline;text-underline-offset:3px;padding:6px;cursor:pointer}
+.rules{margin:0;padding:0;list-style:none;display:grid;gap:8px;text-align:left;counter-reset:r}
+.rules li{counter-increment:r;display:flex;gap:10px;align-items:center;font-family:var(--f-jp);font-weight:900;font-size:16px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:rgba(0,0,0,.25)}
+.rules li::before{content:counter(r);flex:none;width:24px;height:24px;border-radius:50%;background:var(--red);color:#fff;font:900 13px var(--f-body);display:flex;align-items:center;justify-content:center}
+.how{font-size:12.5px!important}
+.why{font-size:13px;color:var(--warn);letter-spacing:.08em;font-weight:900}
+.why.good{color:var(--ok)}
+.big{font-family:var(--f-num);font-weight:600;font-size:44px;line-height:1.1;font-variant-numeric:tabular-nums}
+.big span{display:block;font-size:13px;font-family:var(--f-body);color:var(--dim);margin-bottom:2px}
+.newbest{font-weight:900;color:#0d2620;background:var(--ok);border-radius:999px;padding:4px 12px;justify-self:center;font-size:13px}
+.card dl{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0}
+.card dl div{border:1px solid var(--line);border-radius:10px;padding:8px}
+.card dt{font-size:11px;color:var(--dim)}
+.card dd{margin:2px 0 0;font-size:15px;font-weight:700;font-family:var(--f-num)}
+#loadMsg{font-size:12px;color:var(--dim);min-height:1.4em}
+/* cross-promo card, same as 爆速デリバリー's */
+.promo{display:flex;align-items:center;gap:10px;padding:8px;border-radius:12px;background:rgba(8,16,40,.78);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:11px;line-height:1.4;text-align:left}
+.promo img{width:96px;height:50px;object-fit:cover;border-radius:8px;flex:none;background:#1a1030}
+.promo span{min-width:0}
+.promo small{display:block;color:var(--dim);font-size:10px;font-weight:800}
+.promo b{display:block;font-weight:900;font-size:15px;color:#c9a8ff}
+.pc{z-index:9}
+.pc .qr{width:200px;height:200px;margin:0 auto;padding:10px;background:#fff;border-radius:16px}
+.pc .qr svg{display:block;width:100%;height:100%}
+.pc .url{font-family:var(--f-num);font-weight:600;font-size:15px}
+#turn{z-index:8}
+#nogl{position:absolute;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center;background:var(--bg)}
+#app.idle .hud,#app.idle #pad,#app.idle #hint{visibility:hidden}
+/* first-run practice: how to hold and tilt the phone, then a walk and a freeze */
+#guide{position:absolute;z-index:5;left:50%;transform:translateX(-50%);top:calc(max(10px,env(safe-area-inset-top,0px)) + 10px);width:min(360px,calc(100% - 24px));
+  background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:10px;justify-items:center;text-align:center;pointer-events:none;backdrop-filter:blur(6px)}
+#guide small{font-size:11px;font-weight:900;letter-spacing:.12em;color:var(--accent)}
+#gText{margin:0;font-size:16px;font-weight:900;line-height:1.6}
+#gText b{color:var(--accent)}
+#gProg{font-family:var(--f-num);font-weight:600;font-size:20px;min-height:1.3em}
+.phone{width:120px;height:110px;perspective:260px;display:flex;align-items:center;justify-content:center}
+.phone i{width:46px;height:84px;border-radius:9px;border:3px solid var(--ink);background:linear-gradient(#3a2a22,#1b120e);position:relative;transform-origin:50% 85%;animation:tilt 1.1s steps(1) infinite}
+.phone i::after{content:"";position:absolute;left:50%;bottom:9px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--accent)}
+.phone.still i{animation:none}
+.phone.off{display:none}
+@keyframes tilt{0%{transform:rotateX(0)}25%{transform:rotateX(32deg)}50%{transform:rotateX(0)}75%{transform:rotateX(-32deg)}}
+/* #test: jump straight to each set piece to check it */
+#testMenu{display:grid;gap:6px;border:1px dashed var(--accent);border-radius:12px;padding:10px}
+#testMenu small{font-size:11px;font-weight:900;color:var(--accent);letter-spacing:.1em}
+#testMenu button{appearance:none;border:1px solid var(--line);border-radius:10px;background:rgba(0,0,0,.3);color:var(--ink);font:700 14px var(--f-body);padding:9px;cursor:pointer}
+/* at the oni's back: tap it with another finger. The point finger still has to stay down */
+#touchBtn{position:absolute;z-index:6;left:50%;top:44%;width:150px;height:150px;margin:-75px 0 0 -75px;border-radius:50%;border:4px solid #fff;background:radial-gradient(circle,#ff6a4d,#d8322a 70%);
+  color:#fff;font:900 30px var(--f-jp);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 10px rgba(255,255,255,.18),0 10px 30px rgba(0,0,0,.5);animation:throb .45s ease-in-out infinite alternate;touch-action:none;cursor:pointer}
+#gBtn{background:none;border:0;color:var(--dim);font:700 13px var(--f-body);text-decoration:underline;cursor:pointer;padding:4px}
+#app.guide .hud,#app.guide #hint,#app.guide #chant{visibility:hidden}
+@media (prefers-reduced-motion:reduce){#bigmsg,#chant i,#pad.wait{animation:none!important}}
+</style>
+<script type="importmap">{"imports":{"three":"./assets/three/build/three.module.js","three/addons/":"./assets/three/examples/jsm/"}}</script>
+</head><body>
+<div id="app" class="idle">
+  <canvas id="c" aria-label="夕暮れの神社の参道と、だるまの鬼"></canvas>
+  <div id="vig"></div>
+  <div class="hud"><span><small>鬼まで</small><b id="dist">30.0</b>m</span><span class="t"><small>⏱</small><b id="clock">0.00</b></span></div>
+  <div id="mid">
+    <div id="chant" aria-live="polite"></div>
+    <div id="eye" hidden>👁 見てる</div>
+    <div id="shake" hidden>ブレ<i><b id="shakeBar"></b></i></div>
+  </div>
+  <p id="hint">スマホを<b>前後に倒して</b>歩け</p>
+  <div id="pad" class="wait">ここに<br>指を置く</div>
+  <div id="guide" hidden><small>動かし方の練習</small><div id="gPhone" class="phone"><i></i></div><p id="gText"></p><div id="gProg"></div></div>
+  <div id="touchBtn" hidden>タッチ！</div>
+  <div id="bigmsg" hidden></div>
+  <div id="say" hidden></div>
+  <div id="cam" hidden aria-hidden="true">
+    <div class="top"><i>⚡</i><i>⌃</i><i>◎</i></div>
+    <div class="view"><div class="focus"></div><div class="zoom"><span>.5</span><span class="on">1×</span><span>3</span></div></div>
+    <div class="bot"><div class="modes"><span>スロー</span><span>ビデオ</span><b>写真</b><span>ポートレート</span><span>パノラマ</span></div>
+      <div class="row"><div class="thumb"></div><div class="shutter"></div><div class="flip">⟲</div></div></div>
+  </div>
+
+  <div id="ad" hidden aria-hidden="true">
+    <div class="bar"><b id="adBar"></b></div><span class="tag">広告 ⓘ</span><div id="adX">5</div>
+    <div class="hero">🍙</div>
+    <h2>おにぎり無双<small>放置するだけで天下統一！</small></h2>
+    <div class="pop">+999,999 💰</div>
+    <div class="gacha">今なら <b>100連ガチャ</b> 無料！</div>
+    <div class="stars"><i>★★★★★</i> 4.8 ・ 500万DL突破</div>
+    <div class="cta">今すぐプレイ</div>
+    <div class="fine">※画像はイメージです。アプリ内課金あり</div>
+  </div>
+
+  <div id="title" class="over">
+    <div class="card">
+      <h1>だるまさんがころんだ<small>スマホを前後に倒して、鬼まで歩け</small></h1>
+      <ol class="rules">
+        <li>鬼がこちらを見ている間は動くな</li>
+        <li>鬼までたどり着け</li>
+        <li>ポイントから指を離すな</li>
+      </ol>
+      <p class="how">📱 スマホを縦に持って、前後にカクカク倒すと1歩ずつ進む。<br>☝️ 画面下の丸に指を置いたままで。</p>
+      <div id="tBest" class="newbest" hidden></div>
+      <button id="startBtn" class="btn" disabled>読み込み中…</button>
+      <button id="gBtn" hidden>🔰 動かし方を練習する</button>
+      <div id="testMenu" hidden><small>演出の確認(#test)</small>
+        <button data-left="24.5">偽広告(最初の振り向きで出る)</button>
+        <button data-left="14.5">偽カメラ(最初の振り向きで出る)</button>
+        <button data-left="9.5">突っ込み・猟奇顔(最初の振り向きで来る)</button>
+        <button data-left="4.5">残り5m</button>
+        <button data-left="1.5">ゴール直前</button>
+      </div>
+      <div id="loadMsg"></div>
+    </div>
+  </div>
+
+  <div id="over" class="over" hidden>
+    <div class="card">
+      <div class="why" id="oWhy">アウト</div>
+      <h2 id="oTitle">動いた！</h2>
+      <div class="big" id="oBig"><span>鬼まで</span>7.4m</div>
+      <div id="oBest" class="newbest" hidden>自己ベスト更新！</div>
+      <dl>
+        <div><dt id="oK1">タイム</dt><dd id="oV1">-</dd></div>
+        <div><dt>自己ベスト</dt><dd id="oBestV">-</dd></div>
+      </dl>
+      <button id="shareBtn" class="btn share">📣 シェア</button>
+      <button id="retry" class="btn">もう一回</button>
+      <button id="rulesBtn" class="linkbtn">📜 ルール確認</button>
+    </div>
+  </div>
+
+  <div id="rulesPop" class="over" hidden>
+    <div class="card">
+      <h2>ルール</h2>
+      <ol class="rules">
+        <li>鬼がこちらを見ている間は動くな</li>
+        <li>鬼までたどり着け</li>
+        <li>ポイントから指を離すな</li>
+      </ol>
+      <button id="rulesClose" class="btn">閉じる</button>
+    </div>
+  </div>
+
+  <div id="permAsk" class="over" hidden>
+    <div class="card">
+      <h2>📱 センサーの許可</h2>
+      <p>このゲームはスマホの傾きで歩きます。<br>次に出る確認で<b>「許可」</b>を押してね。</p>
+      <p style="color:var(--accent);margin-top:10px">⚠️ <b>キャンセルすると遊べません。</b><br>やり直すには、アプリ(Safari や X など)を一度終了して開き直す必要があります。</p>
+      <button class="btn" id="permOk">OK、次へ</button>
+    </div>
+  </div>
+
+  <div id="perm" class="over" hidden>
+    <div class="card">
+      <h2 id="permTitle">センサーが使えません</h2>
+      <p id="permMsg">このゲームはスマホの傾きセンサーで遊びます。iPhone は Safari の設定で「モーションと画面の向きのアクセス」をオンにしてから、ページを開き直してください。</p>
+      <button class="btn" id="permRetry">もう一度許可する</button>
+    </div>
+  </div>
+
+  <div id="turn" class="over" hidden>
+    <div class="card"><h2>📱 縦向きにしてね</h2><p>このゲームはスマホを縦に持って遊びます。</p></div>
+  </div>
+
+  <div id="pc" class="over pc" hidden>
+    <div class="card">
+      <h2>スマホで遊んでね</h2>
+      <p>このゲームはスマホを傾けて遊びます。<br>PCには対応していないので、<br>スマホのカメラでQRコードを読み取ってください。</p>
+      <div class="qr"><svg role="img" aria-label="egakiba.com/daruma のQRコード" viewBox="0 0 37 37" class="segno"><path fill="#fff" d="M0 0h37v37h-37z"/><path stroke="#1a0f0c" stroke-width="1" shape-rendering="crispEdges" d="M4 4.5h7m2 0h4m3 0h1m1 0h1m3 0h7m-29 1h1m5 0h1m1 0h1m1 0h1m3 0h2m1 0h1m4 0h1m5 0h1m-29 1h1m1 0h3m1 0h1m1 0h4m2 0h1m3 0h1m1 0h1m1 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m2 0h1m2 0h1m1 0h1m2 0h1m1 0h1m2 0h1m1 0h3m1 0h1m-29 1h1m1 0h3m1 0h1m5 0h1m1 0h4m1 0h1m2 0h1m1 0h3m1 0h1m-29 1h1m5 0h1m3 0h3m3 0h1m2 0h2m1 0h1m5 0h1m-29 1h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7m-18 1h1m3 0h1m1 0h1m1 0h1m-19 1h3m1 0h2m2 0h3m4 0h1m2 0h1m6 0h2m-27 1h2m4 0h2m2 0h1m2 0h1m2 0h3m2 0h5m1 0h1m-29 1h2m1 0h7m3 0h2m1 0h1m5 0h1m2 0h1m1 0h1m-27 1h3m3 0h5m3 0h1m2 0h2m8 0h1m-28 1h1m4 0h3m2 0h3m1 0h1m1 0h1m3 0h1m1 0h1m2 0h3m-27 1h1m2 0h1m5 0h2m6 0h1m2 0h2m1 0h2m1 0h1m-28 1h1m4 0h1m2 0h2m1 0h1m2 0h1m1 0h4m1 0h4m1 0h2m-29 1h1m1 0h4m1 0h1m2 0h1m1 0h4m1 0h2m1 0h3m1 0h2m2 0h1m-27 1h1m1 0h1m1 0h2m1 0h2m2 0h6m1 0h2m1 0h3m-25 1h5m3 0h1m1 0h1m1 0h1m2 0h2m2 0h2m1 0h1m2 0h1m-27 1h1m1 0h2m1 0h2m4 0h1m1 0h4m1 0h1m1 0h1m1 0h1m1 0h2m-23 1h1m1 0h1m3 0h2m3 0h1m2 0h2m2 0h2m3 0h3m-28 1h1m3 0h3m4 0h3m1 0h3m1 0h7m-19 1h2m2 0h3m3 0h1m1 0h1m3 0h2m1 0h2m-29 1h7m2 0h2m1 0h3m1 0h2m1 0h2m1 0h1m1 0h1m1 0h2m-28 1h1m5 0h1m1 0h1m2 0h2m3 0h1m1 0h1m1 0h1m3 0h1m-25 1h1m1 0h3m1 0h1m2 0h5m1 0h1m2 0h1m1 0h7m1 0h1m-29 1h1m1 0h3m1 0h1m1 0h1m2 0h4m1 0h4m4 0h2m1 0h1m-28 1h1m1 0h3m1 0h1m1 0h1m2 0h7m2 0h1m2 0h1m2 0h1m1 0h1m-29 1h1m5 0h1m1 0h1m1 0h1m2 0h2m1 0h1m1 0h1m1 0h1m3 0h2m1 0h1m-28 1h7m4 0h2m2 0h1m2 0h4m1 0h1m3 0h1"/></svg></div>
+      <div class="url">egakiba.com/daruma</div>
+    </div>
+  </div>
+  <div id="nogl" hidden><p>このブラウザではWebGLが使えないため遊べません。別のブラウザか端末で開いてください。</p></div>
+</div>
+
+<script type="module">
+import * as THREE from 'three';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {MeshoptDecoder} from 'three/addons/libs/meshopt_decoder.module.js';
+import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
+
+const $ = id => document.getElementById(id), app = $('app'), canvas = $('c');
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v)), rand = (a, b) => a + Math.random()*(b - a), lerp = (a, b, t) => a + (b - a)*t;
+const TEST = location.hash === '#test';  // shows a menu on the title that starts a run just before each set piece
+const DEBUG = location.hash.startsWith('#debug'), PCMODE = location.hash === '#pc' || DEBUG;
+
+/* ---------- tuning (provisional values, change freely) ---------- */
+const DIST = 30;            // metres from the start to the oni
+const STEP = 0.65;          // one forward-and-back swing of the phone = one step
+const SWING = 6;            // degrees past the resting angle that count as half a swing
+const GRACE = 0.2;          // seconds after the oni starts turning before moving counts
+const WOBBLE = 35;          // deg/s of hand rotation that counts as moving while watched
+const NEAR = 5;             // no fake camera/ad this close to the oni
+const CHARGE_AT = 10;       // the daruma charges at you on its first look after this many metres are left
+const LEVEL_AT = [20, 10];  // the chant gets harder below each of these distances (see newCycle)
+const TOUCH_HOLD = 4;        // seconds to keep the finger down at the oni's back for the clear
+const CAM_AT = 15;          // the fake camera pops up once, while the oni is staring, on the first look after this many metres are left
+const AD_AT = 25;           // the fake full-screen ad does the same, on the first look after this many metres are left
+
+/* ---------- renderer / scene ---------- */
+let renderer;
+try { renderer = new THREE.WebGLRenderer({canvas, antialias:true}); } catch(_){ $('nogl').hidden = false; throw new Error('no webgl'); }
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.05;
+const scene = new THREE.Scene();
+const SKY_TOP = 0x2a1f4a, SKY_MID = 0xd9673a, FOG = 0x8a4a3c;
+scene.fog = new THREE.Fog(FOG, 14, 60);
+const camera = new THREE.PerspectiveCamera(55, 1, 0.05, 200);
+// the daruma's lacquer needs something to reflect or it reads almost black
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+scene.add(new THREE.HemisphereLight(0xffc9a0, 0x3a2030, 0.9));
+const sun = new THREE.DirectionalLight(0xffb070, 1.6); sun.position.set(-6, 5, -10); scene.add(sun);
+
+/* ---------- the shrine approach at dusk ---------- */
+// the oni stands at z = 0 facing +z; the player walks from z = GOAL + DIST down to GOAL
+const GOAL = 3.4, EYE = 1.45;
+function canvasTex(w, h, draw, rx = 1, ry = 1){
+  const c = document.createElement('canvas'); c.width = w; c.height = h; draw(c.getContext('2d'), w, h);
+  const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(rx, ry); t.anisotropy = 4; return t;
+}
+const noise = (g, w, h, n, col, a) => { for (let i = 0; i < n; i++){ g.fillStyle = `rgba(${col},${Math.random()*a})`; const s = 1 + Math.random()*3; g.fillRect(Math.random()*w, Math.random()*h, s, s); } };
+{
+  // sky: a big sphere with a dusk gradient painted on
+  const sky = new THREE.Mesh(new THREE.SphereGeometry(120, 32, 16), new THREE.MeshBasicMaterial({side:THREE.BackSide, fog:false, map:canvasTex(8, 256, (g, w, h) => {
+    const gr = g.createLinearGradient(0, 0, 0, h);
+    gr.addColorStop(0, '#1d1638'); gr.addColorStop(0.32, '#4a2f5e'); gr.addColorStop(0.46, '#c4573a'); gr.addColorStop(0.5, '#f0a050'); gr.addColorStop(0.53, '#8a4a3c'); gr.addColorStop(1, '#2a1712');
+    g.fillStyle = gr; g.fillRect(0, 0, w, h);
+  })}));
+  scene.add(sky);
+  // gravel ground and the stone path
+  const gravel = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), new THREE.MeshStandardMaterial({roughness:1, map:canvasTex(256, 256, (g, w, h) => { g.fillStyle = '#6f6458'; g.fillRect(0, 0, w, h); noise(g, w, h, 5000, '30,25,20', .5); noise(g, w, h, 3000, '200,190,175', .35); }, 30, 30)}));
+  gravel.rotation.x = -Math.PI/2; gravel.position.z = 10; scene.add(gravel);
+  const pathLen = DIST + 8;
+  const path = new THREE.Mesh(new THREE.BoxGeometry(2.6, 0.06, pathLen), new THREE.MeshStandardMaterial({roughness:.9, map:canvasTex(256, 256, (g, w, h) => {
+    g.fillStyle = '#5e5953'; g.fillRect(0, 0, w, h); noise(g, w, h, 2500, '20,18,16', .4); noise(g, w, h, 1500, '170,165,155', .3);
+    g.strokeStyle = 'rgba(25,22,20,.8)'; g.lineWidth = 4; for (let y = 0; y <= h; y += 64){ g.beginPath(); g.moveTo(0, y); g.lineTo(w, y); g.stroke(); const o = (y/64) % 2 ? 0 : 64; for (let x = o; x <= w; x += 128){ g.beginPath(); g.moveTo(x, y); g.lineTo(x, y + 64); g.stroke(); } }
+  }, 1, pathLen/2.6)}));
+  path.position.set(0, 0.03, pathLen/2 - 2); scene.add(path);
+
+  const vermilion = new THREE.MeshStandardMaterial({color:0xc8321f, roughness:.55}), black = new THREE.MeshStandardMaterial({color:0x1a1412, roughness:.7});
+  const stone = new THREE.MeshStandardMaterial({color:0x8b8378, roughness:.95}), wood = new THREE.MeshStandardMaterial({color:0x3b2418, roughness:.8});
+  const glow = new THREE.MeshStandardMaterial({color:0xffd9a0, emissive:0xffa040, emissiveIntensity:1.6});
+  const add = (geo, mat, x, y, z, parent = scene) => { const m = new THREE.Mesh(geo, mat); m.position.set(x, y, z); parent.add(m); return m; };
+  function torii(z, s){
+    const g = new THREE.Group(); g.position.z = z; g.scale.setScalar(s); scene.add(g);
+    for (const x of [-1.7, 1.7]){ add(new THREE.CylinderGeometry(.16, .19, 4.2, 16), vermilion, x, 2.1, 0, g); add(new THREE.CylinderGeometry(.24, .24, .3, 16), black, x, .15, 0, g); }
+    add(new THREE.BoxGeometry(4.2, .22, .26), vermilion, 0, 3.45, 0, g);
+    const kasagi = add(new THREE.BoxGeometry(5.2, .28, .42), black, 0, 4.25, 0, g);
+    add(new THREE.BoxGeometry(4.8, .2, .36), vermilion, 0, 4.02, 0, g);
+    // the top beam curves up at the ends
+    kasagi.geometry = new THREE.BoxGeometry(5.2, .28, .42, 16, 1, 1); const p = kasagi.geometry.attributes.position;
+    for (let i = 0; i < p.count; i++){ const x = p.getX(i); p.setY(i, p.getY(i) + Math.pow(Math.abs(x)/2.6, 3)*.28); } p.needsUpdate = true; kasagi.geometry.computeVertexNormals();
+    add(new THREE.BoxGeometry(.18, .55, .1), black, 0, 3.75, .14, g);
+  }
+  torii(GOAL + DIST - 2.5, 1); torii(GOAL + 9, 0.92); torii(-1.2, 0.8);
+  function lantern(x, z){
+    const g = new THREE.Group(); g.position.set(x, 0, z); scene.add(g);
+    add(new THREE.BoxGeometry(.6, .18, .6), stone, 0, .09, 0, g); add(new THREE.CylinderGeometry(.12, .16, .9, 8), stone, 0, .63, 0, g);
+    add(new THREE.BoxGeometry(.55, .12, .55), stone, 0, 1.12, 0, g); add(new THREE.BoxGeometry(.36, .32, .36), glow, 0, 1.34, 0, g);
+    const roof = add(new THREE.ConeGeometry(.5, .32, 4), stone, 0, 1.66, 0, g); roof.rotation.y = Math.PI/4; add(new THREE.SphereGeometry(.07, 8, 6), stone, 0, 1.86, 0, g);
+  }
+  for (let z = 2; z < GOAL + DIST + 4; z += 3.4){ lantern(-2.3, z); lantern(2.3, z); }
+  // paper lanterns hung on a rope along both sides
+  const chochin = new THREE.MeshStandardMaterial({color:0xfff0d8, emissive:0xff6a2a, emissiveIntensity:.9, roughness:.7});
+  const redChochin = new THREE.MeshStandardMaterial({color:0xd8322a, emissive:0xb01a10, emissiveIntensity:.9, roughness:.7});
+  for (const x of [-3.4, 3.4]){
+    for (let z = 0; z < GOAL + DIST + 4; z += 4.2) add(new THREE.CylinderGeometry(.05, .06, 3.2, 6), wood, x, 1.6, z);
+    const rope = add(new THREE.CylinderGeometry(.015, .015, GOAL + DIST + 4, 4), black, x, 2.95, (GOAL + DIST + 4)/2); rope.rotation.x = Math.PI/2;
+    for (let z = 1, i = 0; z < GOAL + DIST + 3; z += 1.4, i++){ const l = add(new THREE.SphereGeometry(.2, 12, 8), i % 3 ? chochin : redChochin, x, 2.62, z); l.scale.y = 1.35; }
+  }
+  // the worship hall behind the oni
+  const hall = new THREE.Group(); hall.position.z = -4.5; scene.add(hall);
+  add(new THREE.BoxGeometry(9, .7, 6), stone, 0, .35, 0, hall);
+  add(new THREE.BoxGeometry(7.4, 3, 4.6), wood, 0, 2.2, -.2, hall);
+  for (let x = -3.4; x <= 3.41; x += 1.7) add(new THREE.CylinderGeometry(.14, .14, 3, 10), vermilion, x, 2.2, 2.2, hall);
+  add(new THREE.BoxGeometry(6.4, 2.2, .1), new THREE.MeshStandardMaterial({color:0x2a1a12, emissive:0x40200c, emissiveIntensity:.6}), 0, 2.0, 2.05, hall);
+  const roofShape = new THREE.Shape(); roofShape.moveTo(-6, 0); roofShape.quadraticCurveTo(-3.2, .5, 0, 2.6); roofShape.quadraticCurveTo(3.2, .5, 6, 0); roofShape.lineTo(-6, 0);
+  const roof = add(new THREE.ExtrudeGeometry(roofShape, {depth:7.6, bevelEnabled:false}), black, 0, 3.7, -4.1, hall);
+  const shime = add(new THREE.TorusGeometry(2.8, .1, 8, 24, Math.PI), new THREE.MeshStandardMaterial({color:0xd8c79a, roughness:1}), 0, 3.55, 2.4, hall); shime.rotation.z = Math.PI; shime.scale.y = 0.16;
+  // dark trees around the grounds
+  const leaf = new THREE.MeshStandardMaterial({color:0x1c2418, roughness:1});
+  for (let i = 0; i < 46; i++){
+    const side = i % 2 ? 1 : -1, x = side*rand(5.5, 16), z = rand(-12, GOAL + DIST + 8), h = rand(5, 10);
+    add(new THREE.CylinderGeometry(.18, .25, h*.5, 6), wood, x, h*.25, z); const c = add(new THREE.ConeGeometry(rand(1.6, 2.6), h*.8, 7), leaf, x, h*.6, z); c.rotation.y = rand(0, 3);
+  }
+  // the oni's stand
+  add(new THREE.CylinderGeometry(.75, .85, .55, 20), stone, 0, .275, 0);
+}
+
+/* ---------- the oni: the daruma model with two faces on one body ---------- */
+const oni = new THREE.Group(); scene.add(oni);
+const oniTurn = new THREE.Group(); oni.add(oniTurn); oni.position.y = .55;
+let faceDef = null, faceGrot = null, mixer = null, grotesque = false;
+const loader = new GLTFLoader(); loader.setMeshoptDecoder(MeshoptDecoder);
+const loads = {}, loadProg = () => { const v = Object.values(loads), d = v.reduce((a, b) => a + b, 0)/3; $('loadMsg').textContent = d < 1 ? `鬼を呼んでいます… ${Math.round(d*100)}%` : ''; };
+const loadGlb = name => new Promise((res, rej) => loader.load(name, g => { loads[name] = 1; loadProg(); res(g); }, e => { if (e.total){ loads[name] = e.loaded/e.total; loadProg(); } }, rej));
+const ready = Promise.all(['body.glb', 'face-default.glb', 'face-grotesque.glb'].map(loadGlb)).then(([b, d, gr]) => {
+  oniTurn.add(b.scene, d.scene, gr.scene); faceDef = d.scene; faceGrot = gr.scene; faceGrot.visible = false;
+  const clip = THREE.AnimationClip.findByName(gr.animations, 'EyeDart'); if (clip){ mixer = new THREE.AnimationMixer(gr.scene); mixer.clipAction(clip).play(); }
+  oniTurn.scale.setScalar(1.25);
+});
+function setGrotesque(){ grotesque = true; if (faceDef){ faceDef.visible = false; faceGrot.visible = true; } }
+
+/* ---------- motion input ---------- */
+// half a swing is counted each time the phone tips past SWING degrees on the other side of where it rests;
+// the resting angle follows slowly, so any comfortable way of holding the phone works
+let beta = null, rest = null, swingSide = 0, halfSteps = 0, rate = 0, rateRaw = 0, lastOri = null, haveRate = false;
+function onOrient(e){
+  if (e.beta == null) return;
+  const t = performance.now()/1000;
+  if (!haveRate && lastOri){ // no gyro rate on this device: estimate it from how fast the angles change
+    const dt = Math.max(0.008, t - lastOri.t), da = (a, b) => ((a - b + 540) % 360) - 180;
+    rateRaw = Math.hypot(da(e.beta, lastOri.b), da(e.gamma || 0, lastOri.g))/dt;
+  }
+  lastOri = {t, b:e.beta, g:e.gamma || 0};
+  beta = e.beta;
+  if (rest == null) rest = beta;
+  const rel = beta - rest;
+  if (rel > SWING && swingSide !== 1){ swingSide = 1; halfSteps++; }
+  else if (rel < -SWING && swingSide !== -1){ swingSide = -1; halfSteps++; }
+}
+function onMotion(e){
+  const r = e.rotationRate; if (!r || r.alpha == null) return;
+  haveRate = true; rateRaw = Math.hypot(r.alpha || 0, r.beta || 0, r.gamma || 0);
+}
+let listening = false;
+async function askSensors(){
+  if (!listening){ listening = true; addEventListener('deviceorientation', onOrient); addEventListener('devicemotion', onMotion); }
+  try {
+    if (typeof DeviceOrientationEvent !== 'undefined' && DeviceOrientationEvent.requestPermission){
+      const a = await DeviceOrientationEvent.requestPermission(); if (a === 'denied') return false;
+      if (typeof DeviceMotionEvent !== 'undefined' && DeviceMotionEvent.requestPermission) await DeviceMotionEvent.requestPermission().catch(() => {});
+    }
+  } catch(_){}
+  return true;
+}
+
+/* ---------- the finger point ---------- */
+let finger = null; // pointerId on the point
+const pad = $('pad');
+pad.addEventListener('pointerdown', e => {
+  if (finger != null) return; finger = e.pointerId; try { pad.setPointerCapture(e.pointerId); } catch(_){}
+  pad.classList.add('on'); pad.classList.remove('wait'); pad.innerHTML = '指を<br>離すな';
+  if (state === 'ready') begin(); else if (state === 'guide') guideFinger(true);
+});
+const lift = e => { if (e.pointerId !== finger) return; finger = null; pad.classList.remove('on'); pad.innerHTML = 'ここに<br>指を置く'; if (state === 'play' || state === 'touch') out('finger'); else if (state === 'ready') pad.classList.add('wait'); else if (state === 'guide') guideFinger(false); };
+pad.addEventListener('pointerup', lift); pad.addEventListener('pointercancel', lift); pad.addEventListener('lostpointercapture', lift);
+// the ad's ✕ really closes it, once the countdown is over. Lifting the point finger to press it is still an out
+$('adX').addEventListener('pointerdown', e => { e.stopPropagation(); const o = oni$; if (state === 'play' && o && o.ph === 'cam' && o.gim === 'ad' && o.t >= 3) o.t = o.camDur; });
+// a page that goes to the background loses the finger too
+document.addEventListener('visibilitychange', () => { if (document.hidden && (state === 'play' || state === 'touch')) out('finger'); if (!document.hidden && state === 'play') keepAwake(); });
+
+// #pc for checking on a computer: hold the mouse on the point, ↑ or space for half a swing, moving the mouse fast counts as a wobble
+let mouseRate = 0, lastMouse = null;
+if (PCMODE){
+  addEventListener('keydown', e => { if (e.code === 'ArrowUp' || e.code === 'Space'){ e.preventDefault(); halfSteps++; } });
+  addEventListener('pointermove', e => { if (e.pointerType !== 'mouse') return; const t = performance.now(); if (lastMouse){ mouseRate = Math.max(mouseRate, Math.hypot(e.clientX - lastMouse.x, e.clientY - lastMouse.y)/Math.max(8, t - lastMouse.t)*25); } lastMouse = {x:e.clientX, y:e.clientY, t}; });
+}
+
+/* ---------- game state ---------- */
+let state = 'title', T = 0, z = GOAL + DIST, zTarget = z, jolt = 0, usedSteps = 0;
+let oni$ = null;        // the oni's current cycle
+let charged = false, camDone = false, adDone = false, charge = null, result = null, wantShot = false, shareFile = null, endAt = 0, endReason = '';
+const SYL = ['だ', 'る', 'ま', 'さ', 'ん', 'が', 'こ', 'ろ', 'ん', 'だ'];
+const left = () => Math.max(0, z - GOAL);
+function hint(h){ $('hint').innerHTML = h; }
+function big(text, cls){ const b = $('bigmsg'); b.hidden = false; b.className = cls || ''; b.textContent = text; b.style.animation = 'none'; void b.offsetWidth; b.style.animation = ''; }
+
+// one round of the chant: its tempo, and where the oni cuts it off and turns. There is no promise to wait for the end.
+let feinted = false;
+function newCycle(){
+  // difficulty steps up at LEVEL_AT metres left: a faster base tempo, sharper changes of pace, a shorter breather, a longer stare
+  const lv = LEVEL_AT.filter(m => left() <= m).length;
+  const d = rand(...[[0.26, 0.42], [0.21, 0.36], [0.17, 0.31]][lv]);
+  const pats = [
+    i => d,                                                         // even
+    i => i < 6 ? d*(1.3 + 0.3*lv) : d*(0.6 - 0.12*lv),               // だーるーまーさーんーが ころんだ
+    i => i < 6 ? d*0.6 : d*(1.2 + 0.2*lv),                           // だるまさんが こーろーんーだ
+  ];
+  const hold = Math.floor(rand(0, 9));                              // one syllable dragged out: だるまさーーーんがころんだ
+  pats.push(i => i === hold ? d*(3 + lv) : d*(0.85 - 0.1*lv));
+  if (lv >= 1) pats.push(i => i < 7 ? d : d*0.3);                   // normal, then ころんだ in a blur
+  if (lv >= 2) pats.push(i => i === 5 ? d*5 : i > 5 ? d*0.22 : d*0.9); // hold が... then ころんだ all at once
+  if (lv >= 2) pats.push(i => i < 6 ? d : d*0.07, i => i < 6 ? d : d*0.07); // だるまさんが at an even pace, then ころんだ in an instant (twice as likely)
+  const pat = pats[Math.floor(Math.random()*pats.length)], times = SYL.map((_, i) => pat(i));
+  // it always finishes 「ころんだ」 before turning
+  const stop = 9;
+  oni$ = {ph:'wait', t:0, wait:rand(...[[0.6, 1.2], [0.45, 1.0], [0.3, 0.8]][lv]), times, stop, i:-1, look:rand(...[[1.5, 3.0], [1.8, 3.3], [2.0, 3.8]][lv])};
+  // the fake camera pops up while the oni is staring at you, so reacting to it gets you caught
+  // and so does the fake ad, whose ✕ shows up after a few seconds to tempt the finger off the point
+  const gim = left() <= NEAR ? null : !camDone && left() <= CAM_AT ? 'cam' : !adDone && left() <= AD_AT ? 'ad' : null;
+  // feint: below the last LEVEL_AT, it sometimes turns straight back round right after looking away, with no chant
+  if (!gim && lv >= 2 && !feinted && Math.random() < 0.3){ feinted = true; oni$.feint = true; oni$.wait = rand(0.25, 0.6); oni$.stop = -1; }
+  else feinted = false;
+  if (gim){ if (gim === 'cam') camDone = true; else adDone = true; oni$.gim = gim; oni$.camAt = rand(0.8, 1.3); oni$.camDur = gim === 'cam' ? rand(5.0, 6.5) : rand(7.0, 8.5); oni$.look = Math.max(oni$.look, oni$.camAt + 0.2); }
+  $('chant').textContent = ''; $('chant').classList.remove('look');
+}
+function showSyl(i){ const s = document.createElement('i'); s.textContent = SYL[i]; $('chant').appendChild(s); if (i === SYL.length - 1) $('chant').append('！'); }
+
+/* ---------- first-run guide ---------- */
+const GUIDE_STEPS = 3, FREEZE = 2;
+let g = null;
+function gSet(text, prog, phone){ $('gText').innerHTML = text; $('gProg').textContent = prog || ''; $('gPhone').className = 'phone' + (phone ? ' ' + phone : ''); }
+function startGuide(){
+  state = 'guide'; g = {step:'finger', t:0, n:0}; rest = beta;
+  $('title').hidden = true; $('over').hidden = true; $('bigmsg').hidden = true; $('guide').hidden = false; $('eye').hidden = true; $('shake').hidden = true;
+  app.classList.remove('idle'); app.classList.add('guide'); keepAwake();
+  if (finger != null) guideFinger(true);
+  else { pad.classList.add('wait'); gSet('スマホを<b>縦に</b>持って、<br>画面下の丸に<b>指を置いて</b>ね', '', 'still'); }
+}
+function guideWalk(){ g.step = 'walk'; g.t = 0; g.n = 0; usedSteps = halfSteps; gSet('スマホを<b>前後にカクッ</b>と倒すと<br>1歩進むよ。<b>' + GUIDE_STEPS + '歩</b>歩いてみて', '👣 0 / ' + GUIDE_STEPS); }
+function guideReady(){ g.step = 'ready'; g.t = 0; $('shake').hidden = true; gSet('鬼が振り向いたら<b>ピタッ</b>と止まる。<br>「止まって！」が出たら<b>' + FREEZE + '秒</b>動かないで', '', 'off'); }
+function guideFinger(on){
+  if (on){
+    pad.classList.remove('wait');
+    if (g.step === 'finger' || g.step === 'walk') guideWalk(); else guideReady();
+  } else if (g.step !== 'finger'){
+    g.step = 'finger'; $('shake').hidden = true; $('bigmsg').hidden = true; pad.classList.add('wait');
+    gSet('指は<b>離さないで</b>ね！<br>丸に指を戻して', '', 'still');
+  }
+}
+function guideUpdate(dt, newSteps){
+  g.t += dt;
+  if (g.step === 'walk' && newSteps){
+    const before = Math.floor(g.n/2); g.n += newSteps; jolt = 1;
+    const n = Math.min(GUIDE_STEPS, Math.floor(g.n/2));
+    if (n > before){ $('gProg').textContent = '👣 ' + n + ' / ' + GUIDE_STEPS; big(n >= GUIDE_STEPS ? 'できた！' : 'いいね！', 'win'); }
+    if (n >= GUIDE_STEPS){ g.step = 'walked'; g.t = 0; }
+  }
+  else if (g.step === 'walked' && g.t > 1.0){ $('bigmsg').hidden = true; guideReady(); }
+  else if (g.step === 'ready' && g.t > 2.2){ g.step = 'freeze'; g.t = 0; big('止まって！', 'out'); $('shake').hidden = false; }
+  else if (g.step === 'freeze'){
+    if (g.t > 0.6) $('bigmsg').hidden = true;
+    $('gProg').textContent = Math.max(0, FREEZE - g.t).toFixed(1);
+    $('shakeBar').style.width = Math.min(100, rate/WOBBLE*100) + '%';
+    if (newSteps || rate > WOBBLE){ big('揺れた！', 'out'); g.step = 'shook'; g.t = 0; $('shake').hidden = true; }
+    else if (g.t >= FREEZE){ g.step = 'done'; g.t = 0; $('shake').hidden = true; big('OK！', 'win'); gSet('その調子！<br>本番も<b>指は最後まで離さないで</b>ね', '', 'off'); }
+  }
+  else if (g.step === 'shook' && g.t > 1.0){ $('bigmsg').hidden = true; guideReady(); gSet('もう一回！<br>「止まって！」で<b>' + FREEZE + '秒</b>ピタッと止まって', '', 'off'); }
+  else if (g.step === 'done' && g.t > 2.0){
+    try { localStorage.setItem('daruma-guided', '1'); } catch(_){}
+    $('guide').hidden = true; app.classList.remove('guide'); g = null; startRun();
+  }
+}
+function guided(){ try { return localStorage.getItem('daruma-guided') === '1'; } catch(_){ return false; } }
+
+function startRun(){
+  state = 'ready'; T = 0; z = zTarget = GOAL + DIST; jolt = 0; usedSteps = halfSteps; rest = beta; charged = false; camDone = adDone = feinted = false; charge = null; grotesque = false; $('cam').hidden = $('ad').hidden = $('touchBtn').hidden = true; $('hint').hidden = false; $('cam')._run = null; $('cam').classList.remove('sharp', 'gone');
+  if (faceDef){ faceDef.visible = true; faceGrot.visible = false; }
+  oni.position.set(0, .55, 0); oniTurn.rotation.y = Math.PI; oni$ = null; lunge = null; line = null; slowTurn = null; $('say').hidden = true; document.querySelectorAll('.torn').forEach(c => c.remove());
+  $('title').hidden = true; $('over').hidden = true; $('guide').hidden = true; app.classList.remove('guide'); $('bigmsg').hidden = true; $('chant').textContent = ''; $('eye').hidden = true; $('shake').hidden = true;
+  app.classList.remove('idle'); shareFile = null; result = null;
+  if (finger != null) begin(); else { pad.classList.add('wait'); hint('画面下の丸に<b>指を置いて</b>スタート'); }
+}
+function begin(){
+  state = 'play'; T = 0; usedSteps = halfSteps; rest = beta; newCycle(); keepAwake();
+  hint('スマホを<b>前後に倒して</b>歩け'); big('はじめ！'); setTimeout(() => { if (state === 'play') $('bigmsg').hidden = true; }, 700);
+}
+function out(reason){
+  if (state !== 'play' && state !== 'touch') return;
+  const atGoal = state === 'touch'; $('touchBtn').hidden = true; $('hint').hidden = false;
+  state = 'end'; endReason = reason; endAt = T;
+  // fooled by the fake camera or ad: the daruma rips through it, right in your face
+  const gim = oni$ && oni$.ph === 'cam' && !$(oni$.gim).hidden ? $(oni$.gim) : null;
+  if (gim) reveal(gim);
+  // or caught while it is already up close after ripping through one
+  const fooled = gim || (oni$ && oni$.ph === 'peek');
+  for (const el of [$('cam'), $('ad')]) if (el !== gim || el.id !== 'cam') el.hidden = true;
+  $('chant').classList.add('look'); $('shake').hidden = true;
+  if (!fooled) big(reason === 'finger' ? '指を離した！' : '動いた！', 'out'); $('vig').style.opacity = 1;
+  hint('アウト');
+  // lifting the finger at its back: the oni turns round slowly and rubs it in
+  if (atGoal){ slowTurn = {t:0}; say('あーあ、ここまで我慢したのに指、離しちゃったね。ルールをちゃんと読まないと。', SLOW_TURN + 0.5); }
+  // caught moving or lifting the finger: the daruma charges at you and asks (its other face only after the charge)
+  else if (fooled){ lunge = {t:0, from:oni.position.z}; say(reason === 'finger' ? 'あーあ、指離しちゃった。' : 'あーあ、うごいちゃった。', 1.1); }
+  else { lunge = {t:0, from:oni.position.z}; say(reason === 'finger' ? 'なんで指離したの？' : 'あれ？動いてるじゃん。', 0.7); }
+  if (oni$) oni$.ph = 'look';
+  finish(false);
+}
+let lunge = null, line = null, slowTurn = null;
+const SLOW_TURN = 2.2; // seconds the oni takes to turn round when you let go at its back
+// the oni's line types out a character at a time (driven by the frame clock, see update), then the result follows
+// with a beat after each sentence
+function typeTimes(text){ let t = 0; return [...text].map(ch => { const a = t; t += /[。？！]/.test(ch) ? 0.7 : ch === '、' ? 0.45 : 0.07; return a; }); }
+function say(text, delay){ line = {text, at:typeTimes(text), t:-delay, n:0}; $('say').textContent = ''; }
+// at the oni's back it says "touch!", but that is the last trap: lifting the point finger to touch is an out.
+// Hold on for TOUCH_HOLD seconds and it is a clear. Moving no longer matters. The clock stops on arrival
+let touchT = 0;
+function reach(){
+  state = 'touch'; touchT = 0; $('eye').hidden = true; $('shake').hidden = true; $('vig').style.opacity = 0; $('touchBtn').hidden = false;
+  $('hint').hidden = true; // no instruction here: the button alone has to tempt you
+}
+$('touchBtn').addEventListener('pointerdown', e => e.stopPropagation());
+function win(){
+  $('touchBtn').hidden = true; $('hint').hidden = false;
+  state = 'end'; endReason = 'clear'; endAt = T; $('eye').hidden = true; $('shake').hidden = true;
+  big('たどり着いた！', 'win'); hint('クリア');
+  // the oni turns round, comes up close and gives in
+  lunge = {t:0, from:oni.position.z}; say('やるじゃん。おめでとう。', 1.3);
+  finish(true);
+}
+// split an overlay down a jagged line and fling the two halves apart
+// the fake camera focuses on the daruma instead; anything else gets ripped through
+function reveal(el){
+  if (el.id !== 'cam') return tear(el);
+  el.classList.add('sharp'); const run = el._run = {};
+  setTimeout(() => { if (el._run === run) el.classList.add('gone'); }, 1400);
+  setTimeout(() => { if (el._run === run){ el.hidden = true; el.classList.remove('sharp', 'gone'); } }, 1800);
+}
+function tear(el){
+  const pts = [], n = 9;
+  for (let i = 0; i <= n; i++) pts.push([50 + (i % 2 ? 1 : -1)*rand(3, 9), i/n*100]);
+  const edge = pts.map(([x, y]) => x + '% ' + y + '%');
+  const halves = [['0% 0%', ...edge, '0% 100%'], ['100% 0%', ...edge, '100% 100%']];
+  halves.forEach((poly, i) => {
+    const c = el.cloneNode(true); c.classList.add('torn'); c.style.animation = 'none'; c.style.clipPath = 'polygon(' + poly.join(',') + ')';
+    el.after(c);
+    const sx = i ? 1 : -1;
+    c.animate([{transform:'none'}, {transform:`translate(${sx*8}%, 1%) rotate(${sx*3}deg)`, offset:.25}, {transform:`translate(${sx*75}%, 18%) rotate(${sx*22}deg)`}],
+      {duration:650, easing:'cubic-bezier(.55,0,.85,.5)', fill:'forwards'}).onfinish = () => c.remove();
+  });
+}
+function finish(cleared){
+  const best = loadBest();
+  result = cleared ? {cleared, time:T} : {cleared, left:left(), reason:endReason};
+  const isBest = cleared ? (best.time == null || T < best.time) : (best.time == null && (best.left == null || result.left < best.left));
+  if (cleared && isBest) best.time = T; if (!cleared && (best.left == null || result.left < best.left)) best.left = result.left;
+  if (!TEST) saveBest(best); result.isBest = isBest; result.best = best;
+  // a telling-off shows the result itself once it has been read (see update)
+  const r = result; if (!line) setTimeout(() => { if (result === r) showResult(); }, 1500);
+}
+const fmtT = t => t.toFixed(2) + '秒', fmtM = m => m.toFixed(1) + 'm';
+function loadBest(){ try { return JSON.parse(localStorage.getItem('daruma-best') || '{}'); } catch(_){ return {}; } }
+function saveBest(b){ try { localStorage.setItem('daruma-best', JSON.stringify(b)); } catch(_){} }
+function bestText(b){ return b.time != null ? 'タイム ' + fmtT(b.time) : b.left != null ? 'あと ' + fmtM(b.left) : '-'; }
+function showBest(){ const b = loadBest(), t = $('tBest'); if (b.time != null || b.left != null){ t.hidden = false; t.textContent = '自己ベスト　' + bestText(b); } }
+function showResult(){
+  const r = result;
+  $('oWhy').textContent = r.cleared ? 'CLEAR' : 'アウト'; $('oWhy').className = 'why' + (r.cleared ? ' good' : '');
+  $('oTitle').textContent = r.cleared ? '鬼までたどり着いた' : r.reason === 'finger' ? '指を離した！' : '動いた！';
+  $('oBig').innerHTML = r.cleared ? `<span>タイム</span>${fmtT(r.time)}` : `<span>鬼まで</span>あと ${fmtM(r.left)}`;
+  $('oK1').textContent = r.cleared ? '歩いた距離' : 'タイム'; $('oV1').textContent = r.cleared ? DIST + 'm' : fmtT(endAt);
+  $('oBestV').textContent = bestText(r.best); $('oBest').hidden = !r.isBest;
+  $('over').hidden = false; $('bigmsg').hidden = true; $('vig').style.opacity = 0; app.classList.add('idle');
+  oniTurn.rotation.y = 0; $('say').hidden = true;
+  wantShot = true; // the share image is drawn from the next rendered frame
+  state = 'over';
+}
+
+/* ---------- per-frame update ---------- */
+function update(dt){
+  if (mixer && grotesque) mixer.update(dt);
+  // rate: a short smoothing so a single noisy sample doesn't end the run
+  const r = Math.max(rateRaw, mouseRate); mouseRate *= Math.pow(0.001, dt);
+  rate = lerp(rate, r, 1 - Math.exp(-dt/0.06));
+  if (beta != null && rest != null) rest = lerp(rest, beta, 1 - Math.exp(-dt/1.5));
+  const newSteps = halfSteps - usedSteps; usedSteps = halfSteps;
+
+  if (state === 'play'){
+    T += dt;
+    const o = oni$; o.t += dt;
+    const watching = o.ph === 'turn' || o.ph === 'look' || o.ph === 'charge' || o.ph === 'cam' || o.ph === 'peek';
+    const judging = watching && ((o.ph !== 'turn' && o.ph !== 'cam') || o.t >= GRACE);
+    if (newSteps){ if (judging) return out('move'); zTarget = Math.max(GOAL, zTarget - newSteps*STEP/2); jolt = 1; }
+    if (judging && rate > WOBBLE) return out('move');
+    // the oni
+    if (o.ph === 'wait'){ oniTurn.rotation.y = lerp(oniTurn.rotation.y, Math.PI, 1 - Math.exp(-dt/0.12)); if (o.t >= o.wait && o.feint){ o.ph = 'turnPrep'; o.t = 0; }
+      else if (o.t >= o.wait){ o.ph = 'chant'; o.t = 0; o.i = -1; o.next = 0; } }
+    else if (o.ph === 'chant'){
+      if (o.t >= o.next){ o.i++; showSyl(o.i); o.next = o.t + o.times[o.i]; if (o.i >= o.stop){ o.ph = 'turnPrep'; o.t = 0; } }
+    }
+    else if (o.ph === 'turnPrep'){ if (o.t >= (o.stop === 9 ? 0.05 : 0.12)){ o.ph = 'turn'; o.t = 0; $('chant').classList.add('look'); $('eye').hidden = false; $('shake').hidden = false; } }
+    else if (o.ph === 'turn'){
+      oniTurn.rotation.y = Math.PI*(1 - clamp(o.t/0.16, 0, 1));
+      if (o.t >= 0.16){
+        oniTurn.rotation.y = 0; o.t = 0;
+        // halfway down the path, the daruma lunges at you once with its other face, and keeps it from then on
+        if (!charged && left() <= CHARGE_AT){ charged = true; setGrotesque(); o.ph = 'charge'; charge = {t:0, from:0}; if (o.camAt != null){ o.camAt = null; if (o.gim === 'cam') camDone = false; else adDone = false; } } // the gimmick waits for a later look
+        else o.ph = 'look';
+      }
+    }
+    else if (o.ph === 'charge'){
+      const near = z - 1.6, c = o.t;
+      oni.position.z = c < 0.35 ? lerp(0, near, Math.pow(c/0.35, 2)) : c < 1.3 ? near : lerp(near, 0, clamp((c - 1.3)/0.7, 0, 1));
+      oni.position.y = .55 + (c < 0.35 ? Math.sin(c/0.35*Math.PI)*.35 : 0);
+      if (c >= 2.0){ oni.position.z = 0; oni.position.y = .55; o.ph = 'look'; o.t = 0; o.look = rand(0.8, 1.6); }
+    }
+    else if (o.ph === 'cam'){
+      if (o.gim === 'ad'){ const s = Math.ceil(3 - o.t); $('adX').textContent = s > 0 ? s : '✕'; $('adBar').style.width = Math.min(100, o.t/o.camDur*100) + '%'; }
+            // held still through it: the daruma rips through anyway, looks you over, doubts itself and goes back. Still watching all the while
+      if (o.t >= o.camDur){ reveal($(o.gim)); if (o.gim !== 'cam') $(o.gim).hidden = true; o.ph = 'peek'; o.t = 0; o.text = 'うごいてない？おかしいなぁ…'; o.at = typeTimes(o.text); o.n = -1; $('chant').classList.add('look'); $('eye').hidden = false; $('shake').hidden = false; }
+    }
+    else if (o.ph === 'peek'){
+      const near = z - 1.5, c = o.t, talk = c - 0.6, done = o.at[o.at.length - 1] + 1.3, back = talk - done;
+      oni.position.z = c < 0.4 ? lerp(0, near, Math.pow(c/0.4, 2)) : back < 0 ? near : lerp(near, 0, clamp(back/0.6, 0, 1));
+      oni.position.y = .55 + (c < 0.4 ? Math.sin(c/0.4*Math.PI)*.3 : 0);
+      let n = 0; while (n < o.at.length && o.at[n] <= talk) n++;
+      if (talk > 0 && n !== o.n){ o.n = n; $('say').hidden = false; $('say').textContent = o.text.slice(0, n); }
+      if (back > 0) $('say').hidden = true;
+      if (back >= 0.6){ oni.position.z = 0; oni.position.y = .55; o.ph = 'look'; o.t = 0; o.look = rand(0.6, 1.0); }
+    }
+    else if (o.ph === 'look'){
+      if (o.camAt != null && !o.camShown && o.t >= o.camAt){ o.camShown = true; o.ph = 'cam'; o.t = 0; $(o.gim).hidden = false; if (o.gim === 'ad') $('adX').textContent = '3'; }
+      else if (o.t >= o.look){ o.ph = 'back'; o.t = 0; $('eye').hidden = true; $('shake').hidden = true; }
+    }
+    else if (o.ph === 'back'){ oniTurn.rotation.y = Math.PI*clamp(o.t/0.3, 0, 1); if (o.t >= 0.3) newCycle(); }
+    $('shakeBar').style.width = Math.min(100, rate/WOBBLE*100) + '%';
+    $('vig').style.opacity = judging ? clamp(rate/WOBBLE, 0, 1)*.8 : 0;
+  } else if (state === 'end'){
+    // the oni turns to face the player, whether it caught them or they made it to its back
+    if (slowTurn){ slowTurn.t += dt; const k = clamp(slowTurn.t/SLOW_TURN, 0, 1); oniTurn.rotation.y = Math.PI*(1 - k*k*(3 - 2*k)); }
+    else oniTurn.rotation.y = lerp(oniTurn.rotation.y, 0, 1 - Math.exp(-dt/(endReason === 'clear' ? 0.25 : 0.08)));
+    if (lunge){ // rush up to right in front of the camera and stay there
+      lunge.t += dt; const k = clamp(lunge.t/0.4, 0, 1);
+      oni.position.z = lerp(lunge.from, z - 1.5, k*k); oni.position.y = .55 + Math.sin(k*Math.PI)*.3;
+    }
+    if (line){
+      line.t += dt; let n = 0; while (n < line.at.length && line.at[n] <= line.t) n++;
+      if (line.t > 0 && $('say').hidden){ $('say').hidden = false; $('bigmsg').hidden = true; }
+      if (n !== line.n){ line.n = n; $('say').textContent = line.text.slice(0, n); }
+      if (line.t > line.at[line.at.length - 1] + 2.5){ line = null; showResult(); }
+    }
+  } else if (state === 'touch'){
+    touchT += dt; if (touchT >= TOUCH_HOLD) win();
+  } else if (state === 'guide'){
+    guideUpdate(dt, newSteps);
+  } else if (state === 'title' || state === 'over'){
+    oniTurn.rotation.y = lerp(oniTurn.rotation.y, state === 'title' ? Math.PI : 0, 1 - Math.exp(-dt/0.3));
+  }
+  // walking: each half step is one footfall. The body moves forward over it while the head sinks and comes back up
+  z = lerp(z, zTarget, 1 - Math.exp(-dt/0.09));
+  jolt = Math.max(0, jolt - dt/0.32);
+  camera.position.set(0, EYE - 0.09*Math.sin((1 - jolt)*Math.PI), z);
+  camera.lookAt(0, state === 'title' ? 1.35 : 1.2, 0);
+  if (state === 'play' && left() <= 0.01) reach();
+  $('dist').textContent = left().toFixed(1); $('clock').textContent = T.toFixed(2);
+}
+
+/* ---------- layout ---------- */
+let vw = 1, vh = 1;
+function resize(){
+  vw = app.clientWidth; vh = app.clientHeight; renderer.setSize(vw, vh, false);
+  camera.aspect = vw/vh;
+  // narrow phones get a slightly wider lens so the path and the oni both fit
+  camera.fov = clamp(50*Math.sqrt(0.56/Math.min(0.56, Math.max(0.3, camera.aspect))), 50, 64); camera.updateProjectionMatrix();
+  const zs = clamp(Math.min(vh/700, vw/390), 0.72, 1), z = zs < 1 ? zs.toFixed(3) : '';
+  for (const el of document.querySelectorAll('.hud,.card,#chant,#eye,#shake,#hint,#pad,#bigmsg,#say,#guide')) el.style.zoom = z;
+  // a phone held sideways can't be tilted forward and back the same way, so it asks to be turned upright
+  $('turn').hidden = !(vw > vh && (navigator.maxTouchPoints > 0) && !PCMODE && vh < 600);
+}
+addEventListener('resize', resize);
+addEventListener('orientationchange', () => setTimeout(resize, 200));
+if (window.visualViewport) visualViewport.addEventListener('resize', resize);
+/* nobody touches the screen except the one finger, so keep it from dimming mid-run */
+let wakeLock = null;
+async function keepAwake(){
+  try { if (!('wakeLock' in navigator) || wakeLock) return; wakeLock = await navigator.wakeLock.request('screen'); wakeLock.addEventListener('release', () => { wakeLock = null; }); }
+  catch(_){ wakeLock = null; }
+}
+/* fullscreen where the browser allows it (Android etc.); iPhone gets it by adding the page to the home screen */
+function goFullscreen(){
+  const d = document, el = d.documentElement;
+  if (d.fullscreenElement || d.webkitFullscreenElement) return;
+  try {
+    const req = el.requestFullscreen || el.webkitRequestFullscreen;
+    const p = req && req.call(el, {navigationUI:'hide'});
+    if (p && p.then) p.then(() => { try { screen.orientation.lock('portrait').catch(() => {}); } catch(_){} }).catch(() => {});
+  } catch(_){}
+}
+
+/* ---------- loop ---------- */
+let last = performance.now();
+function frame(now){
+  const dt = Math.min(0.05, (now - last)/1000); last = now;
+  if (app.clientWidth !== vw || app.clientHeight !== vh) resize();
+  update(dt);
+  renderer.render(scene, camera);
+  // the WebGL frame can only be read right after it is drawn, so the share image is made here.
+  // The share image always shows the default face: redraw with it, grab the frame, then put the other face back
+  if (wantShot){
+    wantShot = false; const swap = grotesque && faceDef;
+    if (swap){ faceDef.visible = true; faceGrot.visible = false; renderer.render(scene, camera); }
+    buildShareImage().then(f => { shareFile = f; }, () => {});
+    if (swap){ faceDef.visible = false; faceGrot.visible = true; renderer.render(scene, camera); }
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ---------- share: the native share sheet on phones, an X post where it isn't available ---------- */
+const SITE = new URL('./', location.href).href;
+// Built when the result appears, so the share tap can open the sheet at once (iPhone drops a share that waits too long).
+function buildShareImage(){
+  const Wc = 1080, Hc = 1350, c = document.createElement('canvas'); c.width = Wc; c.height = Hc;
+  const g = c.getContext('2d'), JP = '"Noto Serif JP","Hiragino Mincho ProN",serif', BODY = '"Zen Kaku Gothic New","Hiragino Sans",sans-serif', NUM = '"IBM Plex Mono",ui-monospace,monospace', r = result;
+  const box2 = (x, y, w, h, rr) => { g.beginPath(); if (g.roundRect) g.roundRect(x, y, w, h, rr); else g.rect(x, y, w, h); };
+  const fit = (t, wt, size, font, max) => { g.font = `${wt} ${size}px ${font}`; while (g.measureText(t).width > max && size > 20){ size -= 4; g.font = `${wt} ${size}px ${font}`; } };
+  // the last frame fills the card, cropped to its middle
+  g.fillStyle = '#1a0f0c'; g.fillRect(0, 0, Wc, Hc);
+  let sw = canvas.width, sh = sw*Hc/Wc; if (sh > canvas.height){ sh = canvas.height; sw = sh*Wc/Hc; }
+  g.drawImage(canvas, (canvas.width - sw)/2, (canvas.height - sh)/2, sw, sh, 0, 0, Wc, Hc);
+  const fade = g.createLinearGradient(0, 0, 0, Hc); fade.addColorStop(0, 'rgba(26,15,12,.92)'); fade.addColorStop(0.2, 'rgba(26,15,12,.1)'); fade.addColorStop(0.55, 'rgba(26,15,12,.15)'); fade.addColorStop(0.75, 'rgba(26,15,12,.9)'); fade.addColorStop(1, 'rgba(26,15,12,1)');
+  g.fillStyle = fade; g.fillRect(0, 0, Wc, Hc);
+  g.textBaseline = 'middle'; g.textAlign = 'center';
+  g.font = `900 92px ${JP}`; g.fillStyle = 'rgba(0,0,0,.6)'; g.fillText('だるまさんがころんだ', Wc/2 + 5, 120 + 7); g.fillStyle = '#fff'; g.fillText('だるまさんがころんだ', Wc/2, 120);
+  const head = r.cleared ? '鬼までたどり着いた！' : r.reason === 'finger' ? '指を離してアウト…' : '動いてアウト…';
+  g.save(); g.translate(Wc/2, 905); g.rotate(-0.04); fit(head, 900, 96, JP, 980); g.fillStyle = 'rgba(0,0,0,.6)'; g.fillText(head, 5, 8); g.fillStyle = r.cleared ? '#f2c66d' : '#ff6a4d'; g.fillText(head, 0, 0); g.restore();
+  if (r.isBest){ g.font = `900 34px ${BODY}`; const t = '👑 自己ベスト更新！', w = g.measureText(t).width + 56; box2(Wc - 60 - w, 200, w, 58, 29); g.fillStyle = '#7fd6a8'; g.fill(); g.fillStyle = '#0d2620'; g.fillText(t, Wc - 60 - w/2, 230); }
+  box2(90, 985, Wc - 180, 205, 32); g.fillStyle = 'rgba(36,21,15,.95)'; g.fill(); g.strokeStyle = 'rgba(255,255,255,.18)'; g.lineWidth = 3; g.stroke();
+  g.font = `700 36px ${BODY}`; g.fillStyle = '#b3a596'; g.fillText(r.cleared ? 'タイム' : '鬼まで', Wc/2, 1022);
+  const bigT = r.cleared ? fmtT(r.time) : 'あと ' + fmtM(r.left); fit(bigT, 600, 84, NUM, 840); g.fillStyle = '#fff'; g.fillText(bigT, Wc/2, 1088);
+  g.font = `700 32px ${BODY}`; g.fillStyle = '#f2c66d'; g.fillText('自己ベスト ' + bestText(r.best), Wc/2, 1158);
+  g.font = `600 46px ${NUM}`; const site = SITE.replace(/^https:\/\/|\/$/g, ''), uw = g.measureText(site).width + 80;
+  box2((Wc - uw)/2, 1210, uw, 84, 24); g.fillStyle = '#f2c66d'; g.fill(); g.fillStyle = '#2a1d05'; g.fillText(site, Wc/2, 1253);
+  g.font = `700 28px ${BODY}`; g.fillStyle = '#d8ccbd'; g.fillText('スマホを前後に倒して歩け。鬼が見ている間は動くな', Wc/2, 1318);
+  return new Promise(res => c.toBlob(b => res(b && new File([b], 'daruma-result.png', {type:'image/png'})), 'image/png'));
+}
+function shareText(){
+  const r = result, tags = '#だるまさんがころんだ #ブラウザゲーム #無料ゲーム #個人開発';
+  return r.cleared
+    ? `だるまさんがころんだで、鬼までたどり着いた！👹\nタイム ${fmtT(r.time)}${r.isBest ? '（自己ベスト更新）' : ''}\n${tags}\n${SITE}`
+    : `だるまさんがころんだで、鬼まであと ${fmtM(r.left)} のところで${r.reason === 'finger' ? '指を離して' : '動いて'}アウト…\n自己ベスト ${bestText(r.best)}\n${tags}\n${SITE}`;
+}
+$('shareBtn').addEventListener('click', async () => {
+  const text = shareText();
+  if (navigator.share){
+    const files = shareFile ? [shareFile] : null;
+    const data = files && navigator.canShare && navigator.canShare({files}) ? {text, files} : {text};
+    try { await navigator.share(data); } catch(_){}
+    return;
+  }
+  try { await navigator.clipboard.writeText(text); } catch(_){}
+});
+
+/* ---------- start ---------- */
+// the first run starts with the practice; after that, only when asked for from the title
+// the motion permission was turned down (usually キャンセル on iPhone's dialog): offer to ask again from a tap.
+// iPhone keeps the answer until the app (Safari, or X etc. for its in-app browser) is quit, so the second time explain that
+let denials = 0, retryArgs = null;
+function denied(practice, from){
+  denials++; retryArgs = [practice, from]; $('permRetry').textContent = 'もう一度許可する';
+  $('permTitle').textContent = 'センサーの許可がいるよ';
+  $('permMsg').innerHTML = denials === 1
+    ? 'このゲームはスマホの傾きで歩きます。<br>「もう一度許可する」を押して、出てきた確認で<b>「許可」</b>を選んでね。'
+    : '確認が出ないときは、アプリ(Safari や X など)を<b>一度終了して</b>(アプリ切り替え画面で上にスワイプ)、開き直してね。もう一度聞かれます。';
+  $('perm').hidden = false;
+}
+$('permRetry').addEventListener('click', () => { $('perm').hidden = true; if (retryArgs) go(...retryArgs); else location.reload(); });
+async function go(practice, from){
+  if (!PCMODE) goFullscreen();
+  // iPhone only asks for the sensors from inside a tap
+  if (!PCMODE && !await askSensors()){ denied(practice, from); return; }
+  permOk = true;
+  if (PCMODE) askSensors();
+  if (practice) startGuide(); else startRun();
+  if (from != null){ z = zTarget = GOAL + from; }
+  // no tilt readings at all means the sensor is blocked or missing
+  if (!PCMODE) setTimeout(() => { if (beta == null && state !== 'title'){ state = 'title'; retryArgs = null; $('permRetry').textContent = '開き直す'; $('perm').hidden = false; } }, 2500);
+}
+// iPhone asks for the motion permission only once per app run, so explain it first, before the system dialog
+const ASKS = typeof DeviceOrientationEvent !== 'undefined' && !!DeviceOrientationEvent.requestPermission;
+let permOk = false, askArgs = null;
+function start(practice, from){
+  if (ASKS && !permOk && !PCMODE){ askArgs = [practice, from]; $('permAsk').hidden = false; return; }
+  go(practice, from);
+}
+$('permOk').addEventListener('click', () => { $('permAsk').hidden = true; go(...askArgs); });
+$('startBtn').addEventListener('click', () => start(!guided() && !DEBUG));
+$('gBtn').addEventListener('click', () => start(true));
+for (const b of document.querySelectorAll('#testMenu button')) b.addEventListener('click', () => start(false, +b.dataset.left));
+$('rulesBtn').addEventListener('click', () => { $('rulesPop').hidden = false; });
+$('rulesClose').addEventListener('click', () => { $('rulesPop').hidden = true; });
+$('retry').addEventListener('click', () => {
+  // in #test, back to the menu instead
+  if (TEST){ state = 'title'; $('over').hidden = true; $('title').hidden = false; app.classList.add('idle'); oni.position.set(0, .55, 0); lunge = null; return; }
+  if (!PCMODE) goFullscreen(); startRun();
+});
+ready.then(() => { $('startBtn').disabled = false; $('startBtn').textContent = 'はじめる'; $('gBtn').hidden = !guided() && !TEST; $('testMenu').hidden = !TEST; }, () => { $('loadMsg').textContent = '読み込みに失敗しました。ページを開き直してください。'; });
+
+oniTurn.rotation.y = Math.PI; camera.position.set(0, EYE, z); resize(); showBest(); loadProg();
+// phones only: a PC (no touch screen) gets a QR code to open the game on a phone instead. #pc in the URL skips this for checking
+if (!(navigator.maxTouchPoints > 0 || 'ontouchstart' in window) && !PCMODE){ $('pc').hidden = false; $('title').hidden = true; }
+if (DEBUG) window.__daruma = {get state(){ return state; }, get left(){ return left(); }, get oni(){ return oni$; }, get result(){ return result; }, shareText, get shareFile(){ return shareFile; }, buildShareImage, step(n = 2){ halfSteps += n; }, wobble(v){ rateRaw = v; }, out, win(){ zTarget = GOAL; },  start: startRun, place(){ pad.dispatchEvent(new PointerEvent('pointerdown', {pointerId:99, bubbles:true})); }, lift(){ lift({pointerId:99}); }, setLeft(m){ z = zTarget = GOAL + m; }, get oniZ(){ return oni.position.z; }, get camOn(){ return !$('cam').hidden; }, get adOn(){ return !$('ad').hidden; }, guide(){ go(true); }, get g(){ return g; }};
+requestAnimationFrame(frame);
+</script>
+</body></html>

@@ -1,0 +1,624 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,follow"><link rel="canonical" href="https://egakiba.com/ice-break/"><title>ICE BREAK｜氷を割るゲーム</title></head><body style="margin:0;background:#071725;display:flex;justify-content:center"><div id="ice-crystal-live" style="position:relative;height:650px;width:100%;max-width:680px;overflow:hidden;border-radius:16px;background:radial-gradient(ellipse at center,#286078,#102d40 65%,#061825);font-family:system-ui,sans-serif;color:#e5fcff;user-select:none">
+<style>
+#ice-crystal-live *{box-sizing:border-box}#ice-crystal-live canvas{display:block;width:100%;height:100%;touch-action:none}#ice-crystal-live .ui{position:absolute;left:0;right:0;text-align:center;pointer-events:none;z-index:2}#ice-crystal-live .top{top:17px;display:flex;justify-content:space-between;align-items:center;padding:0 16px;text-align:left}#ice-crystal-live .top b{font-size:20px;letter-spacing:2px}#ice-crystal-live button{pointer-events:auto;border:1px solid #a2ddef80;border-radius:50%;width:39px;height:39px;background:#16445b;color:#e9fdff;font-size:20px;cursor:pointer}#ice-crystal-live .top-actions{display:flex;gap:7px;align-items:center}#ice-crystal-live .restart{font-size:24px}#ice-crystal-live .autosaved{display:block;font-size:10px;letter-spacing:.7px;color:#83b8ca;margin-top:9px}#ice-crystal-live .stage{top:79px;font-size:11px;color:#a4cddc;letter-spacing:2px}#ice-crystal-live .tap-display{margin-left:9px;color:#dbfaff}#ice-crystal-live .result-mask{display:none;position:absolute;inset:0;z-index:9;background:#071b2cf2;align-items:center;justify-content:center;padding:18px}#ice-crystal-live .result-mask.is-open{display:flex}#ice-crystal-live .result-panel{width:100%;max-width:420px;max-height:95%;overflow:auto;text-align:center;background:#10354c;border:1px solid #9cdaed90;border-radius:20px;padding:23px 16px;box-shadow:0 12px 45px #0006}#ice-crystal-live .result-panel h2{font-size:25px;margin:6px 0 12px;letter-spacing:1px}#ice-crystal-live .result-panel .big-taps{font-size:46px;font-weight:850;color:#efffff;line-height:1.15;font-variant-numeric:tabular-nums}#ice-crystal-live .result-panel .result-desc{color:#b3d8e5;font-size:12px;margin:6px 0 16px}#ice-crystal-live .result-panel h3{font-size:14px;margin:18px 0 9px}#ice-crystal-live .result-panel .rank-row{display:flex;justify-content:space-between;align-items:center;text-align:left;font-size:14px;padding:8px 12px;border-bottom:1px solid #a7e5fa24;font-variant-numeric:tabular-nums}#ice-crystal-live .result-panel .rank-row.you{background:#28718c67;border-radius:8px;font-weight:bold}#ice-crystal-live .result-panel .rank-note{font-size:11px;color:#a4c9d9;line-height:1.7;margin:10px 0 18px}#ice-crystal-live .result-panel .continue{border:1px solid #c4f5ffaf;background:#b3eff9;color:#103048;padding:12px 23px;border-radius:28px;font-size:15px;font-weight:850;width:100%;max-width:275px;cursor:pointer}#ice-crystal-live .result-panel .continue:focus-visible{outline:3px solid white}#ice-crystal-live .stage strong{display:block;margin-top:8px;font-size:22px;color:#f0ffff;letter-spacing:2px}#ice-crystal-live .bottom{bottom:21px;font-size:14px}#ice-crystal-live .bottom small{display:block;margin-top:7px;font-size:11px;color:#a2cad8}@media(max-width:460px){#ice-crystal-live{height:610px}}
+#ice-crystal-live .result-extras{display:flex;justify-content:center;gap:12px;margin:14px 0 14px}
+#ice-crystal-live .result-extras>div{flex:1;max-width:160px;padding:10px 9px;background:#05293e;border:1px solid #82d7f253;border-radius:12px}
+#ice-crystal-live .result-extras span{display:block;font-size:11px;color:#aedbea;margin-bottom:5px}
+#ice-crystal-live .result-extras strong{display:block;font-size:27px;color:white;font-variant-numeric:tabular-nums}
+#ice-crystal-live .result-buttons{display:flex;gap:8px;margin:12px 0}
+#ice-crystal-live .result-buttons button{width:50%;height:auto;min-height:42px;padding:8px;border-radius:12px;font-size:12px;background:#215e76}
+#ice-crystal-live .share-status,#ice-crystal-live .online-status{font-size:11px;color:#b6f5e7;line-height:1.5;min-height:10px;margin:8px 0}
+#ice-crystal-live .online-area{background:#092a3e;border:1px solid #8ccde74d;border-radius:14px;margin:15px 0;padding:10px 10px 14px}
+#ice-crystal-live .online-area h3{margin:4px 0 8px}
+#ice-crystal-live .online-badge{font-size:10px;color:#a7d6e7;font-weight:normal}
+#ice-crystal-live .online-note{color:#b9dfea;font-size:11px;margin:4px 0 9px}
+#ice-crystal-live .online-form{display:flex;gap:6px}
+#ice-crystal-live .online-form input{font:inherit;font-size:12px;padding:10px;min-width:0;flex:1;background:#062033;border:1px solid #8dd6ef71;border-radius:10px;color:white}
+#ice-crystal-live .online-form button{height:auto;width:auto;border-radius:10px;padding:8px 10px;white-space:nowrap;font-size:11px}
+#ice-crystal-live .online-form button:disabled{opacity:.45;cursor:not-allowed}
+#ice-crystal-live .rank-row span:first-child{max-width:68%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#ice-crystal-live .result-panel{max-height:90%;padding:18px 14px}
+#ice-crystal-live .finale-caption{position:absolute;inset:39% 0 auto;z-index:4;text-align:center;font-size:27px;font-weight:900;letter-spacing:2px;text-shadow:0 0 26px #d6ffff;pointer-events:none;color:#fff;opacity:0;transition:opacity .25s}
+#ice-crystal-live .finale-caption.visible{opacity:1}
+</style>
+<script src="./leaderboard-config.js"></script>
+<div class="ui top"><b>✳ ICE BREAK</b><div class="top-actions"><button class="restart" title="最初からやり直す" aria-label="最初からやり直す">↺</button><button class="sound" aria-label="音をオフにする">♫</button></div></div>
+<div class="ui stage">ICE <span class="number">001 / 500</span><span class="tap-display"> · TAPS <span class="tap-total">0</span></span></div>
+<canvas></canvas><div class="finale-caption">500 ICE COMPLETE!</div><div class="ui bottom"><b class="message">氷の弱点を探してタップ</b><small class="detail">小さな模様を観察。外すとヒビがヒントに</small><span class="autosaved">◌ 自動セーブ ON</span></div>
+<div class="result-mask" role="dialog" aria-label="500個達成の結果" aria-modal="true"><div class="result-panel">
+  <div style="font-size:12px;letter-spacing:3px;color:#b6eafa">ICE BREAK</div>
+  <h2>500個、すべて破壊！</h2>
+  <div class="big-taps"><span class="result-taps">0</span><small style="font-size:15px;margin-left:7px">TAPS</small></div>
+  <div class="result-desc">500個で記録されたタップ数</div>
+  <div class="result-extras"><div><span>一発破壊</span><strong class="result-first">0</strong></div><div><span>達成周回</span><strong class="result-cycle">1</strong></div></div>
+  <div class="result-buttons"><button class="image-save">📷 結果画像を保存</button><button class="image-share">↗ 画像を共有</button></div>
+  <p class="share-status" role="status" aria-live="polite"></p>
+  <h3>あなたの過去の記録</h3>
+  <div class="rank-rows"></div>
+  <div class="online-area">
+    <h3>オンラインランキング <span class="online-badge">接続待ち</span></h3>
+    <p class="online-note">500個達成時だけ閲覧できます。登録は任意です。</p>
+    <div class="online-form"><input class="player-name" maxlength="16" placeholder="表示名（任意・未入力は匿名）" aria-label="ランキング表示名"><button class="online-submit">ランキングに登録</button></div>
+    <p class="online-status" role="status" aria-live="polite"></p>
+    <div class="online-rows"></div>
+  </div>
+  <p class="rank-note">ランキングは500個達成時だけ表示。オンライン記録は自己申告で、端末間の同期や不正防止の保証はありません。</p>
+  <button class="continue">次の500個へ</button>
+</div></div>
+<script>
+(()=>{
+const root=document.getElementById('ice-crystal-live');if(root.dataset.init)return;root.dataset.init=1;
+const c=root.querySelector('canvas'),g=c.getContext('2d'),num=root.querySelector('.number'),message=root.querySelector('.message'),detail=root.querySelector('.detail'),tapsLabel=root.querySelector('.tap-total'),resultMask=root.querySelector('.result-mask'),rankRows=root.querySelector('.rank-rows');
+const T=Math.PI*2,R=(a,b)=>a+Math.random()*(b-a),cl=(x,a,b)=>Math.max(a,Math.min(b,x));
+let W=1,H=1,D=1,stage=0,ice,shards=[],dust=[],broken=0,last=0,muted=false,ac,noiseBuffer,fractureLines=[],stageEntered=0,playOrder=[],resuming=false,cycleTaps=0,oneTapBreaks=0,oneTapTracked=true,fullyTracked=true,awaitingResult=false,results=[],lastResult=null,finaleParticles=[],finaleActive=false,runId="run-"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,9);const BREAK_MS=720, AFTER_BREAK_MS=480, FINALE_AFTER_MS=2200;
+// Set the URL of your deployed Cloudflare D1 leaderboard Worker here after setup.
+const ONLINE_API_URL=typeof window.ICE_BREAK_LEADERBOARD_URL==="string"?window.ICE_BREAK_LEADERBOARD_URL:"";
+const onlineRows=root.querySelector(".online-rows"),onlineStatus=root.querySelector(".online-status"),onlineBadge=root.querySelector(".online-badge"),onlineSubmit=root.querySelector(".online-submit");
+const leaderboardURL=ONLINE_API_URL.replace(/\/$/,"");
+const SUBMITTED_KEY='ice-break-v500-online-submitted-v1';
+function alreadySubmitted(id){try{return !!JSON.parse(localStorage.getItem(SUBMITTED_KEY)||'{}')[id]}catch{return false}}
+function rememberSubmitted(id){try{let obj=JSON.parse(localStorage.getItem(SUBMITTED_KEY)||'{}');obj[id]=Date.now();const keys=Object.keys(obj).sort((a,b)=>obj[b]-obj[a]).slice(0,50);let saved={};keys.forEach(k=>saved[k]=obj[k]);localStorage.setItem(SUBMITTED_KEY,JSON.stringify(saved))}catch{}}
+const TYPES=[
+  {name:'透明な角氷',family:'cube',v:0,material:'clear',scale:1.000},
+  {name:'まんまる氷',family:'orb',v:0,material:'clear',scale:1.000},
+  {name:'薄い氷板',family:'slab',v:0,material:'clear',scale:1.000},
+  {name:'六角氷',family:'prism',v:0,material:'clear',scale:1.000},
+  {name:'長いつらら',family:'icicle',v:0,material:'clear',scale:1.000},
+  {name:'流氷のかけら',family:'floe',v:0,material:'clear',scale:1.000},
+  {name:'氷のしずく',family:'drop',v:0,material:'clear',scale:1.000},
+  {name:'星形の氷',family:'star',v:0,material:'clear',scale:1.000},
+  {name:'鋭い氷晶',family:'gem',v:0,material:'clear',scale:1.000},
+  {name:'小さな氷山',family:'iceberg',v:0,material:'clear',scale:1.000},
+  {name:'面取り角氷',family:'cube',v:1,material:'mist',scale:1.015},
+  {name:'楕円の丸氷',family:'orb',v:1,material:'mist',scale:1.015},
+  {name:'湖の薄氷',family:'slab',v:1,material:'mist',scale:1.015},
+  {name:'八角の氷',family:'prism',v:1,material:'mist',scale:1.015},
+  {name:'二股のつらら',family:'icicle',v:1,material:'mist',scale:1.015},
+  {name:'波打つ流氷',family:'floe',v:1,material:'mist',scale:1.015},
+  {name:'霜のしずく',family:'drop',v:1,material:'mist',scale:1.015},
+  {name:'雪の六花',family:'star',v:1,material:'mist',scale:1.015},
+  {name:'白い水晶氷',family:'gem',v:1,material:'mist',scale:1.015},
+  {name:'荒削りの氷山',family:'iceberg',v:1,material:'mist',scale:1.015},
+  {name:'欠けた角氷',family:'cube',v:2,material:'bubbles',scale:1.045},
+  {name:'気泡の丸氷',family:'orb',v:2,material:'bubbles',scale:1.045},
+  {name:'凍った窓',family:'slab',v:2,material:'bubbles',scale:1.045},
+  {name:'五角の氷',family:'prism',v:2,material:'bubbles',scale:1.045},
+  {name:'氷の槍',family:'icicle',v:2,material:'bubbles',scale:1.045},
+  {name:'漂う浮氷',family:'floe',v:2,material:'bubbles',scale:1.045},
+  {name:'ひしゃげた雫',family:'drop',v:2,material:'bubbles',scale:1.045},
+  {name:'七芒の氷',family:'star',v:2,material:'bubbles',scale:1.045},
+  {name:'青い尖晶',family:'gem',v:2,material:'bubbles',scale:1.045},
+  {name:'双峰の氷山',family:'iceberg',v:2,material:'bubbles',scale:1.045},
+  {name:'切り出した氷',family:'cube',v:3,material:'layers',scale:1.070},
+  {name:'ゆがんだ氷球',family:'orb',v:3,material:'layers',scale:1.070},
+  {name:'氷のレンズ',family:'slab',v:3,material:'layers',scale:1.070},
+  {name:'十角の氷',family:'prism',v:3,material:'layers',scale:1.070},
+  {name:'凍てつく牙',family:'icicle',v:3,material:'layers',scale:1.070},
+  {name:'氷河の破片',family:'floe',v:3,material:'layers',scale:1.070},
+  {name:'大きな氷滴',family:'drop',v:3,material:'layers',scale:1.070},
+  {name:'氷結の花',family:'star',v:3,material:'layers',scale:1.070},
+  {name:'菱形の氷',family:'gem',v:3,material:'layers',scale:1.070},
+  {name:'氷山の尾根',family:'iceberg',v:3,material:'layers',scale:1.070},
+  {name:'巨大な角氷',family:'cube',v:4,material:'deep',scale:1.085},
+  {name:'磨かれた氷球',family:'orb',v:4,material:'deep',scale:1.085},
+  {name:'氷の鏡',family:'slab',v:4,material:'deep',scale:1.085},
+  {name:'十二角の大氷',family:'prism',v:4,material:'deep',scale:1.085},
+  {name:'つららの刃',family:'icicle',v:4,material:'deep',scale:1.085},
+  {name:'巨大な流氷',family:'floe',v:4,material:'deep',scale:1.085},
+  {name:'氷の涙',family:'drop',v:4,material:'deep',scale:1.085},
+  {name:'霜の八芒星',family:'star',v:4,material:'deep',scale:1.085},
+  {name:'巨大な氷晶',family:'gem',v:4,material:'deep',scale:1.085},
+  {name:'氷河の大氷山',family:'iceberg',v:4,material:'deep',scale:1.085}
+];
+// 50 legacy silhouettes plus 100 additional silhouettes (20 new families × 5 profiles).
+const EXTRA_FAMILIES=['crescent','heart','cross','arrow','shield','hourglass','butterfly','gear','flower','trident','saw','wedge','column','arch','blade','leaf','turbine','boulder','fan','cluster'];
+const MATERIALS=['clear','mist','bubbles','layers','deep'];
+for(let variation=0;variation<5;variation++){
+  for(const family of EXTRA_FAMILIES){
+    TYPES.push({name:'',family,v:variation,material:MATERIALS[variation],scale:1.035+variation*.012});
+  }
+}
+// Thirty-five additional silhouettes, each with ten structural profiles: +350 = 500.
+const NEW_FAMILIES=[
+'diamondplate','kite','lantern','barb','boomerang','chevron','fork','crest','claw','shell',
+'helm','flame','crystalstack','notched','stepped','fin','ridge','snowcap','glaive','vortex',
+'ribbon','corkscrew','spindle','obelisk','fishtail','fanblade','burst','propeller','petal',
+'dome','hammer','hook','zigzag','comet','coral'];
+for(let variation=0;variation<10;variation++){
+ for(const family of NEW_FAMILIES){
+  TYPES.push({name:'',family,v:variation,material:MATERIALS[variation%5],scale:1.025+(variation%5)*.013});
+ }
+}
+const NEW_SHAPES={
+ diamondplate:[[-.70,-.82],[0,-1.1],[.69,-.80],[1,-.17],[.71,.77],[0,1.1],[-.73,.77],[-1,-.15]],
+ kite:[[0,-1.15],[.58,-.19],[.98,.14],[.31,.46],[0,1.12],[-.31,.46],[-.98,.14],[-.58,-.19]],
+ lantern:[[-.25,-1.12],[.25,-1.12],[.27,-.83],[.75,-.66],[.92,.27],[.44,.92],[-.46,.92],[-.92,.27],[-.75,-.66],[-.27,-.83]],
+ barb:[[0,-1.1],[.27,-.62],[.91,-.81],[.64,-.22],[1.06,.28],[.35,.14],[.20,1.11],[-.20,1.11],[-.35,.14],[-1.06,.28],[-.64,-.22],[-.91,-.81],[-.27,-.62]],
+ boomerang:[[-1.09,-.52],[.08,-1.07],[1.08,-.39],[.61,-.07],[.06,-.53],[-.51,-.06],[-.63,.71],[-1,.95]],
+ chevron:[[-1.09,-.55],[0,.20],[1.09,-.55],[.93,.19],[0,.95],[-.93,.19]],
+ fork:[[-.94,-1.03],[-.52,-.98],[-.52,-.35],[-.25,-.18],[-.19,-1.07],[.21,-1.07],[.27,-.18],[.52,-.35],[.52,-.98],[.94,-1.03],[.77,-.03],[.29,.27],[.25,1.10],[-.25,1.10],[-.29,.27],[-.77,-.03]],
+ crest:[[-1.07,-.78],[-.46,-.95],[0,-.57],[.46,-.95],[1.07,-.78],[.94,.34],[.55,.72],[0,1.08],[-.55,.72],[-.94,.34]],
+ claw:[[.95,-1.06],[.66,-.33],[.12,-.05],[.66,.51],[.74,1.06],[.28,.89],[-.24,.26],[-.60,.90],[-1.01,1.02],[-.72,.42],[-.34,-.13],[.12,-.57]],
+ helm:[[-1.09,-.38],[-.85,-.93],[.19,-1.05],[.88,-.69],[1.04,-.09],[.61,-.05],[.48,.39],[.98,.71],[.46,1.07],[-.58,.90],[-1.05,.22],[-.54,.10]],
+ crystalstack:[[-1.04,.72],[-.91,-.24],[-.48,-.32],[-.41,-1.08],[-.08,-.68],[.22,-1.15],[.59,-.64],[.88,-.51],[1.09,.21],[.79,.95],[.13,.75],[-.50,1.05]],
+ notched:[[-1.04,-.92],[-.20,-.96],[-.22,-.31],[.28,-.31],[.28,-.96],[1.03,-.92],[.95,.88],[.26,.91],[.26,.33],[-.28,.33],[-.28,.91],[-.95,.88]],
+ stepped:[[-1.01,-.30],[-.62,-.30],[-.62,-.72],[-.16,-.72],[-.16,-1.08],[.41,-1.08],[.41,-.68],[.89,-.68],[.89,-.11],[1.06,-.11],[1.06,.79],[-1.01,.79]],
+ fin:[[-.99,.79],[-.66,.18],[-.25,-.65],[.10,-1.12],[.36,-.70],[.26,-.21],[.83,-.38],[1.05,.41],[.54,.92]],
+ ridge:[[-1.05,.86],[-.98,-.19],[-.63,-.80],[-.33,-.25],[-.02,-1.13],[.27,-.34],[.59,-.98],[.99,-.40],[1.08,.85]],
+ snowcap:[[-1.03,.83],[-1.03,-.11],[-.69,-.49],[-.36,-.54],[-.21,-.96],[.19,-1.06],[.41,-.61],[.73,-.47],[1.05,-.02],[.95,.91],[.42,.76],[-.17,.96],[-.59,.72]],
+ glaive:[[-1.06,-.31],[-.36,-.40],[.04,-1.10],[.22,-.35],[.99,-.97],[.74,-.14],[.12,.15],[.46,.92],[0,1.10],[-.45,.93],[-.13,.18]],
+ spindle:[[0,-1.14],[.43,-.64],[.34,-.30],[.71,0],[.30,.36],[.43,.64],[0,1.14],[-.43,.64],[-.30,.36],[-.71,0],[-.34,-.30],[-.43,-.64]],
+ obelisk:[[-.42,-1.10],[.44,-1.1],[.61,-.66],[.41,.98],[0,1.11],[-.41,.98],[-.61,-.66]],
+ fishtail:[[-1.08,-.84],[-.29,-.38],[.50,-.67],[1.07,-.31],[.73,.14],[1.05,.62],[.42,.89],[-.30,.43],[-1.08,.88],[-.73,.03]],
+ fanblade:[[-.98,.95],[-.54,-.59],[.05,-1.09],[.19,-.33],[.77,-.86],[1.08,-.15],[.55,.08],[.96,.79],[.33,1.03],[-.11,.40]],
+ dome:[[-1.07,.89],[-1.05,-.13],[-.78,-.74],[-.20,-1.06],[.47,-.94],[.91,-.38],[1.07,.90]],
+ hammer:[[-.98,-1.07],[.97,-1.07],[1.04,-.34],[.26,-.34],[.26,1.05],[-.24,1.05],[-.24,-.34],[-1.04,-.34]],
+
+  hook:[[-.782,-.558],[-.789,-.482],[-.749,.018],[-.723,.106],[-.453,.596],[-.355,.688],[.125,.918],[.216,.94],[.308,.921],[.718,.741],[.832,.628],[1.002,.238],[1.02,.153],[1.004,.068],[.844,-.332],[.785,-.415],[.695,-.463],[.425,-.533],[.311,-.532],[.213,-.474],[.157,-.375],[.158,-.261],[.216,-.163],[.315,-.107],[.477,-.065],[.562,.146],[.463,.373],[.224,.478],[-.101,.322],[-.314,-.065],[-.348,-.479],[-.248,-.842],[-.247,-.956],[-.303,-1.055],[-.402,-1.112],[-.516,-1.113],[-.615,-1.057],[-.672,-.958]],
+ zigzag:[[-1.08,-.72],[-.39,-1.06],[.10,-.35],[.72,-.94],[1.07,-.33],[.33,.32],[.86,.83],[.31,1.07],[-.29,.36],[-.87,.91],[-1.06,.28],[-.44,-.34]],
+ comet:[[-1.07,.93],[-.94,.23],[-.32,-.13],[.06,-.93],[.72,-1.03],[1.05,-.56],[1.07,.09],[.56,.66],[-.03,.72],[-.42,.55]],
+ coral:[[-1.05,.98],[-.88,-.16],[-.55,-.27],[-.75,-.91],[-.30,-.99],[-.12,-.40],[.06,-.60],[.10,-1.15],[.42,-.86],[.34,-.22],[.76,-.67],[1.05,-.45],[.76,.05],[.51,.24],[.70,.99]],
+};
+function newOutline(cfg){
+ const v=cfg.v,kind=cfg.family,base=NEW_SHAPES[kind],a=[];
+ const angleShift=((v%5)-2)*.036, sx=1+(.045*((v%5)-2)),sy=1+(.045*((v%3)-1));
+  // This C/J-shaped ribbon used to self-intersect. Keep its outline simple
+  // for every variation by applying only an affine transform.
+  if(base&&kind==='hook'){
+    const shear=v>=5?.06+.012*(v-5):0,co=Math.cos(angleShift),si=Math.sin(angleShift);
+    return base.map(([x,y])=>{const nx=(x+y*shear)*sx,ny=y*sy;return [nx*co-ny*si,nx*si+ny*co]});
+  }
+ if(base){return base.map(([x,y],i)=>{
+  let nx=x*sx,ny=y*sy;
+  const ripple=(.022+(v%3)*.008)*Math.sin(i*2.3+v*.9);
+  nx+=ripple*Math.sign(x||1);
+  ny+=ripple*.75*Math.sign(y||1);
+  if(v>=5){nx+=ny*(.075+.012*(v-5));ny+=Math.sin(i*1.31+v)*.024;}
+  return [nx*Math.cos(angleShift)-ny*Math.sin(angleShift),nx*Math.sin(angleShift)+ny*Math.cos(angleShift)]
+ });}
+ const polar=(n,radFn,theta=-Math.PI/2)=>{
+  for(let i=0;i<n;i++){let ang=i*T/n+theta,r=radFn(ang,i);a.push([sx*r*Math.cos(ang),sy*r*Math.sin(ang)])}
+  return a;
+ };
+ if(kind==='shell')return polar(120,(ang)=>.74+.22*Math.cos((5+v%5)*ang+.4*v)+.05*Math.sin(3*ang));
+ if(kind==='flame')return polar(120,(ang)=>.69+.22*Math.sin((4+v%4)*ang+v*.33)+.10*Math.sin(2*ang),-.3);
+ if(kind==='vortex')return polar(120,(ang)=>.76+.16*Math.sin((3+v%5)*ang+.15*v)+.08*Math.cos(7*ang));
+ if(kind==='ribbon')return polar(120,(ang)=>.71+.24*Math.sin((2+v%4)*ang+.5*v)+.08*Math.cos(9*ang),0);
+ if(kind==='corkscrew')return polar(120,(ang)=>.75+.15*Math.sin((6+v%5)*ang+.5*v)+.09*Math.sin(3*ang));
+ if(kind==='burst')return polar(120,(ang)=>.68+.30*Math.pow(Math.abs(Math.cos((6+v%5)*ang)),7));
+ if(kind==='propeller')return polar(120,(ang)=>.66+.31*Math.pow(Math.abs(Math.cos((3+v%5)*ang+.3*v)),9));
+ if(kind==='petal')return polar(120,(ang)=>.78+.18*Math.cos((4+v%7)*ang)+.045*Math.sin(2*ang));
+ return [[-1,-1],[1,-1],[1,1],[-1,1]];
+}
+
+// Keep the existing save key so users of the previous 500-ice release keep their progress.
+const SAVE_KEY='ice-break-v500-autosave-v1';
+const RANK_KEY='ice-break-v500-local-results-v1';
+let storageOK=true;
+function displayTaps(){tapsLabel.textContent=cycleTaps.toLocaleString('ja-JP')}
+function save(pendingAdvance=false){try{const state={v:3,stage,playOrder,muted,pendingAdvance,awaitingResult,cycleTaps,oneTapBreaks,oneTapTracked,fullyTracked,lastResult,runId,ice:ice?{weak:ice.weak,marks:ice.marks,bubbles:ice.bubbles,hints:ice.hints,taps:ice.taps}:null};localStorage.setItem(SAVE_KEY,JSON.stringify(state));root.dataset.saved='true';}catch(e){storageOK=false;root.dataset.saved='false';const b=root.querySelector('.autosaved');if(b)b.textContent='セーブ利用不可';}}
+function restore(){try{const raw=localStorage.getItem(SAVE_KEY);if(!raw)return null;const z=JSON.parse(raw);if(![1,2,3].includes(z?.v)||!Number.isSafeInteger(z.stage)||z.stage<0||!Array.isArray(z.playOrder)||z.playOrder.length!==TYPES.length)return null;const s=new Set(z.playOrder);if(s.size!==TYPES.length||z.playOrder.some(x=>!Number.isInteger(x)||x<0||x>=TYPES.length))return null;return z;}catch(e){return null}}
+function loadResults(){try{const data=JSON.parse(localStorage.getItem(RANK_KEY)||'[]');if(Array.isArray(data))results=data.filter(r=>Number.isSafeInteger(r.cycle)&&r.cycle>0&&Number.isSafeInteger(r.taps)&&r.taps>=500&&typeof r.id==='string').slice(-100);}catch(e){results=[]}}
+function saveResults(){try{localStorage.setItem(RANK_KEY,JSON.stringify(results.slice(-100)))}catch(e){storageOK=false;}}
+function onlineRow(label,taps,extra,you=false){let d=document.createElement('div');d.className='rank-row'+(you?' you':'');let a=document.createElement('span'),b=document.createElement('span');a.textContent=label+(extra?' · '+extra:'');b.textContent=Number(taps).toLocaleString('ja-JP')+' taps';d.append(a,b);return d}
+async function getOnlineRank(){
+ onlineRows.replaceChildren();
+ if(!leaderboardURL){onlineStatus.textContent='未設定：Cloudflareランキングサーバーを公開すると利用できます。';onlineBadge.textContent='未接続';onlineSubmit.disabled=true;return}
+ onlineBadge.textContent='確認中';onlineStatus.textContent='ランキング読み込み中';onlineSubmit.disabled=!lastResult?.complete||alreadySubmitted(lastResult.id);
+ try{let r=await fetch(leaderboardURL+'/rankings',{cache:'no-store',signal:AbortSignal.timeout(9000)});if(!r.ok)throw Error('HTTP '+r.status);let json=await r.json();if(!Array.isArray(json.rankings))throw Error('データ形式');
+  onlineBadge.textContent='オンライン';onlineStatus.textContent=json.rankings.length?'みんなの500個完走記録（参考）':'まだ登録された記録はありません';
+  json.rankings.slice(0,10).forEach((v,i)=>onlineRows.append(onlineRow((i+1)+'位 · '+(v.name||'匿名'),v.taps,'',false)));
+ }catch(e){onlineBadge.textContent='接続不可';onlineStatus.textContent='オンラインランキングに接続できません。ローカル記録は使えます。'}
+}
+async function submitOnline(){
+ if(!lastResult?.complete||!oneTapTracked)return;
+ if(!leaderboardURL)return;
+ const name=root.querySelector('.player-name').value.trim().slice(0,16)||'匿名';
+ onlineSubmit.disabled=true;onlineStatus.textContent='記録を送信中…';
+ try{let r=await fetch(leaderboardURL+'/rankings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:lastResult.id,name,taps:lastResult.taps,firstHits:lastResult.firstHits}),signal:AbortSignal.timeout(10000)});
+  let json=await r.json().catch(()=>({}));if(!r.ok)throw Error(json.error||'送信失敗');rememberSubmitted(lastResult.id);onlineStatus.textContent='記録を登録しました';onlineSubmit.textContent='登録済み';await getOnlineRank();onlineSubmit.disabled=true;onlineSubmit.textContent='登録済み';onlineStatus.textContent='記録を登録しました';
+ }catch(e){onlineStatus.textContent='登録できませんでした：'+String(e.message||e).slice(0,70);onlineSubmit.disabled=false}
+}
+onlineSubmit.addEventListener('click',submitOnline);
+function resultCanvas(){
+ const out=document.createElement('canvas');out.width=1200;out.height=630;const ctx=out.getContext('2d'),last=lastResult||{taps:cycleTaps,firstHits:oneTapBreaks,cycle:stage/500};
+ let bg=ctx.createLinearGradient(0,0,1200,630);bg.addColorStop(0,'#05131f');bg.addColorStop(.5,'#174b69');bg.addColorStop(1,'#09263b');ctx.fillStyle=bg;ctx.fillRect(0,0,1200,630);
+ const star=(x,y,r)=>{ctx.save();ctx.translate(x,y);ctx.strokeStyle='#c7faffad';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(-r,0);ctx.lineTo(r,0);ctx.moveTo(0,-r);ctx.lineTo(0,r);ctx.stroke();ctx.restore()};
+ for(let i=0;i<26;i++)star(35+i*43,(i*89)%620,3+i%4);
+ ctx.save();ctx.translate(940,310);ctx.rotate(.19);ctx.beginPath();let n=10;for(let i=0;i<n;i++){let a=i*Math.PI*2/n-.3,r=190+(i%3)*9;let x=Math.cos(a)*r,y=Math.sin(a)*r;if(i)ctx.lineTo(x,y);else ctx.moveTo(x,y)}ctx.closePath();let gr=ctx.createLinearGradient(-180,-180,190,190);gr.addColorStop(0,'#d6ffff');gr.addColorStop(.47,'#70c4e6');gr.addColorStop(.8,'#1b5b82');gr.addColorStop(1,'#b4f8ff');ctx.fillStyle=gr;ctx.fill();ctx.lineWidth=8;ctx.strokeStyle='#eaffff';ctx.stroke();for(let i=0;i<20;i++){let a=i*Math.PI*2/20;ctx.beginPath();ctx.moveTo(20,-15);ctx.lineTo(Math.cos(a)*170,Math.sin(a)*175);ctx.strokeStyle='#f4ffffb8';ctx.lineWidth=i%3===0?6:2;ctx.stroke()}ctx.restore();
+ ctx.fillStyle='#e9ffff';ctx.font='800 64px system-ui';ctx.fillText('ICE BREAK',66,112);ctx.font='600 30px system-ui';ctx.fillStyle='#a9def0';ctx.fillText('500 ICE COMPLETE!',70,166);
+ ctx.fillStyle='#fff';ctx.font='900 128px system-ui';ctx.fillText(Number(last.taps).toLocaleString('ja-JP'),67,356);ctx.font='700 28px system-ui';ctx.fillStyle='#bbefff';ctx.fillText('TOTAL TAPS',78,401);
+ ctx.font='800 40px system-ui';ctx.fillStyle='#fff';ctx.fillText('一発破壊  '+Number(last.firstHits??0).toLocaleString('ja-JP')+' 回',70,483);ctx.font='600 23px system-ui';ctx.fillStyle='#c2e4ed';ctx.fillText('500個、氷を割るだけ。',71,534);
+ let address=location.protocol==='http:'||location.protocol==='https:'?new URL('./',location.href).href:'ICE BREAK';ctx.font='500 19px system-ui';ctx.fillStyle='#a6d2e3';ctx.fillText(address.length>75?address.slice(0,72)+'…':address,72,590);
+ return out;
+}
+async function sharePicture(){
+ if(!lastResult)return;
+ let image=resultCanvas(),blob=await new Promise(res=>image.toBlob(res,'image/png'));
+ if(!blob){root.querySelector('.share-status').textContent='画像を作れませんでした';return}
+ const file=new File([blob],'ICE_BREAK_500_result.png',{type:'image/png'});
+ if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+  try{await navigator.share({files:[file],title:'ICE BREAK｜500個クリア',text:'氷を500個割った！'});root.querySelector('.share-status').textContent='共有メニューを開きました';return}catch(e){if(e.name==='AbortError')return}
+ }
+ downloadPicture(image);root.querySelector('.share-status').textContent='画像を保存しました。Xなどへの投稿時に添付してね。';
+}
+function downloadPicture(canvas=resultCanvas()){
+ try{let a=document.createElement('a');a.href=canvas.toDataURL('image/png');a.download='ICE_BREAK_500_result.png';document.body.append(a);a.click();a.remove();root.querySelector('.share-status').textContent='結果画像を保存しました';}catch(e){root.querySelector('.share-status').textContent='画像の保存ができませんでした'}
+}
+root.querySelector('.image-save').addEventListener('click',()=>lastResult&&downloadPicture());
+root.querySelector('.image-share').addEventListener('click',sharePicture);
+function presentResult(){
+ if(!lastResult)return;
+ const n=lastResult.taps;
+ root.querySelector('.result-taps').textContent=n.toLocaleString('ja-JP');
+ root.querySelector('.result-first').textContent=lastResult.firstHits==null?'記録なし':lastResult.firstHits.toLocaleString('ja-JP')+'回';
+ root.querySelector('.result-cycle').textContent=lastResult.cycle;
+ root.querySelector('.share-status').textContent='';onlineSubmit.disabled=!lastResult.complete||!oneTapTracked||!leaderboardURL||alreadySubmitted(lastResult.id);onlineSubmit.textContent=alreadySubmitted(lastResult.id)?'登録済み':'ランキングに登録';
+ const desc=root.querySelector('.result-desc');
+ desc.textContent=lastResult.complete?'500個で記録されたタップ数':'アップデート後に記録したタップ数（途中開始）';
+ const ranked=results.slice().sort((a,b)=>a.taps-b.taps||a.cycle-b.cycle);
+ rankRows.replaceChildren();
+ if(!lastResult.complete){const p=document.createElement('p');p.className='rank-note';p.textContent='旧バージョンから引き継いだため、今回の周回は集計途中です。次の500個から正式にランキングへ記録されます。';rankRows.append(p)}
+ if(!ranked.length){const p=document.createElement('p');p.className='rank-note';p.textContent='まだランキング記録はありません';rankRows.append(p)}
+ ranked.slice(0,10).forEach((r,i)=>{const d=document.createElement('div');d.className='rank-row'+(r.id===lastResult.id?' you':'');const left=document.createElement('span'),right=document.createElement('span');left.textContent=(i+1)+'位 · '+(r.id===lastResult.id?'今回':'過去の記録');right.textContent=r.taps.toLocaleString('ja-JP')+' taps';d.append(left,right);rankRows.append(d)});
+ if(lastResult.complete){const currentPos=ranked.findIndex(r=>r.id===lastResult.id);if(currentPos>=10){const p=document.createElement('p');p.className='rank-note';p.textContent='今回の記録：'+(currentPos+1)+'位 / '+ranked.length+'件';rankRows.append(p)}}
+ resultMask.classList.add('is-open');root.querySelector('.finale-caption').classList.remove('visible');root.dataset.phase='results';getOnlineRank();
+}
+function finishCycle(){
+ // After the 500th ice, show the result instead of immediately continuing.
+ const id=runId+'-cycle-'+(stage/500); // stage has already been incremented to a multiple of 500
+ lastResult={id,cycle:stage/500,taps:cycleTaps,firstHits:oneTapTracked?oneTapBreaks:null,complete:fullyTracked&&oneTapTracked};
+ if(fullyTracked&&!results.some(r=>r.id===id)){
+  results.push({...lastResult,finished:new Date().toISOString()});saveResults();
+ }
+ awaitingResult=true;broken=0;presentResult();save(false);
+}
+function startNextCycle(){awaitingResult=false;cycleTaps=0;oneTapBreaks=0;oneTapTracked=true;fullyTracked=true;lastResult=null;finaleActive=false;finaleParticles=[];displayTaps();resultMask.classList.remove('is-open');next();save(false)}
+root.querySelector('.continue').addEventListener('click',startNextCycle);
+function reshuffle(){playOrder=[...Array(TYPES.length).keys()];for(let i=playOrder.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[playOrder[i],playOrder[j]]=[playOrder[j],playOrder[i]];}}
+function currentCfg(){if(!playOrder.length)reshuffle();return TYPES[playOrder[((stage%TYPES.length)+TYPES.length)%TYPES.length]];}
+function outline(cfg){
+ const v=cfg.v,kind=cfg.family;
+ if(EXTRA_FAMILIES.includes(kind))return extraOutline(cfg);
+ if(NEW_FAMILIES.includes(kind))return newOutline(cfg);
+ let a=[];
+ const manual=(pts)=>pts;
+ if(kind==='cube'){
+   const shapes=[
+    [[-.91,-.73],[-.3,-.96],[.67,-.82],[.96,-.39],[.88,.79],[.11,.96],[-.90,.71],[-.98,-.2]],
+    [[-.76,-.88],[.52,-.94],[.91,-.6],[.99,.49],[.63,.88],[-.62,.91],[-.99,.48],[-.98,-.56]],
+    [[-.96,-.69],[-.29,-.9],[.59,-.87],[.59,-.47],[.94,-.37],[.94,.73],[.34,.9],[-.85,.82],[-.97,.17]],
+    [[-.91,-.93],[.24,-.9],[.88,-.64],[.99,.31],[.79,.96],[-.49,.94],[-.96,.53]],
+    [[-.96,-.71],[-.46,-1.00],[.35,-.89],[.96,-.72],[1.04,-.04],[.83,.86],[.21,1.0],[-.76,.89],[-1.04,.28]]];
+   return manual(shapes[v]);
+ }
+ if(kind==='orb'){
+   for(let i=0;i<64;i++){let q=i*T/64, r=1;
+     if(v===2)r=.92+.038*Math.cos(5*q+.7)+.020*Math.sin(11*q);
+     if(v===3)r=.94+.046*Math.cos(3*q)+.018*Math.sin(9*q);
+     if(v===4)r=1.0+.016*Math.cos(12*q);
+     const sx=[.94,1.09,.97,.92,1.02][v],sy=[.94,.81,.91,1.01,1.00][v];
+     a.push([sx*r*Math.cos(q),sy*r*Math.sin(q)])
+   }return a;
+ }
+ if(kind==='slab'){
+   const shapes=[
+     [[-1.07,-.47],[-.43,-.58],[.77,-.51],[1.08,-.23],[.94,.43],[-.23,.55],[-1.05,.4]],
+     [[-1.04,-.42],[-.38,-.58],[.83,-.43],[1.06,.13],[.72,.54],[-.84,.51]],
+     [[-1.08,-.38],[-.53,-.48],[.37,-.40],[.98,-.54],[1.09,.33],[.31,.48],[-.39,.38],[-1.04,.51]],
+     [[-1.10,-.22],[-.60,-.44],[.55,-.35],[1.07,-.16],[1.04,.33],[.29,.49],[-.63,.44]],
+     [[-1.1,-.61],[-.18,-.59],[.82,-.54],[1.1,-.33],[1.08,.41],[.26,.59],[-1.08,.55]]];
+   return manual(shapes[v]);
+ }
+ if(kind==='prism'){
+   const count=[6,8,5,10,12][v],start=[-.52,-.39,-.7,-.24,-.52][v];
+   for(let i=0;i<count;i++){let q=i*T/count+start,r=v===4?(i%2?1.01:.95):1;
+     a.push([Math.cos(q)*r,Math.sin(q)*r])}return a;
+ }
+ if(kind==='icicle'){
+   const shapes=[
+     [[-.31,-1.04],[.29,-.99],[.4,-.61],[.25,-.20],[.29,.17],[.09,.70],[-.05,1.10],[-.20,.47],[-.31,-.07]],
+     [[-.62,-.96],[-.13,-1.02],[.16,-.86],[.4,-1.00],[.56,-.63],[.32,-.13],[.37,.16],[.19,.91],[-.02,.38],[-.23,1.13],[-.39,.27],[-.54,-.34]],
+     [[-.36,-1.08],[.19,-1.03],[.45,-.7],[.29,-.18],[.18,.36],[.04,1.14],[-.12,.65],[-.26,.24],[-.22,-.30]],
+     [[-.33,-1.08],[.18,-.93],[.44,-.65],[.28,-.17],[.52,.1],[.21,.56],[.11,1.09],[-.15,.65],[-.34,.32],[-.45,-.31]],
+     [[-.66,-1.00],[-.20,-.83],[.01,-1.08],[.38,-.93],[.61,-.42],[.45,.1],[.20,.26],[.04,1.10],[-.20,.33],[-.48,-.2]]];
+   return manual(shapes[v]);
+ }
+ if(kind==='floe'){
+   const shapes=[
+    [[-1.08,-.45],[-.59,-.81],[.09,-.63],[.44,-.93],[.97,-.51],[1.04,.02],[.66,.38],[.82,.78],[.14,.82],[-.29,.56],[-.91,.73],[-1.02,.11]],
+    [[-1.04,-.35],[-.83,-.83],[-.21,-.64],[.26,-.92],[.94,-.69],[1.06,-.07],[.66,.15],[1.0,.67],[.44,.91],[-.09,.63],[-.78,.83],[-.94,.32]],
+    [[-1.06,-.58],[-.47,-.93],[-.12,-.59],[.37,-.79],[.99,-.32],[.91,.36],[.64,.89],[.03,.65],[-.52,.91],[-1.04,.44]],
+    [[-.99,-.68],[-.46,-.65],[.03,-1.01],[.49,-.59],[1.04,-.31],[.73,.09],[1.07,.63],[.52,.84],[-.22,.64],[-.85,.91],[-1.05,.14]],
+    [[-1.09,-.63],[-.55,-1.01],[.24,-.74],[.56,-.96],[.95,-.45],[1.1,.16],[.88,.7],[.28,.98],[-.36,.86],[-.99,.56]]];
+   return manual(shapes[v]);
+ }
+ if(kind==='drop'){
+   for(let i=0;i<48;i++){let q=i*T/48-Math.PI/2,xx=Math.cos(q),yy=Math.sin(q);
+     let r=1, nx=xx*(.81+[0,.07,-.03,.13,.00][v]),ny=yy*(.98+[.03,.02,-.06,.05,.1][v]);
+     if(yy<-.3){nx*=.66+(.34*((yy+1)/.7));} // pinched droplet tip
+     if(v===2){nx+=.10*yy;ny*=.92}
+     if(v===4){nx*=.94;ny*=1.05}
+     a.push([nx,ny]);
+   }return a;
+ }
+ if(kind==='star'){
+   const tips=[5,6,7,6,8][v],offset=-Math.PI/2;
+   for(let i=0;i<tips*2;i++){let q=i*T/(tips*2)+offset,r=(i%2?[.49,.56,.44,.63,.50][v]:[1.02,.98,1.0,1.04,1.06][v]);a.push([Math.cos(q)*r,Math.sin(q)*r])}return a;
+ }
+ if(kind==='gem'){
+   const shapes=[
+    [[0,-1.09],[.48,-.46],[.9,0],[.33,.79],[0,1.04],[-.35,.76],[-.85,0],[-.45,-.50]],
+    [[-.33,-.94],[.44,-.96],[.8,-.3],[.52,.74],[.05,1.04],[-.58,.62],[-.87,-.20]],
+    [[0,-1.12],[.37,-.72],[.74,-.20],[.52,.52],[0,1.09],[-.57,.43],[-.75,-.25],[-.31,-.82]],
+    [[0,-1.08],[.69,-.53],[.98,.07],[.51,.69],[0,1.02],[-.62,.52],[-.97,-.03],[-.56,-.67]],
+    [[-.19,-1.09],[.45,-.92],[.83,-.45],[1.04,.13],[.59,.91],[-.22,1.08],[-.82,.51],[-1.0,-.2]]];
+   return manual(shapes[v]);
+ }
+ // Icebergs: broad lower hull with a distinctive jagged skyline.
+ const icebergs=[
+  [[-1.03,.35],[-.79,-.14],[-.46,-.27],[-.16,-.94],[.12,-.52],[.47,-.67],[.61,-.18],[.94,.28],[.77,.83],[-.55,.87]],
+  [[-1.03,.22],[-.8,-.36],[-.53,-.14],[-.27,-.83],[.05,-1.01],[.36,-.38],[.75,-.54],[1.03,.23],[.69,.91],[-.75,.81]],
+  [[-1.06,.25],[-.70,-.49],[-.27,-.33],[.04,-1.07],[.31,-.50],[.53,-.74],[.94,.13],[.84,.8],[-.21,.96],[-.93,.74]],
+  [[-1.07,.31],[-.78,-.08],[-.46,-.85],[-.19,-.28],[.23,-1.06],[.52,-.63],[.77,-.13],[1.01,.39],[.72,.90],[-.75,.86]],
+  [[-1.09,.30],[-.90,-.40],[-.57,-.14],[-.34,-.96],[-.10,-.43],[.19,-1.10],[.40,-.61],[.65,-.87],[.93,-.13],[1.05,.47],[.63,.95],[-.66,.89]]];
+ return icebergs[v];
+}
+
+// Each new family has five deterministic profile variants. Shapes are polygonal
+// so the original glass shading, hit detection and physical shattering still work.
+function extraOutline(cfg){
+  const kind=cfg.family,v=cfg.v,p=[],s=Math.sin,c=Math.cos;
+  const twist=(v-2)*.045,wide=1+(v%2?-.06:.055),high=1+(v===4?.10:v===1?-.055:0);
+  const polar=(count,fn,rotation=-Math.PI/2)=>{
+    for(let i=0;i<count;i++){let a=i*T/count+rotation,r=fn(i,a);
+      p.push([Math.cos(a)*r,Math.sin(a)*r]);}
+    return p;
+  };
+  const raw=(coords)=>coords.map(([x,y],i)=>[x*wide+(v===3?y*.065:0),y*high+(v===2?x*.065:0)]);
+  switch(kind){
+    case 'crescent': {
+      // A thick C-shaped ice crescent: outer arc down, inner arc back up.
+      const start=-Math.PI*.67,end=Math.PI*.67;
+      for(let i=0;i<=28;i++){let a=start+(end-start)*i/28;p.push([.22+Math.cos(a)*1.0,Math.sin(a)*1.04]);}
+      for(let i=28;i>=0;i--){let a=start+(end-start)*i/28;p.push([.22+Math.cos(a)*(.53+v*.018),Math.sin(a)*(.52+v*.014)]);}
+      return p.map(([x,y])=>[x*wide,y*high]);
+    }
+    case 'heart': {
+      for(let i=0;i<90;i++){let t=i*T/90,x=16*s(t)**3/18,
+        y=-(13*c(t)-5*c(2*t)-2*c(3*t)-c(4*t))/17;
+        p.push([x*(1+v*.02),y*(.94+(v%3)*.04)]);}
+      return p;
+    }
+    case 'cross': return raw([
+      [-.31,-1.02],[.31,-1.02],[.31,-.37],[1.01,-.37],[1.01,.28],[.31,.28],
+      [.31,1.01],[-.31,1.01],[-.31,.28],[-1.01,.28],[-1.01,-.37],[-.31,-.37]
+    ].map(([x,y])=>[x*(1+(v-2)*.055),y*(1+(v%2)*.04)]));
+    case 'arrow': return raw([
+      [0,-1.09],[.92,-.10],[.44,-.10],[.44,.96],[-.44,.96],[-.44,-.10],[-.92,-.10]
+    ].map(([x,y])=>[x*(1+(v-2)*.04),y]));
+    case 'shield': return raw([
+      [-.96,-.78],[.96,-.78],[.89,.12],[.57,.64],[0,1.09],[-.57,.64],[-.89,.12]
+    ].map(([x,y],i)=>[x,y+(i>2&&i<6?-.05*v:0)]));
+    case 'hourglass': return raw([
+      [-.98,-.91],[.98,-.91],[.75,-.50],[.25,-.08],[.77,.53],[.98,.91],
+      [-.98,.91],[-.77,.53],[-.25,-.08],[-.75,-.50]
+    ].map(([x,y])=>[x*(1+(v===3?.11:0)),y]));
+    case 'butterfly': return raw([
+      [0,-.25],[-.34,-.74],[-1.03,-1.01],[-.96,-.19],[-.47,.11],[-1.03,.79],
+      [-.13,.92],[0,.28],[.13,.92],[1.03,.79],[.47,.11],[.96,-.19],
+      [1.03,-1.01],[.34,-.74]
+    ]);
+    case 'gear': {
+      const teeth=8+v;return polar(teeth*4,(i)=>i%4===0||i%4===1?1.02:.80,twist);
+    }
+    case 'flower': {
+      const petals=5+v;return polar(144,(i,a)=>.77+.24*(.5+.5*Math.cos(petals*a)),twist);
+    }
+    case 'trident': return raw([
+      [-.93,-.95],[-.58,-1.07],[-.42,-.51],[-.22,-.65],[-.17,-1.02],[0,-1.18],
+      [.17,-1.02],[.22,-.65],[.42,-.51],[.58,-1.07],[.93,-.95],[.71,-.23],
+      [.27,.03],[.23,1.01],[-.23,1.01],[-.27,.03],[-.71,-.23]
+    ]);
+    case 'saw': {
+      const count=4+v;
+      p.push([-1.08,.84],[-1.08,-.45]);
+      for(let i=0;i<count;i++){let x=-1.08+2.16*i/count;
+        p.push([x+.48*2.16/count,-.97-(i%2)*.10]);
+        p.push([x+2.16/count,-.43]);}
+      p.push([1.08,.84]);return p;
+    }
+    case 'wedge': return raw([[-1.08,.91],[.96,.91],[1.05,.44],[.17,-1.05],[-.36,-.74],[-1.00,-.37]]);
+    case 'column': return raw([[-.55,-1.11],[.52,-1.11],[.71,-.82],[.54,-.54],[.54,.63],[.75,.83],[.45,1.09],[-.51,1.09],[-.75,.83],[-.54,.61],[-.54,-.56],[-.71,-.87]]);
+    case 'arch': return raw([[-1.04,.94],[-.98,-.14],[-.73,-.70],[-.18,-1.09],[.35,-1.01],[.79,-.52],[1.02,.07],[1.04,.94],[.52,.94],[.52,-.01],[.31,-.40],[-.19,-.50],[-.54,-.18],[-.54,.94]]);
+    case 'blade': return raw([[-.96,.96],[-.72,-.17],[-.12,-.83],[.43,-1.10],[.97,-.92],[.35,-.40],[.10,.31],[-.08,.91],[-.43,1.06]]);
+    case 'leaf': {
+      for(let i=0;i<=30;i++){let t=i/30,x=-1.07+2.14*t;
+        p.push([x, Math.sin(Math.PI*t)*(-.30-(v*.055))-.07*Math.sin(T*t)]);}
+      for(let i=30;i>=0;i--){let t=i/30,x=-1.07+2.14*t;
+        p.push([x, Math.sin(Math.PI*t)*(.56+(v%3)*.06)]);}
+      return p.map(([x,y])=>[x*.99,y*1.25]);
+    }
+    case 'turbine': {
+      const n=5+v;return polar(n*8,(i,a)=>.65+.34*(1-i%8/8)+.03*Math.cos(n*a),twist);
+    }
+    case 'boulder': return polar(64,(i,a)=>.90+.065*Math.sin((4+v)*a+.4*v)+.058*Math.sin((7+v)*a+.6),twist);
+    case 'fan': {
+      // A flat base with a broad, spreading faceted upper silhouette.
+      const corners=7+v;
+      p.push([-.95,.92],[.95,.92]);
+      for(let i=0;i<=corners;i++){
+        let a=i*Math.PI/corners;let x=.97*Math.cos(a),y=.73-.94*Math.sin(a)*1.8;
+        p.push([x,y]);}
+      return p;
+    }
+    case 'cluster': return raw([
+      [-1.02,.78],[-.85,-.28],[-.57,-.38],[-.62,-.97],[-.25,-1.06],[-.10,-.52],
+      [.10,-1.15],[.41,-.77],[.45,-.33],[.87,-.74],[1.06,-.15],[.88,.68],
+      [.42,.99],[-.37,.88]
+    ].map(([x,y],i)=>[x+(v===3&&i%3===0?.11:0),y+(v===4&&i%4===0?-.09:0)]));
+  }
+  return [[-1,-1],[1,-1],[1,1],[-1,1]];
+}
+
+function polygon(p){g.beginPath();p.forEach(([x,y],i)=>i?g.lineTo(x,y):g.moveTo(x,y));g.closePath()}
+function inside(a,x,y){let hit=false;for(let i=0,j=a.length-1;i<a.length;j=i++){let p=a[i],q=a[j];if((p[1]>y)!=(q[1]>y)&&x<(q[0]-p[0])*(y-p[1])/(q[1]-p[1])+p[0])hit=!hit}return hit}
+// Choose weak spots from the ENTIRE ACTUAL ICE POLYGON, never from a
+// fixed small square. No [0,0] fallback: that point can be outside hollow
+// or concave silhouettes, making the ice impossible to break.
+function weakPoint(p){
+  let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+  for(const [x,y] of p){minX=Math.min(minX,x);maxX=Math.max(maxX,x);minY=Math.min(minY,y);maxY=Math.max(maxY,y)}
+  // Scan the whole shape. Every accepted sample is inside the very same
+  // polygon used by pointer hit detection. Distance to edge helps avoid
+  // placing the answer in a microscopic, hard-to-tap sliver.
+  const options=[];let maxClearance=-1,best=null;
+  const samples=32;
+  for(let row=0;row<samples;row++)for(let col=0;col<samples;col++){
+    const x=minX+(col+.5)*(maxX-minX)/samples;
+    const y=minY+(row+.5)*(maxY-minY)/samples;
+    if(!inside(p,x,y))continue;
+    let nearest=Infinity;
+    for(let i=0,j=p.length-1;i<p.length;j=i++){
+      const a=p[i],b=p[j],vx=b[0]-a[0],vy=b[1]-a[1];
+      const t=cl(((x-a[0])*vx+(y-a[1])*vy)/(vx*vx+vy*vy||1),0,1);
+      const d=Math.hypot(x-a[0]-vx*t,y-a[1]-vy*t);
+      if(d<nearest)nearest=d;
+    }
+    const pt={x,y,d:nearest};options.push(pt);
+    if(nearest>maxClearance){maxClearance=nearest;best=pt}
+  }
+  if(!best){
+    // Defensive fallback even for any future ultra-thin custom shapes:
+    // find an interior point by scanning from edge midpoints inward.
+    for(let i=0;i<p.length;i++)for(let j=0;j<p.length;j++){
+      const a=p[i],b=p[(i+1)%p.length],m=p[j];
+      const x=(a[0]+b[0]+m[0])/3,y=(a[1]+b[1]+m[1])/3;
+      if(inside(p,x,y))return [x,y];
+    }
+    throw Error('Ice outline has no clickable interior');
+  }
+  // Randomly choose among locations with enough interior space. Concave
+  // shapes still get varied weak points, without unreachable center holes.
+  const safe=Math.min(.155,maxClearance*.7);
+  const pool=options.filter(pt=>pt.d>=safe);
+  const picked=pool[Math.floor(Math.random()*pool.length)]||best;
+  return [picked.x,picked.y];
+}
+function resize(){const r=c.getBoundingClientRect();W=r.width;H=r.height;D=Math.min(devicePixelRatio||1,2);c.width=Math.round(W*D);c.height=Math.round(H*D)}
+function pose(){const cfg=currentCfg(),cx=W*.5,cy=H*.553;
+ const ax=(cfg.family==='icicle'?.79:cfg.family==='slab'?1.015:cfg.family==='drop'?.95:1),ay=(cfg.family==='icicle'?1.12:cfg.family==='slab'?.83:cfg.family==='drop'?1.04:1);
+ const vertices=ice&&ice.cfg===cfg?ice.p:outline(cfg);
+ const limX=Math.max(...vertices.map(q=>Math.abs(q[0]))),up=Math.max(.01,...vertices.map(q=>-q[1])),down=Math.max(.01,...vertices.map(q=>q[1]));
+ const s=Math.min(Math.min(W*.445,H*.31,218)*cfg.scale,(cx-15)/(limX*ax),(cy-147)/(up*ay),(H-72-cy)/(down*ay));
+ return {x:cx,y:cy,sx:s*ax,sy:s*ay}}
+function next(restoredIce=null){const cfg=currentCfg(),p=outline(cfg);const weak=weakPoint(p);ice={p,weak,marks:[],hints:[],bubbles:[],taps:0,cfg};
+// The initial clue is ONE very faint, short stress line. Natural decoy lines resemble it.
+const wa=R(0,T),wstart=R(.045,.105),wlen=R(.12,.18);
+ice.marks.push([[weak[0]+Math.cos(wa)*wstart,weak[1]+Math.sin(wa)*wstart],
+ [weak[0]+Math.cos(wa)*(wstart+wlen),weak[1]+Math.sin(wa)*(wstart+wlen)]]);
+for(let i=0;i<17+cfg.v*2;i++){let x=R(-.85,.85),y=R(-.75,.75),a=R(0,T),len=R(.11,.24);if(!inside(p,x,y))continue;
+ice.marks.push([[x,y],[x+Math.cos(a)*len,y+Math.sin(a)*len]])}
+// Bubbles are texture, not markers on the exact answer.
+for(let i=0;i<26+cfg.v*7;i++){let x=R(-.85,.85),y=R(-.7,.7);if(inside(p,x,y))ice.bubbles.push([x,y,R(.005,.020)])}
+// One subtle off-center bubble cluster gives observant players a rough region to inspect.
+for(let i=0;i<2;i++){let a=R(0,T),d=R(.065,.18),x=weak[0]+Math.cos(a)*d,y=weak[1]+Math.sin(a)*d;if(inside(p,x,y))ice.bubbles.push([x,y,R(.009,.016)])}
+if(restoredIce){
+  ice.taps=Math.max(0,Math.min(1000000,Math.floor(restoredIce.taps)||0));
+  const prev=restoredIce.weak;
+  if(Array.isArray(prev)&&prev.length===2&&prev.every(x=>typeof x==='number'&&Number.isFinite(x))&&inside(p,...prev)){
+    ice.weak=prev;
+    for(const k of ['marks','bubbles','hints']){
+      if(Array.isArray(restoredIce[k])&&restoredIce[k].length<1000)ice[k]=restoredIce[k];
+    }
+  }
+  // If the old weak point was outside the silhouette, keep progress and tap
+  // counters but regenerate clues around a valid, newly chosen weak point.
+}
+num.textContent=String((stage%TYPES.length)+1).padStart(3,'0')+' / 500';/* ice name hidden */message.textContent='氷の弱点を探してタップ';detail.textContent='小さな模様を観察。外すとヒビがヒントに';broken=0;shards=[];dust=[];fractureLines=[];stageEntered=performance.now();root.dataset.phase='idle';if(!resuming)save(false)}
+function glass(){const p=pose();g.save();g.translate(p.x,p.y);g.save();g.scale(p.sx*1.035,p.sy*1.035);g.shadowColor='#a4edff';g.shadowBlur=33;polygon(ice.p);g.fillStyle='#a2efff7e';g.fill();g.restore();g.scale(p.sx,p.sy);polygon(ice.p);let fill=g.createLinearGradient(-1,-1,1,1);
+const palette={clear:['#efffffed','#82c9e1da','#2d6286d6','#befaffd4','#6fb0d4d0'],mist:['#f4fffff5','#d0eef5ed','#5988a5df','#f0ffffcf','#9db9ccd9'],bubbles:['#f0fffff0','#98d3e5d7','#245e82c9','#bceef8cf','#76b5d7cf'],layers:['#eefffff5','#9bd5e8eb','#477d9de8','#c3f0f8e6','#78b0d2e4'],deep:['#f4fffffa','#8bd1ecf5','#347ba6ed','#b0f1ffee','#7bc7e7f2']}[ice.cfg.material];
+[0,.22,.55,.82,1].forEach((at,i)=>fill.addColorStop(at,palette[i]));g.fillStyle=fill;g.fill();g.save();polygon(ice.p);g.clip();let sheen=g.createLinearGradient(-1,-1,1,1);sheen.addColorStop(0,'#ffffff82');sheen.addColorStop(.40,'#ffffff00');sheen.addColorStop(1,'#ffffff53');g.fillStyle=sheen;g.fillRect(-1.2,-1.2,2.4,2.4);ice.bubbles.forEach(([x,y,r])=>{g.beginPath();g.arc(x,y,r,0,T);g.fillStyle='#faffff8b';g.fill()});ice.marks.forEach((s,i)=>{g.beginPath();g.moveTo(...s[0]);g.lineTo(...s[1]);g.strokeStyle=i===0?'#f8ffff54':'#f8ffff34';g.lineWidth=i===0?.0045:.004;g.stroke()});// Different materials make the silhouettes feel like genuinely different ice.
+if(ice.cfg.material==='layers'||ice.cfg.material==='deep'){
+  g.lineWidth=.009;g.strokeStyle=ice.cfg.material==='deep'?'#cbf8ff45':'#efffff83';
+  for(let j=-8;j<=8;j++){let yy=j*.15+(ice.cfg.v-2)*.015;g.beginPath();g.moveTo(-1.25,yy);g.bezierCurveTo(-.25,yy+.09,.35,yy-.07,1.25,yy+.05);g.stroke()}
+}
+if(ice.cfg.family==='prism'||ice.cfg.family==='gem'||ice.cfg.family==='star'){
+  g.lineWidth=.008;g.strokeStyle='#f5ffff59';for(let j=0;j<ice.p.length;j+=2){g.beginPath();g.moveTo(0,.01);g.lineTo(...ice.p[j]);g.stroke()}
+}
+if(ice.cfg.material==='mist'){
+  let mist=g.createRadialGradient(-.25,-.20,.08,-.2,-.14,.84);mist.addColorStop(0,'#e9ffff55');mist.addColorStop(1,'#e9ffff00');g.fillStyle=mist;g.fillRect(-1.3,-1.3,2.6,2.6);
+}
+ice.hints.forEach((s,i)=>{g.beginPath();s.forEach(([x,y],j)=>j?g.lineTo(x,y):g.moveTo(x,y));g.strokeStyle='#073957b9';g.lineWidth=.018;g.stroke();g.strokeStyle=i===ice.hints.length-1?'#efffffe3':'#c3edffc0';g.lineWidth=.007;g.stroke()});g.restore();polygon(ice.p);g.strokeStyle='#e6ffff';g.lineWidth=.027;g.stroke();g.restore()}
+// Broadband granular ice audio: hard attack, micro fractures, ice-grain tinkles.
+function audioInit(){if(ac)return;try{ac=new(window.AudioContext||window.webkitAudioContext)();let sr=ac.sampleRate;noiseBuffer=ac.createBuffer(1,sr, sr);let d=noiseBuffer.getChannelData(0);for(let i=0;i<sr;i++)d[i]=Math.random()*2-1}catch(e){ac=null}}
+function hiss(at,dur,lo,hi,vol){let src=ac.createBufferSource();src.buffer=noiseBuffer;src.loop=true;let hp=ac.createBiquadFilter(),lp=ac.createBiquadFilter(),amp=ac.createGain();hp.type='highpass';hp.frequency.value=lo;lp.type='lowpass';lp.frequency.value=hi;amp.gain.setValueAtTime(.0001,at);amp.gain.exponentialRampToValueAtTime(Math.max(.0001,vol),at+.002);amp.gain.exponentialRampToValueAtTime(.0001,at+dur);src.connect(hp);hp.connect(lp);lp.connect(amp);amp.connect(ac.destination);src.start(at);src.stop(at+dur+.02)}
+function chime(at,freq,vol,dur){let o=ac.createOscillator(),amp=ac.createGain();o.type='sine';o.frequency.setValueAtTime(freq,at);o.frequency.exponentialRampToValueAtTime(freq*.985,at+dur);amp.gain.setValueAtTime(.0001,at);amp.gain.exponentialRampToValueAtTime(vol,at+.0015);amp.gain.exponentialRampToValueAtTime(.0001,at+dur);o.connect(amp);amp.connect(ac.destination);o.start(at);o.stop(at+dur+.01)}
+function iceTick(at,strength=1){hiss(at,.027,1800,12500,.12*strength);chime(at+.002,R(2800,4800),.014*strength,R(.047,.092));chime(at+.005,R(5700,8300),.006*strength,R(.028,.064))}
+function sfx(win){if(muted)return;audioInit();if(!ac)return;ac.resume().catch(()=>{});let t=ac.currentTime+.009;if(!win){iceTick(t,.45);return}
+// A series of stress fractures, followed by one delayed, glass-clear release.
+[0,.13,.23,.34,.47,.58,.655].forEach((offset,i)=>iceTick(t+offset,.45+i*.105));
+let release=t+BREAK_MS/1000;
+hiss(release,.067,550,11500,.39);hiss(release+.008,.095,2700,15500,.31);chime(release,3700,.044,.12);chime(release+.006,5800,.024,.17);
+for(let i=0;i<33;i++){let offset=R(.015,.39),at=release+offset,fade=Math.exp(-offset*3);hiss(at,R(.012,.039),R(2100,5300),R(9500,16000),R(.015,.055)*fade);if(i%2===0)chime(at,R(4200,8100),R(.0035,.013)*fade,R(.035,.16))}
+}
+function clip(poly,dx,dy,v){let out=[];for(let i=0;i<poly.length;i++){let a=poly[i],b=poly[(i+1)%poly.length],p=dx*a[0]+dy*a[1]-v,q=dx*b[0]+dy*b[1]-v;if(p<=0)out.push(a);if((p<0&&q>0)||(p>0&&q<0)){let u=p/(p-q);out.push([a[0]+(b[0]-a[0])*u,a[1]+(b[1]-a[1])*u])}}return out}
+function makeFinale(){finaleParticles=[];const p=pose();for(let i=0;i<260;i++){let a=R(0,T),v=R(75,430);finaleParticles.push({x:p.x+R(-15,15),y:p.y+R(-15,15),vx:Math.cos(a)*v,vy:Math.sin(a)*v-60,size:R(1.4,5.4),life:R(.9,2.15),age:0,spin:R(0,6.28)});}root.querySelector('.finale-caption').classList.remove('visible')}
+function finaleSound(){if(muted||!ac)return;const t=ac.currentTime+BREAK_MS/1000;for(let i=0;i<10;i++){const time=t+i*.075;chime(time,650*Math.pow(2,(i%6)/12),.03,.45);if(i%2===0)hiss(time,.07,800,11000,.17)}chime(t+.68,1250,.06,.8);chime(t+.7,1950,.042,.62)}
+function drawFinale(ms,dt){const age=(ms-BREAK_MS)/1000;if(age<0)return;const a=cl(age/1.7,0,1);g.save();for(let i=0;i<4;i++){const r=55+age*(120+i*90);g.beginPath();g.arc(W*.5,H*.553,r,0,T);g.strokeStyle=`rgba(165,243,255,${(1-a)*(.38-i*.06)})`;g.lineWidth=4-i*.6;g.stroke()}g.restore();for(let p of finaleParticles){p.age+=dt;if(p.age>p.life)continue;let px=p.x+p.vx*p.age,py=p.y+p.vy*p.age+80*p.age*p.age;g.save();g.translate(px,py);g.rotate(p.spin+p.age*3);g.fillStyle=p.age<p.life*.55?'#e5ffff':'#8edbff';g.globalAlpha=cl((p.life-p.age)/.34,0,1);g.fillRect(-p.size,-p.size*.4,p.size*2,p.size*.8);g.restore()}if(age>.35)root.querySelector('.finale-caption').classList.add('visible')}
+function smash(x,y){if(ice.taps===0)oneTapBreaks++;finaleActive=((stage+1)%TYPES.length===0);if(finaleActive)makeFinale();const p=pose(),[wx,wy]=ice.weak,seeds=[[wx,wy]];for(let [radius,count]of [[.20,9],[.44,16],[.75,24],[1.15,36]]){let offset=R(0,T);for(let i=0;i<count;i++){let a=i*T/count+offset+R(-.14,.14);seeds.push([wx+Math.cos(a)*radius*R(.8,1.13),wy+Math.sin(a)*radius*R(.8,1.13)])}}for(let i=0;i<seeds.length;i++){let [sx,sy]=seeds[i],poly=ice.p.slice();for(let j=0;j<seeds.length;j++){if(i===j)continue;let [tx,ty]=seeds[j];poly=clip(poly,tx-sx,ty-sy,(tx*tx+ty*ty-sx*sx-sy*sy)/2);if(poly.length<3)break}if(poly.length<3)continue;let ax=0,ay=0;poly.forEach(z=>{ax+=z[0];ay+=z[1]});ax/=poly.length;ay/=poly.length;let dx=ax-wx,dy=ay-wy,ang=Math.atan2(dy,dx)+R(-.35,.35),spd=R(145,300)*Math.min(1.11,ice.cfg.scale);shards.push({x:p.x+ax*p.sx,y:p.y+ay*p.sy,polyWorld:poly,poly:poly.map(v=>[(v[0]-ax)*p.sx,(v[1]-ay)*p.sy]),vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd-45,spin:R(-5,5),tint:R(0,1)})}for(let i=0;i<230;i++){let s=shards[Math.floor(R(0,shards.length))];if(!s)continue;dust.push({x:s.x,y:s.y,vx:R(-180,180),vy:R(-175,85),life:R(.3,.8),r:R(.5,1.8)})}fractureLines=[];
+for(let i=0;i<13;i++){let theta=i*T/13+R(-.17,.17),rad=R(.86,1.28),steps=8,path=[[wx,wy]];
+for(let j=1;j<=steps;j++){let d=rad*j/steps,a=theta+Math.sin(j*1.6+i)*.055+R(-.023,.023);path.push([wx+Math.cos(a)*d,wy+Math.sin(a)*d])}fractureLines.push(path);
+for(let k=0;k<2;k++){let index=3+k*2,base=path[index],angle=theta+(k===0?.52:-.52)+R(-.18,.18),length=R(.16,.36);fractureLines.push([base,[base[0]+Math.cos(angle)*length*.55,base[1]+Math.sin(angle)*length*.55],[base[0]+Math.cos(angle)*length,base[1]+Math.sin(angle)*length]])}}
+broken=performance.now();save(true);root.dataset.phase='cracking';message.textContent='';detail.textContent='';sfx(true);if(finaleActive)finaleSound()}
+function drawFractures(age){const p=pose(),progress=cl(age/BREAK_MS,0,1),radius=progress*2.05;
+g.save();g.translate(p.x,p.y);g.scale(p.sx,p.sy);polygon(ice.p);g.clip();
+let [wx,wy]=ice.weak;
+// Whitening around stressed regions, before the shard edges separate.
+let halo=g.createRadialGradient(wx,wy,.02,wx,wy,.20+radius*.75);halo.addColorStop(0,'rgba(235,255,255,0.25)');halo.addColorStop(.5,'rgba(191,245,255,0.11)');halo.addColorStop(1,'rgba(214,255,255,0)');g.fillStyle=halo;g.fillRect(-1.3,-1.3,2.6,2.6);
+for(let i=0;i<fractureLines.length;i++){let line=fractureLines[i];let target=(age/BREAK_MS*1.36)-(i%13)*.011;
+if(target<=0)continue;let to=cl(target,0,1)*(line.length-1),segment=Math.floor(to),frac=to-segment;
+g.beginPath();g.moveTo(...line[0]);for(let j=1;j<=segment;j++)g.lineTo(...line[j]);if(segment<line.length-1){let a=line[segment],b=line[segment+1];g.lineTo(a[0]+(b[0]-a[0])*frac,a[1]+(b[1]-a[1])*frac)}
+g.strokeStyle='#0a4569bd';g.lineWidth=.029;g.stroke();g.strokeStyle='#f7fffff2';g.lineWidth=.0105;g.stroke()}
+// Actual shard boundaries progressively reveal, so the final rupture follows the cracks.
+if(progress>.19){g.save();g.beginPath();g.arc(wx,wy,radius,0,T);g.clip();let opacity=cl((progress-.19)*1.3,0,.85);g.lineWidth=.007;g.strokeStyle=`rgba(236,253,255,${opacity})`;for(let s of shards){polygon(s.polyWorld);g.stroke()}g.restore()}
+g.restore()}
+c.addEventListener('pointerdown',e=>{if(broken||awaitingResult)return;e.preventDefault();const b=c.getBoundingClientRect(),p=pose(),nx=(e.clientX-b.left-p.x)/p.sx,ny=(e.clientY-b.top-p.y)/p.sy;if(!inside(ice.p,nx,ny))return;cycleTaps++;displayTaps();let [wx,wy]=ice.weak,d=Math.hypot(nx-wx,ny-wy);if(d<.13){smash(e.clientX-b.left,e.clientY-b.top)}else{ice.taps++;let a=Math.atan2(wy-ny,wx-nx),l=Math.min(.16+Math.min(ice.taps,4)*.08,d*(.36+Math.min(ice.taps,4)*.065)),line=[];
+for(let i=0;i<=8;i++){let u=i/8,r=i===8?0:R(-.010,.010);line.push([nx+Math.cos(a)*l*u-Math.sin(a)*r,ny+Math.sin(a)*l*u+Math.cos(a)*r])}
+ice.hints.push(line);
+message.textContent=ice.taps===1?'小さなヒビが入った':'ヒビが少しずつ伸びていく';
+detail.textContent='亀裂の方向から弱点を探そう';save(false);sfx(false)}},{passive:false});
+root.querySelector('.sound').addEventListener('click',e=>{muted=!muted;e.currentTarget.textContent=muted?'♪':'♫';e.currentTarget.setAttribute('aria-label',muted?'音をオンにする':'音をオフにする');save(!!broken);if(!muted){audioInit();ac?.resume().catch(()=>{})}});
+function render(t){const dt=Math.min((t-last)/1000||.016,.04);last=t;g.setTransform(D,0,0,D,0,0);g.clearRect(0,0,W,H);
+if(!broken){g.save();g.globalAlpha=cl((t-stageEntered)/140,0,1);glass();g.restore()}else{let ms=t-broken,age=(ms-BREAK_MS)/1000;
+if(ms<BREAK_MS){glass();drawFractures(ms);root.dataset.phase='cracking'}
+else{root.dataset.phase='shattering';if(age<.055){g.fillStyle=`rgba(232,254,255,${.20*(1-age/.055)})`;g.fillRect(0,0,W,H)}
+for(let s of shards){let u=age;g.save();g.globalAlpha=cl((.48-age)/.16,0,1);g.translate(s.x+s.vx*u,s.y+s.vy*u+170*u*u);g.rotate(s.spin*u);g.translate(2.5,3);polygon(s.poly);g.fillStyle='#1954709b';g.fill();g.translate(-2.5,-3);polygon(s.poly);let f=g.createLinearGradient(-35,-40,40,45);f.addColorStop(0,'#e7ffffed');f.addColorStop(.3,'#91cfe6d9');f.addColorStop(.65,'#287094bf');f.addColorStop(.82,'#ddffffdf');f.addColorStop(1,'#72b3d4c6');g.fillStyle=f;g.fill();g.lineWidth=1.15;g.strokeStyle='#f4ffffe8';g.stroke();g.restore()}
+for(let i=dust.length-1;i>=0;i--){let q=dust[i];q.life-=dt;q.x+=q.vx*dt;q.y+=q.vy*dt;q.vy+=170*dt;if(q.life<0){dust.splice(i,1);continue}g.globalAlpha=cl(q.life/.25,0,1);g.fillStyle='#f4ffff';g.beginPath();g.arc(q.x,q.y,q.r,0,T);g.fill()}g.globalAlpha=1}
+if(finaleActive&&ms>=BREAK_MS)drawFinale(ms,dt);if(ms>BREAK_MS+(finaleActive?FINALE_AFTER_MS:AFTER_BREAK_MS)){stage++;if(stage%TYPES.length===0){reshuffle();finishCycle()}else next()}}
+requestAnimationFrame(render)}
+window.__iceCrystal={get weak(){const p=pose();return [p.x+ice.weak[0]*p.sx,p.y+ice.weak[1]*p.sy]},get phase(){return root.dataset.phase},get stage(){return stage+1}};root.querySelector('.restart').addEventListener('click',()=>{if(!confirm('現在の進行とタップカウントをリセットしますか？ 過去のランキングは残ります。'))return;try{localStorage.removeItem(SAVE_KEY);}catch(e){}stage=0;cycleTaps=0;oneTapBreaks=0;oneTapTracked=true;fullyTracked=true;awaitingResult=false;lastResult=null;runId='run-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,9);displayTaps();resultMask.classList.remove('is-open');reshuffle();next();});
+window.addEventListener('pagehide',()=>save(!!broken));
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')save(!!broken)});
+window.addEventListener('resize',resize);resize();
+loadResults();
+const existing=restore();
+if(existing){
+ resuming=true;playOrder=existing.playOrder;stage=existing.stage;muted=!!existing.muted;
+ if(existing.v===2||existing.v===3){runId=typeof existing.runId==='string'?existing.runId:runId;cycleTaps=Number.isSafeInteger(existing.cycleTaps)&&existing.cycleTaps>=0?existing.cycleTaps:0;fullyTracked=!!existing.fullyTracked;awaitingResult=!!existing.awaitingResult;lastResult=existing.lastResult||null;oneTapBreaks=existing.v===3&&Number.isSafeInteger(existing.oneTapBreaks)?Math.max(0,existing.oneTapBreaks):0;oneTapTracked=existing.v===3?!!existing.oneTapTracked:(stage%500===0&&cycleTaps===0);}
+ else{ // Old saves cannot reconstruct earlier taps: preserve progress, but never invent a complete record.
+   cycleTaps=0;oneTapBreaks=0;fullyTracked=(stage%500===0&&!existing.pendingAdvance&&(!existing.ice||!existing.ice.taps));oneTapTracked=fullyTracked;
+ }
+ if(existing.pendingAdvance){stage++;if(stage%TYPES.length===0)reshuffle();}
+ const s=root.querySelector('.sound');s.textContent=muted?'♪':'♫';s.setAttribute('aria-label',muted?'音をオンにする':'音をオフにする');
+ displayTaps();next(existing.pendingAdvance||awaitingResult?null:existing.ice);resuming=false;
+ if(existing.pendingAdvance&&stage%500===0)finishCycle();
+ else if(awaitingResult){presentResult();save(false)}
+ else save(false);
+}else{reshuffle();displayTaps();next()}
+requestAnimationFrame(render);
+window.__iceLive={get status(){return {stage,broken:!!broken,shards:shards.length,hints:ice.hints.length,taps:ice.taps,cycleTaps,oneTapBreaks,oneTapTracked,fullyTracked,awaitingResult,finaleActive,results:results.length,breakMs:BREAK_MS,afterBreakMs:AFTER_BREAK_MS}},get weak(){const p=pose();return {x:p.x+ice.weak[0]*p.sx,y:p.y+ice.weak[1]*p.sy}},get variety(){return TYPES.length},get weakInside(){return inside(ice.p,...ice.weak)},get saved(){return restore()},get leaderboard(){return results.slice()},get storageOK(){return storageOK},get oneTapBreaks(){return oneTapBreaks},get currentResult(){return lastResult},resultCanvas:()=>resultCanvas(),get currentId(){return playOrder[stage%TYPES.length]},get playOrder(){return playOrder.slice()},get polygon(){return ice.p.map(p=>p.slice())},get type(){return ice.cfg.name},get bounds(){return pose()},setStage(i){stage=Math.max(0,Math.floor(i));if(stage%TYPES.length===0)reshuffle();fullyTracked=false;oneTapTracked=false;next()}};
+})();
+</script>
+</div>
+</body></html>

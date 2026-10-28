@@ -12,6 +12,9 @@ import { routeHref } from './seo/landing-content.mjs'
 import { shodoHref } from './shodo-simulator-3d/seo'
 import { shusshinHref } from './shusshin-ken/seo'
 import { BillionInvite } from './billion-invite'
+import { iceHref } from './ice-break/seo'
+import { kuroHref } from './kuroi-ekitai/seo'
+import { darumaHref } from './daruma/seo'
 import { uwakiHref } from './uwaki-jinmon/seo'
 import { softServeHref } from './soft-serve/seo'
 import { typhoonHref } from './typhoon-escape/seo'
@@ -54,6 +57,9 @@ function headerGames(root: string): HeaderGame[] {
     { id: 'ommoji', href: ommojiHref(), mark: '絵', title: 'オム文字シミュレーター', section: 'omurice' },
     { id: 'shusshin-ken', href: shusshinHref(), mark: '県', title: '出身地、当てます', section: 'shusshin-ken' },
     { id: 'uwaki-jinmon', href: uwakiHref(), mark: '問', title: '浮気した夫に全部吐かせる', section: 'uwaki-jinmon' },
+    { id: 'ice-break', href: iceHref(), mark: '割', title: 'ICE BREAK', section: 'ice-break' },
+    { id: 'kuroi-ekitai', href: kuroHref(), mark: '吸', title: '黒い液体', section: 'kuroi-ekitai' },
+    { id: 'daruma', href: darumaHref(), mark: '鬼', title: 'だるまさんがころんだ', section: 'daruma' },
   ]
 }
 

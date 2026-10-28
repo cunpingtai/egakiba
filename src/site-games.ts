@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -122,6 +122,30 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: '尋問',
       title: '浮気した夫に全部吐かせる',
       description: '嘘の癖とスマホの証拠から、隠された回数を聞く。',
+    },
+    {
+      id: 'ice-break',
+      href: links.iceBreak,
+      mark: '割',
+      kicker: '氷割り',
+      title: 'ICE BREAK',
+      description: '氷の弱点をタップして、パリンと割る。',
+    },
+    {
+      id: 'kuroi-ekitai',
+      href: links.kuroiEkitai,
+      mark: '吸',
+      kicker: '吸収',
+      title: '黒い液体',
+      description: '小さい相手を吸って、どこまでも大きくなる。',
+    },
+    {
+      id: 'daruma',
+      href: links.daruma,
+      mark: '鬼',
+      kicker: '体感',
+      title: 'だるまさんがころんだ',
+      description: 'スマホを前後に倒して、鬼まで歩く。',
     },
   ]
 }

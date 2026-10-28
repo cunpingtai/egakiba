@@ -37,6 +37,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
     <html lang="ja">
       <head>
         <HeadContent />
+        <meta name="google-adsense-account" content="ca-pub-8048514016010081" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8048514016010081"
+          crossOrigin="anonymous"
+        />
       </head>
       <body className="min-h-dvh font-sans antialiased">
         <SiteFrame>{children}</SiteFrame>

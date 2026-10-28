@@ -17,6 +17,8 @@ import { Route as PlayRouteImport } from './routes/play'
 import { Route as StagesRouteImport } from './routes/stages'
 import { Route as StrongestRouteImport } from './routes/strongest'
 import { Route as CookingGamesIndexRouteImport } from './routes/cooking-games/index'
+import { Route as DarumaIndexRouteImport } from './routes/daruma/index'
+import { Route as DarumaSlugRouteImport } from './routes/daruma/$slug'
 import { Route as DashimakiGameIndexRouteImport } from './routes/dashimaki-game/index'
 import { Route as DashimakiGameSlugRouteImport } from './routes/dashimaki-game/$slug'
 import { Route as DrawFightIndexRouteImport } from './routes/draw-fight/index'
@@ -26,7 +28,11 @@ import { Route as DrawFightStudioRouteImport } from './routes/draw-fight/studio'
 import { Route as DrawingGamesIndexRouteImport } from './routes/drawing-games/index'
 import { Route as HamburgIndexRouteImport } from './routes/hamburg/index'
 import { Route as HamburgSlugRouteImport } from './routes/hamburg/$slug'
+import { Route as IceBreakIndexRouteImport } from './routes/ice-break/index'
+import { Route as IceBreakSlugRouteImport } from './routes/ice-break/$slug'
 import { Route as InterrogationGamesIndexRouteImport } from './routes/interrogation-games/index'
+import { Route as KuroiEkitaiIndexRouteImport } from './routes/kuroi-ekitai/index'
+import { Route as KuroiEkitaiSlugRouteImport } from './routes/kuroi-ekitai/$slug'
 import { Route as LongPotatoIndexRouteImport } from './routes/long-potato/index'
 import { Route as LongPotatoSlugRouteImport } from './routes/long-potato/$slug'
 import { Route as OmuriceSimulatorIndexRouteImport } from './routes/omurice-simulator/index'
@@ -90,6 +96,16 @@ const CookingGamesIndexRoute = CookingGamesIndexRouteImport.update({
   path: '/cooking-games/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DarumaIndexRoute = DarumaIndexRouteImport.update({
+  id: '/daruma/',
+  path: '/daruma/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DarumaSlugRoute = DarumaSlugRouteImport.update({
+  id: '/daruma/$slug',
+  path: '/daruma/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashimakiGameIndexRoute = DashimakiGameIndexRouteImport.update({
   id: '/dashimaki-game/',
   path: '/dashimaki-game/',
@@ -135,9 +151,29 @@ const HamburgSlugRoute = HamburgSlugRouteImport.update({
   path: '/hamburg/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IceBreakIndexRoute = IceBreakIndexRouteImport.update({
+  id: '/ice-break/',
+  path: '/ice-break/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IceBreakSlugRoute = IceBreakSlugRouteImport.update({
+  id: '/ice-break/$slug',
+  path: '/ice-break/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InterrogationGamesIndexRoute = InterrogationGamesIndexRouteImport.update({
   id: '/interrogation-games/',
   path: '/interrogation-games/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KuroiEkitaiIndexRoute = KuroiEkitaiIndexRouteImport.update({
+  id: '/kuroi-ekitai/',
+  path: '/kuroi-ekitai/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KuroiEkitaiSlugRoute = KuroiEkitaiSlugRouteImport.update({
+  id: '/kuroi-ekitai/$slug',
+  path: '/kuroi-ekitai/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LongPotatoIndexRoute = LongPotatoIndexRouteImport.update({
@@ -260,11 +296,14 @@ export interface FileRoutesByFullPath {
   '/play': typeof PlayRoute
   '/stages': typeof StagesRoute
   '/strongest': typeof StrongestRoute
+  '/daruma/$slug': typeof DarumaSlugRoute
   '/dashimaki-game/$slug': typeof DashimakiGameSlugRoute
   '/draw-fight/$slug': typeof DrawFightSlugRoute
   '/draw-fight/gpu-check': typeof DrawFightGpuCheckRoute
   '/draw-fight/studio': typeof DrawFightStudioRoute
   '/hamburg/$slug': typeof HamburgSlugRoute
+  '/ice-break/$slug': typeof IceBreakSlugRoute
+  '/kuroi-ekitai/$slug': typeof KuroiEkitaiSlugRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
@@ -277,11 +316,14 @@ export interface FileRoutesByFullPath {
   '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/cooking-games/': typeof CookingGamesIndexRoute
+  '/daruma/': typeof DarumaIndexRoute
   '/dashimaki-game/': typeof DashimakiGameIndexRoute
   '/draw-fight/': typeof DrawFightIndexRoute
   '/drawing-games/': typeof DrawingGamesIndexRoute
   '/hamburg/': typeof HamburgIndexRoute
+  '/ice-break/': typeof IceBreakIndexRoute
   '/interrogation-games/': typeof InterrogationGamesIndexRoute
+  '/kuroi-ekitai/': typeof KuroiEkitaiIndexRoute
   '/long-potato/': typeof LongPotatoIndexRoute
   '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
   '/omurice/': typeof OmuriceIndexRoute
@@ -302,11 +344,14 @@ export interface FileRoutesByTo {
   '/play': typeof PlayRoute
   '/stages': typeof StagesRoute
   '/strongest': typeof StrongestRoute
+  '/daruma/$slug': typeof DarumaSlugRoute
   '/dashimaki-game/$slug': typeof DashimakiGameSlugRoute
   '/draw-fight/$slug': typeof DrawFightSlugRoute
   '/draw-fight/gpu-check': typeof DrawFightGpuCheckRoute
   '/draw-fight/studio': typeof DrawFightStudioRoute
   '/hamburg/$slug': typeof HamburgSlugRoute
+  '/ice-break/$slug': typeof IceBreakSlugRoute
+  '/kuroi-ekitai/$slug': typeof KuroiEkitaiSlugRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
@@ -319,11 +364,14 @@ export interface FileRoutesByTo {
   '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/cooking-games': typeof CookingGamesIndexRoute
+  '/daruma': typeof DarumaIndexRoute
   '/dashimaki-game': typeof DashimakiGameIndexRoute
   '/draw-fight': typeof DrawFightIndexRoute
   '/drawing-games': typeof DrawingGamesIndexRoute
   '/hamburg': typeof HamburgIndexRoute
+  '/ice-break': typeof IceBreakIndexRoute
   '/interrogation-games': typeof InterrogationGamesIndexRoute
+  '/kuroi-ekitai': typeof KuroiEkitaiIndexRoute
   '/long-potato': typeof LongPotatoIndexRoute
   '/omurice-simulator': typeof OmuriceSimulatorIndexRoute
   '/omurice': typeof OmuriceIndexRoute
@@ -345,11 +393,14 @@ export interface FileRoutesById {
   '/play': typeof PlayRoute
   '/stages': typeof StagesRoute
   '/strongest': typeof StrongestRoute
+  '/daruma/$slug': typeof DarumaSlugRoute
   '/dashimaki-game/$slug': typeof DashimakiGameSlugRoute
   '/draw-fight/$slug': typeof DrawFightSlugRoute
   '/draw-fight/gpu-check': typeof DrawFightGpuCheckRoute
   '/draw-fight/studio': typeof DrawFightStudioRoute
   '/hamburg/$slug': typeof HamburgSlugRoute
+  '/ice-break/$slug': typeof IceBreakSlugRoute
+  '/kuroi-ekitai/$slug': typeof KuroiEkitaiSlugRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
@@ -362,11 +413,14 @@ export interface FileRoutesById {
   '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/cooking-games/': typeof CookingGamesIndexRoute
+  '/daruma/': typeof DarumaIndexRoute
   '/dashimaki-game/': typeof DashimakiGameIndexRoute
   '/draw-fight/': typeof DrawFightIndexRoute
   '/drawing-games/': typeof DrawingGamesIndexRoute
   '/hamburg/': typeof HamburgIndexRoute
+  '/ice-break/': typeof IceBreakIndexRoute
   '/interrogation-games/': typeof InterrogationGamesIndexRoute
+  '/kuroi-ekitai/': typeof KuroiEkitaiIndexRoute
   '/long-potato/': typeof LongPotatoIndexRoute
   '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
   '/omurice/': typeof OmuriceIndexRoute
@@ -389,11 +443,14 @@ export interface FileRouteTypes {
     | '/play'
     | '/stages'
     | '/strongest'
+    | '/daruma/$slug'
     | '/dashimaki-game/$slug'
     | '/draw-fight/$slug'
     | '/draw-fight/gpu-check'
     | '/draw-fight/studio'
     | '/hamburg/$slug'
+    | '/ice-break/$slug'
+    | '/kuroi-ekitai/$slug'
     | '/long-potato/$slug'
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
@@ -406,11 +463,14 @@ export interface FileRouteTypes {
     | '/uwaki-jinmon/$slug'
     | '/zipper-finger/$slug'
     | '/cooking-games/'
+    | '/daruma/'
     | '/dashimaki-game/'
     | '/draw-fight/'
     | '/drawing-games/'
     | '/hamburg/'
+    | '/ice-break/'
     | '/interrogation-games/'
+    | '/kuroi-ekitai/'
     | '/long-potato/'
     | '/omurice-simulator/'
     | '/omurice/'
@@ -431,11 +491,14 @@ export interface FileRouteTypes {
     | '/play'
     | '/stages'
     | '/strongest'
+    | '/daruma/$slug'
     | '/dashimaki-game/$slug'
     | '/draw-fight/$slug'
     | '/draw-fight/gpu-check'
     | '/draw-fight/studio'
     | '/hamburg/$slug'
+    | '/ice-break/$slug'
+    | '/kuroi-ekitai/$slug'
     | '/long-potato/$slug'
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
@@ -448,11 +511,14 @@ export interface FileRouteTypes {
     | '/uwaki-jinmon/$slug'
     | '/zipper-finger/$slug'
     | '/cooking-games'
+    | '/daruma'
     | '/dashimaki-game'
     | '/draw-fight'
     | '/drawing-games'
     | '/hamburg'
+    | '/ice-break'
     | '/interrogation-games'
+    | '/kuroi-ekitai'
     | '/long-potato'
     | '/omurice-simulator'
     | '/omurice'
@@ -473,11 +539,14 @@ export interface FileRouteTypes {
     | '/play'
     | '/stages'
     | '/strongest'
+    | '/daruma/$slug'
     | '/dashimaki-game/$slug'
     | '/draw-fight/$slug'
     | '/draw-fight/gpu-check'
     | '/draw-fight/studio'
     | '/hamburg/$slug'
+    | '/ice-break/$slug'
+    | '/kuroi-ekitai/$slug'
     | '/long-potato/$slug'
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
@@ -490,11 +559,14 @@ export interface FileRouteTypes {
     | '/uwaki-jinmon/$slug'
     | '/zipper-finger/$slug'
     | '/cooking-games/'
+    | '/daruma/'
     | '/dashimaki-game/'
     | '/draw-fight/'
     | '/drawing-games/'
     | '/hamburg/'
+    | '/ice-break/'
     | '/interrogation-games/'
+    | '/kuroi-ekitai/'
     | '/long-potato/'
     | '/omurice-simulator/'
     | '/omurice/'
@@ -516,11 +588,14 @@ export interface RootRouteChildren {
   PlayRoute: typeof PlayRoute
   StagesRoute: typeof StagesRoute
   StrongestRoute: typeof StrongestRoute
+  DarumaSlugRoute: typeof DarumaSlugRoute
   DashimakiGameSlugRoute: typeof DashimakiGameSlugRoute
   DrawFightSlugRoute: typeof DrawFightSlugRoute
   DrawFightGpuCheckRoute: typeof DrawFightGpuCheckRoute
   DrawFightStudioRoute: typeof DrawFightStudioRoute
   HamburgSlugRoute: typeof HamburgSlugRoute
+  IceBreakSlugRoute: typeof IceBreakSlugRoute
+  KuroiEkitaiSlugRoute: typeof KuroiEkitaiSlugRoute
   LongPotatoSlugRoute: typeof LongPotatoSlugRoute
   OmuriceSimulatorSlugRoute: typeof OmuriceSimulatorSlugRoute
   OmuriceSlugRoute: typeof OmuriceSlugRoute
@@ -533,11 +608,14 @@ export interface RootRouteChildren {
   UwakiJinmonSlugRoute: typeof UwakiJinmonSlugRoute
   ZipperFingerSlugRoute: typeof ZipperFingerSlugRoute
   CookingGamesIndexRoute: typeof CookingGamesIndexRoute
+  DarumaIndexRoute: typeof DarumaIndexRoute
   DashimakiGameIndexRoute: typeof DashimakiGameIndexRoute
   DrawFightIndexRoute: typeof DrawFightIndexRoute
   DrawingGamesIndexRoute: typeof DrawingGamesIndexRoute
   HamburgIndexRoute: typeof HamburgIndexRoute
+  IceBreakIndexRoute: typeof IceBreakIndexRoute
   InterrogationGamesIndexRoute: typeof InterrogationGamesIndexRoute
+  KuroiEkitaiIndexRoute: typeof KuroiEkitaiIndexRoute
   LongPotatoIndexRoute: typeof LongPotatoIndexRoute
   OmuriceSimulatorIndexRoute: typeof OmuriceSimulatorIndexRoute
   OmuriceIndexRoute: typeof OmuriceIndexRoute
@@ -609,6 +687,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CookingGamesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/daruma/': {
+      id: '/daruma/'
+      path: '/daruma'
+      fullPath: '/daruma/'
+      preLoaderRoute: typeof DarumaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/daruma/$slug': {
+      id: '/daruma/$slug'
+      path: '/daruma/$slug'
+      fullPath: '/daruma/$slug'
+      preLoaderRoute: typeof DarumaSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashimaki-game/': {
       id: '/dashimaki-game/'
       path: '/dashimaki-game'
@@ -672,11 +764,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HamburgSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/ice-break/': {
+      id: '/ice-break/'
+      path: '/ice-break'
+      fullPath: '/ice-break/'
+      preLoaderRoute: typeof IceBreakIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ice-break/$slug': {
+      id: '/ice-break/$slug'
+      path: '/ice-break/$slug'
+      fullPath: '/ice-break/$slug'
+      preLoaderRoute: typeof IceBreakSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/interrogation-games/': {
       id: '/interrogation-games/'
       path: '/interrogation-games'
       fullPath: '/interrogation-games/'
       preLoaderRoute: typeof InterrogationGamesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kuroi-ekitai/': {
+      id: '/kuroi-ekitai/'
+      path: '/kuroi-ekitai'
+      fullPath: '/kuroi-ekitai/'
+      preLoaderRoute: typeof KuroiEkitaiIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kuroi-ekitai/$slug': {
+      id: '/kuroi-ekitai/$slug'
+      path: '/kuroi-ekitai/$slug'
+      fullPath: '/kuroi-ekitai/$slug'
+      preLoaderRoute: typeof KuroiEkitaiSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/long-potato/': {
@@ -844,11 +964,14 @@ const rootRouteChildren: RootRouteChildren = {
   PlayRoute: PlayRoute,
   StagesRoute: StagesRoute,
   StrongestRoute: StrongestRoute,
+  DarumaSlugRoute: DarumaSlugRoute,
   DashimakiGameSlugRoute: DashimakiGameSlugRoute,
   DrawFightSlugRoute: DrawFightSlugRoute,
   DrawFightGpuCheckRoute: DrawFightGpuCheckRoute,
   DrawFightStudioRoute: DrawFightStudioRoute,
   HamburgSlugRoute: HamburgSlugRoute,
+  IceBreakSlugRoute: IceBreakSlugRoute,
+  KuroiEkitaiSlugRoute: KuroiEkitaiSlugRoute,
   LongPotatoSlugRoute: LongPotatoSlugRoute,
   OmuriceSimulatorSlugRoute: OmuriceSimulatorSlugRoute,
   OmuriceSlugRoute: OmuriceSlugRoute,
@@ -861,11 +984,14 @@ const rootRouteChildren: RootRouteChildren = {
   UwakiJinmonSlugRoute: UwakiJinmonSlugRoute,
   ZipperFingerSlugRoute: ZipperFingerSlugRoute,
   CookingGamesIndexRoute: CookingGamesIndexRoute,
+  DarumaIndexRoute: DarumaIndexRoute,
   DashimakiGameIndexRoute: DashimakiGameIndexRoute,
   DrawFightIndexRoute: DrawFightIndexRoute,
   DrawingGamesIndexRoute: DrawingGamesIndexRoute,
   HamburgIndexRoute: HamburgIndexRoute,
+  IceBreakIndexRoute: IceBreakIndexRoute,
   InterrogationGamesIndexRoute: InterrogationGamesIndexRoute,
+  KuroiEkitaiIndexRoute: KuroiEkitaiIndexRoute,
   LongPotatoIndexRoute: LongPotatoIndexRoute,
   OmuriceSimulatorIndexRoute: OmuriceSimulatorIndexRoute,
   OmuriceIndexRoute: OmuriceIndexRoute,

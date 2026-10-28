@@ -10,6 +10,9 @@ import { softServeHref } from './soft-serve/seo'
 import { cookingHref } from './cooking-games/seo'
 import { ommojiHref } from './ommoji/seo'
 import { shusshinHref } from './shusshin-ken/seo'
+import { iceHref } from './ice-break/seo'
+import { kuroHref } from './kuroi-ekitai/seo'
+import { darumaHref } from './daruma/seo'
 import { uwakiHref } from './uwaki-jinmon/seo'
 import { interrogationHref } from './interrogation-games/seo'
 import { regionHref } from './regional-differences/seo'
@@ -94,6 +97,16 @@ export function siteIndexLinks() {
     { id: 'uwaki-jinmon/evidence', href: uwakiHref('evidence/'), label: '証拠の探し方' },
     { id: 'uwaki-jinmon/endings', href: uwakiHref('endings/'), label: 'エンディング' },
     { id: 'interrogation-games', href: interrogationHref(), label: '尋問ゲーム' },
+    { id: 'ice-break', href: iceHref(), label: 'ICE BREAK' },
+    { id: 'ice-break/how-to-play', href: iceHref('how-to-play/'), label: '氷の弱点の見つけ方' },
+    { id: 'ice-break/500-challenge', href: iceHref('500-challenge/'), label: '500個チャレンジ' },
+    { id: 'kuroi-ekitai', href: kuroHref(), label: '黒い液体' },
+    { id: 'kuroi-ekitai/guide', href: kuroHref('guide/'), label: '黒い液体の攻略' },
+    { id: 'kuroi-ekitai/titles', href: kuroHref('titles/'), label: '黒い液体の称号一覧' },
+    { id: 'daruma', href: darumaHref(), label: 'だるまさんがころんだ' },
+    { id: 'daruma/how-to-play', href: darumaHref('how-to-play/'), label: 'だるまさんがころんだの遊び方' },
+    { id: 'daruma/sensor-fix', href: darumaHref('sensor-fix/'), label: 'だるまさんがころんだが動かないとき' },
+    { id: 'daruma/speedrun', href: darumaHref('speedrun/'), label: 'だるまさんがころんだのタイム' },
   ]
 }
 
