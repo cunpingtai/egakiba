@@ -395,4 +395,24 @@
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
+  <url>
+    <loc>https://egakiba.com/about/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/contact/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/privacy/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/terms/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+  </url>
 </urlset>

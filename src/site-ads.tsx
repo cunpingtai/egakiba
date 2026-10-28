@@ -1,5 +1,6 @@
 import { useEffect, useRef, type ReactNode } from 'react'
 
+import { SiteInfoFooter } from './site-info/Article'
 import { SiteHeader } from './site-header'
 
 const SMARTLINK = 'https://araplhn.org/4/6592007dd77d791e89fd655c5b78d309'
@@ -86,6 +87,7 @@ export function SiteFrame({ children }: { children: ReactNode }) {
       <p className="site-ad-link">
         <a href={SMARTLINK} rel="sponsored nofollow noopener" target="_blank">スポンサーリンク</a>
       </p>
+      <SiteInfoFooter />
     </>
   )
 }

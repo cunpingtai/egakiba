@@ -10,12 +10,16 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as CompareRouteImport } from './routes/compare'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as GlyphsRouteImport } from './routes/glyphs'
 import { Route as HowToPlayRouteImport } from './routes/how-to-play'
 import { Route as PlayRouteImport } from './routes/play'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as StagesRouteImport } from './routes/stages'
 import { Route as StrongestRouteImport } from './routes/strongest'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as CookingGamesIndexRouteImport } from './routes/cooking-games/index'
 import { Route as DarumaIndexRouteImport } from './routes/daruma/index'
 import { Route as DarumaSlugRouteImport } from './routes/daruma/$slug'
@@ -61,9 +65,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CompareRoute = CompareRouteImport.update({
   id: '/compare',
   path: '/compare',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GlyphsRoute = GlyphsRouteImport.update({
@@ -81,6 +95,11 @@ const PlayRoute = PlayRouteImport.update({
   path: '/play',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const StagesRoute = StagesRouteImport.update({
   id: '/stages',
   path: '/stages',
@@ -89,6 +108,11 @@ const StagesRoute = StagesRouteImport.update({
 const StrongestRoute = StrongestRouteImport.update({
   id: '/strongest',
   path: '/strongest',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CookingGamesIndexRoute = CookingGamesIndexRouteImport.update({
@@ -290,12 +314,16 @@ const ZipperFingerSlugRoute = ZipperFingerSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/compare': typeof CompareRoute
+  '/contact': typeof ContactRoute
   '/glyphs': typeof GlyphsRoute
   '/how-to-play': typeof HowToPlayRoute
   '/play': typeof PlayRoute
+  '/privacy': typeof PrivacyRoute
   '/stages': typeof StagesRoute
   '/strongest': typeof StrongestRoute
+  '/terms': typeof TermsRoute
   '/daruma/$slug': typeof DarumaSlugRoute
   '/dashimaki-game/$slug': typeof DashimakiGameSlugRoute
   '/draw-fight/$slug': typeof DrawFightSlugRoute
@@ -338,12 +366,16 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/compare': typeof CompareRoute
+  '/contact': typeof ContactRoute
   '/glyphs': typeof GlyphsRoute
   '/how-to-play': typeof HowToPlayRoute
   '/play': typeof PlayRoute
+  '/privacy': typeof PrivacyRoute
   '/stages': typeof StagesRoute
   '/strongest': typeof StrongestRoute
+  '/terms': typeof TermsRoute
   '/daruma/$slug': typeof DarumaSlugRoute
   '/dashimaki-game/$slug': typeof DashimakiGameSlugRoute
   '/draw-fight/$slug': typeof DrawFightSlugRoute
@@ -387,12 +419,16 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/compare': typeof CompareRoute
+  '/contact': typeof ContactRoute
   '/glyphs': typeof GlyphsRoute
   '/how-to-play': typeof HowToPlayRoute
   '/play': typeof PlayRoute
+  '/privacy': typeof PrivacyRoute
   '/stages': typeof StagesRoute
   '/strongest': typeof StrongestRoute
+  '/terms': typeof TermsRoute
   '/daruma/$slug': typeof DarumaSlugRoute
   '/dashimaki-game/$slug': typeof DashimakiGameSlugRoute
   '/draw-fight/$slug': typeof DrawFightSlugRoute
@@ -437,12 +473,16 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/compare'
+    | '/contact'
     | '/glyphs'
     | '/how-to-play'
     | '/play'
+    | '/privacy'
     | '/stages'
     | '/strongest'
+    | '/terms'
     | '/daruma/$slug'
     | '/dashimaki-game/$slug'
     | '/draw-fight/$slug'
@@ -485,12 +525,16 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/compare'
+    | '/contact'
     | '/glyphs'
     | '/how-to-play'
     | '/play'
+    | '/privacy'
     | '/stages'
     | '/strongest'
+    | '/terms'
     | '/daruma/$slug'
     | '/dashimaki-game/$slug'
     | '/draw-fight/$slug'
@@ -533,12 +577,16 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/compare'
+    | '/contact'
     | '/glyphs'
     | '/how-to-play'
     | '/play'
+    | '/privacy'
     | '/stages'
     | '/strongest'
+    | '/terms'
     | '/daruma/$slug'
     | '/dashimaki-game/$slug'
     | '/draw-fight/$slug'
@@ -582,12 +630,16 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   CompareRoute: typeof CompareRoute
+  ContactRoute: typeof ContactRoute
   GlyphsRoute: typeof GlyphsRoute
   HowToPlayRoute: typeof HowToPlayRoute
   PlayRoute: typeof PlayRoute
+  PrivacyRoute: typeof PrivacyRoute
   StagesRoute: typeof StagesRoute
   StrongestRoute: typeof StrongestRoute
+  TermsRoute: typeof TermsRoute
   DarumaSlugRoute: typeof DarumaSlugRoute
   DashimakiGameSlugRoute: typeof DashimakiGameSlugRoute
   DrawFightSlugRoute: typeof DrawFightSlugRoute
@@ -638,11 +690,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/compare': {
       id: '/compare'
       path: '/compare'
       fullPath: '/compare'
       preLoaderRoute: typeof CompareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/glyphs': {
@@ -666,6 +732,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlayRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/stages': {
       id: '/stages'
       path: '/stages'
@@ -678,6 +751,13 @@ declare module '@tanstack/react-router' {
       path: '/strongest'
       fullPath: '/strongest'
       preLoaderRoute: typeof StrongestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cooking-games/': {
@@ -958,12 +1038,16 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   CompareRoute: CompareRoute,
+  ContactRoute: ContactRoute,
   GlyphsRoute: GlyphsRoute,
   HowToPlayRoute: HowToPlayRoute,
   PlayRoute: PlayRoute,
+  PrivacyRoute: PrivacyRoute,
   StagesRoute: StagesRoute,
   StrongestRoute: StrongestRoute,
+  TermsRoute: TermsRoute,
   DarumaSlugRoute: DarumaSlugRoute,
   DashimakiGameSlugRoute: DashimakiGameSlugRoute,
   DrawFightSlugRoute: DrawFightSlugRoute,

@@ -560,3 +560,24 @@ iframe#play {
   }
 }
 
+.site-info-footer {
+  position: relative;
+  z-index: 2;
+  margin-top: 8px;
+  padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
+  background: #172536;
+  color: #d7e2f0;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.site-info-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 16px;
+}
+.site-info-footer a { color: #ffe19b; }
+.site-info-footer span[aria-current="page"] { color: #fff; font-weight: 700; }
+.site-info-footer p { margin: 8px 0 0; }
+

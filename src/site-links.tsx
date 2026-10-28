@@ -13,6 +13,7 @@ import { shusshinHref } from './shusshin-ken/seo'
 import { iceHref } from './ice-break/seo'
 import { kuroHref } from './kuroi-ekitai/seo'
 import { darumaHref } from './daruma/seo'
+import { siteInfoHref } from './site-info/seo'
 import { uwakiHref } from './uwaki-jinmon/seo'
 import { interrogationHref } from './interrogation-games/seo'
 import { regionHref } from './regional-differences/seo'
@@ -107,6 +108,10 @@ export function siteIndexLinks() {
     { id: 'daruma/how-to-play', href: darumaHref('how-to-play/'), label: 'だるまさんがころんだの遊び方' },
     { id: 'daruma/sensor-fix', href: darumaHref('sensor-fix/'), label: 'だるまさんがころんだが動かないとき' },
     { id: 'daruma/speedrun', href: darumaHref('speedrun/'), label: 'だるまさんがころんだのタイム' },
+    { id: 'about', href: siteInfoHref('about'), label: 'サイトについて' },
+    { id: 'contact', href: siteInfoHref('contact'), label: 'お問い合わせ' },
+    { id: 'privacy', href: siteInfoHref('privacy'), label: 'プライバシーポリシー' },
+    { id: 'terms', href: siteInfoHref('terms'), label: '利用規約' },
   ]
 }
 
