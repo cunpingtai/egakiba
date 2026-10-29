@@ -121,7 +121,7 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       mark: '問',
       kicker: '尋問',
       title: '浮気した夫に全部吐かせる',
-      description: '嘘の癖とスマホの証拠から、隠された回数を聞く。',
+      description: '無料のブラウザゲーム。嘘の癖と証拠から、隠した回数を聞く。',
     },
     {
       id: 'ice-break',

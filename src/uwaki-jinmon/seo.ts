@@ -35,7 +35,7 @@ export function uwakiHead(page: UwakiPage) {
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
         name: '浮気した夫に全部吐かせる',
-        alternateName: ['浮気ゲーム', '尋問ゲーム', '嘘を見抜くゲーム'],
+        alternateName: ['浮気した夫に全部吐かせるゲーム', '浮気した夫に全部吐かせる', '浮気ゲーム', '尋問ゲーム'],
         url: canonical,
         inLanguage: 'ja',
         description: page.description,
