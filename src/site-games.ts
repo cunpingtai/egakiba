@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -146,6 +146,22 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: '体感',
       title: 'だるまさんがころんだ',
       description: 'スマホを前後に倒して、鬼まで歩く。',
+    },
+    {
+      id: 'prefecture-game',
+      href: links.prefectureGame,
+      mark: '列',
+      kicker: '地図',
+      title: '新・都道府県ゲーム',
+      description: '隣の県をくっつけて、日本列島にする。',
+    },
+    {
+      id: 'kazoku-igai',
+      href: links.kazokuIgai,
+      mark: '戸',
+      kicker: 'ホラー',
+      title: '家族以外は入れないでください',
+      description: 'インターホン越しに、本物の家族だけを家へ入れる。',
     },
   ]
 }

@@ -94,7 +94,7 @@ test('R26: sitemap contains the Japanese canonical landing URLs and no fragment 
   const sitemap = await read('public/sitemap.xml');
   const robots = await read('public/robots.txt');
   const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-  assert.equal(urls.length, 83);
+  assert.equal(urls.length, 91);
   assert.equal(sitemap.includes('<lastmod>'), false);
   assert.equal(new Set(urls).size, urls.length);
   assert.ok(urls.every((url) => !url.includes('#')));
@@ -160,6 +160,14 @@ test('R26: sitemap contains the Japanese canonical landing URLs and no fragment 
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}daruma/how-to-play/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}daruma/sensor-fix/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}daruma/speedrun/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}prefecture-game/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}prefecture-game/guide/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}prefecture-game/adjacency/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}prefecture-game/hard-mode/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}prefecture-game/asia/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}kazoku-igai/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}kazoku-igai/true-end/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}kazoku-igai/endings/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}about/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}contact/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}privacy/`));

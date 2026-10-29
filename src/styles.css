@@ -581,3 +581,10 @@ iframe#play {
 .site-info-footer span[aria-current="page"] { color: #fff; font-weight: 700; }
 .site-info-footer p { margin: 8px 0 0; }
 
+.pref-links { margin: 28px 0; }
+.pref-links label { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-weight: 700; }
+.pref-links select { min-height: 44px; padding: 6px 10px; font: inherit; }
+.pref-links ul { list-style: none; margin: 16px 0 0; padding: 0; }
+.pref-links li { display: grid; gap: 4px; padding: 10px 0; border-bottom: 1px solid #ddd6c8; }
+.pref-links li span { line-height: 1.6; }
+

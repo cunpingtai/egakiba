@@ -15,6 +15,8 @@ import { BillionInvite } from './billion-invite'
 import { iceHref } from './ice-break/seo'
 import { kuroHref } from './kuroi-ekitai/seo'
 import { darumaHref } from './daruma/seo'
+import { prefHref } from './prefecture-game/seo'
+import { kazokuHref } from './kazoku-igai/seo'
 import { uwakiHref } from './uwaki-jinmon/seo'
 import { softServeHref } from './soft-serve/seo'
 import { typhoonHref } from './typhoon-escape/seo'
@@ -60,6 +62,8 @@ function headerGames(root: string): HeaderGame[] {
     { id: 'ice-break', href: iceHref(), mark: '割', title: 'ICE BREAK', section: 'ice-break' },
     { id: 'kuroi-ekitai', href: kuroHref(), mark: '吸', title: '黒い液体', section: 'kuroi-ekitai' },
     { id: 'daruma', href: darumaHref(), mark: '鬼', title: 'だるまさんがころんだ', section: 'daruma' },
+    { id: 'prefecture-game', href: prefHref(), mark: '列', title: '新・都道府県ゲーム', section: 'prefecture-game' },
+    { id: 'kazoku-igai', href: kazokuHref(), mark: '戸', title: '家族以外は入れないでください', section: 'kazoku-igai' },
   ]
 }
 

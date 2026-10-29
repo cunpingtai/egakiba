@@ -1,0 +1,1523 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://egakiba.com/kazoku-igai/">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>家族以外は入れないでください</title>
+<style>
+:root{color-scheme:dark}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#000;overflow:hidden;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;font-family:"Hiragino Sans","Noto Sans JP",system-ui,sans-serif;color:#cfd6dd}
+#stage{position:absolute;left:50%;top:50%;width:min(100vw,calc(100dvh*9/16));aspect-ratio:9/16;transform:translate(-50%,-50%);overflow:hidden;background:#000;container-type:size}
+#monitor{position:absolute;left:5cqw;top:20cqw;width:90cqw;height:90cqw;border-radius:50%;overflow:hidden;background:#000;box-shadow:0 0 0 1px #0d1014}
+#view{width:100%;height:100%;display:block}
+#vids{position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;left:0;top:0}
+#vids video{width:1px;height:1px}
+.choices{position:absolute;left:5cqw;right:5cqw;top:122cqw;display:flex;gap:4cqw;visibility:hidden}
+.choices.low{top:157cqw}
+.choices.low .choice{height:13cqw;font-size:max(13px,3.7cqw);letter-spacing:.02em}
+#talk{position:absolute;left:6cqw;right:6cqw;top:113cqw;display:none;flex-direction:column;gap:1.4cqw;font-size:max(13px,3.6cqw);line-height:1.45;color:#e2e7ec;letter-spacing:.03em}
+#talk.on{display:flex}
+#talk p{margin:0;min-height:1.45em}
+.choices.on{visibility:visible}
+.choice{flex:1 1 0;min-height:48px;height:15cqw;border:1px solid #3a424b;border-radius:2cqw;background:#10151a;color:#d9dfe5;font:inherit;font-size:max(15px,4.4cqw);letter-spacing:.06em;cursor:pointer;padding:0;transition:background .08s,border-color .08s}
+.choice.pressed{background:#2b343d;border-color:#9aa6b2}
+.layer{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;background:#000;z-index:10}
+.layer.on{display:flex}
+#start p{margin:0 0 14cqw;font-size:max(16px,5cqw);letter-spacing:.08em;color:#d6dce2}
+#startBtn{min-width:40cqw;min-height:48px;height:13cqw;border:1px solid #4a535c;border-radius:2cqw;background:#0e1216;color:#e3e8ed;font:inherit;font-size:max(15px,4.4cqw);letter-spacing:.1em;cursor:pointer}
+#langs{display:none;gap:2.2cqw;margin-top:7cqw}
+#langs button{min-height:36px;padding:0 3.2cqw;border:1px solid #3a424b;border-radius:1.5cqw;background:transparent;color:#9aa3ad;font:inherit;font-size:max(12px,3.3cqw);cursor:pointer}
+#langs button[aria-pressed=true]{background:#c9cfd6;color:#0e1216;border-color:#c9cfd6}
+#streamBody p{margin:3cqw 0 0;font-size:max(12px,3.3cqw);letter-spacing:.04em;line-height:1.8;text-align:left;color:#aab3bc;user-select:text;-webkit-user-select:text}
+#sub{position:absolute;left:5cqw;right:5cqw;top:5cqw;min-height:12cqw;display:flex;align-items:flex-end;justify-content:center;text-align:center;font-size:max(13px,3.9cqw);line-height:1.45;color:#e6ebf0;letter-spacing:.02em;opacity:0;transition:opacity .25s;pointer-events:none;text-shadow:0 0 6px #000}
+#sub.on{opacity:1}
+#start small{position:absolute;bottom:10cqw;text-align:center;line-height:1.8;font-size:max(11px,3.2cqw);color:#6f7880;letter-spacing:.06em}
+#end{justify-content:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch}
+#result{opacity:0;transition:opacity .8s;text-align:center;padding:12cqw 8cqw max(84px,calc(env(safe-area-inset-bottom) + 64px));margin:auto 0;letter-spacing:.06em;pointer-events:none}
+#result.on{pointer-events:auto}
+#endHidden{margin:-4cqw 0 6cqw;font-size:max(13px,3.8cqw);color:#d9b45a}
+.share{display:block;margin:0 auto 4cqw;width:62cqw;min-height:44px;line-height:44px;border:1px solid #4a535c;border-radius:2cqw;background:#0e1216;color:#e3e8ed;text-decoration:none;font-size:max(13px,3.8cqw);letter-spacing:.08em}
+.share[hidden]{display:none}
+#hint,#feedback{margin:0 0 6cqw;font-size:max(12px,3.3cqw);color:#aab3bc}
+#hint{margin-bottom:1.5cqw}
+#hint a,#feedback a{color:#d6dce2;text-underline-offset:3px}
+#again{display:block;margin:6cqw auto 5cqw}
+.streaming{margin:6cqw 8cqw 0;max-width:84cqw;font-size:max(12px,3.3cqw);line-height:1.8;color:#8a949d;letter-spacing:.04em}
+.streaming summary{cursor:pointer;text-align:center;list-style:none;color:#8a949d;text-decoration:underline;text-underline-offset:3px}
+.streaming summary::-webkit-details-marker{display:none}
+#start .streaming p{margin:3cqw 0 0;font-size:max(12px,3.3cqw);letter-spacing:.04em;line-height:1.8;text-align:left;color:#aab3bc;user-select:text;-webkit-user-select:text}
+#result.on{opacity:1}
+#endLabel{margin:0;font-size:max(12px,3.4cqw);letter-spacing:.2em;color:#8a949d}
+#endName{margin:2cqw 0 4cqw;font-size:max(20px,6.4cqw);font-weight:500;color:#e6ebf0}
+#endText{margin:0 0 8cqw;font-size:max(13px,3.8cqw);line-height:1.7;color:#c3cbd2}
+#endList{list-style:none;margin:0 auto 3cqw;padding:0;display:inline-flex;flex-direction:column;gap:1.6cqw;text-align:left;font-size:max(12px,3.4cqw);color:#7d8790}
+#endList li::before{content:'・'}
+#endList li.now{color:#e6ebf0}
+#endCount{margin:0 0 2cqw;font-size:max(12px,3.2cqw);color:#8a949d}
+#thanks{margin-top:4cqw;font-size:max(12px,3.4cqw);line-height:1.9;color:#c3cbd2;user-select:text;-webkit-user-select:text}
+#thanks p{margin:0 0 3cqw}
+#thanks a{color:#c3cbd2;text-underline-offset:3px}
+#again{opacity:0;transition:opacity .8s;min-height:44px;padding:0 6cqw;border:0;background:none;color:#6d757d;font:inherit;font-size:max(12px,3.4cqw);letter-spacing:.12em;cursor:pointer;pointer-events:none}
+#again.on{opacity:1;pointer-events:auto}
+/* system notices — deliberately plain, separate from the story */
+.sys{position:absolute;left:8cqw;right:8cqw;bottom:12cqw;display:none;flex-direction:column;align-items:center;gap:3cqw;padding:5cqw;border-radius:2cqw;background:#15191e;border:1px solid #2c333a;z-index:20;font-family:system-ui,sans-serif;font-size:max(12px,3.4cqw);color:#aab3bc}
+.sys.on{display:flex}
+/* デバッグメニュー：左上を3回タップで開く（本公開の前に DEBUG_MENU を false にする） */
+#dbgHot{position:absolute;left:0;top:0;width:18cqw;height:18cqw;z-index:50}
+#dbg{position:absolute;left:3cqw;right:3cqw;top:113cqw;bottom:3cqw;display:none;flex-direction:column;gap:2.5cqw;padding:3cqw;border-radius:2cqw;background:rgba(21,25,30,.94);border:1px solid #2c333a;z-index:40;font-family:system-ui,sans-serif;font-size:max(12px,3.4cqw);color:#aab3bc;overflow-y:auto}
+#dbg.on{display:flex}
+#dbg p{margin:0}
+#dbgList{display:grid;grid-template-columns:repeat(4,1fr);gap:2cqw}
+#dbg button{min-height:40px;border:1px solid #4a535c;border-radius:1.5cqw;background:#222930;color:#e3e8ed;font:inherit;cursor:pointer;padding:0}
+#dbg button.now{background:#3a4652;border-color:#9aa6b2}
+.dbgRow{display:flex;gap:2cqw}.dbgRow button{flex:1}
+.sys button{min-height:44px;min-width:30cqw;border:1px solid #4a535c;border-radius:1.5cqw;background:#222930;color:#e3e8ed;font:inherit;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="monitor"><canvas id="view"></canvas></div>
+  <div id="sub"></div>
+  <div id="talk"></div>
+  <div class="choices" id="choices">
+    <button class="choice" id="c0" tabindex="-1"></button>
+    <button class="choice" id="c1" tabindex="-1"></button>
+  </div>
+  <div class="layer on" id="start">
+    <p id="ttl"></p>
+    <button id="startBtn"></button>
+    <div id="langs" role="group" aria-label="Language"><button type="button" data-lang="ja" lang="ja">日本語</button><button type="button" data-lang="en" lang="en">English</button><button type="button" data-lang="ko" lang="ko">한국어</button></div>
+    <details class="streaming"><summary id="streamTitle"></summary><div id="streamBody"></div></details>
+    <small><span id="noteSound"></span><br><span id="noteScare"></span></small>
+  </div>
+  <div class="layer" id="end">
+    <div id="result">
+      <p id="endLabel"></p>
+      <h2 id="endName"></h2>
+      <p id="endText"></p>
+      <p id="endHidden" hidden></p>
+      <a class="share" id="share1" href="#" hidden></a>
+      <p id="hint" hidden></p>
+      <p id="feedback" hidden></p>
+      <ul id="endList"></ul>
+      <p id="endCount"></p>
+      <button id="again"></button>
+      <div id="thanks">
+        <p id="thanksText"></p>
+        <p id="creator"></p>
+      </div>
+    </div>
+  </div>
+  <div class="sys" id="err"><span id="errText"></span><button id="retry"></button></div>
+  <div class="sys" id="resume"><span id="pauseText"></span><button id="resumeBtn"></button></div>
+  <div id="dbgHot"></div>
+  <div id="dbg"><p id="dbgNow">デバッグ：見たい動画を選んでください</p><div id="dbgList"></div><div class="dbgRow"><button id="dbgReplay">もう一度再生</button><button id="dbgClose">閉じる（最初から）</button></div></div>
+  <div id="vids"></div>
+</div>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+
+/* ============================================================
+   Config — adjust voice cue offsets here once real footage exists
+   ============================================================ */
+const CUE = {
+  F01_line: 1.3,   // 「父さんだ。鍵、忘れたんだ。」
+  F03_line: 0.8,   // 「……早く、開けてくれ。」
+  F05_line: 1.0,   // 「……だめだ。」
+  F06_line: 0.1,   // 主人公「……開けない。」
+};
+const LINES = {
+  v1:     { who: 'man',    text: '配達です。開けてもらえますか。', intercom: true },
+  v2:     { who: 'woman',  text: '……開けてください。',           intercom: true },
+  f_ent:  { who: 'father', text: '父さんだ。鍵、忘れたんだ。',     intercom: true },
+  f_door: { who: 'father', text: '……早く、開けてくれ。',         intercom: true },
+  f_dame: { who: 'father', text: '……だめだ。',                   intercom: true },
+  me:     { who: 'me',     text: '……開けない。',                 intercom: false },
+  r_ent:  { who: 'father', text: 'ただいま。父さんだよ。開けてくれるか。', intercom: true },
+  r_door: { who: 'father', text: 'ただいま。遅くなってごめんな。', intercom: true },
+  r_home: { who: 'father', text: 'ただいま。',                     intercom: true },
+};
+// Colour match for the entrance footage: pull each clip toward V2's dim, warm lobby
+const GRADE = { F01: [0.72, 0.66, 0.55], F02: [0.72, 0.66, 0.55], F07: [0.72, 0.66, 0.55], D1: [0.72, 0.66, 0.55] };
+const VIDEO_IDS = ['V1', 'V2', 'D1', 'F01', 'F02', 'F05', 'F08', 'K08', 'K09', 'M01'];
+const STILL_IDS = [];
+// Lines recorded inside the footage itself (video mode skips their separate voice track)
+const BAKED = { v1: 'V1', v2: 'V2', f_ent: 'F01', f_door: 'F03', f_dame: 'F05', me: 'F06', r_ent: 'F07', r_door: 'F08', r_home: 'F09' };
+const SFX_IDS = ['cough', 'lurk', 'ring', 'hangup', 'unlock_entrance', 'static', 'chime', 'unlock_door', 'door_open', 'step', 'knock', 'knock_iron', 'kick_door', 'breath', 'impact', 'scratch', 'bark', 'dog_threat', 'amb_hall', 'amb_lobby'];
+
+/* ============================================================
+   Clock — game time only advances while nothing is holding it
+   ============================================================ */
+let gt = 0, run = 0;
+const holds = new Set();
+const paused = () => holds.size > 0;
+let timers = [];
+function wait(s) { return new Promise(res => timers.push({ at: gt + s, fn: res })); }
+const STALE = Symbol('stale');
+function guard(p) { const r = run; return p.then(v => { if (r !== run) throw STALE; return v; }); }
+const ease = x => x <= 0 ? 0 : x >= 1 ? 1 : x * x * (3 - 2 * x);
+const seg = (t, a, b) => ease((t - a) / (b - a));
+
+/* ============================================================
+   Audio
+   ============================================================ */
+let ac = null, master = null, noiseBuf = null;
+const sfxBuf = {}, voiceBuf = {}, rawAudio = {};
+function initAudio() {
+  if (ac) return;
+  try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}   // iPhone のマナーモードでも鳴らす
+  ac = new (window.AudioContext || window.webkitAudioContext)();
+  master = ac.createGain(); master.connect(ac.destination);
+  noiseBuf = ac.createBuffer(1, ac.sampleRate * 2, ac.sampleRate);
+  const d = noiseBuf.getChannelData(0);
+  for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+  for (const [k, ab] of Object.entries(rawAudio)) decodeInto(k, ab);
+}
+function decodeInto(k, ab) {
+  const [kind, id] = k.split(':');
+  ac.decodeAudioData(ab.slice(0), b => { (kind === 'v' ? voiceBuf : sfxBuf)[id] = b; }, () => {});
+}
+function env(g, t, a, peak, dec, sustain = 0.0001) {
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(peak, t + a);
+  g.gain.exponentialRampToValueAtTime(sustain, t + a + dec);
+}
+function tone(freq, t, dur, peak, type = 'sine', dest = master) {
+  const o = ac.createOscillator(), g = ac.createGain();
+  o.type = type; o.frequency.setValueAtTime(freq, t);
+  env(g, t, 0.008, peak, dur);
+  o.connect(g).connect(dest); o.start(t); o.stop(t + dur + 0.05);
+  return o;
+}
+function noise(t, dur, peak, filt = 'lowpass', freq = 800, q = 0.7, dest = master, attack = 0.004) {
+  const s = ac.createBufferSource(), f = ac.createBiquadFilter(), g = ac.createGain();
+  s.buffer = noiseBuf; s.loop = true;
+  f.type = filt; f.frequency.value = freq; f.Q.value = q;
+  env(g, t, attack, peak, dur);
+  s.connect(f).connect(g).connect(dest);
+  s.start(t, Math.random()); s.stop(t + attack + dur + 0.05);
+  return { s, f, g };
+}
+function playBuf(b, gain = 1) {
+  const s = ac.createBufferSource(), g = ac.createGain();
+  s.buffer = b; g.gain.value = gain; s.connect(g).connect(master); s.start();
+  return s;
+}
+// Synthesized placeholders. A file at assets/sfx/<id>.mp3 replaces each one.
+const SFX = {
+  ring() { // 共用エントランスの呼出音
+    const t = ac.currentTime;
+    for (const o of [0, 1.1]) { tone(1318, t + o, 0.35, 0.18, 'triangle'); tone(1046, t + o + 0.32, 0.9, 0.18, 'triangle'); }
+  },
+  chime() { // 自宅玄関チャイム (別の音色)
+    const t = ac.currentTime;
+    tone(659, t, 1.2, 0.22); tone(659 * 2.01, t, 0.5, 0.05);
+    tone(523, t + 0.45, 1.8, 0.22); tone(523 * 2.01, t + 0.45, 0.6, 0.05);
+  },
+  hangup() {
+    const t = ac.currentTime;
+    noise(t, 0.03, 0.3, 'bandpass', 2500, 2);
+    tone(880, t + 0.05, 0.12, 0.08, 'square');
+  },
+  unlock_entrance() {
+    const t = ac.currentTime;
+    tone(1000, t, 0.12, 0.1, 'square');
+    noise(t + 0.25, 0.25, 0.25, 'lowpass', 300);
+    tone(90, t + 0.25, 0.2, 0.15, 'square');
+  },
+  unlock_door() { // 室内側のサムターン
+    const t = ac.currentTime;
+    noise(t, 0.04, 0.6, 'bandpass', 3200, 3);
+    noise(t + 0.06, 0.12, 0.7, 'bandpass', 1400, 2);
+    tone(110, t + 0.06, 0.12, 0.4);
+  },
+  door_open() {
+    const t = ac.currentTime;
+    noise(t, 0.05, 0.5, 'bandpass', 2600, 3);
+    const o = ac.createOscillator(), f = ac.createBiquadFilter(), g = ac.createGain();
+    o.type = 'sawtooth'; o.frequency.setValueAtTime(140, t + 0.1); o.frequency.linearRampToValueAtTime(95, t + 0.9);
+    f.type = 'bandpass'; f.frequency.value = 900; f.Q.value = 6;
+    env(g, t + 0.1, 0.15, 0.06, 0.8);
+    o.connect(f).connect(g).connect(master); o.start(t + 0.1); o.stop(t + 1.1);
+    noise(t + 0.15, 0.9, 0.18, 'lowpass', 500, 0.7, master, 0.3);
+  },
+  step(gain = 0.5, bright = 900) {
+    const t = ac.currentTime;
+    noise(t, 0.09, gain, 'lowpass', bright);
+    tone(65, t, 0.1, gain * 0.6);
+  },
+  knock(gain = 0.5) {
+    const t = ac.currentTime;
+    tone(105, t, 0.14, gain);
+    noise(t, 0.06, gain * 0.8, 'lowpass', 1100);
+  },
+  breath(dur = 0.6, gain = 0.06, shaky = false) {
+    const t = ac.currentTime;
+    const n = noise(t, dur, gain, 'bandpass', 1300, 0.8, master, dur * 0.4);
+    if (shaky) { const l = ac.createOscillator(), lg = ac.createGain(); l.frequency.value = 11; lg.gain.value = 350; l.connect(lg).connect(n.f.frequency); l.start(t); l.stop(t + dur * 1.5); }
+  },
+  cough() {}, // 素材 (assets/sfx/cough.mp3) があるときだけ鳴る
+  knock_iron() { [0, 0.3, 0.6].forEach(d => timers.push({ at: gt + d, fn: () => SFX.knock(0.7) })); }, // 素材が無いときの代わり
+  kick_door() { SFX.impact(); },
+  lurk(gain = 0.05) { // 偽物の背後にいる誰かの息づかい（インターホン越し・低め）
+    const t = ac.currentTime;
+    const one = (at, dur, freq, peak) => {
+      const s = ac.createBufferSource(), hp = ac.createBiquadFilter(), bp = ac.createBiquadFilter(), g = ac.createGain();
+      s.buffer = noiseBuf; s.loop = true;
+      hp.type = 'highpass'; hp.frequency.value = 280;
+      bp.type = 'bandpass'; bp.Q.value = 1.4; bp.frequency.setValueAtTime(freq, at); bp.frequency.linearRampToValueAtTime(freq * 0.8, at + dur);
+      g.gain.setValueAtTime(0.0001, at); g.gain.linearRampToValueAtTime(peak, at + dur * 0.45); g.gain.linearRampToValueAtTime(0.0001, at + dur);
+      s.connect(hp).connect(bp).connect(g).connect(master); s.start(at, Math.random()); s.stop(at + dur + 0.05);
+    };
+    one(t, 0.75, 700, gain * 0.7);          // 吸う
+    one(t + 0.85, 1.1, 520, gain);           // 吐く（重く長め）
+  },
+  scratch(gain = 0.3) { // 玄関の戸を爪でひっかく音
+    const t = ac.currentTime;
+    for (let i = 0; i < 3; i++) noise(t + i * 0.13, 0.1, gain * (0.7 + Math.random() * 0.3), 'bandpass', 3000 + Math.random() * 1500, 4, master, 0.01);
+  },
+  bark(gain = 0.35) { // ドア越しのくぐもった鳴き声
+    const t = ac.currentTime;
+    const o = ac.createOscillator(), f = ac.createBiquadFilter(), g = ac.createGain();
+    o.type = 'sawtooth'; o.frequency.setValueAtTime(620, t); o.frequency.exponentialRampToValueAtTime(330, t + 0.16);
+    f.type = 'lowpass'; f.frequency.value = 900;
+    env(g, t, 0.01, gain, 0.18);
+    o.connect(f).connect(g).connect(master); o.start(t); o.stop(t + 0.25);
+    noise(t, 0.12, gain * 0.4, 'bandpass', 700, 1.5);
+  },
+  dog_threat() {    // 素材が無いときの代わり：うなり → 吠える
+    const t = ac.currentTime;
+    const o = ac.createOscillator(), f = ac.createBiquadFilter(), g = ac.createGain();
+    o.type = 'sawtooth'; o.frequency.value = 95; f.type = 'lowpass'; f.frequency.value = 600;
+    env(g, t, 0.3, 0.25, 1.6);
+    o.connect(f).connect(g).connect(master); o.start(t); o.stop(t + 2);
+    [2.0, 2.3, 2.6, 2.9].forEach(d => timers.push({ at: gt + d, fn: () => SFX.bark(0.6) }));
+  },
+  static() { // モニターが乱れる「ザッ」
+    const t = ac.currentTime;
+    noise(t, 0.45, 0.35, 'bandpass', 2800, 0.6);
+  },
+  impact() {
+    const t = ac.currentTime;
+    tone(48, t, 0.22, 0.9);
+    noise(t, 0.16, 0.9, 'lowpass', 2200);
+  },
+};
+function sfx(id, ...args) {
+  if (!ac) return;
+  if (sfxBuf[id]) playBuf(sfxBuf[id], args[0] ?? 1);
+  else SFX[id](...args);
+}
+// Corridor ambience (BGMなし)
+let amb = null;
+function ambience(kind) {
+  if (!ac) return;
+  if (MODE === 'video' && kind && !sfxBuf['amb_' + kind]) kind = null;   // footage carries its own room tone
+  const t = ac.currentTime;
+  if (amb) { const a = amb; a.g.gain.setTargetAtTime(0.0001, t, 0.08); setTimeout(() => a.nodes.forEach(n => { try { n.stop(); } catch (e) {} }), 600); amb = null; }
+  if (!kind) return;
+  const g = ac.createGain(); g.gain.value = 0.0001; g.connect(master);
+  const nodes = [];
+  const file = sfxBuf['amb_' + kind];
+  if (file) { const s = ac.createBufferSource(); s.buffer = file; s.loop = true; s.connect(g); s.start(); nodes.push(s); }
+  else {
+    const s = ac.createBufferSource(), f = ac.createBiquadFilter();
+    s.buffer = noiseBuf; s.loop = true; f.type = 'lowpass'; f.frequency.value = kind === 'hall' ? 260 : 520;
+    s.connect(f).connect(g); s.start(); nodes.push(s);
+    const o = ac.createOscillator(), og = ac.createGain();
+    o.frequency.value = kind === 'hall' ? 100 : 120; og.gain.value = 0.08; o.connect(og).connect(g); o.start(); nodes.push(o);
+  }
+  g.gain.setTargetAtTime(kind === 'hall' ? 0.09 : 0.06, t, 0.15);
+  amb = { g, nodes };
+}
+function silenceAll() {
+  ambience(null);
+  if (ac) { master.gain.cancelScheduledValues(ac.currentTime); master.gain.setValueAtTime(0, ac.currentTime); }
+  activeVoices.forEach(v => { try { v.stop(); } catch (e) {} });
+  if (window.speechSynthesis) speechSynthesis.cancel();
+}
+function restoreMaster() { if (ac) { master.gain.cancelScheduledValues(ac.currentTime); master.gain.setValueAtTime(1, ac.currentTime); } }
+
+/* ---- Voice: assets/voice/<id>.mp3, else speech synthesis as a stand-in ---- */
+const speaking = {}, lastEnd = {};
+const activeVoices = new Set();
+let jaVoice = null;
+function pickVoice() {
+  if (!window.speechSynthesis) return;
+  const vs = speechSynthesis.getVoices().filter(v => /^ja/i.test(v.lang));
+  jaVoice = vs.find(v => /Otoya|Hattori|Ichiro|male/i.test(v.name)) || vs[0] || null;
+}
+if (window.speechSynthesis) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
+const VOICE_STYLE = { man: { pitch: 0.75, rate: 0.95 }, woman: { pitch: 1.15, rate: 0.75 }, father: { pitch: 0.7, rate: 0.85 }, me: { pitch: 1.35, rate: 0.9 } };
+function say(id) { subtitle(id); return MODE === 'video' && BAKED[id] ? Promise.resolve() : speak(id); }
+function speak(id) {
+  const L = LINES[id];
+  return new Promise(res => {
+    let fin = false;
+    const r = run;
+    speaking[L.who] = (speaking[L.who] || 0) + 1;
+    const done = () => { if (fin) return; fin = true; if (r === run) { speaking[L.who]--; lastEnd[L.who] = gt; } res(); };
+    const b = voiceBuf[id];
+    if (b) {
+      const s = ac.createBufferSource(); s.buffer = b;
+      let node = s;
+      if (L.intercom) { // インターホン越しの帯域
+        const hp = ac.createBiquadFilter(), lp = ac.createBiquadFilter();
+        hp.type = 'highpass'; hp.frequency.value = 280; lp.type = 'lowpass'; lp.frequency.value = 3600;
+        node = s.connect(hp).connect(lp);
+      }
+      node.connect(master);
+      activeVoices.add(s);
+      s.onended = () => { activeVoices.delete(s); done(); };
+      s.start();
+      return;
+    }
+    const est = 0.6 + L.text.length * 0.17;
+    timers.push({ at: gt + est * 2.5 + 2, fn: done }); // safety net
+    if (!window.speechSynthesis) { timers.push({ at: gt + est, fn: done }); return; }
+    const u = new SpeechSynthesisUtterance(L.text.replace(/……/g, '、'));
+    u.lang = 'ja-JP'; if (jaVoice) u.voice = jaVoice;
+    Object.assign(u, VOICE_STYLE[L.who]); u.volume = 1;
+    u.onend = done; u.onerror = () => timers.push({ at: gt + est, fn: done });
+    speechSynthesis.speak(u);
+  });
+}
+
+/* ============================================================
+   Assets
+   ============================================================ */
+let MODE = 'placeholder';
+const vids = {}, stills = {}, assetState = {};
+const ASSET_V = '20261024a';   // 素材を差し替えたら上げる（キャッシュ対策）
+function fetchBlob(url) { return fetch(url).then(r => { if (!r.ok) throw new Error(url); return r.blob(); }); }
+function loadVideo(id) {
+  const st = assetState[id] = { p: null };
+  st.p = fetchBlob(`assets/${id}.mp4?v=${ASSET_V}`).then(blob => new Promise((res, rej) => {
+    const v = vids[id] || document.createElement('video');
+    v.muted = false; v.playsInline = true; v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');
+    v.preload = 'auto'; v.disablePictureInPicture = true; v.controls = false;
+    if (!vids[id]) { $('vids').appendChild(v); vids[id] = v; }
+    v.onloadeddata = () => res(v); v.onerror = () => rej(new Error(id));
+    v.src = URL.createObjectURL(blob); v.load();
+  }));
+  st.p.catch(() => {});
+  return st.p;
+}
+function loadStill(id) {
+  const st = assetState[id] = { p: null };
+  st.p = new Promise((res, rej) => {
+    const img = new Image();
+    img.onload = () => { stills[id] = img; res(img); }; img.onerror = () => rej(new Error(id));
+    img.src = `assets/${id}.webp?v=${ASSET_V}`;
+  });
+  st.p.catch(() => {});
+  return st.p;
+}
+const VOICE_FILES = [];
+const SFX_FILES = ['knock', 'knock_iron', 'kick_door', 'dog_threat'];
+function loadAudioFiles() {
+  // 実際に置いてある素材だけ読む（無いものは合成音・読み上げで代わりに鳴る）。assets/sfx・assets/voice に足したらここにも足す
+  const list = [...VOICE_FILES.map(k => ['v', k, `assets/voice/${k}.mp3?v=${ASSET_V}`]), ...SFX_FILES.map(k => ['s', k, `assets/sfx/${k}.mp3?v=${ASSET_V}`])];
+  for (const [kind, id, url] of list) {
+    fetch(url).then(r => r.ok ? r.arrayBuffer() : null).then(ab => {
+      if (!ab) return;
+      rawAudio[kind + ':' + id] = ab;
+      if (ac) decodeInto(kind + ':' + id, ab);
+    }).catch(() => {});
+  }
+}
+function boot() {
+  const force = new URLSearchParams(location.search).has('ph');
+  const probe = force || location.protocol === 'file:' ? Promise.reject() : fetch('assets/F01.mp4').then(r => { if (r.body) r.body.cancel(); if (!r.ok) throw 0; });
+  probe.then(() => {
+    MODE = 'video';
+    VIDEO_IDS.forEach(loadVideo); STILL_IDS.forEach(loadStill); loadAudioFiles();
+  }, () => { MODE = 'placeholder'; console.info('[intercom] placeholder mode: assets/F01.mp4 not found'); });
+}
+async function ensureReady(ids) {
+  if (MODE !== 'video') return;
+  for (;;) {
+    try { await Promise.all(ids.map(id => assetState[id].p)); return; }
+    catch (e) {
+      await showError();
+      ids.forEach(id => { assetState[id].p.catch(() => (VIDEO_IDS.includes(id) ? loadVideo : loadStill)(id)); });
+      await new Promise(r => setTimeout(r, 0));
+    }
+  }
+}
+let errResolve = null;
+function showError() {
+  holds.add('error'); $('err').classList.add('on');
+  return new Promise(res => { errResolve = res; });
+}
+$('retry').addEventListener('click', () => {
+  $('err').classList.remove('on'); setHold('error', false);
+  const r = errResolve; errResolve = null; r && r();
+});
+
+/* ============================================================
+   Feeds — what the monitor currently shows
+   ============================================================ */
+const PH = 1024;                      // placeholder source size
+const phCanvas = document.createElement('canvas'); phCanvas.width = phCanvas.height = PH;
+const pc = phCanvas.getContext('2d');
+let feed = null;
+
+class Feed {
+  constructor(id, { dur = Infinity, loop = false, cues = [] } = {}) {
+    this.id = id; this.dur = dur; this.loop = loop; this.cues = cues;
+    this.t = 0; this.loops = 0; this.lastAbs = -1e-3; this.waiters = []; this.ended = false;
+    this.k = 0; this.dirty = true;
+  }
+  abs() { return this.ended ? this.dur : this.loops * this.dur + this.t; }
+  at(a, fn) { this.waiters.push({ a, fn }); }
+  until(a) { return new Promise(res => this.at(a, res)); }
+  tickEvents() {
+    const a = this.abs(), p = this.lastAbs;
+    for (const c of this.cues) {
+      if (c.once && c.done) continue;
+      if (this.loop) { const k = Math.floor((p - c.t) / this.dur) + 1, x = k * this.dur + c.t; if (x > p && x <= a) { c.done = true; c.fn(); } }
+      else if (!c.done && a >= c.t) { c.done = true; c.fn(); }
+    }
+    this.lastAbs = a;
+    const due = this.waiters.filter(w => a >= w.a);
+    this.waiters = this.waiters.filter(w => a < w.a);
+    due.forEach(w => w.fn());
+  }
+}
+// Placeholder: procedural drawing, advanced by game clock
+class PhFeed extends Feed {
+  constructor(id, draw, opts = {}) { super(id, opts); this.draw = draw; this.hold = opts.hold; this.k = 1.1; this.lastFrame = -1; }
+  start() { return Promise.resolve(); }
+  update(dt) {
+    if (this.ended) return;
+    if (!(this.hold && this.hold(this.t))) this.t += dt;
+    if (this.t >= this.dur) {
+      if (this.loop) { this.t -= this.dur; this.loops++; } else { this.t = this.dur; this.ended = true; }
+    }
+  }
+  source() {
+    const f = Math.floor(gt * 24);
+    if (f !== this.lastFrame) { this.lastFrame = f; this.draw(pc, Math.min(this.t, this.dur - 1e-4)); this.dirty = true; }
+    return phCanvas;
+  }
+}
+class StillFeed extends Feed {
+  constructor(id, img) { super(id); this.img = img; }
+  start() { return Promise.resolve(); }
+  update() {}
+  source() { return this.img; }
+}
+class VidFeed extends Feed {
+  constructor(id, v, opts = {}) { super(id, opts); this.v = v; v.loop = this.loop; this.prev = 0; this.playing = false; }
+  async start() {
+    const v = this.v;
+    this.dur = v.duration || this.dur;
+    try { v.currentTime = 0; } catch (e) {}
+    this.playing = true;
+    v.onended = () => { if (!this.loop) this.ended = true; };
+    if (paused()) return;
+    for (;;) {
+      try { await v.play(); return; }
+      catch (e) { if (paused() && !holds.has('error')) return; await showError(); }
+    }
+  }
+  stop() { this.playing = false; this.v.pause(); }
+  update() {
+    const t = this.v.currentTime;
+    if (this.loop && t < this.prev - this.dur / 2) this.loops++;
+    this.prev = t; this.t = t;
+  }
+  source() { return this.v.readyState >= 2 ? this.v : null; }
+}
+const PH_DRAW = {}; // filled below
+function makeFeed(id, opts) {
+  if (MODE === 'video' && id !== 'STANDBY' && id !== 'NOISE') {
+    if (VIDEO_IDS.includes(id)) return new VidFeed(id, vids[id], opts);
+    return new StillFeed(id, stills[id]);
+  }
+  const d = PH_DRAW[id];
+  return new PhFeed(id, d.draw, { ...d, ...opts });
+}
+function show(id, opts) {
+  const prev = feed;
+  const f = makeFeed(id, opts);
+  feed = f;
+  if (prev instanceof VidFeed && prev !== f) prev.stop();
+  f.start();
+  return f;
+}
+function blank() { if (feed instanceof VidFeed) feed.stop(); feed = null; }
+
+/* ============================================================
+   Renderer (WebGL — fisheye for placeholders, passthrough for footage)
+   ============================================================ */
+const view = $('view');
+const gl = view.getContext('webgl', { alpha: false, antialias: false, preserveDrawingBuffer: false });
+let prog, tex, uK, uFade, uTime, uGrain, uA, uM, lastSrc = null, fade = 0;
+function initGL() {
+  const vs = `attribute vec2 p;varying vec2 v;void main(){v=p*.5+.5;gl_Position=vec4(p,0,1);}`;
+  const fs = `precision mediump float;varying vec2 v;uniform sampler2D T;uniform float K,F,Tm,G,A;uniform vec3 M;
+  void main(){vec2 p=v*2.-1.;float r=length(p);if(r>1.){gl_FragColor=vec4(0,0,0,1);return;}
+  vec2 q=p;if(K>0.&&r>0.){q=p/r*tan(r*K)/tan(K);}
+  vec2 uv=vec2(q.x*.5+.5,.5-q.y*.5);if(A>1.)uv.x=.5+(uv.x-.5)/A;else uv.y=.5+(uv.y-.5)*A;vec3 c=texture2D(T,uv).rgb*M;
+  c*=mix(1.,.55,smoothstep(.55,1.,r)*step(.001,K));
+  float n=fract(sin(dot(gl_FragCoord.xy+Tm*61.,vec2(12.9898,78.233)))*43758.5453);
+  c+=(n-.5)*G;c*=1.-F;c*=smoothstep(1.,.992,r);gl_FragColor=vec4(c,1);}`;
+  const sh = (t, s) => { const o = gl.createShader(t); gl.shaderSource(o, s); gl.compileShader(o); return o; };
+  prog = gl.createProgram(); gl.attachShader(prog, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog); gl.useProgram(prog);
+  const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+  const a = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0);
+  tex = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, tex);
+  [[gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE], [gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE], [gl.TEXTURE_MIN_FILTER, gl.LINEAR], [gl.TEXTURE_MAG_FILTER, gl.LINEAR]]
+    .forEach(([k, v]) => gl.texParameteri(gl.TEXTURE_2D, k, v));
+  uK = gl.getUniformLocation(prog, 'K'); uFade = gl.getUniformLocation(prog, 'F'); uTime = gl.getUniformLocation(prog, 'Tm'); uGrain = gl.getUniformLocation(prog, 'G'); uA = gl.getUniformLocation(prog, 'A'); uM = gl.getUniformLocation(prog, 'M');
+}
+if (gl) initGL();
+const v2d = gl ? null : view.getContext('2d');
+function resize() {
+  const s = Math.min(1080, Math.round(view.clientWidth * (window.devicePixelRatio || 1)));
+  if (view.width !== s) { view.width = view.height = s; }
+}
+let heldFeed = null;   // ループの継ぎ目などで一瞬フレームが無いときは、同じ映像の最後のコマを出し続ける（黒くしない）
+function render() {
+  resize();
+  const live = feed && feed.source();
+  if (live) heldFeed = feed;
+  const hold = !live && feed && feed === heldFeed && lastSrc;
+  const src = live || (hold ? lastSrc : null);
+  if (hold && !gl) return;                            // 2D 描画は前のコマをそのまま残す
+  if (gl) {
+    gl.viewport(0, 0, view.width, view.height);
+    if (src) {
+      const upload = live && (src instanceof HTMLVideoElement || src !== lastSrc || feed.dirty);
+      if (upload) { gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, src); feed.dirty = false; lastSrc = src; }
+    }
+    gl.uniform1f(uK, feed ? feed.k : 0);
+    gl.uniform1f(uFade, src ? fade : 1);
+    gl.uniform1f(uTime, gt % 100);
+    gl.uniform1f(uGrain, 0.035);
+    gl.uniform3fv(uM, (MODE === 'video' && feed && GRADE[feed.id]) || [1, 1, 1]);
+    gl.uniform1f(uA, src && src.videoWidth ? src.videoWidth / src.videoHeight : 1);   // centre-crop non-square footage
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  } else {
+    v2d.fillStyle = '#000'; v2d.fillRect(0, 0, view.width, view.height);
+    if (src) { v2d.globalAlpha = 1 - fade; v2d.drawImage(src, 0, 0, view.width, view.height); v2d.globalAlpha = 1; }
+  }
+}
+
+/* ============================================================
+   Main loop
+   ============================================================ */
+let lastNow = performance.now();
+function frame(now) {
+  const dt = Math.min(0.1, (now - lastNow) / 1000) * SPEED; lastNow = now;
+  if (!paused()) {
+    gt += dt;
+    if (feed) { feed.update(dt); feed.tickEvents(); }
+    const due = timers.filter(x => x.at <= gt); timers = timers.filter(x => x.at > gt);
+    due.forEach(x => x.fn());
+  }
+  render();
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* ---- pause when the page goes to the background ---- */
+function setHold(k, on) {
+  const was = paused();
+  on ? holds.add(k) : holds.delete(k);
+  const now = paused();
+  if (was === now) return;
+  if (now) {
+    if (ac && ac.state === 'running') ac.suspend();
+    Object.values(vids).forEach(v => v.pause());
+    if (window.speechSynthesis) speechSynthesis.pause();
+  } else {
+    if (ac) ac.resume();
+    if (feed instanceof VidFeed && feed.playing && !feed.ended) feed.v.play().catch(() => {});
+    if (window.speechSynthesis) speechSynthesis.resume();
+  }
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { setHold('hidden', true); return; }
+  if (!ac) { setHold('hidden', false); return; }
+  ac.resume().then(() => {
+    if (ac.state === 'running') setHold('hidden', false);
+    else { holds.delete('hidden'); holds.add('audio'); $('resume').classList.add('on'); }
+  }, () => { holds.delete('hidden'); holds.add('audio'); $('resume').classList.add('on'); });
+});
+$('resumeBtn').addEventListener('click', () => {
+  ac.resume().finally(() => { $('resume').classList.remove('on'); setHold('audio', false); });
+});
+
+/* ============================================================
+   Choices — only taps that begin after the buttons appear count
+   ============================================================ */
+const btns = [$('c0'), $('c1')];
+let choiceOpen = false, choiceRes = null, armed = null;
+function choose(labels) {
+  btns.forEach((b, i) => { b.textContent = labels[i]; b.classList.remove('pressed'); });
+  armed = null;
+  $('choices').classList.add('on');
+  choiceOpen = true;
+  return new Promise(res => { choiceRes = res; });
+}
+function hideChoices() { $('choices').classList.remove('on'); choiceOpen = false; armed = null; }
+btns.forEach((b, i) => {
+  b.addEventListener('pointerdown', e => { if (choiceOpen && !paused()) { armed = b; e.preventDefault(); } });
+  b.addEventListener('pointerup', () => {
+    if (armed !== b || !choiceOpen || paused()) { armed = null; return; }
+    armed = null; choiceOpen = false;
+    b.classList.add('pressed');
+    const r = choiceRes; choiceRes = null; r(i);
+  });
+  b.addEventListener('pointercancel', () => { armed = null; });
+  b.addEventListener('pointerleave', () => { if (armed === b) armed = null; });
+  b.addEventListener('contextmenu', e => e.preventDefault());
+});
+
+/* ============================================================
+   Game flow
+   ============================================================ */
+$('startBtn').addEventListener('click', () => {
+  initAudio(); ac.resume(); restoreMaster();
+  if (window.speechSynthesis) { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); }
+  // prime muted videos within the gesture so mobile browsers keep them decodable
+  Object.values(vids).forEach(v => { const p = v.play(); if (p) p.then(() => { v.pause(); v.currentTime = 0; }).catch(() => {}); });
+  $('start').classList.remove('on');
+  game().catch(e => { if (e !== STALE) console.error(e); });
+});
+$('again').addEventListener('click', reset);
+
+function reset() {
+  run++; timers = []; hideChoices(); blank(); fade = 0; stopWhisper();
+  $('talk').classList.remove('on'); $('talk').innerHTML = ''; $('choices').classList.remove('low'); $('sub').classList.remove('on');
+  for (const k in speaking) delete speaking[k];
+  for (const k in lastEnd) delete lastEnd[k];
+  silenceAll();
+  $('again').classList.remove('on'); $('result').classList.remove('on'); $('end').classList.remove('on');
+  $('start').classList.add('on');
+}
+
+async function game() {
+  const g = p => guard(p);
+  fade = 0;
+  show('STANDBY');
+  const replay = loadSeen().size > 0;                // 2周目以降は1〜3人目の選択肢をすぐ出す
+  await g(Promise.all([wait(1.2), ensureReady(['V1', 'V2', 'F01', 'F02'])]));
+
+  // ---- 訪問者1・2 ----
+  for (const [img, line] of [['V1', 'v1'], ['V2', 'v2']]) {
+    sfx('ring');
+    await g(wait(1.4));
+    ambience('lobby');
+    if (MODE === 'video') {
+      const v = show(img); subtitle(line, 3.5);
+      await g(replay ? wait(0.8) : v.until(v.dur));   // 台詞入りの映像を最後まで (最終フレームで止まる)
+    } else {
+      show(img);
+      await g(wait(0.4));
+      const spoken = say(line);
+      await g(replay ? wait(0.4) : spoken);
+    }
+    if (!replay) await g(wait(0.3));
+    const c = await g(choose([T().call, T().refuse]));
+    if (c === 0) return knockEnding();
+    await g(wait(0.15)); hideChoices();
+    sfx('hangup'); ambience(null); show('STANDBY');
+    await g(wait(1.5));
+  }
+
+  // ---- 犬：エントランスに犬が来る。家に入れると BAD END ----
+  await g(ensureReady(['D1']));
+  sfx('ring');
+  await g(wait(1.4));
+  ambience('lobby');
+  const d1 = show('D1', { dur: 5 });
+  await g(replay ? wait(0.8) : d1.until(d1.dur));
+  if (!replay) await g(wait(0.3));
+  const cd = await g(choose([T().call, T().refuse]));
+  if (cd === 0) return dogEnding();
+  await g(wait(0.15)); hideChoices();
+  sfx('hangup'); ambience(null); show('STANDBY');
+  await g(wait(1.5));
+
+  // ---- 父親(エントランス)：本物と偽物、どちらが先に来るかは毎回ランダム ----
+  const order = Math.random() < 0.5 ? ['fake', 'real'] : ['real', 'fake'];
+  for (let i = 0; i < order.length; i++) {
+    const who = order[i];
+    const called = await g(entranceFather(who));
+    if (called) {
+      sfx('unlock_entrance');
+      await g(wait(0.7));
+      sfx('hangup'); ambience(null); show('STANDBY');
+      // 声に違和感のある方（偽物）を入れたら失敗ルート、本物なら帰宅ルート
+      return who === 'fake' ? fakeDoor(i > 0) : realToDoor();
+    }
+    sfx('hangup'); ambience(null); show('STANDBY');
+    await g(wait(i === 0 ? 2.5 : 2));
+  }
+  return aloneEnding();                            // 2人とも断った
+}
+
+// エントランスに父が映る。偽物は背後で息づかい・ささやきが聞こえる。呼んだら true
+async function entranceFather(who) {
+  const g = p => guard(p);
+  // エントランスの映像と台詞は本物も偽物も同じ (F01→F02)。見分けは玄関でケーキの箱を持っているか
+  const [enter, idle] = ['F01', 'F02'];
+  await g(ensureReady([enter, idle]));
+  sfx('ring');
+  await g(wait(1.4));
+  ambience('lobby');
+  let voiceDone = null;
+  const f = show(enter, { dur: 5, cues: [{ t: CUE.F01_line, fn: () => voiceDone = say('f_ent') }] });
+  // 台詞（1.3〜3.3秒）が終わったらすぐ会話の選択肢を出す。映像は最後まで流して、終わったら待ちのループに切り替える
+  f.at(f.dur === Infinity ? 5 : f.dur, () => { if (feed === f) show(idle, { dur: 4, loop: true }); });
+  await g(f.until(Math.min(3.4, f.dur === Infinity ? 5 : f.dur)));
+  if (voiceDone) await g(voiceDone);
+  await g(wait(0.15));
+  // 文字での会話
+  const log = $('talk'); log.innerHTML = ''; log.classList.add('on');
+  $('choices').classList.add('low');
+  for (const turn of T().talk) {
+    const i = await g(choose(turn.q));
+    await g(wait(0.15)); hideChoices();
+    await g(typeLine(log, T().q[0] + turn[who][i] + T().q[1]));
+    await g(wait(0.3));
+  }
+  const c = await g(choose([T().call, T().refuse]));
+  await g(wait(0.15)); hideChoices();
+  log.classList.remove('on'); $('choices').classList.remove('low');
+  return c === 0;
+}
+
+// ---- 手ぶらの父が玄関に来る（F08）。鍵を開けると画面が乱れて、男が侵入する F05 につながる ----
+// swapped = エントランスで本物を呼んだのに、すり替わった手ぶらの父が来た。追い返すとケーキの本物が玄関に来る
+// realCame = 本物がもうエントランスに来たか（偽物を呼んだとき）
+async function fakeDoor(realCame, swapped = false) {
+  const g = p => guard(p);
+  await g(Promise.all([wait(3), ensureReady(['F08', 'F05'])]));
+  sfx('chime');
+  await g(wait(1.6));
+  ambience('hall');
+  let voiceDone = null;
+  const f08 = show('F08', { dur: 6, loop: true, cues: [{ t: 0.6, once: true, fn: () => voiceDone = say('r_door') }] });
+  await g(f08.until(3.0));                           // 台詞（0.6秒〜）が終わったら選択肢
+  if (voiceDone) await g(voiceDone);
+  const c2 = await g(choose([T().open, T().keep]));
+  await g(wait(0.15)); hideChoices();
+  if (c2 === 0) {
+    sfx('static'); show('NOISE', { dur: 0.45 });
+    await g(wait(0.45));
+    const ending = startOpen();
+    await g(ending.until(ending.dur));
+    return finish('open');
+  }
+  sfx('hangup'); ambience(null); show('STANDBY');
+  // 追い返すと、ドアをゆっくり2回叩く音 → 少しして足音が遠ざかる
+  await g(wait(1.2));
+  sfx('knock', 0.9); await g(wait(1.3)); sfx('knock', 1);
+  await g(wait(1.8));
+  [0, 0.55, 1.1, 1.7, 2.3].forEach((d, i) => timers.push({ at: gt + d, fn: () => sfx('step', 0.3 - i * 0.05, 700 - i * 60) }));
+  await g(wait(2.4));
+  if (swapped) return realDoor();                     // 少しして、ケーキを持った本物がチャイムを鳴らす
+  // 偽物を玄関で追い返すと、まだ来ていなければ本物の父がエントランスに来る
+  await g(wait(2.5));
+  if (!realCame && await g(entranceFather('real'))) {
+    sfx('unlock_entrance');
+    await g(wait(0.7));
+    sfx('hangup'); ambience(null); show('STANDBY');
+    return realToDoor();
+  }
+  sfx('hangup'); ambience(null); show('STANDBY');
+  await g(wait(2));
+  return aloneEnding();
+}
+
+// エントランスで本物を呼ぶと、玄関にはまず必ず手ぶらの父が来る（すり替わり）
+function realToDoor() { return fakeDoor(true, true); }
+
+// ---- 正解ルート：本物を玄関へ。ケーキの箱を持っている (K08) ----
+async function realDoor() {
+  const g = p => guard(p);
+  await g(Promise.all([wait(3), ensureReady(['K08', 'K09'])]));
+  sfx('chime');
+  await g(wait(1.6));
+  ambience('hall');
+  let voiceDone = null;
+  const f08 = show('K08', { dur: 6, loop: true, cues: [{ t: 0.6, once: true, fn: () => voiceDone = say('r_door') }] });
+  await g(f08.until(3.0));                           // 台詞（0.6秒〜）が終わったら選択肢
+  if (voiceDone) await g(voiceDone);
+  const c2 = await g(choose([T().open, T().keep]));
+  await g(wait(0.15)); hideChoices();
+  if (c2 === 1) {                                     // ケーキの本物も追い返すと留守番
+    sfx('hangup'); ambience(null); show('STANDBY');
+    await g(wait(2));
+    return aloneEnding();
+  }
+  const f09 = MODE === 'video' ? show('K09', { dur: 6, cues: [{ t: 1.0, fn: () => subtitle('r_home', 2) }] }) : show('K09', {
+    dur: 6, cues: [
+      { t: 0, fn: () => sfx('unlock_door') },
+      { t: 0.5, fn: () => sfx('door_open') },
+      { t: 1.0, fn: () => say('r_home') },
+      ...[2.4, 2.9, 3.4].map(t => ({ t, fn: () => sfx('step', 0.25, 700) })),
+    ]
+  });
+  await g(f09.until(f09.dur));
+  return finish('home');
+}
+
+// ---- エントランスでの文字の会話（本物 real / 偽物 fake）----
+// 偽物の返事は、どれを選んでも頭文字が あ・け・る・な になる。本物は意味のない並び
+// 会話の文は I18N の talk（言語ごと）
+function typeLine(log, text) {
+  const p = document.createElement('p'); log.appendChild(p);
+  return new Promise(res => {
+    let n = 0;
+    const step = () => { p.textContent = text.slice(0, ++n); if (n < text.length) timers.push({ at: gt + 0.025, fn: step }); else res(); };
+    step();
+  });
+}
+
+// （未使用）偽物のときだけ、父の背後で誰かの咳払いが聞こえる（見分ける唯一の手掛かり）
+let whisperOn = false;
+function whisperLoop(r) {
+  if (!whisperOn || r !== run) return;
+  sfx('cough', 0.2);
+  timers.push({ at: gt + 7 + Math.random() * 3, fn: () => whisperLoop(r) });
+}
+function startWhisper() { whisperOn = true; const r = run; timers.push({ at: gt + 0.4, fn: () => whisperLoop(r) }); }
+function stopWhisper() { whisperOn = false; }
+
+function startOpen() {
+  const steps = [4.1, 4.62, 5.12, 5.6, 6.05].map((t, i) => ({ t, fn: () => sfx('step', 0.35 + i * 0.1, 700) }));
+  if (MODE === 'video') return show('F05', { dur: 12, cues: [{ t: CUE.F05_line, fn: () => subtitle('f_dame', 2) }] });
+  return show('F05', {
+    dur: 7, cues: [
+      { t: 0, fn: () => sfx('unlock_door') },
+      { t: CUE.F05_line, fn: () => say('f_dame') },
+      { t: 2.75, fn: () => sfx('impact') },
+      ...steps,
+      { t: 6.4, fn: () => { ambience(null); sfx('impact'); timers.push({ at: gt + 0.2, fn: silenceAll }); } },
+    ]
+  });
+}
+async function knockEnding() {
+  const g = p => guard(p);
+  await g(wait(0.15)); hideChoices();
+  sfx('unlock_entrance');
+  await g(wait(0.7));
+  sfx('hangup'); ambience(null); show('STANDBY');
+  await g(wait(4));
+  sfx('knock_iron');                                   // 鉄のドアをノック（約1.5秒）
+  await g(wait(1.7));
+  sfx('kick_door');                                    // 続けてドアを蹴破る（約0.6秒）
+  await g(wait(1.2));
+  silenceAll(); blank();
+  return finish('knock');
+}
+
+// ---- BAD END：犬を家に入れる ----
+async function dogEnding() {
+  const g = p => guard(p);
+  await g(wait(0.15)); hideChoices();
+  sfx('unlock_entrance');
+  await g(wait(0.7));
+  sfx('hangup'); ambience(null); show('STANDBY');
+  await g(wait(3.5));
+  for (const t of [0, 0.9, 1.6]) timers.push({ at: gt + t, fn: () => sfx('scratch') });
+  for (const t of [2.4, 2.75, 3.6]) timers.push({ at: gt + t, fn: () => sfx('bark') });
+  await g(wait(4));
+  sfx('unlock_door');
+  await g(wait(0.5));
+  sfx('door_open');
+  for (const t of [1.0, 1.25, 1.5, 1.75]) timers.push({ at: gt + t, fn: () => sfx('step', 0.12, 1400) });
+  await g(wait(2.2));
+  sfx('dog_threat');                                    // 入ってきた犬が「グルルル…わんわんわんわん！」
+  await g(wait(4.5));
+  return finish('dog');
+}
+
+// ---- 留守番：朝になり、玄関の前にケーキの箱だけが残っている（M01）----
+async function aloneEnding() {
+  const g = p => guard(p);
+  hideChoices(); sfx('hangup'); ambience(null); show('STANDBY');
+  await g(Promise.all([wait(2.5), ensureReady(['M01'])]));
+  const m = show('M01', { dur: 5 });
+  await g(m.until(m.dur));
+  return finish('alone');
+}
+
+// ---- エンド一覧（hidden は見るまで一覧に出さない）----
+const ENDINGS = [   // 名前と一言は I18N の endings（言語ごと）。この並び順が ED 番号（ED1 おかえり …）
+  { id: 'home',  label: 'TRUE END' },
+  { id: 'alone', label: 'END' },
+  { id: 'open',  label: 'BAD END' },
+  { id: 'knock', label: 'BAD END' },
+  { id: 'dog',   label: 'BAD END' },
+];
+const SEEN_KEY = 'intercom-endings';
+
+/* ---------- 言語（日本語・English・한국어）。文言はここにまとまっている。直すときは3言語ぶん ---------- */
+const I18N = {
+  ja: {
+    title: '家族以外は入れないでください', start: 'はじめる',
+    streamTitle: '配信・動画投稿について',
+    streamBody: ['本ゲームの実況配信・プレイ動画の投稿は、収益化の有無を問わず自由です。事前の連絡や許可は必要ありません。', 'ただし、ゲーム本体をコピーして別のサイトで公開したり、再配布・販売したりすることはご遠慮ください。', 'ぜひ気軽に遊んで、配信していただけたらうれしいです。'],
+    noteSound: '音声をオンにしてください', noteScare: 'ジャンプスケアはありません。',
+    call: '玄関へ呼ぶ', refuse: '断る', open: '鍵を開ける', keep: '開けない',
+    q: ['「', '」'],
+    lines: null,   // 日本語は字幕なし（声が日本語）
+    talk: [
+      { q: ['本当にお父さん？', 'どうしたの？'],
+        fake: ['あたりまえだろ、父さんだよ。', 'ああ、ちょっと鍵をなくしてな。'],
+        real: ['そうだよ、父さんだ。', '鍵を忘れちゃってさ。'] },
+      { q: ['鍵はどうしたの？', 'なんでこんな時間？'],
+        fake: ['携帯と一緒に、会社に置いてきた。', '結構、残業が長引いてな。'],
+        real: ['会社の机に置いてきたみたいだ。', '電車が止まってたんだよ。'] },
+      { q: ['一人なの？', '顔、よく見せて'],
+        fake: ['留守番中に悪いな。一人だよ。', '留守番えらかったな。ほら、父さんだ。'],
+        real: ['一人だよ。誰もいないって。', 'ほら、こっちだ。見えるか？'] },
+      { q: ['お母さんは？', '今日、何の日か覚えてる？'],
+        fake: ['なんだっていいだろ、早く開けてくれ。', 'なんの日だっけな……とにかく開けてくれ。'],
+        real: ['明日帰ってくるよ。今日はお前の誕生日だから、ケーキ買ってきたぞ。', 'お前の誕生日だろ。ケーキ買ってきたぞ。'] },
+    ],
+    endings: {
+      home:  ['おかえり', '本物のお父さんを、家に入れた。'],
+      alone: ['留守番', '朝まで、誰も家に入れなかった。玄関には、ケーキが残っていた。'],
+      open:  ['だめだ', 'お父さんを操った不審者を、家に入れてしまった。'],
+      knock: ['ノック', '知らない人を、建物に入れてしまった。'],
+      dog:   ['犬', '犬を家に入れてしまった。'],
+    },
+    nameQ: ['「', '」'], unknown: '？？？', found: (n, t) => `見つけたエンド　${n} / ${t}`,
+    share: '結果をシェア', hint: '各エンディングのヒントは<a>ツリー投稿</a>にあります。', feedback: '<a>ツリー投稿</a>に感想お待ちしています！', again: 'もう一度',
+    shareText: 'ホラーゲーム『家族以外は入れないでください』をクリアした。',
+    thanks: 'プレイありがとうございました。',
+    creator: 'やまもとしょう', err: '読み込みに失敗しました', retry: '再試行', paused: '一時停止中', resume: '再開',
+  },
+  en: {
+    title: "Don't Let Anyone In But Family", start: 'Start',
+    streamTitle: 'Streaming & videos',
+    streamBody: ['You are free to stream this game or post gameplay videos, monetized or not. No prior notice or permission is needed.', 'Please do not copy the game itself to another site, redistribute it, or sell it.', 'Play it, stream it, and have fun!'],
+    noteSound: 'Please turn your sound on', noteScare: 'There are no jump scares.',
+    call: 'Let them up', refuse: 'Refuse', open: 'Unlock', keep: "Don't open",
+    q: ['“', '”'],
+    lines: { v1: 'Delivery. Could you open up?', v2: '……Please, open the door.', f_ent: "It's Dad. I forgot my keys.", r_door: "I'm home. Sorry I'm late.", r_home: "I'm home.", f_dame: '……No.' },
+    // 偽物の返事は、どれを選んでも頭文字が D・O・N・T（DON'T）になる
+    talk: [
+      { q: ['Are you really Dad?', 'What happened?'],
+        fake: ["Don't be silly, it's your dad.", 'Dropped my keys somewhere, that\'s all.'],
+        real: ["Yes, it's Dad.", 'I forgot my keys.'] },
+      { q: ['What about your keys?', 'Why so late?'],
+        fake: ['Office. I left them at the office with my phone.', 'Overtime ran long, that\'s all.'],
+        real: ['I think I left them on my desk at work.', 'The trains stopped.'] },
+      { q: ['Are you alone?', 'Let me see your face'],
+        fake: ['Nobody else. Just me.', "Nice job house-sitting. See? It's Dad."],
+        real: ['Just me. No one else.', 'Here, look. Can you see me?'] },
+      { q: ['Where is Mom?', 'Do you know what day it is?'],
+        fake: ['That doesn\'t matter. Just open up.', 'Today? Hmm, what was it…… just open the door.'],
+        real: ["She's back tomorrow. And it's your birthday, so I got you a cake.", "It's your birthday. I got you a cake."] },
+    ],
+    endings: {
+      home:  ['Welcome Home', 'You let your real father in.'],
+      alone: ['House-sitting', 'You let no one in until morning. A cake was left at the door.'],
+      open:  ['No Good', 'You let in the stranger who was controlling your father.'],
+      knock: ['Knock', 'You let a stranger into the building.'],
+      dog:   ['Dog', 'You let a dog into the house.'],
+    },
+    nameQ: ['“', '”'], unknown: '???', found: (n, t) => `Endings found  ${n} / ${t}`,
+    share: 'Share on X', hint: 'Hints for each ending are in the <a>thread</a>.', feedback: 'I\'d love to hear what you thought in the <a>thread</a>!', again: 'Play again',
+    shareText: 'I cleared the horror game "Don\'t Let Anyone In But Family".',
+    thanks: 'Thank you for playing.<br>I plan to release new games from time to time.<br>If you enjoyed it, please like the <a>post</a> and follow me!',
+    creator: 'Sho Yamamoto', err: 'Failed to load', retry: 'Retry', paused: 'Paused', resume: 'Resume',
+  },
+  ko: {
+    title: '가족 말고는 들이지 마세요', start: '시작',
+    streamTitle: '방송·영상 업로드에 대해',
+    streamBody: ['이 게임의 실황 방송과 플레이 영상 업로드는 수익화 여부와 관계없이 자유입니다. 사전 연락이나 허가는 필요하지 않습니다.', '다만 게임 본체를 복사해 다른 사이트에 공개하거나 재배포·판매하는 것은 삼가 주세요.', '부담 없이 즐기고 방송해 주시면 기쁘겠습니다.'],
+    noteSound: '소리를 켜 주세요', noteScare: '점프 스케어는 없습니다.',
+    call: '현관으로 부르기', refuse: '거절하기', open: '문을 연다', keep: '열지 않는다',
+    q: ['“', '”'],
+    lines: { v1: '택배입니다. 문 좀 열어 주시겠어요?', v2: '……열어 주세요.', f_ent: '아빠야. 열쇠를 깜빡했어.', r_door: '다녀왔어. 늦어서 미안해.', r_home: '다녀왔어.', f_dame: '……안 돼.' },
+    // 偽物の返事は、どれを選んでも頭文字が 열・지・마・요（열지 마요＝開けないで）になる
+    talk: [
+      { q: ['정말 아빠야?', '무슨 일이야?'],
+        fake: ['열쇠를 잃어버려서 그래. 아빠 맞아.', '열쇠를 어디 떨어뜨렸나 봐.'],
+        real: ['그래, 아빠다.', '깜빡하고 열쇠를 두고 왔어.'] },
+      { q: ['열쇠는 어떻게 했어?', '왜 이렇게 늦었어?'],
+        fake: ['지갑이랑 같이 회사에 두고 왔어.', '지금까지 야근하느라 그랬지.'],
+        real: ['회사 책상에 두고 온 것 같아.', '전철이 멈췄었어.'] },
+      { q: ['혼자야?', '얼굴 좀 보여 줘'],
+        fake: ['마침 혼자야. 아무도 없어.', '마음 놓으렴. 아빠 맞잖아.'],
+        real: ['혼자야. 아무도 없어.', '자, 여기. 보이니?'] },
+      { q: ['엄마는?', '오늘 무슨 날인지 알아?'],
+        fake: ['요 앞 어딘가 있겠지. 빨리 열어 줘.', '요즘 날짜를 잘 몰라서…… 아무튼 열어 줘.'],
+        real: ['엄마는 내일 와. 오늘 네 생일이라 케이크 사 왔다.', '네 생일이잖아. 케이크 사 왔다.'] },
+    ],
+    endings: {
+      home:  ['어서 와', '진짜 아빠를 집에 들였다.'],
+      alone: ['집 보기', '아침까지 아무도 들이지 않았다. 현관 앞에는 케이크가 남아 있었다.'],
+      open:  ['안 돼', '아빠를 조종한 수상한 사람을 집에 들이고 말았다.'],
+      knock: ['노크', '모르는 사람을 건물 안에 들이고 말았다.'],
+      dog:   ['개', '개를 집에 들이고 말았다.'],
+    },
+    nameQ: ['“', '”'], unknown: '???', found: (n, t) => `찾은 엔딩  ${n} / ${t}`,
+    share: 'X에 결과 공유', hint: '각 엔딩의 힌트는 <a>스레드</a>에 있습니다.', feedback: '<a>스레드</a>에 감상을 남겨 주시면 기쁘겠습니다!', again: '다시 하기',
+    shareText: '호러 게임 『가족 말고는 들이지 마세요』를 클리어했다.',
+    thanks: '플레이해 주셔서 감사합니다.<br>앞으로도 비정기적으로 새로운 게임을 공개할 예정입니다.<br>괜찮으시다면 <a>게시물</a>에 좋아요와 팔로우 부탁드립니다!',
+    creator: '야마모토 쇼', err: '불러오지 못했습니다', retry: '다시 시도', paused: '일시 정지', resume: '계속',
+  },
+};
+const LANG_KEY = 'intercom-language';
+let lang = 'ja';
+const T = () => I18N[lang];
+const withLink = (html, url) => html.replace('<a>', `<a href="${url}" target="_blank" rel="noopener noreferrer">`);
+function applyLang() {
+  const t = T();
+  document.documentElement.lang = lang; document.title = t.title;
+  $('ttl').textContent = t.title; $('startBtn').textContent = t.start;
+  $('streamTitle').textContent = t.streamTitle;
+  $('streamBody').innerHTML = t.streamBody.map(x => `<p>${x}</p>`).join('');
+  $('noteSound').textContent = t.noteSound; $('noteScare').textContent = t.noteScare;
+  $('share1').textContent = t.share; $('again').textContent = t.again;
+  $('thanksText').innerHTML = (POST_URL || GAME_URL) ? withLink(t.thanks, POST_URL || GAME_URL) : t.thanks.replace(/<\/?a>/g, ''); $('creator').textContent = t.creator;
+  $('errText').textContent = t.err; $('retry').textContent = t.retry; $('pauseText').textContent = t.paused; $('resumeBtn').textContent = t.resume;
+  document.querySelectorAll('#langs [data-lang]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+}
+document.querySelectorAll('#langs [data-lang]').forEach(b => b.addEventListener('click', () => {
+  lang = b.dataset.lang; try { localStorage.setItem(LANG_KEY, lang); } catch {} applyLang();
+}));
+// 英語・韓国語のときは、動画の中の日本語の台詞に字幕を出す
+let subTimer = null;
+function subtitle(id, secs = 2.8) {
+  const lines = T().lines; if (!lines || !lines[id]) return;
+  $('sub').textContent = lines[id]; $('sub').classList.add('on');
+  const r = run; if (subTimer) subTimer.dead = true;
+  const tk = { at: gt + secs, fn: () => { if (!tk.dead && r === run) $('sub').classList.remove('on'); } }; subTimer = tk; timers.push(tk);
+}
+const POST_URL = '';
+const GAME_URL = '';
+function pageUrl() { return new URL('./', location.href).href; }
+function shareLocal(e, body) {
+  e.preventDefault();
+  if (navigator.share) { navigator.share({ title: document.title, text: body }).catch(() => {}); return; }
+  if (navigator.clipboard) navigator.clipboard.writeText(body).catch(() => {});
+}
+function loadSeen() { try { return new Set(JSON.parse(localStorage.getItem(SEEN_KEY) || '[]')); } catch { return new Set(); } }
+function saveSeen(seen) { try { localStorage.setItem(SEEN_KEY, JSON.stringify([...seen])); } catch {} }
+
+async function finish(id) {
+  hideChoices(); blank(); silenceAll(); $('sub').classList.remove('on');
+  const e = ENDINGS.find(x => x.id === id);
+  const seen = loadSeen(); seen.add(id); saveSeen(seen);
+  const total = ENDINGS.filter(x => !x.hidden).length;
+  const found = ENDINGS.filter(x => !x.hidden && seen.has(x.id)).length;
+  const t = T(), nm = x => t.endings[x.id][0];
+  $('endLabel').textContent = e.label;
+  $('endName').textContent = t.nameQ[0] + nm(e) + t.nameQ[1];
+  $('endText').textContent = t.endings[e.id][1];
+  $('endList').innerHTML = ENDINGS.filter(x => !x.hidden || seen.has(x.id))
+    .map(x => `<li class="${x.id === id ? 'now' : ''}">${seen.has(x.id) ? x.label + '　' + nm(x) : t.unknown}</li>`).join('');
+  $('endCount').textContent = t.found(found, total);
+  // 隠しエンディングの一文・シェア（クリアか隠しエンドのときだけ）・ヒントの一文
+  const hiddenLine = e.hidden ? `隠しエンディング ${ENDINGS.filter(x => x.hidden).indexOf(e) + 1}/${ENDINGS.filter(x => x.hidden).length}にたどり着いた！` : '';
+  $('endHidden').textContent = hiddenLine; $('endHidden').hidden = !hiddenLine;
+  const canShare = true;                              // シェアはどのエンドでも出す（1か所）
+  const edNo = ENDINGS.indexOf(e) + 1;                // ED1 おかえり・ED2 留守番 …（ENDINGS の並び順）
+  const body = t.shareText + '\n' + `ED${edNo} ${nm(e)}\n`
+    + (hiddenLine ? hiddenLine + '\n' : '') + '#家族以外は入れないでください\n' + pageUrl();
+  for (const a of [$('share1')]) {
+    a.hidden = !canShare;
+    a.href = pageUrl();
+    a.onclick = ev => shareLocal(ev, body);
+  }
+  $('hint').hidden = !POST_URL; if (POST_URL) $('hint').innerHTML = withLink(t.hint, POST_URL);
+  $('feedback').hidden = !POST_URL; if (POST_URL) $('feedback').innerHTML = withLink(t.feedback, POST_URL);
+  $('end').classList.add('on');
+  await guard(wait(2));
+  $('result').classList.add('on');
+  $('again').classList.add('on');
+}
+
+/* ============================================================
+   Placeholder footage (procedural). Replaced by assets/*.mp4/webp.
+   ============================================================ */
+const L = (a, b, t) => a + (b - a) * t;
+function poly(c, pts, fill) { c.beginPath(); pts.forEach(([x, y], i) => i ? c.lineTo(x, y) : c.moveTo(x, y)); c.closePath(); c.fillStyle = fill; c.fill(); }
+// one-point perspective helper: sx,sy in [-1,1] across the near frame; d = metres ahead
+function persp(far, near = 420) {
+  const [fx0, fy0, fx1, fy1] = far;
+  return (d, sx, sy) => {
+    const t = d / (d + 2.2), ux = (sx + 1) / 2, uy = (sy + 1) / 2;
+    return [L(L(-near, PH + near, ux), L(fx0, fx1, ux), t), L(L(-near, PH + near, uy), L(fy0, fy1, uy), t)];
+  };
+}
+function drawHall(c) {
+  const P = persp([470, 410, 554, 482]);
+  const end = 26;
+  c.fillStyle = '#0b1118'; c.fillRect(0, 0, PH, PH);
+  const q = (pts, f) => poly(c, pts, f);
+  const grad = (y0, y1, a, b) => { const g = c.createLinearGradient(0, y0, 0, y1); g.addColorStop(0, a); g.addColorStop(1, b); return g; };
+  q([P(0, -1, -1), P(0, 1, -1), P(end, 1, -1), P(end, -1, -1)], grad(-400, 410, '#354455', '#18212d'));
+  q([P(0, -1, 1), P(0, 1, 1), P(end, 1, 1), P(end, -1, 1)], grad(1400, 482, '#27303a', '#121821'));
+  const lw = c.createLinearGradient(-400, 0, 470, 0); lw.addColorStop(0, '#323e4c'); lw.addColorStop(1, '#141b24');
+  q([P(0, -1, -1), P(end, -1, -1), P(end, -1, 1), P(0, -1, 1)], lw);
+  const rw = c.createLinearGradient(PH + 400, 0, 554, 0); rw.addColorStop(0, '#2e3946'); rw.addColorStop(1, '#141b24');
+  q([P(0, 1, -1), P(end, 1, -1), P(end, 1, 1), P(0, 1, 1)], rw);
+  q([P(end, -1, -1), P(end, 1, -1), P(end, 1, 1), P(end, -1, 1)], '#070a0e');
+  // doors on both walls
+  for (const [d0, side] of [[2.5, -1], [4.5, 1], [8, -1], [10.5, 1], [15, -1], [18, 1]]) {
+    q([P(d0, side, -0.45), P(d0 + 1.0, side, -0.45), P(d0 + 1.0, side, 1), P(d0, side, 1)], '#151b23');
+    q([P(d0 + 0.05, side, -0.4), P(d0 + 0.95, side, -0.4), P(d0 + 0.95, side, 1), P(d0 + 0.05, side, 1)], '#1b232d');
+  }
+  // fluorescent ceiling lights + pools on floor
+  c.save();
+  for (const d of [1.2, 5, 9.5, 14, 19, 24]) {
+    const a = P(d, -0.14, -1), b = P(d, 0.14, -1), e = P(d + 0.9, 0.14, -1), f = P(d + 0.9, -0.14, -1);
+    const fl = P(d + 0.4, 0, 1), w = Math.abs(P(d + 0.4, 1, 1)[0] - fl[0]);
+    const pool = c.createRadialGradient(fl[0], fl[1], 0, fl[0], fl[1], w * 0.9);
+    pool.addColorStop(0, 'rgba(150,180,220,.16)'); pool.addColorStop(1, 'rgba(150,180,220,0)');
+    c.fillStyle = pool; c.fillRect(fl[0] - w, fl[1] - w * 0.5, w * 2, w);
+    c.shadowColor = '#9cc0ff'; c.shadowBlur = 40;
+    poly(c, [a, b, e, f], '#dde9ff');
+  }
+  c.restore();
+}
+function drawLobby(c) {
+  const P = persp([400, 380, 624, 520], 300);
+  const end = 9;
+  c.fillStyle = '#121310'; c.fillRect(0, 0, PH, PH);
+  const q = (pts, f) => poly(c, pts, f);
+  q([P(0, -1, -1), P(0, 1, -1), P(end, 1, -1), P(end, -1, -1)], '#2a2a26');
+  q([P(0, -1, 1), P(0, 1, 1), P(end, 1, 1), P(end, -1, 1)], '#2b2925');
+  q([P(0, -1, -1), P(end, -1, -1), P(end, -1, 1), P(0, -1, 1)], '#22231f');
+  q([P(0, 1, -1), P(end, 1, -1), P(end, 1, 1), P(0, 1, 1)], '#262622');
+  // glass entrance at the back, night outside
+  q([P(end, -1, -1), P(end, 1, -1), P(end, 1, 1), P(end, -1, 1)], '#050607');
+  c.strokeStyle = '#5b5a52'; c.lineWidth = 4;
+  for (const sx of [-1, -0.5, 0, 0.5, 1]) { const a = P(end, sx, -1), b = P(end, sx, 1); c.beginPath(); c.moveTo(...a); c.lineTo(...b); c.stroke(); }
+  // floor tiles
+  c.strokeStyle = 'rgba(0,0,0,.35)'; c.lineWidth = 2;
+  for (let d = 0.5; d < end; d += 0.6) { const a = P(d, -1, 1), b = P(d, 1, 1); c.beginPath(); c.moveTo(...a); c.lineTo(...b); c.stroke(); }
+  // mailboxes on the left wall
+  for (let i = 0; i < 6; i++) for (let j = 0; j < 4; j++) {
+    const d0 = 1.2 + i * 0.5, y0 = -0.35 + j * 0.22;
+    q([P(d0, -1, y0), P(d0 + 0.44, -1, y0), P(d0 + 0.44, -1, y0 + 0.19), P(d0, -1, y0 + 0.19)], j % 2 ? '#4a4a43' : '#45453f');
+  }
+  // downlights
+  c.save(); c.shadowColor = '#ffe6bf'; c.shadowBlur = 30; c.fillStyle = '#fff2da';
+  for (const d of [1.5, 4, 7]) { const [x, y] = P(d, 0, -1); c.beginPath(); c.ellipse(x, y, 40 / (1 + d * 0.4), 12 / (1 + d * 0.4), 0, 0, Math.PI * 2); c.fill(); }
+  c.restore();
+}
+function tint(c, rgb, dark = 0.42) {
+  c.save();
+  c.globalCompositeOperation = 'multiply'; c.fillStyle = `rgb(${rgb})`; c.fillRect(0, 0, PH, PH);
+  c.globalCompositeOperation = 'source-over';
+  const g = c.createRadialGradient(PH / 2, PH * 0.45, PH * 0.12, PH / 2, PH / 2, PH * 0.75);
+  g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, `rgba(0,0,0,${dark})`);
+  c.fillStyle = g; c.fillRect(0, 0, PH, PH);
+  c.restore();
+}
+
+// seeded hair strands so they don't shimmer between frames
+const strands = Array.from({ length: 140 }, (_, i) => { const s = Math.sin(i * 91.7) * 43758.5; const r = s - Math.floor(s); const s2 = Math.sin(i * 12.3) * 9831.1; return [r, s2 - Math.floor(s2)]; });
+
+const LOOK = {
+  father: { skin: '#c49a7e', jacket: '#1a2438', inner: '#9ea3a8', hair: '#8f8d8a', brow: '#57534f' },
+  man: { skin: '#b48a6e', jacket: '#3a4048', inner: '#2b3036', hair: '#1b1b1d', brow: '#1e1c1b' },
+  woman: { skin: '#d6c2b6', jacket: '#2b2a2e', inner: '#c9c4c0', hair: '#0d0c0d', brow: '#1d1a19' },
+};
+function person(c, o) {
+  const u = o.u, s = LOOK[o.who];
+  const e = Object.assign({ smile: 0, worry: 0, fear: 0, gx: 0, gy: 0, open: 0, tremble: 0, hx: 0, hy: 0, tilt: 0, breath: 0, blink: 0 }, o);
+  c.save(); c.translate(o.x, o.y);
+  // long hair behind
+  if (o.who === 'woman') { c.fillStyle = s.hair; c.beginPath(); c.ellipse(0, 0.35 * u, 1.05 * u, 1.55 * u, 0, 0, Math.PI * 2); c.fill(); }
+  // shoulders
+  c.save(); c.translate(0, -e.breath * u * 0.05);
+  c.fillStyle = s.jacket;
+  c.beginPath(); c.moveTo(-0.5 * u, 0.82 * u); c.quadraticCurveTo(-2.3 * u, 1.05 * u, -2.8 * u, 1.9 * u); c.lineTo(-3.4 * u, 5 * u); c.lineTo(3.4 * u, 5 * u); c.lineTo(2.8 * u, 1.9 * u); c.quadraticCurveTo(2.3 * u, 1.05 * u, 0.5 * u, 0.82 * u); c.closePath(); c.fill();
+  c.fillStyle = s.inner; c.beginPath(); c.moveTo(-0.48 * u, 0.86 * u); c.lineTo(0.48 * u, 0.86 * u); c.lineTo(0, 2.3 * u); c.closePath(); c.fill();
+  if (o.who === 'father') { c.strokeStyle = 'rgba(0,0,0,.45)'; c.lineWidth = 0.05 * u; c.beginPath(); c.moveTo(-0.5 * u, 0.86 * u); c.lineTo(0, 2.3 * u); c.lineTo(0.5 * u, 0.86 * u); c.stroke(); }
+  c.restore();
+  // neck
+  c.fillStyle = s.skin; c.fillRect(-0.34 * u, 0.45 * u, 0.68 * u, 0.6 * u);
+  c.fillStyle = 'rgba(0,0,0,.28)'; c.fillRect(-0.34 * u, 0.45 * u, 0.68 * u, 0.25 * u);
+  // head
+  c.translate(e.hx * u, e.hy * u); c.rotate(e.tilt);
+  c.fillStyle = s.skin;
+  for (const sd of [-1, 1]) { c.beginPath(); c.ellipse(sd * 0.76 * u, 0.02 * u, 0.12 * u, 0.2 * u, 0, 0, Math.PI * 2); c.fill(); }
+  if (o.who === 'father') { c.fillStyle = s.hair; c.beginPath(); c.ellipse(0, -0.14 * u, 0.82 * u, 0.98 * u, 0, 0, Math.PI * 2); c.fill(); }
+  c.fillStyle = s.skin; c.beginPath(); c.ellipse(0, 0.1 * u, 0.75 * u, 0.94 * u, 0, 0, Math.PI * 2); c.fill();
+  // face shading
+  const sh = c.createRadialGradient(0, -0.1 * u, 0.2 * u, 0, 0.1 * u, 0.95 * u);
+  sh.addColorStop(0, 'rgba(255,255,255,.06)'); sh.addColorStop(0.7, 'rgba(0,0,0,0)'); sh.addColorStop(1, 'rgba(0,0,0,.35)');
+  c.fillStyle = sh; c.beginPath(); c.ellipse(0, 0.1 * u, 0.75 * u, 0.94 * u, 0, 0, Math.PI * 2); c.fill();
+  if (o.who === 'father') {
+    c.save(); c.beginPath(); c.ellipse(0, -0.14 * u, 0.83 * u, 0.98 * u, 0, Math.PI, Math.PI * 2); c.rect(-0.9 * u, -0.14 * u, 1.8 * u, 0.0001); c.clip();
+    c.fillStyle = s.hair; c.beginPath(); c.moveTo(-0.84 * u, 0.0); c.quadraticCurveTo(-0.7 * u, -0.72 * u, 0, -0.74 * u); c.quadraticCurveTo(0.7 * u, -0.72 * u, 0.84 * u, 0.0); c.lineTo(0.84 * u, -1.2 * u); c.lineTo(-0.84 * u, -1.2 * u); c.closePath(); c.fill();
+    c.lineWidth = 0.012 * u;
+    strands.forEach(([a, b], i) => { c.strokeStyle = i % 3 ? 'rgba(210,208,204,.45)' : 'rgba(40,38,36,.5)'; const x = (a * 2 - 1) * 0.75 * u, y = -0.8 * u - b * 0.3 * u; c.beginPath(); c.moveTo(x, y); c.lineTo(x + 0.04 * u, y + 0.08 * u); c.stroke(); });
+    c.restore();
+  }
+  // forehead lines
+  const wr = Math.max(0, e.worry - 0.35) * 0.9;
+  if (wr > 0 && o.who !== 'man') { c.strokeStyle = `rgba(70,45,35,${wr * 0.5})`; c.lineWidth = 0.018 * u; for (const y of [-0.5, -0.58]) { c.beginPath(); c.moveTo(-0.22 * u, y * u); c.quadraticCurveTo(0, (y - 0.04 * e.worry) * u, 0.22 * u, y * u); c.stroke(); } }
+  // brows
+  c.strokeStyle = s.brow; c.lineCap = 'round'; c.lineWidth = 0.06 * u;
+  for (const sd of [-1, 1]) {
+    const by = -0.33 * u, iy = by - e.worry * 0.1 * u - e.fear * 0.03 * u, oy = by + e.worry * 0.03 * u - e.fear * 0.04 * u;
+    c.beginPath(); c.moveTo(sd * 0.11 * u, iy); c.quadraticCurveTo(sd * 0.3 * u, Math.min(iy, oy) - 0.04 * u, sd * 0.5 * u, oy); c.stroke();
+  }
+  // eyes
+  for (const sd of [-1, 1]) {
+    const ex = sd * 0.31 * u, ey = -0.12 * u, ew = 0.15 * u, eh = 0.062 * u * (1 + e.fear * 0.6) * (1 - e.blink);
+    if (eh < 0.008 * u) { c.strokeStyle = '#3a2721'; c.lineWidth = 0.025 * u; c.beginPath(); c.moveTo(ex - ew, ey); c.quadraticCurveTo(ex, ey + 0.02 * u, ex + ew, ey); c.stroke(); continue; }
+    c.save(); c.beginPath(); c.ellipse(ex, ey, ew, eh, 0, 0, Math.PI * 2); c.fillStyle = '#d6d1cb'; c.fill(); c.clip();
+    c.fillStyle = '#2a1e19'; c.beginPath(); c.arc(ex + e.gx * 0.09 * u, ey + e.gy * 0.035 * u, 0.06 * u, 0, Math.PI * 2); c.fill();
+    c.fillStyle = '#050404'; c.beginPath(); c.arc(ex + e.gx * 0.09 * u, ey + e.gy * 0.035 * u, 0.026 * u, 0, Math.PI * 2); c.fill();
+    c.fillStyle = 'rgba(255,255,255,.7)'; c.beginPath(); c.arc(ex + e.gx * 0.09 * u + 0.02 * u, ey - 0.02 * u, 0.012 * u, 0, Math.PI * 2); c.fill();
+    c.restore();
+    c.strokeStyle = '#2e201b'; c.lineWidth = 0.028 * u; c.beginPath(); c.ellipse(ex, ey, ew, eh, 0, Math.PI * 1.05, Math.PI * 1.95); c.stroke();
+    if (o.who === 'father') { c.strokeStyle = 'rgba(70,40,30,.4)'; c.lineWidth = 0.015 * u; c.beginPath(); c.moveTo(ex - ew * 0.8, ey + 0.1 * u); c.quadraticCurveTo(ex, ey + 0.15 * u, ex + ew * 0.8, ey + 0.1 * u); c.stroke(); }
+  }
+  // cap shadow (配達員)
+  if (o.who === 'man') {
+    c.fillStyle = '#20252c'; c.beginPath(); c.ellipse(0, -0.55 * u, 0.86 * u, 0.6 * u, 0, Math.PI, Math.PI * 2); c.fill();
+    c.fillRect(-0.86 * u, -0.58 * u, 1.72 * u, 0.12 * u);
+    c.beginPath(); c.ellipse(0, -0.44 * u, 0.95 * u, 0.16 * u, 0, 0, Math.PI * 2); c.fill();
+    const g = c.createLinearGradient(0, -0.4 * u, 0, 0.08 * u); g.addColorStop(0, 'rgba(0,0,0,.92)'); g.addColorStop(0.75, 'rgba(0,0,0,.75)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    c.fillStyle = g; c.beginPath(); c.ellipse(0, -0.15 * u, 0.76 * u, 0.3 * u, 0, 0, Math.PI * 2); c.fill();
+  }
+  if (o.who === 'woman') { c.fillStyle = s.hair; c.beginPath(); c.moveTo(-0.8 * u, 0.2 * u); c.quadraticCurveTo(-0.8 * u, -0.95 * u, 0, -0.95 * u); c.quadraticCurveTo(0.8 * u, -0.95 * u, 0.8 * u, 0.2 * u); c.lineTo(0.72 * u, -0.42 * u); c.lineTo(-0.72 * u, -0.42 * u); c.closePath(); c.fill(); }
+  // nose
+  c.strokeStyle = 'rgba(80,48,38,.55)'; c.lineWidth = 0.022 * u;
+  c.beginPath(); c.moveTo(-0.04 * u, -0.05 * u); c.quadraticCurveTo(-0.07 * u, 0.15 * u, -0.1 * u, 0.24 * u); c.stroke();
+  c.beginPath(); c.moveTo(-0.13 * u, 0.27 * u); c.quadraticCurveTo(0, 0.33 * u, 0.13 * u, 0.27 * u); c.stroke();
+  // nasolabial folds
+  if (o.who === 'father') {
+    c.strokeStyle = `rgba(80,45,35,${0.25 + e.smile * 0.35})`; c.lineWidth = 0.02 * u;
+    for (const sd of [-1, 1]) { c.beginPath(); c.moveTo(sd * 0.17 * u, 0.24 * u); c.quadraticCurveTo(sd * (0.3 + e.smile * 0.05) * u, 0.42 * u, sd * 0.27 * u, 0.6 * u); c.stroke(); }
+  }
+  // mouth
+  const talk = o.talk || 0;
+  const op = Math.max(e.open, talk);
+  const mw = 0.2 * u * (1 + 0.15 * e.smile), my = 0.5 * u;
+  const tr = e.tremble ? Math.sin(gt * 52) * 0.014 * u * e.tremble : 0;
+  const cy = my - e.smile * 0.08 * u + e.fear * 0.035 * u;
+  if (op > 0.02) { c.fillStyle = '#2a1414'; c.beginPath(); c.ellipse(0, my + op * 0.04 * u, mw * 0.72, op * 0.11 * u, 0, 0, Math.PI * 2); c.fill(); }
+  c.strokeStyle = '#6a3a33'; c.lineWidth = 0.034 * u;
+  c.beginPath(); c.moveTo(-mw, cy + tr); c.quadraticCurveTo(0, my + e.smile * 0.035 * u - op * 0.03 * u, mw, cy - tr); c.stroke();
+  c.strokeStyle = 'rgba(90,50,42,.35)'; c.lineWidth = 0.02 * u;
+  c.beginPath(); c.moveTo(-mw * 0.5, my + 0.08 * u + op * 0.08 * u); c.quadraticCurveTo(0, my + 0.12 * u + op * 0.1 * u, mw * 0.5, my + 0.08 * u + op * 0.08 * u); c.stroke();
+  c.restore();
+}
+function silhouette(c, x, y, u) {
+  c.save(); c.translate(x, y);
+  c.fillStyle = '#040507';
+  c.beginPath(); c.moveTo(-0.5 * u, 0.8 * u); c.quadraticCurveTo(-2.4 * u, 1.1 * u, -2.9 * u, 2 * u); c.lineTo(-3.4 * u, 6 * u); c.lineTo(3.4 * u, 6 * u); c.lineTo(2.9 * u, 2 * u); c.quadraticCurveTo(2.4 * u, 1.1 * u, 0.5 * u, 0.8 * u); c.closePath(); c.fill();
+  c.beginPath(); c.ellipse(0, 0, 0.8 * u, 1.0 * u, 0, 0, Math.PI * 2); c.fill();
+  c.strokeStyle = 'rgba(120,150,190,.18)'; c.lineWidth = 0.05 * u;
+  c.beginPath(); c.ellipse(0, 0, 0.8 * u, 1.0 * u, 0, -Math.PI * 0.9, -Math.PI * 0.35); c.stroke();
+  c.restore();
+}
+// voice-driven mouth for placeholders
+const talkOf = who => (speaking[who] > 0) ? 0.18 + 0.2 * Math.abs(Math.sin(gt * 17) * Math.sin(gt * 6.3)) : 0;
+const HALL_TINT = '170,192,228', LOBBY_TINT = '214,206,190';
+const DOOR = { who: 'father', x: 512, y: 468, u: 160 };
+const DOOR_BASE = { smile: 0.5, worry: 0.55, fear: 0.25 };
+const ENT = { who: 'father', x: 512, y: 520, u: 70 };
+const blinkAt = (t, a) => seg(t, a, a + 0.06) - seg(t, a + 0.08, a + 0.15);
+
+PH_DRAW.STANDBY = { draw(c) { c.fillStyle = '#07090b'; c.fillRect(0, 0, PH, PH); } };
+PH_DRAW.V1 = { draw(c) { drawLobby(c); person(c, { who: 'man', x: 520, y: 500, u: 82 }); tint(c, LOBBY_TINT); } };
+PH_DRAW.V2 = { draw(c) { drawLobby(c); person(c, { who: 'woman', x: 506, y: 492, u: 84, fear: 0.25 }); tint(c, LOBBY_TINT); } };
+PH_DRAW.D1 = {
+  dur: 5, draw(c, t) { // 仮の映像：犬のシルエット
+    drawLobby(c);
+    const x = 512, y = 640 - 30 * Math.abs(Math.sin(t * 2.2));
+    c.fillStyle = '#6b4a2a';
+    c.beginPath(); c.ellipse(x, y, 150, 120, 0, 0, Math.PI * 2); c.fill();
+    c.beginPath(); c.ellipse(x, y - 170, 105, 95, 0, 0, Math.PI * 2); c.fill();
+    poly(c, [[x - 100, y - 220], [x - 70, y - 330], [x - 25, y - 245]], '#6b4a2a');
+    poly(c, [[x + 100, y - 220], [x + 70, y - 330], [x + 25, y - 245]], '#6b4a2a');
+    c.fillStyle = '#111';
+    for (const dx of [-38, 38]) { c.beginPath(); c.arc(x + dx, y - 185, 10, 0, Math.PI * 2); c.fill(); }
+    c.beginPath(); c.ellipse(x, y - 130, 20, 14, 0, 0, Math.PI * 2); c.fill();
+    tint(c, LOBBY_TINT);
+  }
+};
+PH_DRAW.F01 = {
+  dur: 5, draw(c, t) {
+    drawLobby(c);
+    const walk = 1 - seg(t, 0, 1.1);
+    person(c, { ...ENT, x: ENT.x + walk * 260, y: ENT.y - walk * 20, u: ENT.u * (1 - walk * 0.25), smile: 0.35 + 0.1 * seg(t, 3.5, 4.5), worry: 0.1, gx: walk * -0.4, blink: blinkAt(t, 1.4), talk: talkOf('father') });
+    tint(c, LOBBY_TINT);
+  }
+};
+// ケーキの箱（本物の父）とモニターのノイズ
+function cakeBox(c, x, y, w) {
+  c.fillStyle = '#e9e4da'; c.fillRect(x - w / 2, y, w, w * 0.64);
+  c.fillStyle = '#c9a54a'; c.fillRect(x - w * 0.055, y, w * 0.11, w * 0.64);
+}
+const noiseCv = document.createElement('canvas'); noiseCv.width = noiseCv.height = 96;
+PH_DRAW.NOISE = {
+  dur: 0.45, draw(c) {
+    const n = noiseCv.getContext('2d'), img = n.createImageData(96, 96);
+    for (let i = 0; i < img.data.length; i += 4) { const v = Math.random() * 200; img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255; }
+    n.putImageData(img, 0, 0); c.imageSmoothingEnabled = false; c.drawImage(noiseCv, 0, 0, PH, PH);
+  }
+};
+PH_DRAW.F02 = {
+  dur: 4, draw(c, t) {
+    drawLobby(c);
+    const look = seg(t, 2.0, 2.3) - seg(t, 2.9, 3.2);
+    person(c, { ...ENT, smile: 0.45 - look * 0.1, worry: 0.1 + look * 0.05, gy: look * 0.6, breath: Math.sin(t / 4 * Math.PI * 2) * 0.5, blink: blinkAt(t, 1.2), hx: 0.02 * Math.sin(t * Math.PI / 2) });
+    tint(c, LOBBY_TINT);
+  }
+};
+PH_DRAW.F03 = {
+  dur: 4, draw(c, t) {
+    drawHall(c);
+    const lean = 1 - seg(t, 0, 0.8), toBase = seg(t, 2.7, 3.7);
+    person(c, {
+      ...DOOR, y: DOOR.y + lean * 60, u: DOOR.u * (1 - lean * 0.18),
+      smile: L(0.15, DOOR_BASE.smile, toBase), worry: L(0.7, DOOR_BASE.worry, toBase), fear: L(0.35, DOOR_BASE.fear, toBase),
+      blink: blinkAt(t, 3.0), talk: talkOf('father'),
+    });
+    tint(c, HALL_TINT);
+  }
+};
+PH_DRAW.F04 = {
+  dur: 6, draw(c, t) {
+    drawHall(c);
+    const e = { ...DOOR, ...DOOR_BASE };
+    const side = seg(t, 0.35, 0.55) - seg(t, 1.3, 1.55);          // 0–2s 目だけ横へ (約0.75秒)
+    e.gx = 0.9 * side; e.fear += 0.12 * side;
+    const crack = seg(t, 2.2, 2.45) - seg(t, 3.25, 3.8);         // 2–4s 笑顔が崩れて震える
+    e.smile -= 0.45 * crack; e.tremble = crack; e.worry += 0.2 * crack;
+    const o = seg(t, 4.25, 4.55) - seg(t, 4.85, 5.05);           // 4–6s 言いかけて飲み込む
+    e.open = 0.32 * o; e.smile -= 0.25 * o;
+    e.hy = 0.025 * (seg(t, 5.0, 5.14) - seg(t, 5.14, 5.32));
+    e.breath = seg(t, 5.3, 5.6) - seg(t, 5.6, 5.95);
+    e.blink = blinkAt(t, 1.72);
+    e.hx = 0.006 * Math.sin(t * Math.PI);                          // 0 at every 2s junction
+    person(c, e);
+    tint(c, HALL_TINT);
+  }
+};
+PH_DRAW.F05 = {
+  dur: 7, draw(c, t) {
+    drawHall(c);
+    const f = seg(t, 0.05, 0.5);
+    const rise = seg(t, 1.9, 2.6), down = seg(t, 2.7, 3.2), near = seg(t, 3.6, 5.2);   // 下からせり上がり、父を倒す
+    if (down < 1) person(c, {
+      ...DOOR, y: DOOR.y + down * 900, tilt: -down * 0.25,
+      smile: L(DOOR_BASE.smile, 0, f), worry: L(DOOR_BASE.worry, 0.95, f), fear: L(DOOR_BASE.fear, 1, f), open: 0.12 * f,
+      gx: 0.5 * seg(t, 1.6, 1.9), talk: talkOf('father'),
+    });
+    if (rise > 0) silhouette(c, 700 - near * 190, 1400 - rise * 920 + near * 60, 130 + near * 260);
+    tint(c, HALL_TINT);
+    const dark = seg(t, 5.5, 6.35);
+    if (dark) { c.fillStyle = `rgba(0,0,0,${dark})`; c.fillRect(0, 0, PH, PH); }
+  }
+};
+PH_DRAW.F06 = {
+  dur: 8,
+  // hold before relief until the protagonist's line has finished (+0.4s)
+  hold: t => t >= 1.1 && t < 1.5 && (speaking.me > 0 || gt - (lastEnd.me ?? -1e9) < 0.4 || lastEnd.me === undefined),
+  draw(c, t) {
+    drawHall(c);
+    const rel = seg(t, 1.5, 2.1), back = seg(t, 3.15, 3.5), pull = seg(t, 3.8, 4.7);
+    const nod = seg(t, 2.25, 2.45) - seg(t, 2.45, 2.75);
+    if (pull < 1) person(c, {
+      ...DOOR, x: DOOR.x - pull * 820, tilt: -pull * 0.2,
+      smile: L(L(DOOR_BASE.smile, 0.22, rel), 0, back), worry: L(L(DOOR_BASE.worry, 0.18, rel), 0.85, back),
+      fear: L(L(DOOR_BASE.fear, 0, rel), 0.75, back), hy: 0.08 * nod, gx: 0.9 * seg(t, 3.0, 3.18),
+      breath: seg(t, 1.6, 1.8) - seg(t, 1.8, 2.3), blink: blinkAt(t, 2.9),
+    });
+    tint(c, HALL_TINT);
+    const dark = seg(t, 7.0, 7.9);
+    if (dark) { c.fillStyle = `rgba(0,0,0,${dark})`; c.fillRect(0, 0, PH, PH); }
+  }
+};
+
+PH_DRAW.F07 = PH_DRAW.F01;
+const REAL = { smile: 0.5, worry: 0.08, fear: 0 };
+PH_DRAW.F08 = {
+  dur: 6, draw(c, t) {
+    drawHall(c);
+    const look = seg(t, 3.0, 3.3) - seg(t, 4.2, 4.6);
+    person(c, { ...DOOR, y: DOOR.y + 20, u: DOOR.u * 0.9, ...REAL, smile: REAL.smile + 0.15 * look, gy: 0.7 * look, blink: blinkAt(t, 2.2), talk: talkOf('father'), hx: 0.006 * Math.sin(t * Math.PI / 3) });
+    tint(c, HALL_TINT);
+  }
+};
+PH_DRAW.K08 = { dur: 6, draw(c, t) { PH_DRAW.F08.draw(c, t); cakeBox(c, DOOR.x, DOOR.y + 300, 300); } };
+PH_DRAW.M01 = { dur: 5, draw(c) { drawHall(c); cakeBox(c, DOOR.x, 760, 220); c.fillStyle = 'rgba(255,240,210,0.18)'; c.fillRect(0, 0, PH, PH); } };
+PH_DRAW.F09 = {
+  dur: 6, draw(c, t) {
+    drawHall(c);
+    const go = seg(t, 2.2, 3.6);
+    if (go < 1) person(c, { ...DOOR, x: DOOR.x + go * 800, y: DOOR.y + 20, u: DOOR.u * 0.9, ...REAL, smile: 0.5 + 0.3 * seg(t, 0.2, 0.8), talk: talkOf('father') });
+    tint(c, HALL_TINT);
+    const dark = seg(t, 4.6, 5.8);
+    if (dark) { c.fillStyle = `rgba(0,0,0,${dark})`; c.fillRect(0, 0, PH, PH); }
+  }
+};
+
+// ---- デバッグメニュー：左上を3回タップ → 動画を選ぶと音つきでモニターに流す ----
+const DEBUG_MENU = false;   // 動画の確認をするときだけ true（左上を3回タップでメニュー）
+const DBG_NAMES = { V1: '訪問者1', V2: '訪問者2', D1: '犬', F01: '父 エントランス', F02: '父 エントランス待ち', F05: '偽物 開ける', F08: '偽物 玄関（手ぶら）', K08: '本物 玄関（ケーキ）', K09: '本物 開ける（ケーキ）', M01: '留守番 朝の玄関' };
+let dbgTaps = [], dbgId = null;
+if (DEBUG_MENU) {
+  $('dbgHot').addEventListener('pointerdown', () => {
+    const now = performance.now();
+    dbgTaps = dbgTaps.filter(t => now - t < 900).concat(now);
+    if (dbgTaps.length >= 3) { dbgTaps = []; openDebug(); }
+  });
+  $('dbgList').innerHTML = VIDEO_IDS.map(id => `<button data-id="${id}">${id}<br><small>${DBG_NAMES[id] || ''}</small></button>`).join('');
+  $('dbgList').addEventListener('click', e => { const b = e.target.closest('button'); if (b) dbgPlay(b.dataset.id); });
+  $('dbgReplay').addEventListener('click', () => dbgId && dbgPlay(dbgId));
+  $('dbgClose').addEventListener('click', () => { $('dbg').classList.remove('on'); blank(); reset(); });
+}
+function openDebug() {
+  if (!ac) initAudio();
+  ac.resume(); restoreMaster();
+  run++; timers = []; hideChoices(); stopWhisper(); silenceAll(); restoreMaster();
+  holds.clear(); $('err').classList.remove('on'); $('resume').classList.remove('on');
+  $('talk').classList.remove('on'); $('start').classList.remove('on'); $('end').classList.remove('on');
+  fade = 0; show('STANDBY');
+  // スマホで音つき再生できるよう、タップの直後に一度ずつ再生→停止しておく
+  Object.values(vids).forEach(v => { const p = v.play(); if (p) p.then(() => { if (!(feed && feed.v === v)) { v.pause(); v.currentTime = 0; } }).catch(() => {}); });
+  $('dbg').classList.add('on');
+}
+async function dbgPlay(id) {
+  dbgId = id;
+  document.querySelectorAll('#dbgList button').forEach(b => b.classList.toggle('now', b.dataset.id === id));
+  $('dbgNow').textContent = id + '　' + (DBG_NAMES[id] || '') + '（読み込み中…）';
+  if (MODE === 'video') { try { await assetState[id].p; } catch (e) { $('dbgNow').textContent = id + ' の読み込みに失敗しました'; return; } }
+  const f = show(id);
+  $('dbgNow').textContent = id + '　' + (DBG_NAMES[id] || '') + (isFinite(f.dur) ? `（${f.dur.toFixed(1)}秒）` : '');
+}
+
+// ?dev — peek(id, t) freezes the monitor on a placeholder frame; ?speed=N fast-forwards
+const QS = new URLSearchParams(location.search);
+const SPEED = +QS.get('speed') || 1;
+if (QS.has('dev')) window.DEV = {
+  peek(id, t = 0) { $('start').classList.remove('on'); const f = makeFeed(id); f.t = t; feed = f; holds.add('dev'); },
+  get state() { return { gt, feed: feed && feed.id, abs: feed && feed.abs(), choice: choiceOpen, holds: [...holds] }; },
+};
+
+PH_DRAW.K09 = { dur: 6, draw(c, t) { PH_DRAW.F09.draw(c, t); if (t < 2.2) cakeBox(c, DOOR.x, DOOR.y + 300, 300); } };
+applyLang();
+boot();
+</script>
+</body>
+</html>

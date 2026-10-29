@@ -13,6 +13,8 @@ import { shusshinHref } from './shusshin-ken/seo'
 import { iceHref } from './ice-break/seo'
 import { kuroHref } from './kuroi-ekitai/seo'
 import { darumaHref } from './daruma/seo'
+import { prefHref } from './prefecture-game/seo'
+import { kazokuHref } from './kazoku-igai/seo'
 import { siteInfoHref } from './site-info/seo'
 import { uwakiHref } from './uwaki-jinmon/seo'
 import { interrogationHref } from './interrogation-games/seo'
@@ -108,6 +110,14 @@ export function siteIndexLinks() {
     { id: 'daruma/how-to-play', href: darumaHref('how-to-play/'), label: 'だるまさんがころんだの遊び方' },
     { id: 'daruma/sensor-fix', href: darumaHref('sensor-fix/'), label: 'だるまさんがころんだが動かないとき' },
     { id: 'daruma/speedrun', href: darumaHref('speedrun/'), label: 'だるまさんがころんだのタイム' },
+    { id: 'prefecture-game', href: prefHref(), label: '新・都道府県ゲーム' },
+    { id: 'prefecture-game/guide', href: prefHref('guide/'), label: '新・都道府県ゲームの攻略' },
+    { id: 'prefecture-game/adjacency', href: prefHref('adjacency/'), label: '隣接する都道府県を調べる' },
+    { id: 'prefecture-game/hard-mode', href: prefHref('hard-mode/'), label: '鬼畜モードの遊び方' },
+    { id: 'prefecture-game/asia', href: prefHref('asia/'), label: 'アジア大陸のルール' },
+    { id: 'kazoku-igai', href: kazokuHref(), label: '家族以外は入れないでください' },
+    { id: 'kazoku-igai/true-end', href: kazokuHref('true-end/'), label: '家族以外は入れないでください TRUE END' },
+    { id: 'kazoku-igai/endings', href: kazokuHref('endings/'), label: '家族以外は入れないでください 全エンディング' },
     { id: 'about', href: siteInfoHref('about'), label: 'サイトについて' },
     { id: 'contact', href: siteInfoHref('contact'), label: 'お問い合わせ' },
     { id: 'privacy', href: siteInfoHref('privacy'), label: 'プライバシーポリシー' },

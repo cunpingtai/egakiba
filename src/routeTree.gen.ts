@@ -35,6 +35,8 @@ import { Route as HamburgSlugRouteImport } from './routes/hamburg/$slug'
 import { Route as IceBreakIndexRouteImport } from './routes/ice-break/index'
 import { Route as IceBreakSlugRouteImport } from './routes/ice-break/$slug'
 import { Route as InterrogationGamesIndexRouteImport } from './routes/interrogation-games/index'
+import { Route as KazokuIgaiIndexRouteImport } from './routes/kazoku-igai/index'
+import { Route as KazokuIgaiSlugRouteImport } from './routes/kazoku-igai/$slug'
 import { Route as KuroiEkitaiIndexRouteImport } from './routes/kuroi-ekitai/index'
 import { Route as KuroiEkitaiSlugRouteImport } from './routes/kuroi-ekitai/$slug'
 import { Route as LongPotatoIndexRouteImport } from './routes/long-potato/index'
@@ -45,6 +47,8 @@ import { Route as OmuriceIndexRouteImport } from './routes/omurice/index'
 import { Route as OmuriceSlugRouteImport } from './routes/omurice/$slug'
 import { Route as OneBreathIndexRouteImport } from './routes/one-breath/index'
 import { Route as OneBreathSlugRouteImport } from './routes/one-breath/$slug'
+import { Route as PrefectureGameIndexRouteImport } from './routes/prefecture-game/index'
+import { Route as PrefectureGameSlugRouteImport } from './routes/prefecture-game/$slug'
 import { Route as RegionalDifferencesIndexRouteImport } from './routes/regional-differences/index'
 import { Route as RegionalDifferencesSlugRouteImport } from './routes/regional-differences/$slug'
 import { Route as ShodoSimulator3dIndexRouteImport } from './routes/shodo-simulator-3d/index'
@@ -190,6 +194,16 @@ const InterrogationGamesIndexRoute = InterrogationGamesIndexRouteImport.update({
   path: '/interrogation-games/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KazokuIgaiIndexRoute = KazokuIgaiIndexRouteImport.update({
+  id: '/kazoku-igai/',
+  path: '/kazoku-igai/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KazokuIgaiSlugRoute = KazokuIgaiSlugRouteImport.update({
+  id: '/kazoku-igai/$slug',
+  path: '/kazoku-igai/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const KuroiEkitaiIndexRoute = KuroiEkitaiIndexRouteImport.update({
   id: '/kuroi-ekitai/',
   path: '/kuroi-ekitai/',
@@ -238,6 +252,16 @@ const OneBreathIndexRoute = OneBreathIndexRouteImport.update({
 const OneBreathSlugRoute = OneBreathSlugRouteImport.update({
   id: '/one-breath/$slug',
   path: '/one-breath/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrefectureGameIndexRoute = PrefectureGameIndexRouteImport.update({
+  id: '/prefecture-game/',
+  path: '/prefecture-game/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrefectureGameSlugRoute = PrefectureGameSlugRouteImport.update({
+  id: '/prefecture-game/$slug',
+  path: '/prefecture-game/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegionalDifferencesIndexRoute =
@@ -331,11 +355,13 @@ export interface FileRoutesByFullPath {
   '/draw-fight/studio': typeof DrawFightStudioRoute
   '/hamburg/$slug': typeof HamburgSlugRoute
   '/ice-break/$slug': typeof IceBreakSlugRoute
+  '/kazoku-igai/$slug': typeof KazokuIgaiSlugRoute
   '/kuroi-ekitai/$slug': typeof KuroiEkitaiSlugRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
+  '/prefecture-game/$slug': typeof PrefectureGameSlugRoute
   '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
@@ -351,11 +377,13 @@ export interface FileRoutesByFullPath {
   '/hamburg/': typeof HamburgIndexRoute
   '/ice-break/': typeof IceBreakIndexRoute
   '/interrogation-games/': typeof InterrogationGamesIndexRoute
+  '/kazoku-igai/': typeof KazokuIgaiIndexRoute
   '/kuroi-ekitai/': typeof KuroiEkitaiIndexRoute
   '/long-potato/': typeof LongPotatoIndexRoute
   '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
   '/omurice/': typeof OmuriceIndexRoute
   '/one-breath/': typeof OneBreathIndexRoute
+  '/prefecture-game/': typeof PrefectureGameIndexRoute
   '/regional-differences/': typeof RegionalDifferencesIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
   '/shusshin-ken/': typeof ShusshinKenIndexRoute
@@ -383,11 +411,13 @@ export interface FileRoutesByTo {
   '/draw-fight/studio': typeof DrawFightStudioRoute
   '/hamburg/$slug': typeof HamburgSlugRoute
   '/ice-break/$slug': typeof IceBreakSlugRoute
+  '/kazoku-igai/$slug': typeof KazokuIgaiSlugRoute
   '/kuroi-ekitai/$slug': typeof KuroiEkitaiSlugRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
+  '/prefecture-game/$slug': typeof PrefectureGameSlugRoute
   '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
@@ -403,11 +433,13 @@ export interface FileRoutesByTo {
   '/hamburg': typeof HamburgIndexRoute
   '/ice-break': typeof IceBreakIndexRoute
   '/interrogation-games': typeof InterrogationGamesIndexRoute
+  '/kazoku-igai': typeof KazokuIgaiIndexRoute
   '/kuroi-ekitai': typeof KuroiEkitaiIndexRoute
   '/long-potato': typeof LongPotatoIndexRoute
   '/omurice-simulator': typeof OmuriceSimulatorIndexRoute
   '/omurice': typeof OmuriceIndexRoute
   '/one-breath': typeof OneBreathIndexRoute
+  '/prefecture-game': typeof PrefectureGameIndexRoute
   '/regional-differences': typeof RegionalDifferencesIndexRoute
   '/shodo-simulator-3d': typeof ShodoSimulator3dIndexRoute
   '/shusshin-ken': typeof ShusshinKenIndexRoute
@@ -436,11 +468,13 @@ export interface FileRoutesById {
   '/draw-fight/studio': typeof DrawFightStudioRoute
   '/hamburg/$slug': typeof HamburgSlugRoute
   '/ice-break/$slug': typeof IceBreakSlugRoute
+  '/kazoku-igai/$slug': typeof KazokuIgaiSlugRoute
   '/kuroi-ekitai/$slug': typeof KuroiEkitaiSlugRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
+  '/prefecture-game/$slug': typeof PrefectureGameSlugRoute
   '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
@@ -456,11 +490,13 @@ export interface FileRoutesById {
   '/hamburg/': typeof HamburgIndexRoute
   '/ice-break/': typeof IceBreakIndexRoute
   '/interrogation-games/': typeof InterrogationGamesIndexRoute
+  '/kazoku-igai/': typeof KazokuIgaiIndexRoute
   '/kuroi-ekitai/': typeof KuroiEkitaiIndexRoute
   '/long-potato/': typeof LongPotatoIndexRoute
   '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
   '/omurice/': typeof OmuriceIndexRoute
   '/one-breath/': typeof OneBreathIndexRoute
+  '/prefecture-game/': typeof PrefectureGameIndexRoute
   '/regional-differences/': typeof RegionalDifferencesIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
   '/shusshin-ken/': typeof ShusshinKenIndexRoute
@@ -490,11 +526,13 @@ export interface FileRouteTypes {
     | '/draw-fight/studio'
     | '/hamburg/$slug'
     | '/ice-break/$slug'
+    | '/kazoku-igai/$slug'
     | '/kuroi-ekitai/$slug'
     | '/long-potato/$slug'
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
     | '/one-breath/$slug'
+    | '/prefecture-game/$slug'
     | '/regional-differences/$slug'
     | '/shodo-simulator-3d/$slug'
     | '/shusshin-ken/$slug'
@@ -510,11 +548,13 @@ export interface FileRouteTypes {
     | '/hamburg/'
     | '/ice-break/'
     | '/interrogation-games/'
+    | '/kazoku-igai/'
     | '/kuroi-ekitai/'
     | '/long-potato/'
     | '/omurice-simulator/'
     | '/omurice/'
     | '/one-breath/'
+    | '/prefecture-game/'
     | '/regional-differences/'
     | '/shodo-simulator-3d/'
     | '/shusshin-ken/'
@@ -542,11 +582,13 @@ export interface FileRouteTypes {
     | '/draw-fight/studio'
     | '/hamburg/$slug'
     | '/ice-break/$slug'
+    | '/kazoku-igai/$slug'
     | '/kuroi-ekitai/$slug'
     | '/long-potato/$slug'
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
     | '/one-breath/$slug'
+    | '/prefecture-game/$slug'
     | '/regional-differences/$slug'
     | '/shodo-simulator-3d/$slug'
     | '/shusshin-ken/$slug'
@@ -562,11 +604,13 @@ export interface FileRouteTypes {
     | '/hamburg'
     | '/ice-break'
     | '/interrogation-games'
+    | '/kazoku-igai'
     | '/kuroi-ekitai'
     | '/long-potato'
     | '/omurice-simulator'
     | '/omurice'
     | '/one-breath'
+    | '/prefecture-game'
     | '/regional-differences'
     | '/shodo-simulator-3d'
     | '/shusshin-ken'
@@ -594,11 +638,13 @@ export interface FileRouteTypes {
     | '/draw-fight/studio'
     | '/hamburg/$slug'
     | '/ice-break/$slug'
+    | '/kazoku-igai/$slug'
     | '/kuroi-ekitai/$slug'
     | '/long-potato/$slug'
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
     | '/one-breath/$slug'
+    | '/prefecture-game/$slug'
     | '/regional-differences/$slug'
     | '/shodo-simulator-3d/$slug'
     | '/shusshin-ken/$slug'
@@ -614,11 +660,13 @@ export interface FileRouteTypes {
     | '/hamburg/'
     | '/ice-break/'
     | '/interrogation-games/'
+    | '/kazoku-igai/'
     | '/kuroi-ekitai/'
     | '/long-potato/'
     | '/omurice-simulator/'
     | '/omurice/'
     | '/one-breath/'
+    | '/prefecture-game/'
     | '/regional-differences/'
     | '/shodo-simulator-3d/'
     | '/shusshin-ken/'
@@ -647,11 +695,13 @@ export interface RootRouteChildren {
   DrawFightStudioRoute: typeof DrawFightStudioRoute
   HamburgSlugRoute: typeof HamburgSlugRoute
   IceBreakSlugRoute: typeof IceBreakSlugRoute
+  KazokuIgaiSlugRoute: typeof KazokuIgaiSlugRoute
   KuroiEkitaiSlugRoute: typeof KuroiEkitaiSlugRoute
   LongPotatoSlugRoute: typeof LongPotatoSlugRoute
   OmuriceSimulatorSlugRoute: typeof OmuriceSimulatorSlugRoute
   OmuriceSlugRoute: typeof OmuriceSlugRoute
   OneBreathSlugRoute: typeof OneBreathSlugRoute
+  PrefectureGameSlugRoute: typeof PrefectureGameSlugRoute
   RegionalDifferencesSlugRoute: typeof RegionalDifferencesSlugRoute
   ShodoSimulator3dSlugRoute: typeof ShodoSimulator3dSlugRoute
   ShusshinKenSlugRoute: typeof ShusshinKenSlugRoute
@@ -667,11 +717,13 @@ export interface RootRouteChildren {
   HamburgIndexRoute: typeof HamburgIndexRoute
   IceBreakIndexRoute: typeof IceBreakIndexRoute
   InterrogationGamesIndexRoute: typeof InterrogationGamesIndexRoute
+  KazokuIgaiIndexRoute: typeof KazokuIgaiIndexRoute
   KuroiEkitaiIndexRoute: typeof KuroiEkitaiIndexRoute
   LongPotatoIndexRoute: typeof LongPotatoIndexRoute
   OmuriceSimulatorIndexRoute: typeof OmuriceSimulatorIndexRoute
   OmuriceIndexRoute: typeof OmuriceIndexRoute
   OneBreathIndexRoute: typeof OneBreathIndexRoute
+  PrefectureGameIndexRoute: typeof PrefectureGameIndexRoute
   RegionalDifferencesIndexRoute: typeof RegionalDifferencesIndexRoute
   ShodoSimulator3dIndexRoute: typeof ShodoSimulator3dIndexRoute
   ShusshinKenIndexRoute: typeof ShusshinKenIndexRoute
@@ -865,6 +917,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InterrogationGamesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/kazoku-igai/': {
+      id: '/kazoku-igai/'
+      path: '/kazoku-igai'
+      fullPath: '/kazoku-igai/'
+      preLoaderRoute: typeof KazokuIgaiIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/kazoku-igai/$slug': {
+      id: '/kazoku-igai/$slug'
+      path: '/kazoku-igai/$slug'
+      fullPath: '/kazoku-igai/$slug'
+      preLoaderRoute: typeof KazokuIgaiSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/kuroi-ekitai/': {
       id: '/kuroi-ekitai/'
       path: '/kuroi-ekitai'
@@ -933,6 +999,20 @@ declare module '@tanstack/react-router' {
       path: '/one-breath/$slug'
       fullPath: '/one-breath/$slug'
       preLoaderRoute: typeof OneBreathSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prefecture-game/': {
+      id: '/prefecture-game/'
+      path: '/prefecture-game'
+      fullPath: '/prefecture-game/'
+      preLoaderRoute: typeof PrefectureGameIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prefecture-game/$slug': {
+      id: '/prefecture-game/$slug'
+      path: '/prefecture-game/$slug'
+      fullPath: '/prefecture-game/$slug'
+      preLoaderRoute: typeof PrefectureGameSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/regional-differences/': {
@@ -1055,11 +1135,13 @@ const rootRouteChildren: RootRouteChildren = {
   DrawFightStudioRoute: DrawFightStudioRoute,
   HamburgSlugRoute: HamburgSlugRoute,
   IceBreakSlugRoute: IceBreakSlugRoute,
+  KazokuIgaiSlugRoute: KazokuIgaiSlugRoute,
   KuroiEkitaiSlugRoute: KuroiEkitaiSlugRoute,
   LongPotatoSlugRoute: LongPotatoSlugRoute,
   OmuriceSimulatorSlugRoute: OmuriceSimulatorSlugRoute,
   OmuriceSlugRoute: OmuriceSlugRoute,
   OneBreathSlugRoute: OneBreathSlugRoute,
+  PrefectureGameSlugRoute: PrefectureGameSlugRoute,
   RegionalDifferencesSlugRoute: RegionalDifferencesSlugRoute,
   ShodoSimulator3dSlugRoute: ShodoSimulator3dSlugRoute,
   ShusshinKenSlugRoute: ShusshinKenSlugRoute,
@@ -1075,11 +1157,13 @@ const rootRouteChildren: RootRouteChildren = {
   HamburgIndexRoute: HamburgIndexRoute,
   IceBreakIndexRoute: IceBreakIndexRoute,
   InterrogationGamesIndexRoute: InterrogationGamesIndexRoute,
+  KazokuIgaiIndexRoute: KazokuIgaiIndexRoute,
   KuroiEkitaiIndexRoute: KuroiEkitaiIndexRoute,
   LongPotatoIndexRoute: LongPotatoIndexRoute,
   OmuriceSimulatorIndexRoute: OmuriceSimulatorIndexRoute,
   OmuriceIndexRoute: OmuriceIndexRoute,
   OneBreathIndexRoute: OneBreathIndexRoute,
+  PrefectureGameIndexRoute: PrefectureGameIndexRoute,
   RegionalDifferencesIndexRoute: RegionalDifferencesIndexRoute,
   ShodoSimulator3dIndexRoute: ShodoSimulator3dIndexRoute,
   ShusshinKenIndexRoute: ShusshinKenIndexRoute,

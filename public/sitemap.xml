@@ -396,6 +396,46 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://egakiba.com/prefecture-game/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/prefecture-game/guide/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/prefecture-game/adjacency/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/prefecture-game/hard-mode/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/prefecture-game/asia/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/kazoku-igai/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/kazoku-igai/true-end/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/kazoku-igai/endings/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://egakiba.com/about/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
