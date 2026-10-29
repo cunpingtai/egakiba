@@ -17,6 +17,7 @@ import { prefHref } from './prefecture-game/seo'
 import { kazokuHref } from './kazoku-igai/seo'
 import { hariHref } from './acupuncture-darts/seo'
 import { concafeHref } from './concafe-simulator/seo'
+import { hankoHref } from './hanko-hankouki/seo'
 import { siteInfoHref } from './site-info/seo'
 import { uwakiHref } from './uwaki-jinmon/seo'
 import { interrogationHref } from './interrogation-games/seo'
@@ -125,6 +126,7 @@ export function siteIndexLinks() {
     { id: 'concafe-simulator', href: concafeHref(), label: 'コンカフェ嬢シミュレーター' },
     { id: 'concafe-simulator/guide', href: concafeHref('guide/'), label: 'コンカフェ嬢シミュレーターの攻略' },
     { id: 'concafe-simulator/endings', href: concafeHref('endings/'), label: 'コンカフェ嬢シミュレーターの全エンディング' },
+    { id: 'hanko-hankouki', href: hankoHref(), label: 'ハンコう期' },
     { id: 'about', href: siteInfoHref('about'), label: 'サイトについて' },
     { id: 'contact', href: siteInfoHref('contact'), label: 'お問い合わせ' },
     { id: 'privacy', href: siteInfoHref('privacy'), label: 'プライバシーポリシー' },

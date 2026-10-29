@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -178,6 +178,14 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: '人生',
       title: 'コンカフェ嬢シミュレーター',
       description: '源氏名を決めて、コンカフェの人生を進める。',
+    },
+    {
+      id: 'hanko-hankouki',
+      href: links.hanko,
+      mark: '印',
+      kicker: '逃走',
+      title: 'ハンコう期',
+      description: '追いかけてくるハンコから、紙の上を逃げる。',
     },
   ]
 }

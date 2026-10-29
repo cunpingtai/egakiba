@@ -36,6 +36,7 @@ import { Route as DrawFightStudioRouteImport } from './routes/draw-fight/studio'
 import { Route as DrawingGamesIndexRouteImport } from './routes/drawing-games/index'
 import { Route as HamburgIndexRouteImport } from './routes/hamburg/index'
 import { Route as HamburgSlugRouteImport } from './routes/hamburg/$slug'
+import { Route as HankoHankoukiIndexRouteImport } from './routes/hanko-hankouki/index'
 import { Route as IceBreakIndexRouteImport } from './routes/ice-break/index'
 import { Route as IceBreakSlugRouteImport } from './routes/ice-break/$slug'
 import { Route as InterrogationGamesIndexRouteImport } from './routes/interrogation-games/index'
@@ -201,6 +202,11 @@ const HamburgIndexRoute = HamburgIndexRouteImport.update({
 const HamburgSlugRoute = HamburgSlugRouteImport.update({
   id: '/hamburg/$slug',
   path: '/hamburg/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HankoHankoukiIndexRoute = HankoHankoukiIndexRouteImport.update({
+  id: '/hanko-hankouki/',
+  path: '/hanko-hankouki/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IceBreakIndexRoute = IceBreakIndexRouteImport.update({
@@ -403,6 +409,7 @@ export interface FileRoutesByFullPath {
   '/draw-fight/': typeof DrawFightIndexRoute
   '/drawing-games/': typeof DrawingGamesIndexRoute
   '/hamburg/': typeof HamburgIndexRoute
+  '/hanko-hankouki/': typeof HankoHankoukiIndexRoute
   '/ice-break/': typeof IceBreakIndexRoute
   '/interrogation-games/': typeof InterrogationGamesIndexRoute
   '/kazoku-igai/': typeof KazokuIgaiIndexRoute
@@ -463,6 +470,7 @@ export interface FileRoutesByTo {
   '/draw-fight': typeof DrawFightIndexRoute
   '/drawing-games': typeof DrawingGamesIndexRoute
   '/hamburg': typeof HamburgIndexRoute
+  '/hanko-hankouki': typeof HankoHankoukiIndexRoute
   '/ice-break': typeof IceBreakIndexRoute
   '/interrogation-games': typeof InterrogationGamesIndexRoute
   '/kazoku-igai': typeof KazokuIgaiIndexRoute
@@ -524,6 +532,7 @@ export interface FileRoutesById {
   '/draw-fight/': typeof DrawFightIndexRoute
   '/drawing-games/': typeof DrawingGamesIndexRoute
   '/hamburg/': typeof HamburgIndexRoute
+  '/hanko-hankouki/': typeof HankoHankoukiIndexRoute
   '/ice-break/': typeof IceBreakIndexRoute
   '/interrogation-games/': typeof InterrogationGamesIndexRoute
   '/kazoku-igai/': typeof KazokuIgaiIndexRoute
@@ -586,6 +595,7 @@ export interface FileRouteTypes {
     | '/draw-fight/'
     | '/drawing-games/'
     | '/hamburg/'
+    | '/hanko-hankouki/'
     | '/ice-break/'
     | '/interrogation-games/'
     | '/kazoku-igai/'
@@ -646,6 +656,7 @@ export interface FileRouteTypes {
     | '/draw-fight'
     | '/drawing-games'
     | '/hamburg'
+    | '/hanko-hankouki'
     | '/ice-break'
     | '/interrogation-games'
     | '/kazoku-igai'
@@ -706,6 +717,7 @@ export interface FileRouteTypes {
     | '/draw-fight/'
     | '/drawing-games/'
     | '/hamburg/'
+    | '/hanko-hankouki/'
     | '/ice-break/'
     | '/interrogation-games/'
     | '/kazoku-igai/'
@@ -767,6 +779,7 @@ export interface RootRouteChildren {
   DrawFightIndexRoute: typeof DrawFightIndexRoute
   DrawingGamesIndexRoute: typeof DrawingGamesIndexRoute
   HamburgIndexRoute: typeof HamburgIndexRoute
+  HankoHankoukiIndexRoute: typeof HankoHankoukiIndexRoute
   IceBreakIndexRoute: typeof IceBreakIndexRoute
   InterrogationGamesIndexRoute: typeof InterrogationGamesIndexRoute
   KazokuIgaiIndexRoute: typeof KazokuIgaiIndexRoute
@@ -974,6 +987,13 @@ declare module '@tanstack/react-router' {
       path: '/hamburg/$slug'
       fullPath: '/hamburg/$slug'
       preLoaderRoute: typeof HamburgSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hanko-hankouki/': {
+      id: '/hanko-hankouki/'
+      path: '/hanko-hankouki'
+      fullPath: '/hanko-hankouki/'
+      preLoaderRoute: typeof HankoHankoukiIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ice-break/': {
@@ -1239,6 +1259,7 @@ const rootRouteChildren: RootRouteChildren = {
   DrawFightIndexRoute: DrawFightIndexRoute,
   DrawingGamesIndexRoute: DrawingGamesIndexRoute,
   HamburgIndexRoute: HamburgIndexRoute,
+  HankoHankoukiIndexRoute: HankoHankoukiIndexRoute,
   IceBreakIndexRoute: IceBreakIndexRoute,
   InterrogationGamesIndexRoute: InterrogationGamesIndexRoute,
   KazokuIgaiIndexRoute: KazokuIgaiIndexRoute,

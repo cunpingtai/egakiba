@@ -21,6 +21,7 @@ import { prefHref } from '../prefecture-game/seo'
 import { kazokuHref } from '../kazoku-igai/seo'
 import { hariHref } from '../acupuncture-darts/seo'
 import { concafeHref } from '../concafe-simulator/seo'
+import { hankoHref } from '../hanko-hankouki/seo'
 import { uwakiHref } from '../uwaki-jinmon/seo'
 import { cookingHref } from '../cooking-games/seo'
 import { drawingHref } from '../drawing-games/seo'
@@ -147,7 +148,7 @@ function R9Shell() {
               <div><span className="section-kicker">GAMES</span><h2 id="game-shelf-title">あそべるゲーム</h2></div>
             </div>
             <div className="game-shelf-grid">
-              {siteGames({ drawFight: drawHref(), typhoonEscape: typhoonHref(), zipperFinger: zipperHref(), shodo: shodoHref(), dashimaki: dashimakiHref(), omurice: omuriceHref(), potato: potatoHref(), breath: breathHref(), hamburg: hamburgHref(), softServe: softServeHref(), ommoji: ommojiHref(), shusshinKen: shusshinHref(), uwakiJinmon: uwakiHref(), iceBreak: iceHref(), kuroiEkitai: kuroHref(), daruma: darumaHref(), prefectureGame: prefHref(), kazokuIgai: kazokuHref(), acupunctureDarts: hariHref(), concafeSim: concafeHref() }).map((game) => (
+              {siteGames({ drawFight: drawHref(), typhoonEscape: typhoonHref(), zipperFinger: zipperHref(), shodo: shodoHref(), dashimaki: dashimakiHref(), omurice: omuriceHref(), potato: potatoHref(), breath: breathHref(), hamburg: hamburgHref(), softServe: softServeHref(), ommoji: ommojiHref(), shusshinKen: shusshinHref(), uwakiJinmon: uwakiHref(), iceBreak: iceHref(), kuroiEkitai: kuroHref(), daruma: darumaHref(), prefectureGame: prefHref(), kazokuIgai: kazokuHref(), acupunctureDarts: hariHref(), concafeSim: concafeHref(), hanko: hankoHref() }).map((game) => (
                 <a className={`game-card game-card--${game.id}`} href={game.href} key={game.id} aria-current={game.here ? 'page' : undefined}>
                   <span className="game-card-mark" aria-hidden="true">{game.mark}</span>
                   <span className="game-card-body">
