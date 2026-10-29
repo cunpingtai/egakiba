@@ -94,7 +94,7 @@ test('R26: sitemap contains the Japanese canonical landing URLs and no fragment 
   const sitemap = await read('public/sitemap.xml');
   const robots = await read('public/robots.txt');
   const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-  assert.equal(urls.length, 91);
+  assert.equal(urls.length, 96);
   assert.equal(sitemap.includes('<lastmod>'), false);
   assert.equal(new Set(urls).size, urls.length);
   assert.ok(urls.every((url) => !url.includes('#')));
@@ -168,6 +168,11 @@ test('R26: sitemap contains the Japanese canonical landing URLs and no fragment 
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}kazoku-igai/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}kazoku-igai/true-end/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}kazoku-igai/endings/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}acupuncture-darts/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}acupuncture-darts/how-to-play/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}concafe-simulator/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}concafe-simulator/guide/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}concafe-simulator/endings/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}about/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}contact/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}privacy/`));

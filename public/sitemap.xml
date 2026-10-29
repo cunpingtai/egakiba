@@ -436,6 +436,31 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://egakiba.com/acupuncture-darts/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/acupuncture-darts/how-to-play/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/concafe-simulator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/concafe-simulator/guide/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/concafe-simulator/endings/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://egakiba.com/about/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>

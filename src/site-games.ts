@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -162,6 +162,22 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: 'ホラー',
       title: '家族以外は入れないでください',
       description: 'インターホン越しに、本物の家族だけを家へ入れる。',
+    },
+    {
+      id: 'acupuncture-darts',
+      href: links.acupunctureDarts,
+      mark: '鍼',
+      kicker: '一投',
+      title: '鍼ダーツ',
+      description: '背中のツボに、鍼を1本だけ投げる。',
+    },
+    {
+      id: 'concafe-simulator',
+      href: links.concafeSim,
+      mark: '嬢',
+      kicker: '人生',
+      title: 'コンカフェ嬢シミュレーター',
+      description: '源氏名を決めて、コンカフェの人生を進める。',
     },
   ]
 }

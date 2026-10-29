@@ -20,6 +20,10 @@ import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as StagesRouteImport } from './routes/stages'
 import { Route as StrongestRouteImport } from './routes/strongest'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as AcupunctureDartsIndexRouteImport } from './routes/acupuncture-darts/index'
+import { Route as AcupunctureDartsSlugRouteImport } from './routes/acupuncture-darts/$slug'
+import { Route as ConcafeSimulatorIndexRouteImport } from './routes/concafe-simulator/index'
+import { Route as ConcafeSimulatorSlugRouteImport } from './routes/concafe-simulator/$slug'
 import { Route as CookingGamesIndexRouteImport } from './routes/cooking-games/index'
 import { Route as DarumaIndexRouteImport } from './routes/daruma/index'
 import { Route as DarumaSlugRouteImport } from './routes/daruma/$slug'
@@ -117,6 +121,26 @@ const StrongestRoute = StrongestRouteImport.update({
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AcupunctureDartsIndexRoute = AcupunctureDartsIndexRouteImport.update({
+  id: '/acupuncture-darts/',
+  path: '/acupuncture-darts/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AcupunctureDartsSlugRoute = AcupunctureDartsSlugRouteImport.update({
+  id: '/acupuncture-darts/$slug',
+  path: '/acupuncture-darts/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConcafeSimulatorIndexRoute = ConcafeSimulatorIndexRouteImport.update({
+  id: '/concafe-simulator/',
+  path: '/concafe-simulator/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConcafeSimulatorSlugRoute = ConcafeSimulatorSlugRouteImport.update({
+  id: '/concafe-simulator/$slug',
+  path: '/concafe-simulator/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CookingGamesIndexRoute = CookingGamesIndexRouteImport.update({
@@ -348,6 +372,8 @@ export interface FileRoutesByFullPath {
   '/stages': typeof StagesRoute
   '/strongest': typeof StrongestRoute
   '/terms': typeof TermsRoute
+  '/acupuncture-darts/$slug': typeof AcupunctureDartsSlugRoute
+  '/concafe-simulator/$slug': typeof ConcafeSimulatorSlugRoute
   '/daruma/$slug': typeof DarumaSlugRoute
   '/dashimaki-game/$slug': typeof DashimakiGameSlugRoute
   '/draw-fight/$slug': typeof DrawFightSlugRoute
@@ -369,6 +395,8 @@ export interface FileRoutesByFullPath {
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
+  '/acupuncture-darts/': typeof AcupunctureDartsIndexRoute
+  '/concafe-simulator/': typeof ConcafeSimulatorIndexRoute
   '/cooking-games/': typeof CookingGamesIndexRoute
   '/daruma/': typeof DarumaIndexRoute
   '/dashimaki-game/': typeof DashimakiGameIndexRoute
@@ -404,6 +432,8 @@ export interface FileRoutesByTo {
   '/stages': typeof StagesRoute
   '/strongest': typeof StrongestRoute
   '/terms': typeof TermsRoute
+  '/acupuncture-darts/$slug': typeof AcupunctureDartsSlugRoute
+  '/concafe-simulator/$slug': typeof ConcafeSimulatorSlugRoute
   '/daruma/$slug': typeof DarumaSlugRoute
   '/dashimaki-game/$slug': typeof DashimakiGameSlugRoute
   '/draw-fight/$slug': typeof DrawFightSlugRoute
@@ -425,6 +455,8 @@ export interface FileRoutesByTo {
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
+  '/acupuncture-darts': typeof AcupunctureDartsIndexRoute
+  '/concafe-simulator': typeof ConcafeSimulatorIndexRoute
   '/cooking-games': typeof CookingGamesIndexRoute
   '/daruma': typeof DarumaIndexRoute
   '/dashimaki-game': typeof DashimakiGameIndexRoute
@@ -461,6 +493,8 @@ export interface FileRoutesById {
   '/stages': typeof StagesRoute
   '/strongest': typeof StrongestRoute
   '/terms': typeof TermsRoute
+  '/acupuncture-darts/$slug': typeof AcupunctureDartsSlugRoute
+  '/concafe-simulator/$slug': typeof ConcafeSimulatorSlugRoute
   '/daruma/$slug': typeof DarumaSlugRoute
   '/dashimaki-game/$slug': typeof DashimakiGameSlugRoute
   '/draw-fight/$slug': typeof DrawFightSlugRoute
@@ -482,6 +516,8 @@ export interface FileRoutesById {
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
+  '/acupuncture-darts/': typeof AcupunctureDartsIndexRoute
+  '/concafe-simulator/': typeof ConcafeSimulatorIndexRoute
   '/cooking-games/': typeof CookingGamesIndexRoute
   '/daruma/': typeof DarumaIndexRoute
   '/dashimaki-game/': typeof DashimakiGameIndexRoute
@@ -519,6 +555,8 @@ export interface FileRouteTypes {
     | '/stages'
     | '/strongest'
     | '/terms'
+    | '/acupuncture-darts/$slug'
+    | '/concafe-simulator/$slug'
     | '/daruma/$slug'
     | '/dashimaki-game/$slug'
     | '/draw-fight/$slug'
@@ -540,6 +578,8 @@ export interface FileRouteTypes {
     | '/typhoon-escape/$slug'
     | '/uwaki-jinmon/$slug'
     | '/zipper-finger/$slug'
+    | '/acupuncture-darts/'
+    | '/concafe-simulator/'
     | '/cooking-games/'
     | '/daruma/'
     | '/dashimaki-game/'
@@ -575,6 +615,8 @@ export interface FileRouteTypes {
     | '/stages'
     | '/strongest'
     | '/terms'
+    | '/acupuncture-darts/$slug'
+    | '/concafe-simulator/$slug'
     | '/daruma/$slug'
     | '/dashimaki-game/$slug'
     | '/draw-fight/$slug'
@@ -596,6 +638,8 @@ export interface FileRouteTypes {
     | '/typhoon-escape/$slug'
     | '/uwaki-jinmon/$slug'
     | '/zipper-finger/$slug'
+    | '/acupuncture-darts'
+    | '/concafe-simulator'
     | '/cooking-games'
     | '/daruma'
     | '/dashimaki-game'
@@ -631,6 +675,8 @@ export interface FileRouteTypes {
     | '/stages'
     | '/strongest'
     | '/terms'
+    | '/acupuncture-darts/$slug'
+    | '/concafe-simulator/$slug'
     | '/daruma/$slug'
     | '/dashimaki-game/$slug'
     | '/draw-fight/$slug'
@@ -652,6 +698,8 @@ export interface FileRouteTypes {
     | '/typhoon-escape/$slug'
     | '/uwaki-jinmon/$slug'
     | '/zipper-finger/$slug'
+    | '/acupuncture-darts/'
+    | '/concafe-simulator/'
     | '/cooking-games/'
     | '/daruma/'
     | '/dashimaki-game/'
@@ -688,6 +736,8 @@ export interface RootRouteChildren {
   StagesRoute: typeof StagesRoute
   StrongestRoute: typeof StrongestRoute
   TermsRoute: typeof TermsRoute
+  AcupunctureDartsSlugRoute: typeof AcupunctureDartsSlugRoute
+  ConcafeSimulatorSlugRoute: typeof ConcafeSimulatorSlugRoute
   DarumaSlugRoute: typeof DarumaSlugRoute
   DashimakiGameSlugRoute: typeof DashimakiGameSlugRoute
   DrawFightSlugRoute: typeof DrawFightSlugRoute
@@ -709,6 +759,8 @@ export interface RootRouteChildren {
   TyphoonEscapeSlugRoute: typeof TyphoonEscapeSlugRoute
   UwakiJinmonSlugRoute: typeof UwakiJinmonSlugRoute
   ZipperFingerSlugRoute: typeof ZipperFingerSlugRoute
+  AcupunctureDartsIndexRoute: typeof AcupunctureDartsIndexRoute
+  ConcafeSimulatorIndexRoute: typeof ConcafeSimulatorIndexRoute
   CookingGamesIndexRoute: typeof CookingGamesIndexRoute
   DarumaIndexRoute: typeof DarumaIndexRoute
   DashimakiGameIndexRoute: typeof DashimakiGameIndexRoute
@@ -810,6 +862,34 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/acupuncture-darts/': {
+      id: '/acupuncture-darts/'
+      path: '/acupuncture-darts'
+      fullPath: '/acupuncture-darts/'
+      preLoaderRoute: typeof AcupunctureDartsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/acupuncture-darts/$slug': {
+      id: '/acupuncture-darts/$slug'
+      path: '/acupuncture-darts/$slug'
+      fullPath: '/acupuncture-darts/$slug'
+      preLoaderRoute: typeof AcupunctureDartsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/concafe-simulator/': {
+      id: '/concafe-simulator/'
+      path: '/concafe-simulator'
+      fullPath: '/concafe-simulator/'
+      preLoaderRoute: typeof ConcafeSimulatorIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/concafe-simulator/$slug': {
+      id: '/concafe-simulator/$slug'
+      path: '/concafe-simulator/$slug'
+      fullPath: '/concafe-simulator/$slug'
+      preLoaderRoute: typeof ConcafeSimulatorSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cooking-games/': {
@@ -1128,6 +1208,8 @@ const rootRouteChildren: RootRouteChildren = {
   StagesRoute: StagesRoute,
   StrongestRoute: StrongestRoute,
   TermsRoute: TermsRoute,
+  AcupunctureDartsSlugRoute: AcupunctureDartsSlugRoute,
+  ConcafeSimulatorSlugRoute: ConcafeSimulatorSlugRoute,
   DarumaSlugRoute: DarumaSlugRoute,
   DashimakiGameSlugRoute: DashimakiGameSlugRoute,
   DrawFightSlugRoute: DrawFightSlugRoute,
@@ -1149,6 +1231,8 @@ const rootRouteChildren: RootRouteChildren = {
   TyphoonEscapeSlugRoute: TyphoonEscapeSlugRoute,
   UwakiJinmonSlugRoute: UwakiJinmonSlugRoute,
   ZipperFingerSlugRoute: ZipperFingerSlugRoute,
+  AcupunctureDartsIndexRoute: AcupunctureDartsIndexRoute,
+  ConcafeSimulatorIndexRoute: ConcafeSimulatorIndexRoute,
   CookingGamesIndexRoute: CookingGamesIndexRoute,
   DarumaIndexRoute: DarumaIndexRoute,
   DashimakiGameIndexRoute: DashimakiGameIndexRoute,

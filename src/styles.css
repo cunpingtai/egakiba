@@ -588,3 +588,15 @@ iframe#play {
 .pref-links li { display: grid; gap: 4px; padding: 10px 0; border-bottom: 1px solid #ddd6c8; }
 .pref-links li span { line-height: 1.6; }
 
+.cafe-board { margin: 28px 0; }
+.cafe-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.cafe-table caption { text-align: left; font-weight: 700; margin: 0 0 8px; }
+.cafe-table th, .cafe-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #ddd6c8; vertical-align: top; }
+.cafe-filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+.cafe-filters button { min-height: 44px; padding: 8px 14px; border-radius: 999px; border: 1px solid #8d6d78; background: #fff; color: #291326; font: inherit; font-weight: 700; cursor: pointer; }
+.cafe-filters button[aria-pressed="true"] { background: #291326; color: #fff4fa; }
+.cafe-count { margin: 0 0 8px; color: #6d5a62; }
+.cafe-ending { margin: 0 0 14px; padding: 10px 12px; border-left: 3px solid #c45b8a; background: #fff8fb; }
+.cafe-ending h3 { margin: 0 0 6px; font-size: 1.05rem; }
+.cafe-ending p { margin: 0; }
+

@@ -17,6 +17,8 @@ import { kuroHref } from './kuroi-ekitai/seo'
 import { darumaHref } from './daruma/seo'
 import { prefHref } from './prefecture-game/seo'
 import { kazokuHref } from './kazoku-igai/seo'
+import { hariHref } from './acupuncture-darts/seo'
+import { concafeHref } from './concafe-simulator/seo'
 import { uwakiHref } from './uwaki-jinmon/seo'
 import { softServeHref } from './soft-serve/seo'
 import { typhoonHref } from './typhoon-escape/seo'
@@ -64,6 +66,8 @@ function headerGames(root: string): HeaderGame[] {
     { id: 'daruma', href: darumaHref(), mark: '鬼', title: 'だるまさんがころんだ', section: 'daruma' },
     { id: 'prefecture-game', href: prefHref(), mark: '列', title: '新・都道府県ゲーム', section: 'prefecture-game' },
     { id: 'kazoku-igai', href: kazokuHref(), mark: '戸', title: '家族以外は入れないでください', section: 'kazoku-igai' },
+    { id: 'acupuncture-darts', href: hariHref(), mark: '鍼', title: '鍼ダーツ', section: 'acupuncture-darts' },
+    { id: 'concafe-simulator', href: concafeHref(), mark: '嬢', title: 'コンカフェ嬢シミュレーター', section: 'concafe-simulator' },
   ]
 }
 

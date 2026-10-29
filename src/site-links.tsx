@@ -15,6 +15,8 @@ import { kuroHref } from './kuroi-ekitai/seo'
 import { darumaHref } from './daruma/seo'
 import { prefHref } from './prefecture-game/seo'
 import { kazokuHref } from './kazoku-igai/seo'
+import { hariHref } from './acupuncture-darts/seo'
+import { concafeHref } from './concafe-simulator/seo'
 import { siteInfoHref } from './site-info/seo'
 import { uwakiHref } from './uwaki-jinmon/seo'
 import { interrogationHref } from './interrogation-games/seo'
@@ -118,6 +120,11 @@ export function siteIndexLinks() {
     { id: 'kazoku-igai', href: kazokuHref(), label: '家族以外は入れないでください' },
     { id: 'kazoku-igai/true-end', href: kazokuHref('true-end/'), label: '家族以外は入れないでください TRUE END' },
     { id: 'kazoku-igai/endings', href: kazokuHref('endings/'), label: '家族以外は入れないでください 全エンディング' },
+    { id: 'acupuncture-darts', href: hariHref(), label: '鍼ダーツ' },
+    { id: 'acupuncture-darts/how-to-play', href: hariHref('how-to-play/'), label: '鍼ダーツの遊び方' },
+    { id: 'concafe-simulator', href: concafeHref(), label: 'コンカフェ嬢シミュレーター' },
+    { id: 'concafe-simulator/guide', href: concafeHref('guide/'), label: 'コンカフェ嬢シミュレーターの攻略' },
+    { id: 'concafe-simulator/endings', href: concafeHref('endings/'), label: 'コンカフェ嬢シミュレーターの全エンディング' },
     { id: 'about', href: siteInfoHref('about'), label: 'サイトについて' },
     { id: 'contact', href: siteInfoHref('contact'), label: 'お問い合わせ' },
     { id: 'privacy', href: siteInfoHref('privacy'), label: 'プライバシーポリシー' },
