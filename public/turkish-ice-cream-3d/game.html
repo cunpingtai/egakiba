@@ -1,0 +1,1905 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<title>トルコアイス3D</title>
+<meta name="description" content="客の手をかわすトルコアイス屋">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://egakiba.com/turkish-ice-cream-3d/">
+<style>
+  :root{
+    --bg:#e9e9e9; --fg:#222; --sub:#666; --panel:rgba(255,255,255,.94); --line:#bbb;
+    --new-best:#d4380d;
+    --floor:#bfa98a; --skin:#e2b892; --vendor:#f6f6f6; --customer:#8193a8;
+    --pants:#555; --hair:#333; --shoe:#3d3d3d; --rod:#8a8a8a;
+    --stall-wood:#b07a4f; --stall-wood-dark:#8d5d3a; --stall-roof:#c8434f; --stall-flap:#a8323d;
+    --vest:#b3212b; --fez:#c4232c; --gold:#d8a630; --tassel:#222;
+    --wall:#efe4cf; --wall-pattern:#e3d4b8; --tile:#f7f5ef; --tile-pattern:#b9cce4;
+    --ice:#fbfbf4; --trail:#ffffff;
+    /* 手に持つアイスの色：プレイごとにこの中からランダムに選ぶ（見た目だけ） */
+    --ice-gold:#ffc83a;   /* 黄金のアイス（金属として映り込みで光らせる） */
+    --ice-1:#fbfbf4; --ice-2:#f6b8c8; --ice-3:#bfe8d2; --ice-4:#8a5a3c; --ice-5:#ffd27a; --ice-6:#b9b4e8; --ice-7:#a9c98a;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%;overflow:hidden}
+  body{
+    background:var(--bg); color:var(--fg);
+    font-family:"Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",system-ui,sans-serif;
+    touch-action:manipulation;
+    -webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+  }
+  #game{position:fixed;inset:0}
+  #game canvas{display:block;width:100%;height:100%;touch-action:none}
+  .hidden{display:none !important}
+
+  #hud{position:absolute;top:0;left:0;right:0;padding-top:calc(env(safe-area-inset-top,0px) + 14px);text-align:center;pointer-events:none}
+  #hud .num{font-size:40px;font-weight:700;line-height:1.1}
+
+  #result{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.25);touch-action:none}
+  #result .panel{width:min(86%,320px);padding:22px 18px;border-radius:14px;background:var(--panel);text-align:center;display:flex;flex-direction:column;gap:12px}
+  #res-title{font-size:24px;font-weight:700}
+  #res-count{font-size:20px}
+  #res-best{font-size:14px;color:var(--sub)}
+  /* 最高記録を更新したとき：飛び出してきて、その後ゆっくり脈打つ */
+  #res-new{font-size:20px;font-weight:700;color:var(--new-best)}
+  #res-new.show{animation:newPop .5s cubic-bezier(.2,1.6,.4,1) both, newPulse 1.2s ease-in-out .5s infinite}
+  #res-count.new{animation:newPop .5s cubic-bezier(.2,1.6,.4,1) .15s both}
+  @keyframes newPop{0%{transform:scale(0) rotate(-12deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
+  @keyframes newPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+  button{font:inherit;font-size:17px;font-weight:700;min-height:48px;padding:0 22px;border-radius:10px;border:2px solid var(--fg);background:var(--panel);color:var(--fg);cursor:pointer;touch-action:manipulation}
+  button.primary{background:var(--fg);color:var(--bg)}
+  :focus-visible{outline:3px solid var(--fg);outline-offset:2px}
+
+  #share-view{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5);z-index:5}
+  #share-view .panel{width:min(90%,340px);max-height:94%;overflow:auto;touch-action:pan-y;background:var(--panel);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}
+  #share-img{display:block;width:100%;height:auto;border-radius:8px}
+  #share-text{margin:0;font-size:14px;white-space:pre-wrap;word-break:break-all;-webkit-user-select:text;user-select:text}
+</style>
+</head>
+<body>
+<div id="game">
+  <div id="hud"><div class="num"><span id="time">0.0</span>秒</div></div>
+
+  <div id="result" class="hidden" role="dialog" aria-label="結果">
+    <div class="panel">
+      <div id="res-title">アイスを取られた！</div>
+      <div id="res-count"></div>
+      <div id="res-new" class="hidden">最高記録更新！</div>
+      <div id="res-best"></div>
+      <button id="retry" class="primary" type="button">もう一回</button>
+      <button id="share" type="button">共有</button>
+    </div>
+  </div>
+
+  <div id="share-view" class="hidden" role="dialog" aria-label="共有される内容">
+    <div class="panel">
+      <img id="share-img" alt="共有される結果画像">
+      <p id="share-text"></p>
+      <button id="share-close" type="button">閉じる</button>
+    </div>
+  </div>
+</div>
+
+<script src="./three.min.js"></script>
+<script>
+// Kenney のモデル（CC0）。glb を前もって「形と頂点の色」に変換し、base64 で埋め込んである
+// 中身：頂点数 u32・インデックス数 u32・両面フラグ u8（＋3バイト空き）→ 位置 f32×3・法線 i8×3・色 u8×3・インデックス u16
+const KENNEY = {
+  cone: 'SAAAAIQAAAABAAAAB8YVPawc2j2P8ay8B8YVPawc2j2P8aw8qRPQpawc2j2P8Sy9qRPQpawc2j2P8Sw9B8YVvawc2j2P8ay8B8YVvawc2j2P8aw8vw6cpgAAAABXfa68yByXPAAAAABXfS68NBE2p6utmD6sHNq9+uO8PautmD6sHFq9+uO8PautmD6sHFq9yByXPAAAAABXfS68+uO8PautmD6sHFo9yByXPAAAAABXfS48yByXPAAAAABXfS48yByXPAAAAABXfS68vw6cpgAAAABXfa48vw6cpgAAAABXfa68yByXvAAAAABXfS48yByXvAAAAABXfS68+uO8vautmD6sHFq9+uO8vautmD6sHFo9yByXvAAAAABXfS68yByXvAAAAABXfS48vw6cpgAAAABXfa48yByXvAAAAABXfS48NBE2p6utmD6sHNo9+uO8vautmD6sHFo9yByXvAAAAABXfS68vw6cpgAAAABXfa68+uO8vautmD6sHFq9NBE2p6utmD6sHNq9yByXPAAAAABXfS48vw6cpgAAAABXfa48+uO8PautmD6sHFo9NBE2p6utmD6sHNo9B8aVPautmD6P8Sy9B8aVPautmD6P8Sw9B8YVPawc2j2P8ay8B8YVPawc2j2P8aw8B8YVPawc2j2P8ay8qRPQpawc2j2P8Sy9B8aVPautmD6P8Sy9vw4cp6utmD6P8ay9B8YVvawc2j2P8aw8qRPQpawc2j2P8Sw9B8aVvautmD6P8Sw9vw4cp6utmD6P8aw9qRPQpawc2j2P8Sw9B8YVPawc2j2P8aw8vw4cp6utmD6P8aw9B8aVPautmD6P8Sw9qRPQpawc2j2P8Sy9B8YVvawc2j2P8ay8vw4cp6utmD6P8ay9B8aVvautmD6P8Sy9B8aVvautmD6P8Sy9B8YVvawc2j2P8ay8B8aVvautmD6P8Sw9B8YVvawc2j2P8aw8+uO8vautmD6sHFo9B8aVvautmD6P8Sw9NBE2p6utmD6sHNo9+uO8vautmD6sHFq9vw4cp6utmD6P8aw9B8aVvautmD6P8Sy9B8aVPautmD6P8Sw9+uO8PautmD6sHFo9NBE2p6utmD6sHNq9vw4cp6utmD6P8ay9B8aVPautmD6P8Sy9+uO8PautmD6sHFq9AH8AAH8AAH8AAH8AAH8AAH8AAN2Gat3DAN2Gat3Dat3Dat3Dat09at09AIEAAIEAAIEAAIEAAIEAAIEAlt3Dlt09lt3Dlt09AN16lt09AN16lt09lt3DAN2Glt3DAN2Gat09AN16at09AN16lRs+lRvClRs+lRvClRs+ABt8lRs+ABt8axvCABuEaxvCABuEABuElRvCABuElRvCABt8axs+ABt8axs+axs+axs+axvCaxvCAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8A15dw15dw15dw15dw15dw15dwzYhgzYhg77qU77qU77qUzYhg77qUzYhgzYhgzYhgzYhgzYhgzYhgzYhg77qU77qUzYhgzYhgzYhgzYhg77qU77qUzYhgzYhg77qU77qUzYhgzYhg77qU77qU77qU77qU15dw15dw15dw15dw77qU77qU15dw15dw77qU77qU15dw15dw77qU77qU15dw15dw77qU77qU77qU15dw77qU15dw77qU77qU77qU77qU77qU77qU77qU77qU77qU77qU77qU77qUAgABAAAAAQACAAMAAwACAAQAAwAEAAUACAAHAAYABwAIAAkADAALAAoACwAMAA0AEAAPAA4ADwAQABEAEQAQABIAEQASABMAFgAVABQAFQAWABcAGgAZABgAGQAaABsAHgAdABwAHQAeAB8AIgAhACAAIQAiACMAJgAlACQAJQAmACcAKgApACgAKQAqACsALgAtACwALQAuAC8AMgAxADAAMQAyADMANgA1ADQANQA2ADcAOgA5ADgAOQA6ADsAPgA9ADwAPAA9AD8APgBAAD0AQQA/AD0APgBCAEAAQwBCAD4AQQBEAD8ARQBEAEEAQgBDAEYARgBEAEUARwBGAEMARgBHAEQA',   // Food Kit / ice-cream-cne
+  iceCream: 'jAAAAPAAAAABAAAAyByXPAAAAABXfS48vw6cpgAAAABXfa48+uO8PautmD6sHFo9NBE2p6utmD6sHNo9vw6cpgAAAABXfa48yByXvAAAAABXfS48NBE2p6utmD6sHNo9+uO8vautmD6sHFo9yByXPAAAAABXfS48yByXPAAAAABXfS68vw6cpgAAAABXfa48vw6cpgAAAABXfa68yByXvAAAAABXfS48yByXvAAAAABXfS68+uO8vautmD6sHFq9+uO8vautmD6sHFo9yByXvAAAAABXfS68yByXvAAAAABXfS48+uO8PautmD6sHFq9yByXPAAAAABXfS68+uO8PautmD6sHFo9yByXPAAAAABXfS48yByXvAAAAABXfS68vw6cpgAAAABXfa68+uO8vautmD6sHFq9NBE2p6utmD6sHNq9vw6cpgAAAABXfa68yByXPAAAAABXfS68NBE2p6utmD6sHNq9+uO8PautmD6sHFq9MLqML0etpT5BFAs+YOTwvUetpT5CFIs9MLqML+Ossj72ve09BOTNveOssj74vW09A+TNPeOssj76vW29MLqML+Ossj75ve29YOTwPUetpT5BFIu9MLqML0etpT5BFAu+YOTwvUetpT5BFIu9MLqML6utmD75ve29BOTNvautmD76vW29MLqMLyAr7T7oyms9MLqML7er2T7q1c490DNMvSAr7T7oyus8+B+zvber2T7s1U49+R+zPber2T7q1U69+R+zPber2T7s1U49zjNMPSAr7T7oyuu8zjNMPSAr7T7oyus8+B+zvber2T7q1U690DNMvSAr7T7oyuu8+B+zvber2T7s1U490DNMvSAr7T7oyus8YOTwPUetpT5CFIs9MLqML0etpT5BFAs+A+TNPeOssj74vW09MLqML+Ossj72ve09MLqML+Ossj75ve29A+TNPeOssj76vW29MLqML7er2T7q1c69+R+zPber2T7q1U69+R+zPber2T7q1U69zjNMPSAr7T7oyuu8MLqML7er2T7q1c69MLqMLyAr7T7oymu9zjNMPSAr7T7oyuu8zjNMPSAr7T7oyus8MLqMLyAr7T7oymu9MLqMLyAr7T7oyms90DNMvSAr7T7oyuu80DNMvSAr7T7oyus8MLqML+Ossj72ve09BOTNveOssj74vW09MLqML7er2T7q1c49+B+zvber2T7s1U49A+TNPautmD74vW09YOTwPUetpT5CFIs9A+TNPautmD76vW29YOTwPUetpT5BFIu9A+TNPeOssj76vW29A+TNPeOssj74vW09A+TNPeOssj74vW09MLqML+Ossj72ve09+R+zPber2T7s1U49MLqML7er2T7q1c49YOTwvUetpT5BFIu9YOTwvUetpT5CFIs9BOTNvautmD76vW29BOTNvautmD74vW09A+TNPeOssj76vW29A+TNPeOssj74vW09+R+zPber2T7q1U69+R+zPber2T7s1U49MLqML6utmD75ve29A+TNPautmD76vW29MLqML0etpT5BFAu+YOTwPUetpT5BFIu9YOTwvUetpT5BFIu9BOTNveOssj76vW29MLqML+Ossj75ve29MLqML6utmD72ve09BOTNvautmD74vW09MLqML0etpT5BFAs+YOTwvUetpT5CFIs9A+TNPautmD74vW09MLqML6utmD72ve09YOTwPUetpT5CFIs9MLqML0etpT5BFAs+BOTNveOssj76vW29MLqML+Ossj75ve29+B+zvber2T7q1U69MLqML7er2T7q1c69+R+zPber2T7s1U49MLqML7er2T7q1c49zjNMPSAr7T7oyus8MLqMLyAr7T7oyms9YOTwvUetpT5BFIu9BOTNveOssj76vW29YOTwvUetpT5CFIs9BOTNveOssj74vW09BOTNveOssj76vW29+B+zvber2T7q1U69BOTNveOssj74vW09+B+zvber2T7s1U49MLqMLyAr7T7oymu90DNMvSAr7T7oyuu8MLqML7er2T7q1c69+B+zvber2T7q1U69A+TNPautmD76vW29+uO8PautmD6sHFo9A+TNPautmD74vW09MLqML6utmD72ve09+uO8PautmD6sHFq9MLqML6utmD6qHNo9MLqML6utmD75ve29MLqML6utmD6sHNq9BOTNvautmD76vW29+uO8vautmD6sHFq9BOTNvautmD74vW09+uO8vautmD6sHFo9at09AN16at09AN16AN16lt09AN16lt09AIEAAIEAAIEAAIEAAIEAAIEAlt3Dlt09lt3Dlt09at3Dat3Dat09at09lt3DAN2Glt3DAN2GAN2Gat3DAN2Gat3DAAB/kgA/ADlynjk5YjnHADmObgDBAACBkgDBAJW7xJXeAHI5ADpxz3Icnjo4YjrIYjo4MXLkMXIcnjrIz3Lknjo4z3IcbgA/AAB/Yjk5ADlyADmOYjnHADqPYjrIYjrIMXLkADqPAHLHMXLkMXIcAHLHAHI5z3Lkz3IcADlynjk5ADpxnjo4PJUibgA/PJXebgDBYjnHYjk5Yjk5ADlyYjo4ADpxkgDBkgA/xJXexJUiYjnHYjk5YjrIYjo4AJW7PJXeAACBbgDBkgDBnjnHADmOAJVFxJUiAAB/kgA/PJUiAJVFbgA/AAB/njnHADmOnjrIADqPYjo4ADpxMXIcAHI5kgDBnjnHkgA/njk5njnHnjrInjk5njo4AHLHz3LkADqPnjrIPJXeAIEAPJUiAJVFAIEAAIEAAJW7AIEAxJXeAIEAxJUiAIEA77qU77qUzYhgzYhg77qU77qUzYhgzYhg77qU77qU77qU77qU77qU77qUzYhgzYhg77qU77qUzYhg77qUzYhg77qU77qU77qUzYhgzYhg77qU77qUzYhgzYhg4Ija4Ija5I3b5I3b5I3b5I3b4Ija4Ija4Ija24LY24LY+KPi8Zvg+KPi8Zvg8Zvg8Zvg+KPi+KPi8Zvg+KPi8Zvg+KPi4Ija4Ija5I3b5I3b5I3b5I3b8Zvg8Zvg8Zvg+KPi8Zvg+KPi+KPi+KPi+KPi+KPi+KPi+KPi5I3b5I3b8Zvg8Zvg24LY4Ija24LY4Ija5I3b5I3b5I3b5I3b8Zvg8Zvg4Ija4Ija24LY24LY5I3b5I3b8Zvg8Zvg24LY24LY4Ija4Ija4Ija5I3b5I3b24LY24LY4Ija4Ija24LY24LY4Ija4Ija5I3b5I3b8Zvg8Zvg8Zvg8Zvg+KPi+KPi4Ija5I3b4Ija5I3b5I3b8Zvg5I3b8Zvg+KPi+KPi8Zvg8Zvg24LY24LY24LY24LY24LY24LY24LY24LY24LY24LY24LY24LYAgABAAAAAQACAAMABgAFAAQABQAGAAcACgAJAAgACQAKAAsACwAKAAwACwAMAA0AEAAPAA4ADwAQABEAFAATABIAEwAUABUAGAAXABYAFwAYABkAHAAbABoAGwAcAB0AIAAfAB4AHwAgACEAJAAjACIAIwAkACUAJwAmACUAJgAnACgAKwAqACkAKgArACwALwAuAC0ALgAvADAAMwAyADEAMgAzADQANwA2ADUANgA3ADgAOwA6ADkAOgA7ADwAPwA+AD0APgA/AEAAQwBCAEEAQgBDAEQARABDAEUARABFAEYASQBIAEcASABJAEoATQBMAEsATABNAE4ATwBMAE4ATABPAFAAUwBSAFEAUgBTAFQAVwBWAFUAVgBXAFgAWwBaAFkAWgBbAFwAXwBeAF0AXgBfAGAAYgBfAGEAXwBiAGMAZgBlAGQAZQBmAGcAagBpAGgAaQBqAGsAbgBtAGwAbQBuAG8AcgBxAHAAcQByAHMAdgB1AHQAdQB2AHcAegB5AHgAeQB6AHsAfgB9AHwAfQB+AH8AggCBAIAAgQCCAIMAhACAAIEAgQCDAIUAgACEAIYAhgCEAIcAhgCHAIgAiACHAIkAhQCDAIoAiACJAIoAhQCKAIsAiwCKAIkA',   // Food Kit / ice-cream
+  cup: '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',   // Food Kit / ice-cream-cup
+  freezer: 'JAEAABwCAAABAAAAMzOzPgHeaCjSymo+nJioPgAAAAAAAIA+MzOzPs3MzD3Symo+nJioPs3MzD0AAIA+MzOzvhSuaSjSymo+MzOzvs3MzD3Symo+nJiovgAAAAAAAIA+nJiovs3MzD0AAIA+MzOzPl/4pyrSymq+MzOzPgHeaCjSymo+MzOzPs3MzD3Symq+MzOzPs3MzD3Symo+MzOzPl/4pyrSymq+MzOzPs3MzD3Symq+nJioPo9CryoAAIC+nJioPs3MzD0AAIC+MzOzvl/4pyrSymq+MzOzvs3MzD3Symq+MzOzvhSuaSjSymo+MzOzvs3MzD3Symo+nJioPgAAAAAAAIA+nJiovgAAAAAAAIA+nJioPs3MzD0AAIA+nJiovs3MzD0AAIA+MzOzPgHeaCjSymo+MzOzPl/4pyrSymq+nJioPgAAAAAAAIA+nJioPo9CryoAAIC+nJiovgAAAAAAAIA+nJiovhBJryoAAIC+MzOzvhSuaSjSymo+MzOzvl/4pyrSymq+nJioPo9CryoAAIC+nJioPs3MzD0AAIC+nJiovhBJryoAAIC+nJiovs3MzD0AAIC+nJiovhBJryoAAIC+nJiovs3MzD0AAIC+MzOzvl/4pyrSymq+MzOzvs3MzD3Symq+zczMPpqZmT4AAIC+zczMPpqZmT4AAIA+MzOzPpqZmT6amZm+MzOzPpqZmT6amZk+MzOzvpqZmT6amZm+MzOzvpqZmT6amZk+zczMvpqZmT4AAIC+zczMvpqZmT4AAIA+zczMPs3MzD0AAIC+zczMPs3MzD0AAIA+zczMPpqZmT4AAIC+zczMPpqZmT4AAIA+MzOzvs3MzD2amZm+MzOzPs3MzD2amZm+MzOzvpqZmT6amZm+MzOzPpqZmT6amZm+zczMvs3MzD0AAIC+zczMvs3MzD0AAIA+MzOzvs3MzD2amZm+MzOzvs3MzD3Symq+nJiovs3MzD0AAIC+MzOzvs3MzD3Symo+nJioPs3MzD0AAIC+MzOzvs3MzD2amZk+nJiovs3MzD0AAIA+nJioPs3MzD0AAIA+MzOzPs3MzD2amZm+MzOzPs3MzD2amZk+MzOzPs3MzD3Symq+MzOzPs3MzD3Symo+zczMPs3MzD0AAIC+zczMPs3MzD0AAIA+MzOzvs3MzD2amZk+zczMvs3MzD0AAIA+MzOzvpqZmT6amZk+zczMvpqZmT4AAIA+MzOzPs3MzD2amZk+MzOzvs3MzD2amZk+MzOzPpqZmT6amZk+MzOzvpqZmT6amZk+MzOzPs3MzD2amZk+MzOzPpqZmT6amZk+zczMPs3MzD0AAIA+zczMPpqZmT4AAIA+MzOzPs3MzD2amZm+zczMPs3MzD0AAIC+MzOzPpqZmT6amZm+zczMPpqZmT4AAIC+zczMvs3MzD0AAIC+zczMvpqZmT4AAIC+zczMvs3MzD0AAIA+zczMvpqZmT4AAIA+MzOzvs3MzD2amZm+MzOzvpqZmT6amZm+zczMvs3MzD0AAIC+zczMvpqZmT4AAIC+nJioPpmZmT4AAIA+nJioPjMzsz4AAIA+MzOzPpmZmT7Symo+MzOzPjMzsz7Symo+AAAAPszMrD6YmZk9AAAAPmVmpj6YmZk9mpmZPTIzsz6YmZk9mpmZPWVmpj6YmZk9AAAAPmVmpj6YmZk9AAAAPszMrD6YmZk9AAAAPmVmpj6cmZm9AAAAPsvMrD6cmZm9AAAAPmVmpj6cmZm9AAAAPsvMrD6cmZm9mpmZPWVmpj6cmZm9mpmZPTIzsz6cmZm9mpmZPTIzsz6YmZk9mpmZPTIzsz6cmZm9AAAAPszMrD6YmZk9AAAAPsvMrD6cmZm9mpmZPWZmpj7MzEw+mpmZPTMzsz7MzEw+mpmZPWVmpj6YmZk9mpmZPTIzsz6YmZk9mpmZPWVmpj6cmZm9mpmZPTIzsz6cmZm9mpmZPWRmpj7QzEy+mpmZPTEzsz7QzEy+MzOzPpeZmT7Uymq+MzOzPjEzsz7Uymq+nJioPpeZmT4CAIC+nJioPjEzsz4CAIC+MzOzPpmZmT7Symo+MzOzPjMzsz7Symo+MzOzPpeZmT7Uymq+MzOzPjEzsz7Uymq+mpmZPmZmpj7MzEw+mpmZPmRmpj7QzEy+mpmZPjMzsz7MzEw+mpmZPjEzsz7QzEy+nJioPjMzsz4AAIA+nJioPpmZmT4AAIA+Hjs7PTMzsz4AAIA+Hjs7PZmZmT4AAIA+mpmZPjEzsz7QzEy+mpmZPmRmpj7QzEy+mpmZPTEzsz7QzEy+mpmZPWRmpj7QzEy+Hjs7PZmZmT4AAIA+zMzMPJmZmT7Symo+Hjs7PTMzsz4AAIA+zMzMPDMzsz7Symo+mpmZPmZmpj7MzEw+mpmZPjMzsz7MzEw+mpmZPWZmpj7MzEw+mpmZPTMzsz7MzEw+nJioPjMzsz4AAIA+Hjs7PTMzsz4AAIA+MzOzPjMzsz7Symo+zMzMPDMzsz7Symo+mpmZPjMzsz7MzEw+MzOzPjEzsz7Uymq+mpmZPTMzsz7MzEw+mpmZPjEzsz7QzEy+zMzMPDEzsz7Uymq+mpmZPTIzsz6YmZk9mpmZPTIzsz6cmZm9mpmZPTEzsz7QzEy+nJioPjEzsz4CAIC+Hjs7PTEzsz4CAIC+nJioPpeZmT4CAIC+nJioPjEzsz4CAIC+Hjs7PZeZmT4CAIC+Hjs7PTEzsz4CAIC+zMzMPJmZmT7Symo+zMzMPJeZmT7Uymq+zMzMPDMzsz7Symo+zMzMPDEzsz7Uymq+Hjs7PZmZmT4AAIA+nJioPpmZmT4AAIA+zMzMPJmZmT7Symo+MzOzPpmZmT7Symo+MzOzPpeZmT7Uymq+zMzMPJeZmT7Uymq+Hjs7PZeZmT4CAIC+nJioPpeZmT4CAIC+zMzMPJeZmT7Uymq+Hjs7PZeZmT4CAIC+zMzMPDEzsz7Uymq+Hjs7PTEzsz4CAIC+IDs7vZmZmT4AAIA+IDs7vTMzsz4AAIA+0MzMvJmZmT7Symo+0MzMvDMzsz7Symo+AACAvszMrD6YmZk9AACAvmVmpj6YmZk9mpmZvjIzsz6YmZk9mpmZvmVmpj6YmZk9AACAvmVmpj6YmZk9AACAvszMrD6YmZk9AACAvmVmpj6cmZm9AACAvsvMrD6cmZm9AACAvmVmpj6cmZm9AACAvsvMrD6cmZm9mpmZvmVmpj6cmZm9mpmZvjIzsz6cmZm9mpmZvjIzsz6YmZk9mpmZvjIzsz6cmZm9AACAvszMrD6YmZk9AACAvsvMrD6cmZm9mpmZvmZmpj7MzEw+mpmZvjMzsz7MzEw+mpmZvmVmpj6YmZk9mpmZvjIzsz6YmZk9mpmZvmVmpj6cmZm9mpmZvjIzsz6cmZm9mpmZvmRmpj7QzEy+mpmZvjEzsz7QzEy+0MzMvJmZmT7Symo+0MzMvDMzsz7Symo+0MzMvJeZmT7Uymq+0MzMvDEzsz7Uymq+0MzMvJeZmT7Uymq+0MzMvDEzsz7Uymq+IDs7vZeZmT4CAIC+IDs7vTEzsz4CAIC+mpmZvWZmpj7MzEw+mpmZvWRmpj7QzEy+mpmZvTMzsz7MzEw+mpmZvTEzsz7QzEy+MzOzvpeZmT7Uymq+nJiovpeZmT4CAIC+MzOzvjEzsz7Uymq+nJiovjEzsz4CAIC+IDs7vTMzsz4AAIA+nJiovjMzsz4AAIA+0MzMvDMzsz7Symo+MzOzvjMzsz7Symo+mpmZvTMzsz7MzEw+0MzMvDEzsz7Uymq+mpmZvjMzsz7MzEw+mpmZvTEzsz7QzEy+MzOzvjEzsz7Uymq+mpmZvjIzsz6YmZk9mpmZvjIzsz6cmZm9mpmZvjEzsz7QzEy+IDs7vTEzsz4CAIC+nJiovjEzsz4CAIC+IDs7vZeZmT4CAIC+IDs7vTEzsz4CAIC+nJiovpeZmT4CAIC+nJiovjEzsz4CAIC+MzOzvpmZmT7Symo+MzOzvpeZmT7Uymq+MzOzvjMzsz7Symo+MzOzvjEzsz7Uymq+nJiovpmZmT4AAIA+IDs7vZmZmT4AAIA+MzOzvpmZmT7Symo+0MzMvJmZmT7Symo+0MzMvJeZmT7Uymq+MzOzvpeZmT7Uymq+nJiovpeZmT4CAIC+IDs7vZeZmT4CAIC+IDs7vTMzsz4AAIA+IDs7vZmZmT4AAIA+nJiovjMzsz4AAIA+nJiovpmZmT4AAIA+mpmZvWZmpj7MzEw+mpmZvTMzsz7MzEw+mpmZvmZmpj7MzEw+mpmZvjMzsz7MzEw+nJiovpmZmT4AAIA+MzOzvpmZmT7Symo+nJiovjMzsz4AAIA+MzOzvjMzsz7Symo+mpmZvTEzsz7QzEy+mpmZvWRmpj7QzEy+mpmZvjEzsz7QzEy+mpmZvmRmpj7QzEy+mpmZPmZmpj7MzEw+mpmZPWZmpj7MzEw+mpmZPmRmpj7QzEy+AAAAPmVmpj6YmZk9mpmZPWVmpj6YmZk9AAAAPmVmpj6cmZm9mpmZPWVmpj6cmZm9mpmZPWRmpj7QzEy+mpmZvWZmpj7MzEw+mpmZvmZmpj7MzEw+mpmZvWRmpj7QzEy+AACAvmVmpj6YmZk9mpmZvmVmpj6YmZk9AACAvmVmpj6cmZm9mpmZvmVmpj6cmZm9mpmZvmRmpj7QzEy+dQAxMQB1dQAxMQB1iwAxiwAxzwB1zwB1dQDPdQAxdQDPdQAxdQDPdQDPMQCLMQCLiwDPiwDPiwAxiwAxMQB1zwB1MQB1zwB1AIEAAIEAAIEAAIEAAIEAAIEAAIEAAIEAMQCLMQCLzwCLzwCLzwCLzwCLiwDPiwDPAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AdQDPdQAxdQDPdQAxzwCLMQCLzwCLMQCLAIEAAIEAAIEAAIEAAIEAAIEAAIEAAIEAAIEAAIEAAIEAAIEAAIEAAIEAAIEAAIEAzwB1iwAxzwB1iwAxMQB1zwB1MQB1zwB1MQB1MQB1dQAxdQAxMQCLdQDPMQCLdQDPiwDPiwDPiwAxiwAxzwCLzwCLiwDPiwDPMQB1MQB1dQAxdQAxAAB/AAB/AAB/AAB/fwAAZE4AfwAAZE4AAACBAACBAACBAACBH3sAH3sAZE4AZE4AfwAAfwAAfwAAfwAAfwAAfwAAfwAAfwAAdQDPdQDPMQCLMQCLdQAxdQAxdQDPdQDPgQAAgQAAgQAAgQAAMQB1MQB1zwB1zwB1AAB/AAB/AAB/AAB/zwB1iwAxzwB1iwAxAACBAACBAACBAACBAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AMQCLMQCLzwCLzwCLiwAxiwDPiwAxiwDPAIEAAIEAAIEAAIEAAIEAAIEAAIEAAIEAiwDPzwCLiwDPzwCLMQB1MQB1dQAxdQAxAAB/AAB/AAB/AAB/fwAAZE4AfwAAZE4AAACBAACBAACBAACBH3sAH3sAZE4AZE4AfwAAfwAAfwAAfwAAfwAAfwAAfwAAfwAAdQAxdQAxdQDPdQDPdQDPdQDPMQCLMQCLgQAAgQAAgQAAgQAAiwDPzwCLiwDPzwCLAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AMQCLMQCLzwCLzwCLiwAxiwDPiwAxiwDPAIEAAIEAAIEAAIEAAIEAAIEAAIEAAIEAMQB1MQB1zwB1zwB1AACBAACBAACBAACBzwB1iwAxzwB1iwAxAAB/AAB/AAB/AAB/AH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AAH8AWmB4WmB4aW+GaW+GWmB4aW+GWmB4aW+GWmB4WmB4aW+GaW+GWmB4aW+GWmB4aW+GWmB4aW+GWmB4aW+GWmB4WmB4aW+GaW+GWmB4WmB4WmB4WmB4WmB4WmB4WmB4WmB4WmB4aW+GWmB4aW+GWmB4aW+GWmB4aW+Gf4Scf4Scf4Scf4Scf4Scf4Scf4Scf4Scf4Scf4ScWmB4WmB4f4Scf4ScWmB4WmB4f4Scf4Scf4Scf4Scf4Scf4Scf4Scf4Scf4Scf4Scf4Scf4Scf4Scf4Scf4Scf4Scf4Scf4ScWmB4WmB4f4Scf4ScWmB4WmB4f4ScWmB4f4ScWmB4f4Scf4ScWmB4WmB4f4ScWmB4f4ScWmB4f4ScWmB4f4ScWmB4fIGZfIGZg4mkg4mkkZi2kZi2kZi2kZi2kZi2kZi2pq3Qpq3Qpq3Qpq3Qpq3Qpq3QkZi2pq3QkZi2pq3Qg4mkg4mkkZi2kZi2pq3Qpq3Qtb3itb3iu8Pqu8Pqvsfuvsfug4mkg4mku8Pqu8Pqg4mktb3ig4mktb3ifIGZfIGZfIGZfIGZtb3itb3itb3itb3ifIGZg4mkfIGZg4mkg4mkg4mkg4mkg4mkfIGZfIGZg4mkg4mkg4mku8Pqg4mktb3iu8PqkZi2pq3Qtb3ivsfuvsfuvsfuvsfuvsfuvsfug4mku8Pqg4mku8PqfIGZfIGZg4mkg4mku8Pqu8Pqvsfuvsfuu8Pqvsfuu8PqvsfufIGZfIGZg4mkg4mkkZi2kZi2kZi2kZi2kZi2kZi2pq3Qpq3Qpq3Qpq3Qpq3Qpq3QkZi2pq3QkZi2pq3Qg4mkg4mkkZi2kZi2pq3Qpq3Qtb3itb3ig4mkg4mku8Pqu8Pqu8Pqu8Pqvsfuvsfug4mktb3ig4mktb3iu8Pqvsfuu8PqvsfufIGZfIGZg4mkg4mkg4mku8Pqg4mktb3iu8PqkZi2pq3Qtb3ivsfuvsfuvsfuvsfuvsfuvsfug4mku8Pqg4mku8PqfIGZfIGZg4mkg4mku8Pqu8PqvsfuvsfufIGZfIGZfIGZfIGZg4mkg4mkg4mkg4mkfIGZg4mkfIGZg4mktb3itb3itb3itb3ix8fbx8fb7+/11dXk1dXk5ubv5ubv7+/1x8fbx8fb7+/11dXk1dXk5ubv5ubv7+/1AgABAAAAAQACAAMABgAFAAQABQAGAAcACgAJAAgACQAKAAsADgANAAwADQAOAA8AEgARABAAEQASABMAFgAVABQAFQAWABcAGgAZABgAGQAaABsAGwAaABwAGwAcAB0AHQAcAB4AHQAeAB8AIgAhACAAIQAiACMAJgAlACQAJQAmACcAKgApACgAKQAqACsAKwAqACwAKwAsAC0ALQAsAC4ALQAuAC8AMgAxADAAMQAyADMANgA1ADQANQA2ADcAOgA5ADgAOwA5ADoAOgA8ADsAPQA5ADsAOgA+ADwAPQA/ADkAQAA/AD0AQQA/AEAAQgA+ADoAQQBDAD8AQgBEAD4AQgBFAEQAQwBBAEUAQgBDAEUARgBDAEIAQwBGAEcASgBJAEgASQBKAEsATgBNAEwATQBOAE8AUgBRAFAAUQBSAFMAVgBVAFQAVQBWAFcAWgBZAFgAWQBaAFsAXgBdAFwAXQBeAF8AYgBhAGAAYQBiAGMAZgBlAGQAZQBmAGcAagBpAGgAaQBqAGsAbgBtAGwAbQBuAG8AcgBxAHAAcQByAHMAdgB1AHQAdQB2AHcAegB5AHgAeQB6AHsAfgB9AHwAfQB+AH8AggCBAIAAgQCCAIMAhgCFAIQAhQCGAIcAigCJAIgAiQCKAIsAjgCNAIwAjQCOAI8AkgCRAJAAkQCSAJMAlgCVAJQAlQCWAJcAmgCZAJgAmQCaAJsAmwCaAJwAnACaAJ0AngCbAJwAnACdAJ8AmwCeAKAAoACeAKEAoAChAKIAnwCdAKMAoACiAKMAoACjAJ0AoACdAKQAoACkAKUAqACnAKYApwCoAKkArACrAKoAqwCsAK0AsACvAK4ArwCwALEAsQCwALIAsgCwALMAsgCzALQAsgC0ALUAuAC3ALYAtwC4ALkAvAC7ALoAuwC8AL0AwAC/AL4AvwDAAMEAxADDAMIAwwDEAMUAyADHAMYAxwDIAMkAzADLAMoAywDMAM0A0ADPAM4AzwDQANEA1ADTANIA0wDUANUA2ADXANYA1wDYANkA3ADbANoA2wDcAN0A4ADfAN4A3wDgAOEA5ADjAOIA4wDkAOUA6ADnAOYA5wDoAOkA6QDoAOoA6gDoAOsA7ADpAOoA6gDrAO0A6QDsAO4A7gDsAO8A7gDvAPAA7QDrAPEA7gDwAPEA7gDxAOsA7gDrAPIA7gDyAPMA9gD1APQA9QD2APcA+gD5APgA+QD6APsA/gD9APwA/QD+AP8A/wD+AAABAAH+AAEBAAEBAQIBAAECAQMBBgEFAQQBBQEGAQcBCgEJAQgBCQEKAQsBDgENAQwBDQEOAQ8BEgERARABEQESARMBFgEVARQBFQEWARcBGAEVARcBFwEWARkBGQEWARoBGgEWARsBHgEdARwBHQEeAR8BIAEdAR8BHwEeASEBIQEeASIBIgEeASMB',   // Mini Market / freezer
+  scoopMint: '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',   // Food Kit / ice-cream-scoop-mint
+  scoopChoco: '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bgDBV7LObgA/V7IyqbLOALKckgDBAACBkgDBnTjHkgA/nTg5kgDBAACBnTjHADiObgDBbgA/YzjHYzg5AIEAAIEAAIEAAIEAAIEAAIEAAACBbgDBADiOYzjHbgA/AAB/Yzg5ADhybBk+Yzg5PxVsADhyABl9bBnCYzjHfRUAYzg5bBk+ABmDADiOPxWUYzjHbBnClBnCnTjHwRWUADiOABmDlBnCgxUAnTjHnTg5lBk+ABl9ADhywRVsnTg5lBk+AHLHz3LkADqPnjrIwRWUABmDlBnCnjrIADqPMXLkMXIcAHLHAHI5z3Lkz3IcAHI5ADpxz3Icnjo4PxWUbBnCABmDADqPYjrIlBnCnjrIgxUAnjo4lBk+bBnCfRUAYjrIYjo4bBk+YjrIYjo4MXLkMXIcYjo4ADpxMXIcAHI5PxVsABl9bBk+Yjo4ADpxnjrIz3Lknjo4z3IcwRVslBk+ABl9ADpxnjo4YjrIMXLkADqPAHLH5I3b5I3b7Zbe7Zbe24LY24LY5I3b5I3b24LY24LY5I3b5I3b24LY24LY5I3b5I3b5I3b5I3b24LY24LY5I3b24LY5I3b24LY24LY24LY5I3b5I3b5I3b7Zbe5I3b7Zbe5I3b5I3b7Zbe7Zbe5I3b5I3b7Zbe7Zbe24LY24LY24LY24LY24LY24LY5I3b5I3b7Zbe7Zbe5I3b5I3b7Zbe7Zbe+KPi7Zbe8Zvg7Zbe+KPi+KPi7Zbe8Zvg7Zbe+KPi+KPi7Zbe8Zvg7Zbe+KPi+KPi7Zbe8Zvg7Zbe+KPi+KPi8Zvg7Zbe7Zbe+KPi+KPi7Zbe8Zvg7Zbe+KPiq15Bq15BnFpBnFpBhFRCjlZBjlZBnFpBnFpBq15Bq15Bq15Bq15Bq15Bq15Bq15BnFpBq15BnFpBhFRCjlZBjlZBnFpBnFpBjlZBnFpBhFRCnFpBjlZBjlZBhFRCnFpBnFpBjlZBnFpBnFpBq15Bq15BnFpBnFpBq15Bq15BhFRCjlZBjlZBnFpBnFpBnFpBq15BnFpBq15BhFRCjlZBjlZBnFpBnFpBnFpBq15BnFpBq15BAgABAAAAAQACAAMABgAFAAQABQAGAAcACgAJAAgACQAKAAsADgANAAwADQAOAA8AEgARABAAEQASABMAFgAVABQAFQAWABcAGgAZABgAGQAaABsAHgAdABwAHQAeAB8AIgAhACAAIQAiACMAJgAlACQAJQAmACcAKgApACgAKQAqACsAKwAqACwAKwAsAC0AMAAvAC4ALwAwADEANAAzADIAMwA0ADUAOAA3ADYANwA4ADkAOgA5ADgAPQA8ADsAPAA9AD4APgA9AD8AQgBBAEAAQQBCAEMARABDAEIARwBGAEUARgBHAEgASQBIAEcATABLAEoASwBMAE0ASwBNAE4AUQBQAE8AUABRAFIAUwBSAFEAVgBVAFQAVQBWAFcAWgBZAFgAWQBaAFsAWQBbAFwAXwBeAF0AXgBfAGAAYABfAGEAYABhAGIAZQBkAGMAZABlAGYAaQBoAGcAaABpAGoAaABqAGsAbgBtAGwAbQBuAG8AbwBuAHAAcwByAHEAcgBzAHQAcgB0AHUAeAB3AHYAdwB4AHkAfAB7AHoAewB8AH0AgAB/AH4AfwCAAIEAfwCBAIIAhQCEAIMAhACFAIYAiQCIAIcAiACJAIoAiACKAIsAjgCNAIwAjQCOAI8A',   // Food Kit / ice-cream-scoop-chocolate
+};
+</script>
+<script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+  // ---------- 定数 ----------
+  // 店員の腕（ラグドール）。肩・肘・手・棒の先を質点にして、長さを保つ拘束でつなぐ
+  const STEP = 1/120;          // 物理の固定タイムステップ（秒）
+  const ITER = 10;             // 拘束の反復回数（少ないと腕が伸びる）
+  const GRAVITY = 9.8;
+  const DAMP = 0.997;          // 腕の速度を残す割合（1で減衰なし）
+  const SHOULDER = { x:0, y:1.45 };  // 店員の肩（体を傾けていないとき）
+  // 店員の体：手の位置に合わせて腰から上を傾ける
+  const V_REST_X = 0.42;       // 手が肩からこれより前に出たら前かがみになる (m)
+  const V_LEAN_X = 1.2;        // 手を前に出したときに傾ける量（rad/m）
+  const V_LEAN_Y = 0.4;        // 手を肩より下げたときに傾ける量（rad/m。上げると反る）
+  const V_LEAN_MIN = -0.35, V_LEAN_MAX = 0.85;  // 傾ける角度の範囲（rad、前かがみが正）
+  const V_SPRING = 60;         // 体が傾きに追いつく強さ
+  const V_DAMPING = 10;        // 体の揺れの収まりやすさ（小さいほど揺れが残る）
+  const V_LOOK_MAX = 0.6;      // 顔をアイスへ向ける角度の上限（rad）
+  const L_UPPER = 0.30;        // 上腕の長さ (m)
+  const L_FORE = 0.28;         // 前腕の長さ
+  const L_ROD = 0.55;          // 手からアイス棒の先まで
+  const WRIST_ANGLE = 0.7;     // 前腕に対する棒の角度（rad、上向きが正）
+  const WRIST_STIFF = 0.3;     // 手首の硬さ（0〜1。小さいほど棒がぶらぶらする）
+  const PULL = 0.06;           // 手を指の位置へ引く強さ（1ステップあたりの割合）
+  const HAND_DAMP = 0.8;       // 手の速度を残す割合（引く力による揺れ戻しを抑える）
+  const DRAG_GAIN = 1.0;       // 指の移動量に対する手の移動量
+  const KEY_SPEED = 1.4;       // 矢印キーで手を動かす速さ (m/s)
+  const TARGET_MIN_X = -0.05;  // 手を自分の体より後ろへは引けない
+  const ARM_MIN_REACH = 0.3;   // 手は肩からこれ以上近づけない (m)。腕を折りたたみきらないようにする
+  const ELBOW_SIDE_MIN = 0.04; // 肘を、肩と手を結ぶ線から少なくともこれだけ下・外側に出す (m)
+  const ELBOW_PUSH = 0.05;     // そのために肘を押す強さ（反復1回あたりの割合）
+  const TARGET_MIN_Y = 0.9;    // 手をカウンターより下へは下げられない
+  const ICE_OFFSET = 0.04;     // 棒の先からアイスの中心まで（棒の先にアイスが刺さっている）
+  const ICE_R = 0.06;          // アイスの半径
+  const HAND_R = 0.05;         // 手の大きさ（見た目）
+  const CUP_R = 0.05;          // 客のコーンの口の半径（アイスとこの距離の和まで近づいたら取られる）
+  const CUP_DIST = 0.11;       // 客の手からコーンの口まで
+  const CUP_TILT = 0.8;        // コーンの口をアイスの方へ傾ける度合い（0で真上を向いたまま）
+  // 台（カウンター）：物理で動き、腕や客の手に押されると倒れる
+  const COUNTER = { x:0.5, w:0.6, h:0.95, depth:1.2 };   // 屋台の台の部分の中心の位置・幅・高さ・奥行き (m)
+  const COUNTER_MASS = 12;     // 壊れる前の屋台の重さ (kg)。軽いほど倒れやすい
+  const COUNTER_FRICTION = 0.6;  // 床との摩擦（小さいと倒れずに滑る）
+  const PUSH_K = 0.5;          // 腕や手が台を押す強さの倍率
+  const PUSH_MAX_PEN = 0.02;   // 1ステップに押す量として数える入り込みの上限 (m)。大きく突き抜けても暴れないように
+  const CPU_PUSH_MASS = 3;     // 客の手が台を押すときの重さ (kg)
+  // 屋台が壊れる条件と壊れ方（部品ごとに耐久 1 を持ち、尽きたら外れる）
+  const STALL_DAMAGE_SPEED = 2.5;  // 腕・棒・客の手がこの速さ (m/s) より速くぶつかると、近くの部品が傷む
+  const STALL_DAMAGE_PER_HP = 4;   // 耐久 1 を削るのに要る、上の速さからの上乗せ (m/s)。大きいほど壊れにくい
+  const STALL_HIT_RADIUS = 0.3;    // ぶつかった点からこの距離 (m) 以内の部品が傷む（近いほど強く）
+  const STALL_BREAK_FALL = 3.0;    // 倒れた屋台がこの速さ (m/s) より速く床に打ちつけられると、打ちつけた所の近くが傷む
+  const STALL_BREAK_BURST = 0.4;   // 外れた部品がはじける速さの最大 (m/s)
+  const STALL_BREAK_SPIN = 3;      // 外れた部品の回転のばらつき (rad/s)
+  const STALL_BREAK_RAND_SPEED = 2;  // 外れた部品に加えるランダムな力：それで付く速さの最大 (m/s)。重さに関係なく同じだけ動かす
+  const STALL_BREAK_RAND_SPIN = 10;  // その力が部品のランダムな点にかかって付く回転の上限 (rad/s)
+  const PIECE_HIT_ITER = 8;          // 崩れた部品どうし（と残っている屋台）のぶつかりを解く回数（1ステップあたり）
+  const PIECE_FRICTION = 0.5;
+  const PIECE_HIT_MASS_MAX = 1;
+  const PIECE_SPREAD_Z = 1.2;        // 外れた部品に付ける奥行き方向のランダムな速さの最大 (m/s)。奥行き方向にも散らばるように
+  const PIECE_Z_MIN = -1.65, PIECE_Z_MAX = 1.5;   // 崩れた部品が奥行き方向に動ける範囲（壁と画面手前）      // 部品どうしのぶつかりで使う重さの上限 (kg)        // 部品どうしの摩擦
+  const PIECE_MAX_SPEED = 8, PIECE_MAX_SPIN = 30;   // 崩れた部品の速さ (m/s)・回転 (rad/s) の上限
+  const PIECE_REST_SPEED = 0.3, PIECE_REST_DAMP = 8;   // 他の部品に触れていてこれより遅いとき、勢いを落とす速さ（1秒あたり）
+  const PIECE_GHOST_TIME = 0.4;      // 外れた時点で重なっていた部品どうし（重ねたコーンなど）を、ぶつけずにおく時間 (秒)。その後は押し広げる
+  const PIECE_WAKE_SPEED = 0.15;
+  const PIECE_WAKE_DEPTH = 0.015;    // これより深く重なっていたら、止まっている部品も起こして押し広げる (m)     // 止まっている部品は、この速さ (m/s) 以上でぶつかられたら動き出す
+  const PIECE_PUSH_MAX = 2;          // 部品どうしが入り込んだときに位置を押し戻す速さの上限 (m/s)。深く入り込んでもはじけ飛ばないように
+  const SLEEP_SPEED = 0.1, SLEEP_SPIN = 0.3;   // これより遅い状態が0.5秒続いたら止める（眠らせる）
+  const STALL_TIP_SPIN = 1;          // 奥行き方向に薄い板が、外れたときに奥か手前へ倒れ始める回転 (rad/s)
+  const STALL_BREAK_MIN_SPIN = 1.5;  // 回転の下限 (rad/s)。まっすぐ跳ねて立ったまま着地しないように
+  const STALL_HIT_TRANSFER = 0.5;  // 外れた部品が引き継ぐ、ぶつかった勢いの割合（ぶつかった点に近いほど大きい）
+  const ITEM_SLIDE_ANGLE = 0.35;   // 屋台がおよそこの角度 (rad) 傾くと、台の上の商品が滑り落ちる
+  const PIECE_DENSITY = 40;        // 部品の重さ＝横から見た面積 × この値 (kg/m²)
+  const PIECE_MIN_MASS = 0.08;     // 部品の重さの下限 (kg)
+
+  // 客
+  const C_HIP = { x:1.15, y:0.95 };
+  const C_TORSO = 0.5;         // 腰から肩まで
+  const C_UP = 0.34, C_FORE = 0.32;  // 上腕・前腕
+  const C_REACH = 0.6;         // 体を乗り出さずに手を伸ばせる距離
+  const C_LEAN_MAX = 1.3;      // 乗り出す角度の上限 (rad)。届かない分は腕が伸びる
+  // 人の体（店員・客共通）
+  const BODY_Z = -0.19;        // 体の中心の奥行き位置（肩幅の半分。手前の肩が腕の動く面 z=0 に来る）
+  const LEG_TOP = 0.04;        // 腰から股関節まで下
+  const HOVER_DIST = 0.42;     // 待っている間、アイスからこれだけ離れた所で手を構える
+  const HOVER_FOLLOW = 4;      // 構えた手がアイスを追う速さ
+  const WINDUP_BACK = 0.12;    // 手を出す前に引く距離 (m)
+  const OVERSHOOT = 0.18;      // 狙った位置からさらに伸ばす距離
+  const MISS_PAUSE = 0.15;     // 空振りのあと止まる時間（秒）
+  const BACK_SPEED = 2.2;      // 手を戻す速さ (m/s)
+  const START_WAIT = 2.0;      // 始まってから最初に手を出すまで（秒）
+  const OVER_DELAY = 1.2;      // 取られてから結果を出すまで（秒）
+  const SLOW_TIME = 1.0;       // 取られた直後にスローにする長さ（実時間の秒）
+  const SLOW_SCALE = 0.08;      // スロー中の時間の進み（1 で通常）
+  const TRAIL_TIME = 0.15;     // アイスの軌跡を残す長さ（ゲーム内の秒）
+  const TRAIL_OPACITY = 0.6;   // 軌跡の濃さ
+
+  // 掠り：アイスが客のコーンに触れると（いつでも）、アイスの一部がコーンの上に残り、本体との間が伸びる。1回のプレイで1度だけ。見た目だけ
+  const GOLD_CHANCE = 0.001;         // 黄金のアイスが出る確率（1回のプレイごと）
+  const SECRET_KEYS = '1029384756';  // 隠しコマンド（PC）：この順に数字キーを押すと、次の回は黄金のアイス
+  const CORNER_SIZE = 80;            // 隠しコマンド（スマホ）：画面の4隅のこの範囲（px）を同時に押さえる
+  const CORNER_HOLD = 5;             // 隠しコマンド（スマホ）：4隅を押さえ続ける時間（秒）
+  const GRAZE_BLOB_R = 0.03;   // コーンの上に残るアイスの半径 (m)
+  const GRAZE_END_R = 0.022;   // 伸びる部分の両端の太さ（半径）
+  const GRAZE_R0 = 0.016;      // 伸びる部分の真ん中の太さ：長さが GRAZE_L0 のとき
+  const GRAZE_L0 = 0.05;       // （長くなるほど細くなる：太さ ∝ 1/√長さ）
+  const GRAZE_MIN_R = 0.003;   // 真ん中の太さの下限
+
+  // 置き物の位置の調整 (m)：[左右, 上下, 前後]（+ は右・上・手前）
+  const LAYOUT = {
+    cones:[-0.2, -0.29, -0.15], // コーン
+    cups:[-0.1, 0, 0],          // カップ
+    freezer:[-0.1, 0.01, 0.05], // 冷凍ケース
+    wall:[0, -0.35, 0],         // 壁
+  };
+
+  // 客の強さ：かわした回数 n に応じて上がる（回数は画面には出さない）
+  const DIFF = {
+    waitBase:1.3,  waitStep:0.04,  waitMin:0.35,   // 次に手を出すまでの待ち（秒、±30%ばらつく）
+    windBase:0.65, windStep:0.018, windMin:0.22,   // 構えの時間（秒）＝手を出す合図
+    speedBase:2.4, speedStep:0.13, speedMax:6.5,   // 手を伸ばす速さ (m/s)
+    leadStep:0.012, leadMax:0.22,                  // アイスの動きを先読みする時間（秒）
+    homingFrom:6, homingStep:0.35, homingMax:5,    // 伸ばしながら向きを変える速さ (rad/s)
+    feintFrom:8, feintBase:0.12, feintStep:0.01, feintMax:0.3  // フェイント（構えだけで出さない）の確率
+  };
+  const diffWait = n => Math.max(DIFF.waitMin, DIFF.waitBase - n*DIFF.waitStep) * (0.7 + Math.random()*0.6);
+  const diffWind = n => Math.max(DIFF.windMin, DIFF.windBase - n*DIFF.windStep);
+  const diffSpeed = n => Math.min(DIFF.speedMax, DIFF.speedBase + n*DIFF.speedStep);
+  const diffLead = n => Math.min(DIFF.leadMax, n*DIFF.leadStep);
+  const diffHoming = n => n < DIFF.homingFrom ? 0 : Math.min(DIFF.homingMax, (n - DIFF.homingFrom + 1)*DIFF.homingStep);
+  const diffFeint = n => n < DIFF.feintFrom ? 0 : Math.min(DIFF.feintMax, DIFF.feintBase + (n - DIFF.feintFrom)*DIFF.feintStep);
+
+  const BEST_KEY = 'turkishIce3d.bestTime';
+  const SHARE_INSTANT = 0.5;   // 共有がこの秒数より早くキャンセル扱いで終わったら、共有シートは出ていなかったとみなす
+
+  // 最高記録（取られなかった秒数）：ブラウザのlocalStorageに保存（使えない環境ではその回だけ保持）
+  let best = 0;
+  try { best = parseFloat(localStorage.getItem(BEST_KEY)) || 0; } catch(e) {}
+  const fmt = t => t.toFixed(1);   // 秒数の表示（小数1桁）
+  function saveBest(){ try { localStorage.setItem(BEST_KEY, String(best)); } catch(e) {} }
+
+  // ---------- three.js ----------
+  const wrap = $('game');
+  // 共有画像に画面を写すため、描画バッファを残す
+  const renderer = new THREE.WebGLRenderer({ antialias:true, preserveDrawingBuffer:true });
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  wrap.prepend(renderer.domElement);
+  const cv = renderer.domElement;
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(css('--bg'));
+  const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 50);
+
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x888888, 0.75));
+  const sun = new THREE.DirectionalLight(0xffffff, 0.55);
+  sun.position.set(-1.2, 4, 3);
+  sun.target.position.set(0.5, 1, 0);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(1024, 1024);
+  Object.assign(sun.shadow.camera, { left:-2, right:2, top:2.5, bottom:-1.5, near:0.5, far:10 });
+  scene.add(sun, sun.target);
+
+  const mat = n => new THREE.MeshLambertMaterial({ color:new THREE.Color(css(n)) });
+  const M = {
+    floor:mat('--floor'), skin:mat('--skin'), vendor:mat('--vendor'),
+    customer:mat('--customer'), pants:mat('--pants'), hair:mat('--hair'), rod:mat('--rod'),
+    ice:mat('--ice'), shoe:mat('--shoe'),
+    fez:mat('--fez'), tassel:mat('--tassel'), gold:mat('--gold')
+  };
+  // ベストは前が開いた筒なので、内側も描く
+  M.vest = mat('--vest'); M.vest.side = THREE.DoubleSide;
+  M.gold.side = THREE.DoubleSide;
+
+  const CYL = new THREE.CylinderGeometry(1, 1, 1, 14);
+  const BOX = new THREE.BoxGeometry(1, 1, 1);
+  function addMesh(geo, m, parent){
+    const o = new THREE.Mesh(geo, m);
+    o.castShadow = true; o.receiveShadow = true;
+    (parent || scene).add(o);
+    return o;
+  }
+  function addBox(w, h, d, m, x, y, z){
+    const o = addMesh(BOX, m);
+    o.scale.set(w, h, d); o.position.set(x, y, z);
+    return o;
+  }
+  const addSphere = (r, m) => addMesh(new THREE.SphereGeometry(r, 20, 14), m);
+
+  // ---------- Kenney のモデル（CC0） ----------
+  // 形と色はメインの処理の前の KENNEY に埋め込んである（読み込み部品や画像を使わずにその場で組み立てる）
+  const modelCache = {};
+  function loadModel(name){
+    if (modelCache[name]) return modelCache[name];
+    const bin = atob(KENNEY[name]), buf = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+    const dv = new DataView(buf.buffer), nv = dv.getUint32(0, true), ni = dv.getUint32(4, true), doubleSide = buf[8] === 1;
+    let o = 12;
+    const pos = new Float32Array(buf.buffer, o, nv * 3); o += nv * 12;
+    const nrm = new Int8Array(buf.buffer, o, nv * 3); o += nv * 3;
+    const col = new Uint8Array(buf.buffer, o, nv * 3); o += nv * 3;
+    if (o % 2) o++;
+    const idx = new Uint16Array(buf.buffer, o, ni);
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    g.setAttribute('normal', new THREE.BufferAttribute(nrm, 3, true));
+    g.setAttribute('color', new THREE.BufferAttribute(col, 3, true));
+    g.setIndex(new THREE.BufferAttribute(idx, 1));
+    g.computeBoundingBox();
+    const m = new THREE.MeshLambertMaterial({ vertexColors:true, side:doubleSide ? THREE.DoubleSide : THREE.FrontSide });
+    return modelCache[name] = { geo:g, mat:m };
+  }
+  // モデルを入れ物に入れて置く。
+  // opts: fit:[幅,高さ,奥行き]（その大きさに合わせて伸縮）／height か width（縦横比を保って拡縮）
+  //       center:true なら入れ物の原点をモデルの中心に、ふだんは底面の中心に置く
+  function addModel(name, opts, parent){
+    const holder = new THREE.Group();
+    (parent || scene).add(holder);
+    const { geo, mat } = loadModel(name);
+    const o = new THREE.Mesh(geo, mat);
+    o.castShadow = o.receiveShadow = true;
+    const box = geo.boundingBox, size = box.getSize(new THREE.Vector3()), c = box.getCenter(new THREE.Vector3());
+    const k = opts.fit ? null : (opts.height ? opts.height / size.y : opts.width / size.x);
+    o.scale.set(opts.fit ? opts.fit[0] / size.x : k, opts.fit ? opts.fit[1] / size.y : k, opts.fit ? opts.fit[2] / size.z : k);
+    o.position.set(-c.x * o.scale.x, -(opts.center ? c.y : box.min.y) * o.scale.y, -c.z * o.scale.z);
+    holder.add(o);
+    holder.userData.size = new THREE.Vector3(size.x * o.scale.x, size.y * o.scale.y, size.z * o.scale.z);   // 置いた後の大きさ
+    return holder;
+  }
+
+  // 2点の間に棒（円柱・箱）を置く。sx・sz は太さ
+  const _a = new THREE.Vector3(), _b = new THREE.Vector3(), _d = new THREE.Vector3(), UPV = new THREE.Vector3(0,1,0);
+  function placeSeg(o, ax, ay, az, bx, by, bz, sx, sz){
+    _a.set(ax, ay, az); _b.set(bx, by, bz); _d.subVectors(_b, _a);
+    const len = Math.max(_d.length(), 1e-4);
+    o.position.addVectors(_a, _b).multiplyScalar(0.5);
+    o.quaternion.setFromUnitVectors(UPV, _d.multiplyScalar(1/len));
+    o.scale.set(sx, len, sz);
+  }
+
+  // 床・カウンター
+  const floor = new THREE.Mesh(new THREE.PlaneGeometry(20, 20), M.floor);
+  floor.rotation.x = -Math.PI/2;
+  floor.receiveShadow = true;
+  scene.add(floor);
+  // 店員と客の間の屋台（箱を組んで作る）。台・脚・棚、中央の2本の柱、山形の赤い屋根と垂れ飾り。
+  // 部品ごとに当たり判定があり、強くぶつかると部品がばらばらになって壊れる
+  const STALL = {
+    top:0.05,          // 天板の厚さ (m)
+    leg:0.05,          // 脚・柱の太さ
+    panel:0.02,        // 下の棚の上をふさぐ板の厚さ
+    shelf:0.4,         // 下の棚の高さ（床から）
+    eave:1.95,         // 屋根の軒の高さ（床から）
+    ridge:2.3,         // 屋根の棟の高さ（床から）
+    overhang:0.15,     // 屋根が台からはみ出す幅（左右）
+    flapW:0.09, flapH:0.09, flapGap:0.13   // 垂れ飾りの幅・長さ・間隔
+  };
+  // 天板にめり込ませる冷凍ケース：count 個を奥行き方向に1列に並べる
+  // len は1個の左右の長さ、z は手前から2個目の中心（腕が動く面 z=0 に来るようにして、腕が当たるようにする）、
+  // gap はケースどうしのすき間、sink は高さのうち天板より下に沈める割合
+  // scoops は1個に入れるアイスの数、scoopSink はアイスの高さのうちケースの上面より下に沈める割合
+  const FREEZER = { count:4, len:0.3, z:-0.05, gap:0, sink:0.5, scoops:2, scoopSink:0.45 };
+  // 屋台の部品。壊れる前は入れ物 counterMesh の子で、入れ物ごと1つの剛体として動く。
+  // 部品ごとに、入れ物の中での中心 (lx, ly)・角度 la・半分の大きさ (hx, hy)・奥行きの範囲 (z0〜z1) を持つ
+  let counterMesh = null;
+  const stallParts = [];
+  const STALL_MAT = { wood:mat('--stall-wood'), dark:mat('--stall-wood-dark'), roof:mat('--stall-roof'), flap:mat('--stall-flap') };
+  STALL_MAT.roof.side = THREE.DoubleSide;
+  function buildStall(){
+    counterMesh = new THREE.Group();
+    counterMesh.position.set(COUNTER.x, COUNTER.h / 2, 0);
+    scene.add(counterMesh);
+    stallParts.length = 0;
+    const g = counterMesh, M2 = STALL_MAT;
+    const floorY = -COUNTER.h / 2, topY = COUNTER.h / 2;
+    const hw = COUNTER.w / 2, hd = COUNTER.depth / 2;
+    // 箱の部品
+    // kind：部品の種類（top 天板／leg 脚／shelf 棚／panel 下の棚の上をふさぐ板／post 柱／beam 梁／roof 屋根／flap 垂れ飾り／freezer 冷凍ケース／item 商品）。side は屋根の左右
+    const part = (kind, w, h, d, m, x, y, z, rot = 0, side = 0) => {
+      const o = addMesh(BOX, m, g);
+      o.scale.set(w, h, d); o.position.set(x, y, z); o.rotation.z = rot;
+      stallParts.push({ obj:o, kind, side, hp:1, lx:x, ly:y, la:rot, hx:w / 2, hy:h / 2, z0:z - d / 2, z1:z + d / 2, pz:z, ox:0, oy:0, frame:true });
+      return o;
+    };
+    // 天板
+    part('top', COUNTER.w + 0.04, STALL.top, COUNTER.depth + 0.04, M2.wood, 0, topY - STALL.top / 2, 0);
+    // 脚（四隅）と下の棚
+    for (const sx of [-1, 1]) for (const sz of [-1, 1]){
+      part('leg', STALL.leg, COUNTER.h - STALL.top, STALL.leg, M2.dark, sx * (hw - STALL.leg / 2), floorY + (COUNTER.h - STALL.top) / 2, sz * (hd - STALL.leg / 2));
+    }
+    part('shelf', COUNTER.w - 0.02, 0.03, COUNTER.depth - 0.02, M2.wood, 0, floorY + STALL.shelf, 0);
+    // 下の棚から天板までの四方を板でふさぐ（脚と脚の間）
+    {
+      const y0 = floorY + STALL.shelf + 0.015, y1 = topY - STALL.top, ph = y1 - y0, py = (y0 + y1) / 2, t = STALL.panel;
+      for (const sz of [-1, 1]) part('panel', COUNTER.w - STALL.leg * 2, ph, t, M2.wood, 0, py, sz * (hd - STALL.leg / 2));
+      for (const sx of [-1, 1]) part('panel', t, ph, COUNTER.depth - STALL.leg * 2, M2.wood, sx * (hw - STALL.leg / 2), py, 0);
+    }
+    // 中央の柱（手前と奥）と、その上をつなぐ梁
+    for (const sz of [-1, 1]){
+      part('post', STALL.leg, STALL.ridge, STALL.leg, M2.dark, 0, floorY + STALL.ridge / 2, sz * (hd - STALL.leg / 2));
+    }
+    part('beam', STALL.leg, STALL.leg, COUNTER.depth, M2.dark, 0, floorY + STALL.ridge - STALL.leg / 2, 0);
+    // 山形の屋根（左右2枚の板）と、軒に下がる垂れ飾り
+    const rx = hw + STALL.overhang, ry = STALL.ridge - STALL.eave;
+    const len = Math.hypot(rx, ry), ang = Math.atan2(ry, rx);
+    for (const sx of [-1, 1]){
+      part('roof', len, 0.03, COUNTER.depth + 0.12, M2.roof, sx * rx / 2, floorY + STALL.eave + ry / 2 + 0.03, 0, -sx * ang, sx);
+      for (let z = -hd; z <= hd + 1e-6; z += STALL.flapGap){
+        part('flap', 0.01, STALL.flapH, STALL.flapW, M2.flap, sx * rx, floorY + STALL.eave - STALL.flapH / 2 + 0.02, z, 0, sx);
+      }
+    }
+
+    // 台の上に並べる物（モデルは Kenney）。腕が動く面（z=0）の前後に分けて置く
+    // on：載っている部品の種類、または部品そのもの（それが外れると一緒に落ちる）
+    // key：位置の調整（LAYOUT）のどの項目に入るか
+    const item = (key, name, opts, x, y, z, on = 'top') => {
+      const [dx, dy, dz] = LAYOUT[key];
+      x += dx; y += dy; z += dz;
+      const o = addModel(name, opts, g);
+      const sz = o.userData.size;
+      // opts.flip：上下をひっくり返して置く（モデルの原点は底なので、ひっくり返すと原点が上に来る）
+      // opts.tilt：底を軸に傾けて置く (rad、+ で上が左へ)。(x, y) は底の位置
+      const fl = opts.flip ? -1 : 1, t = opts.tilt || 0, ux = -Math.sin(t), uy = Math.cos(t);   // 上向き
+      if (opts.flip){ o.rotation.x = Math.PI; o.userData.flip = true; }
+      o.rotation.z = opts.flip ? -t : t;
+      o.position.set(x + (opts.flip ? ux * sz.y : 0), y + (opts.flip ? uy * sz.y : 0), z);
+      // slide：屋台がこの角度 (rad) 以上傾くと台から落ちる（1個ずつばらつかせる）
+      stallParts.push({ obj:o, kind:'item', on, side:0, hp:1, slide:ITEM_SLIDE_ANGLE * (0.7 + Math.random() * 0.8),
+        lx:x + ux * sz.y / 2, ly:y + uy * sz.y / 2, la:t, hx:sz.x / 2, hy:sz.y / 2, z0:z - sz.z / 2, z1:z + sz.z / 2, pz:z, ox:0, oy:-fl * sz.y / 2, frame:false });
+    };
+    // 奥：コーンを重ねて積んだ柱を2本、横に寄せて並べる
+    const CONE_STACK = 34, CONE_STEP = 0.035, CONE_H = 0.13, CONE_GAP = 0.005;   // 重ねる数・間隔・1個の高さ・柱どうしのすき間 (m)
+    // 柱は1個ずつ少しずつ傾けて、右へ曲がるカーブにする。2本は同じ中心のまわりの円弧に沿わせる（内側と外側でぶつからないように）
+    const CONE_BEND = 0.45;   // 柱の根元から先までで曲がる角度の合計 (rad)
+    const cbb = loadModel('cone').geo.boundingBox;
+    const coneW = (cbb.max.x - cbb.min.x) * CONE_H / (cbb.max.y - cbb.min.y);
+    const half = (coneW + CONE_GAP) / 2;
+    const rOut = CONE_STACK * CONE_STEP / CONE_BEND;   // 外側（左）の柱の半径
+    const dA = CONE_STEP / rOut;                       // 1個ごとに傾ける角度
+    const cx = -half + rOut;                           // 円弧の中心（右側）
+    for (const r of [rOut, rOut - half * 2]){
+      for (let i = 0; i < CONE_STACK; i++){
+        const a = i * dA;
+        item('cones', 'cone', { height:CONE_H, tilt:-a }, cx - r * Math.cos(a), topY + r * Math.sin(a), -0.52);
+      }
+    }
+    // 手前：ひっくり返して重ねたカップ
+    for (let i = 0; i < 4; i++) item('cups', 'cup', { width:0.1, flip:true }, 0.2, topY + i * 0.04, 0.42);   // ひっくり返して重ねる
+
+    // 天板に半分めり込ませた冷凍ケース（モデルは Kenney）。奥行き方向に1列に並べる
+    const [fx, fy, fz] = LAYOUT.freezer;
+    for (let n = 0; n < FREEZER.count; n++){
+      const o = addModel('freezer', { width:FREEZER.len }, g);
+      const sz = o.userData.size;            // x が左右、z が奥行き
+      const pitch = sz.z + FREEZER.gap;
+      const cz = FREEZER.z + fz + (n - 1) * pitch;
+      o.rotation.order = 'ZYX';              // 倒れるときの回転（z）を外側にかける
+      o.position.set(fx, topY - sz.y * FREEZER.sink + fy, cz);
+      const fp = { obj:o, kind:'freezer', side:0, hp:1, lx:fx, ly:topY - sz.y * FREEZER.sink + fy + sz.y / 2, la:0,
+        hx:sz.x / 2, hy:sz.y / 2, z0:cz - sz.z / 2, z1:cz + sz.z / 2, pz:cz, ox:0, oy:-sz.y / 2, frame:true };
+      stallParts.push(fp);
+      // 中に入れたアイス（器ごと上面に沈め、上だけ見せる）。ミントとチョコを左右に並べる
+      const caseTop = topY - sz.y * FREEZER.sink + sz.y;
+      const k = FREEZER.scoops, step = sz.x / k;
+      for (let i = 0; i < k; i++){
+        const x = -sz.x / 2 + step * (i + 0.5);
+        const name = (i + n) % 2 ? 'scoopChoco' : 'scoopMint', w = Math.min(step * 0.95, sz.z * 0.8);
+        const bb = loadModel(name).geo.boundingBox;
+        const h = (bb.max.y - bb.min.y) * w / (bb.max.x - bb.min.x);   // その幅にしたときの高さ
+        // 位置は item が LAYOUT.freezer の分をずらすので、ここではずらす前の値を渡す
+        item('freezer', name, { width:w }, x, caseTop - fy - h * FREEZER.scoopSink, cz - fz, fp);
+      }
+    }
+
+    updateStallPts();
+  }
+  // 屋台（まだ外れていない部分）が床に着く点：残っている骨組みの部品の角
+  function updateStallPts(){
+    box.pts = [];
+    for (const q of stallParts){
+      if (!q.frame) continue;
+      const c = Math.cos(q.la), s = Math.sin(q.la);
+      for (const [ex, ey] of [[-q.hx, -q.hy], [q.hx, -q.hy], [q.hx, q.hy], [-q.hx, q.hy]]){
+        box.pts.push([q.lx + ex * c - ey * s, q.ly + ex * s + ey * c]);
+      }
+    }
+  }
+
+  // ---------- 背景（トルコアイスの店先） ----------
+  // 絵柄は canvas に描いてテクスチャにする（画像ファイルは使わない）
+  function canvasTex(w, h, paint){
+    const c = document.createElement('canvas');
+    c.width = w; c.height = h;
+    paint(c.getContext('2d'), w, h);
+    const t = new THREE.CanvasTexture(c);
+    t.anisotropy = 4;
+    return t;
+  }
+  const texMat = t => new THREE.MeshLambertMaterial({ map:t });
+
+  // 奥の壁：下は白地に青い模様のトルコのタイル、上は漆喰
+  const WALL = { z:-1.75, w:9, h:4.5, tileTop:1.1, tile:0.25, pattern:0.4 };   // 位置・大きさとタイルの範囲 (m)
+  {
+    const PX = 128;   // 1m あたりの画素数
+    const tex = canvasTex(WALL.w * PX, WALL.h * PX, (g, w, h) => {
+      g.fillStyle = css('--wall'); g.fillRect(0, 0, w, h);
+      const ts = WALL.tile * PX, top = h - WALL.tileTop * PX;
+      // 漆喰の部分に薄い模様：小さな八角の星を、互い違いに並べる
+      g.fillStyle = css('--wall-pattern');
+      const ps = WALL.pattern * PX;
+      for (let row = 0, y = ps / 2; y < top - ps / 2; row++, y += ps){
+        for (let x = (row % 2 ? ps : ps / 2); x < w; x += ps){
+          g.beginPath();
+          for (let i = 0; i < 16; i++){
+            const r = ps * (i % 2 ? 0.1 : 0.2), a = i / 16 * Math.PI * 2;
+            g.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r);
+          }
+          g.closePath(); g.fill();
+        }
+      }
+      g.fillStyle = css('--tile'); g.fillRect(0, top, w, h - top);
+      g.strokeStyle = g.fillStyle = css('--tile-pattern');
+      for (let y = top; y < h; y += ts){
+        for (let x = 0; x < w; x += ts){
+          // 角の四分円が4枚集まって花になる模様と、中央の菱形
+          g.beginPath();
+          for (const [cx, cy] of [[x, y], [x + ts, y], [x, y + ts], [x + ts, y + ts]]){ g.moveTo(cx, cy); g.arc(cx, cy, ts * 0.32, 0, Math.PI * 2); }
+          g.fill();
+          g.beginPath();
+          g.moveTo(x + ts / 2, y + ts * 0.3); g.lineTo(x + ts * 0.7, y + ts / 2);
+          g.lineTo(x + ts / 2, y + ts * 0.7); g.lineTo(x + ts * 0.3, y + ts / 2);
+          g.closePath(); g.fill();
+          g.lineWidth = 1; g.strokeRect(x, y, ts, ts);
+        }
+      }
+      // タイルの上端の帯
+      g.fillRect(0, top - 10, w, 10);
+    });
+    const wall = new THREE.Mesh(new THREE.PlaneGeometry(WALL.w, WALL.h), texMat(tex));
+    wall.position.set(COUNTER.x + LAYOUT.wall[0], WALL.h / 2 + LAYOUT.wall[1], WALL.z + LAYOUT.wall[2]);
+    wall.receiveShadow = true;
+    scene.add(wall);
+  }
+
+
+
+  // ---------- 人のモデル ----------
+  // 腕が動く面は z=0。体の中心は奥へ肩幅の半分（BODY_Z）ずらし、手前の肩が z=0 に来るようにする
+
+  // 先を丸めた、太さが変わる棒（腕・脚・首）。根元を原点に +Y 方向へ len 伸びる
+  function limbGeo(r0, r1, len){
+    const pts = [];
+    for (let i = 0; i <= 6; i++){ const a = -Math.PI/2 + i/6 * Math.PI/2; pts.push(new THREE.Vector2(Math.cos(a) * r0, Math.sin(a) * r0)); }
+    for (let i = 0; i <= 6; i++){ const a = i/6 * Math.PI/2; pts.push(new THREE.Vector2(Math.cos(a) * r1, len + Math.sin(a) * r1)); }
+    return new THREE.LatheGeometry(pts, 16);
+  }
+  function addLimb(r0, r1, len, m, parent){
+    const o = addMesh(limbGeo(r0, r1, len), m, parent);
+    o.userData.len = len;
+    return o;
+  }
+  // 棒を根元 a から先 b へ向ける（長さが違うときは縦にだけ伸ばす）
+  function setLimb(o, ax, ay, az, bx, by, bz){
+    _a.set(ax, ay, az); _b.set(bx, by, bz); _d.subVectors(_b, _a);
+    const len = Math.max(_d.length(), 1e-4);
+    o.position.copy(_a);
+    o.quaternion.setFromUnitVectors(UPV, _d.multiplyScalar(1/len));
+    o.scale.set(1, len / o.userData.len, 1);
+  }
+  // 握った手。肘→手首の向きに向け、手首の少し先に置く
+  function addFist(){
+    const o = addMesh(new THREE.SphereGeometry(HAND_R, 14, 10), M.skin);
+    o.scale.set(0.8, 1.15, 0.7);
+    return o;
+  }
+  function placeFist(o, ex, ey, ez, wx, wy, wz){
+    _d.set(wx - ex, wy - ey, wz - ez).normalize();
+    o.position.set(wx + _d.x * 0.03, wy + _d.y * 0.03, wz + _d.z * 0.03);
+    o.quaternion.setFromUnitVectors(UPV, _d);
+  }
+
+  // 胴：腰から肩までの回転体。横から見た厚み（x）を細く、肩幅（z）を広く拡縮する
+  const torsoGeo = new THREE.LatheGeometry([
+    [0,0], [0.12,0], [0.135,0.06], [0.125,0.18], [0.14,0.32], [0.155,0.43], [0.15,0.49], [0.11,0.53], [0.04,0.55], [0,0.55]
+  ].map(p => new THREE.Vector2(p[0], p[1])), 20);
+
+  // 人の体（動かす腕は別に作る）。face=+1 で +X 向き、-1 で -X 向き
+  // 戻り値は腰を原点にしたグループで、rotation.z で上半身を前に傾けられる
+  function buildPerson(face, hx, hy, shirt){
+    const ankleY = 0.08, hipJ = hy - LEG_TOP;
+    const thighLen = (hipJ - ankleY) * 0.52, shinLen = hipJ - ankleY - thighLen;
+    for (const s of [-1, 1]){
+      const z = BODY_Z + s * 0.085;
+      setLimb(addLimb(0.068, 0.05, thighLen, M.pants), hx, hipJ, z, hx, hipJ - thighLen, z);
+      setLimb(addLimb(0.05, 0.038, shinLen, M.pants), hx, hipJ - thighLen, z, hx, ankleY, z);
+      addBox(0.24, 0.07, 0.095, M.shoe, hx + face * 0.06, 0.035, z);
+    }
+    const body = new THREE.Group();
+    body.position.set(hx, hy, BODY_Z);
+    scene.add(body);
+    addMesh(torsoGeo, shirt, body).scale.set(0.75, 1, 1.25);
+    setLimb(addLimb(0.045, 0.045, 0.12, M.skin, body), 0, C_TORSO, 0, 0, C_TORSO + 0.12, 0);
+
+    const head = new THREE.Group();
+    head.position.set(face * 0.01, C_TORSO + 0.18, 0);
+    body.add(head);
+    addMesh(new THREE.SphereGeometry(0.1, 24, 18), M.skin, head).scale.set(1, 1.15, 0.85);
+    // 髪：頭の上半分を覆い、後ろ側を深くする
+    const hair = addMesh(new THREE.SphereGeometry(0.106, 24, 12, 0, Math.PI * 2, 0, Math.PI * 0.52), M.hair, head);
+    hair.scale.set(1, 1.15, 0.87);
+    hair.rotation.z = face * 0.5;
+    const nose = addMesh(new THREE.ConeGeometry(0.018, 0.04, 8), M.skin, head);
+    nose.position.set(face * 0.1, -0.01, 0);
+    nose.rotation.z = -face * Math.PI / 2;
+    for (const s of [-1, 1]){
+      addMesh(new THREE.SphereGeometry(0.012, 8, 6), M.hair, head).position.set(face * 0.088, 0.025, s * 0.035);
+      const ear = addMesh(new THREE.SphereGeometry(0.025, 10, 8), M.skin, head);
+      ear.scale.set(0.8, 1.2, 0.5);
+      ear.position.set(-face * 0.005, 0, s * 0.085);
+    }
+    body.userData.head = head;
+    return body;
+  }
+
+  // 店員の衣装（トルコアイス屋）：白いシャツの上に金の縁取りの赤いベスト、赤いトルコ帽、口ひげ
+  function dressVendor(body, face){
+    // ベスト：胴より少し大きい回転体。前を開けて白いシャツを見せる
+    const vest = new THREE.Group();
+    vest.scale.set(0.75, 1, 1.25);
+    body.add(vest);
+    const prof = [[0.128,0.04], [0.142,0.07], [0.132,0.18], [0.147,0.32], [0.162,0.43], [0.158,0.49], [0.12,0.525]];
+    const gap = 0.35;                                 // 前の開き（片側, rad）
+    const front = face > 0 ? Math.PI / 2 : -Math.PI / 2;  // 回転体の角度で体の正面に当たる向き
+    const p0 = front + gap, plen = Math.PI * 2 - gap * 2;
+    addMesh(new THREE.LatheGeometry(prof.map(p => new THREE.Vector2(p[0], p[1])), 24, p0, plen), M.vest, vest);
+    // 金の縁取り：裾と、前の開きの両側
+    addMesh(new THREE.LatheGeometry([new THREE.Vector2(0.131, 0.03), new THREE.Vector2(0.134, 0.065)], 24, p0, plen), M.gold, vest);
+    for (const phi of [p0, p0 + plen]){
+      const pts = prof.map(p => new THREE.Vector3(Math.sin(phi) * (p[0] + 0.003), p[1], Math.cos(phi) * (p[0] + 0.003)));
+      addMesh(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(pts), 24, 0.008, 6), M.gold, vest);
+    }
+
+    const head = body.userData.head;
+    // トルコ帽：上がすぼまった赤い円柱を、少し後ろに傾けてかぶる
+    const fez = new THREE.Group();
+    fez.position.set(-face * 0.008, 0.075, 0);
+    fez.rotation.z = face * 0.12;
+    head.add(fez);
+    addMesh(new THREE.CylinderGeometry(0.074, 0.09, 0.125, 24), M.fez, fez).position.y = 0.0625;
+    // 房：てっぺんから後ろへ垂らす
+    const tassel = addLimb(0.006, 0.006, 0.09, M.tassel, fez);
+    setLimb(tassel, 0, 0.125, 0, -face * 0.075, 0.06, 0);
+    addMesh(new THREE.SphereGeometry(0.014, 8, 6), M.tassel, fez).position.set(-face * 0.078, 0.05, 0);
+    // 口ひげ
+    const mus = addMesh(BOX, M.hair, head);
+    mus.scale.set(0.03, 0.014, 0.075);
+    mus.position.set(face * 0.093, -0.042, 0);
+  }
+
+  // 店員（腰から上を、手の位置に合わせて傾ける）
+  const vBody = buildPerson(1, SHOULDER.x, SHOULDER.y - C_TORSO, M.vendor);
+  dressVendor(vBody, 1);
+  // 奥の腕（長袖の白いシャツ）。体の動きに合わせて振れる
+  const vFarUpper = addLimb(0.05, 0.042, L_UPPER, M.vendor);
+  const vFarFore = addLimb(0.042, 0.036, L_FORE, M.vendor);
+  const vFarHand = addFist();
+
+  // 店員の腕（ラグドール）とアイス
+  const vUpper = addLimb(0.05, 0.042, L_UPPER, M.vendor);
+  const vFore = addLimb(0.042, 0.036, L_FORE, M.vendor);
+  const vHand = addFist();
+  const vRod = addMesh(CYL, M.rod);
+  // 手に持つアイスは色を変えるので材質を分ける（掠りで残る分も同じ色）
+  const iceMat = mat('--ice');
+  const ICE_COLORS = Array.from({ length:7 }, (_, i) => new THREE.Color(css('--ice-' + (i + 1))));
+  // まれに黄金のアイスになる（見た目だけ）。隠しコマンドを入れると次の回は必ず黄金
+  // 黄金は金属の材質にして、周りの映り込み（明るい空・窓のような光・暗い床）で金属らしい照り返しを出す
+  function goldEnvTexture(){
+    const W = 256, H = 128, c = document.createElement('canvas');
+    c.width = W; c.height = H;
+    const g = c.getContext('2d'), img = g.createImageData(W, H), d = img.data;
+    // 濃さを1画素ずつ計算する（グラデーションはディザが入るため使わない）
+    const spots = [[0.15, 0.22, 0.05], [0.55, 0.3, 0.07], [0.8, 0.18, 0.04]];   // 強い光の位置（横・縦）と大きさ
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++){
+      const v = y / H, u = x / W;
+      let k = v < 0.5 ? 0.55 + 0.45 * (1 - v * 2) : 0.08 + 0.12 * (1 - (v - 0.5) * 2);   // 上は明るく、地平線より下は暗い
+      for (const [su, sv, r] of spots){
+        const du = Math.min(Math.abs(u - su), 1 - Math.abs(u - su)) * 2, dv = v - sv;
+        k += 3 * Math.exp(-(du * du + dv * dv) / (r * r));
+      }
+      const o = (y * W + x) * 4, val = Math.min(255, Math.round(255 * Math.min(1, k)));
+      d[o] = d[o + 1] = d[o + 2] = val; d[o + 3] = 255;
+    }
+    g.putImageData(img, 0, 0);
+    const t = new THREE.CanvasTexture(c);
+    t.mapping = THREE.EquirectangularReflectionMapping;
+    const pm = new THREE.PMREMGenerator(renderer);
+    const env = pm.fromEquirectangular(t).texture;
+    pm.dispose(); t.dispose();
+    return env;
+  }
+  const goldMat = new THREE.MeshStandardMaterial({ color:new THREE.Color(css('--ice-gold')), metalness:1, roughness:0.22, envMap:goldEnvTexture(), envMapIntensity:1.4 });
+  let forceGold = false, isGold = false;
+  function randomIceColor(){
+    isGold = forceGold || Math.random() < GOLD_CHANCE;
+    forceGold = false;
+    if (!isGold) iceMat.color.copy(ICE_COLORS[Math.floor(Math.random() * ICE_COLORS.length)]);
+    const m = isGold ? goldMat : iceMat;
+    ball.material = m;
+    grazeBlob.material = m; grazeStrand.material = m;   // 掠りで残る分も同じ見た目
+  }
+  const ball = addSphere(ICE_R, iceMat);
+
+  // アイスの軌跡：最近の位置を、アイスの太さから先細りする帯でつなぐ
+  const TRAIL_N = Math.ceil(TRAIL_TIME / STEP) + 1;
+  const trail = [];   // 新しい順に {x, y}
+  const trailGeo = new THREE.BufferGeometry();
+  trailGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(TRAIL_N * 2 * 3), 3));
+  {
+    const idx = [];
+    for (let i = 0; i < TRAIL_N - 1; i++){ const a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
+    trailGeo.setIndex(idx);
+  }
+  const trailMesh = new THREE.Mesh(trailGeo, new THREE.MeshBasicMaterial({
+    color:new THREE.Color(css('--trail')), transparent:true, opacity:TRAIL_OPACITY, depthWrite:false, side:THREE.DoubleSide
+  }));
+  trailMesh.frustumCulled = false;
+  scene.add(trailMesh);
+  function updateTrailMesh(){
+    const pos = trailGeo.attributes.position.array, n = trail.length;
+    for (let i = 0; i < n; i++){
+      const a = trail[Math.max(0, i - 1)], b = trail[Math.min(n - 1, i + 1)];
+      let tx = a.x - b.x, ty = a.y - b.y; const tl = Math.hypot(tx, ty);
+      if (tl < 1e-6){ tx = 1; ty = 0; } else { tx /= tl; ty /= tl; }
+      const w = ICE_R * (1 - i / (TRAIL_N - 1));
+      const p = trail[i];
+      pos.set([p.x - ty * w, p.y + tx * w, 0, p.x + ty * w, p.y - tx * w, 0], i * 6);
+    }
+    trailGeo.attributes.position.needsUpdate = true;
+    trailGeo.setDrawRange(0, Math.max(0, n - 1) * 6);
+  }
+
+  // 操作する手の目印
+  const ring = new THREE.Mesh(
+    new THREE.RingGeometry(0.075, 0.09, 40),
+    new THREE.MeshBasicMaterial({ color:new THREE.Color(css('--fg')), transparent:true, opacity:0.6, depthTest:false })
+  );
+  ring.renderOrder = 10;
+  scene.add(ring);
+
+  // 客（上半身は腰から前に乗り出す）
+  const cBody = buildPerson(-1, C_HIP.x, C_HIP.y, M.customer);
+  const cUpper = addLimb(0.05, 0.042, C_UP, M.customer);
+  const cFore = addLimb(0.04, 0.032, C_FORE, M.skin);
+  const cHand = addFist();
+  const cFarUpper = addLimb(0.05, 0.042, C_UP, M.customer);
+  const cFarFore = addLimb(0.04, 0.032, C_FORE, M.skin);
+  const cFarHand = addFist();
+  const cone = addModel('cone', { height:0.14, center:true });   // 客が最初から持っているコーン（モデルは Kenney。口が +Y）
+
+  // ---------- 画面サイズ・カメラ ----------
+  // 縦持ちでも横持ちでも、店員の肩から客の体までが収まる距離にする（少し斜めから見る）
+  const VIEW = { cx:0.55, cy:1.5, halfW:0.95, halfH:1.3, yaw:0.35, pitch:0.1 };
+  function resize(){
+    const w = wrap.clientWidth, h = wrap.clientHeight;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+    const t = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+    const d = Math.max(VIEW.halfH / t, VIEW.halfW / (t * camera.aspect)) * 1.05;
+    const yaw = VIEW.yaw, pitch = VIEW.pitch;
+    camera.position.set(
+      VIEW.cx + d * Math.sin(yaw) * Math.cos(pitch),
+      VIEW.cy + d * Math.sin(pitch),
+      d * Math.cos(yaw) * Math.cos(pitch)
+    );
+    camera.lookAt(VIEW.cx, VIEW.cy, 0);
+  }
+  resize();
+  addEventListener('resize', resize);
+
+  // 画面の座標 → 腕が動く面（z=0）の座標
+  const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
+  const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0), hit = new THREE.Vector3();
+  function toWorld(x, y){
+    const r = cv.getBoundingClientRect();
+    ndc.set((x - r.left) / r.width * 2 - 1, -((y - r.top) / r.height * 2 - 1));
+    ray.setFromCamera(ndc, camera);
+    return ray.ray.intersectPlane(plane, hit) ? { x:hit.x, y:hit.y } : null;
+  }
+
+  // ---------- 店員の腕（ラグドール） ----------
+  const S = { x:SHOULDER.x, y:SHOULDER.y, w:0 };            // 肩（体の傾きに合わせて動かす。腕には引っ張られない）
+  const E = { x:0, y:0, px:0, py:0, w:1/2 };                // 肘
+  const W = { x:0, y:0, px:0, py:0, w:1/1.5 };              // 手
+  const T = { x:0, y:0, px:0, py:0, w:1/0.6 };              // 棒の先
+  const PTS = [E, W, T];
+  const target = { x:0, y:0 };   // 手を引き寄せる先。指を離しても手はそこを保つ
+
+  // 店員の体：腰を軸に上半身を傾ける。lean は前かがみが正、vel はその速さ、look は顔を上下に向ける角度
+  const V_HIP = { x:SHOULDER.x, y:SHOULDER.y - C_TORSO };
+  const vend = { lean:0, vel:0, look:0 };
+  function placeShoulder(){
+    S.x = V_HIP.x + Math.sin(vend.lean) * C_TORSO;
+    S.y = V_HIP.y + Math.cos(vend.lean) * C_TORSO;
+  }
+  // 手を前に出すと前かがみ、下げると前に倒れ、上に上げると反る。ばねで追いつくので少し遅れて揺れる
+  function stepVendor(h){
+    const want = Math.max(V_LEAN_MIN, Math.min(V_LEAN_MAX,
+      V_LEAN_X * (target.x - SHOULDER.x - V_REST_X) + V_LEAN_Y * (SHOULDER.y - target.y)));
+    vend.vel += ((want - vend.lean) * V_SPRING - vend.vel * V_DAMPING) * h;
+    vend.lean += vend.vel * h;
+    placeShoulder();
+  }
+
+  function setPt(p, x, y){ p.x = p.px = x; p.y = p.py = y; }
+  function resetArm(){
+    vend.lean = vend.vel = vend.look = 0;
+    placeShoulder();
+    const a1 = -1.05, a2 = 0.25, a3 = a2 + WRIST_ANGLE;
+    setPt(E, S.x + Math.cos(a1) * L_UPPER, S.y + Math.sin(a1) * L_UPPER);
+    setPt(W, E.x + Math.cos(a2) * L_FORE, E.y + Math.sin(a2) * L_FORE);
+    setPt(T, W.x + Math.cos(a3) * L_ROD, W.y + Math.sin(a3) * L_ROD);
+    target.x = W.x; target.y = W.y;
+  }
+
+  function clampTarget(){
+    target.x = Math.max(TARGET_MIN_X, target.x);
+    target.y = Math.max(TARGET_MIN_Y, target.y);
+    // 体を傾ければ届く所まで（腰からの距離で制限する）
+    const dx = target.x - V_HIP.x, dy = target.y - V_HIP.y, d = Math.hypot(dx, dy);
+    const maxR = C_TORSO + L_UPPER + L_FORE - 0.08;
+    if (d > maxR){ target.x = V_HIP.x + dx / d * maxR; target.y = V_HIP.y + dy / d * maxR; }
+  }
+
+  function solveDist(a, b, len){
+    const dx = b.x - a.x, dy = b.y - a.y, d = Math.hypot(dx, dy) || 1e-6;
+    const k = (d - len) / d / (a.w + b.w);
+    a.x += dx * k * a.w; a.y += dy * k * a.w;
+    b.x -= dx * k * b.w; b.y -= dy * k * b.w;
+  }
+  // 手首：棒を前腕に対して WRIST_ANGLE の向きに柔らかく保つ（反動は前腕側へ返す）
+  function solveWrist(){
+    const fx = W.x - E.x, fy = W.y - E.y, fl = Math.hypot(fx, fy) || 1e-6;
+    const ux = fx / fl, uy = fy / fl, c = Math.cos(WRIST_ANGLE), s = Math.sin(WRIST_ANGLE);
+    const tx = W.x + (ux * c - uy * s) * L_ROD, ty = W.y + (ux * s + uy * c) * L_ROD;
+    const dx = (tx - T.x) * WRIST_STIFF, dy = (ty - T.y) * WRIST_STIFF;
+    T.x += dx * 0.6; T.y += dy * 0.6;
+    E.x -= dx * 0.4; E.y -= dy * 0.4;
+  }
+  // 肘：逆側には曲がらないようにする
+  // 肘：肩と手を結ぶ線の決まった側（下・外側）へ、少しずつ押し出す。
+  // 逆側に曲がっても急に折り返さず、何ステップかかけて戻す（急に折り返すと前腕と棒の向きが跳ねて暴れるため）
+  function solveElbow(){
+    const lx = W.x - S.x, ly = W.y - S.y, ll = Math.hypot(lx, ly);
+    if (ll < 1e-4) return;
+    const rx = ly / ll, ry = -lx / ll;                       // 肘を置きたい側の向き
+    const side = (E.x - S.x) * rx + (E.y - S.y) * ry;        // 肘がその側にどれだけ出ているか
+    if (side >= ELBOW_SIDE_MIN) return;
+    const k = (ELBOW_SIDE_MIN - side) * ELBOW_PUSH;
+    E.x += rx * k; E.y += ry * k;
+  }
+  // 床と屋台に当たる。push が真のときは、屋台（壊れた後は部品）に入り込んだ分だけ押す（1ステップに1回だけ押す）
+  // 強い勢いでぶつかったら屋台が壊れる
+  function collide(p, r, push){
+    if (p.y < r){ p.y = r; p.px = p.x - (p.x - p.px) * 0.5; }
+    forEachCollider(r, (b, q) => {
+      const k = hitPart(b, q, p.x, p.y, r);
+      if (!k) return;
+      const vx = (p.x - p.px) / STEP, vy = (p.y - p.py) / STEP;
+      p.x += k.x; p.y += k.y;
+      p.px = p.x - (p.x - p.px) * 0.5;   // 屋台の上で滑りすぎないように
+      if (push){
+        pushBody(b, k, p.x, p.y, 1 / p.w);
+        hitStall(-(vx * k.x + vy * k.y) / k.pen, p.x, p.y, vx, vy);
+      }
+    });
+  }
+
+  // ---------- 屋台の物理（横から見た2Dの剛体） ----------
+  // 屋台は全体で1つの剛体（重さと回転のしにくさは台の部分で決める）。部品ごとに当たり判定と耐久を持つ。
+  // 腕や客の手が強い勢いでぶつかるか、倒れて床に強く打ちつけると、その近くの部品だけが傷み、
+  // 耐久が尽きた部品から外れて別々の剛体になる。支えを失った部品（柱が無い屋根など）も外れる。
+  // 外れた部品どうしはぶつからない（床と腕・客の手にだけ当たる）
+  const BOX_HW = COUNTER.w / 2, BOX_HH = COUNTER.h / 2;
+  const box = {   // 壊れる前の屋台。x, y は台の中心
+    x:0, y:0, a:0, vx:0, vy:0, w:0, still:0, asleep:true, pts:[],
+    m:COUNTER_MASS, I:COUNTER_MASS * (COUNTER.w * COUNTER.w + STALL.ridge * STALL.ridge) / 12, friction:COUNTER_FRICTION
+  };
+  const pieces = [];         // 外れた部品（それぞれが剛体）
+  let pieceId = 0;          // 外れた部品の通し番号
+  const pendingHits = [];   // このステップで屋台に強くぶつかった点と勢い（ステップの終わりにまとめて傷める）
+
+  function resetBox(){
+    for (const pc of pieces) scene.remove(pc.obj);
+    pieces.length = 0;
+    if (counterMesh) scene.remove(counterMesh);
+    pendingHits.length = 0;
+    Object.assign(box, { x:COUNTER.x, y:BOX_HH, a:0, vx:0, vy:0, w:0, still:0, asleep:true });
+    buildStall();
+  }
+  // 点 (px, py) で剛体に力積 (jx, jy) を与える
+  function bodyImpulse(b, jx, jy, px, py){
+    b.vx += jx / b.m;
+    b.vy += jy / b.m;
+    b.w += ((px - b.x) * jy - (py - b.y) * jx) / b.I;
+  }
+  // 当たり判定を持つものを順に渡す。腕が動く面（z=0）に掛かっている物だけ（奥や手前の柱・商品は腕と同じ面に無い）
+  function forEachCollider(r, fn){
+    for (const q of stallParts) if (q.z0 - r < 0 && q.z1 + r > 0) fn(box, q);
+    for (const pc of pieces) if (pc.z0 - r < 0 && pc.z1 + r > 0) fn(pc, pc);
+  }
+  // 半径 r の点が部品 q（剛体 b に付いている）に入り込んでいれば、押し出す向きと量を返す
+  function hitPart(b, q, px, py, r){
+    const bc = Math.cos(b.a), bs = Math.sin(b.a);
+    const cx = b.x + q.lx * bc - q.ly * bs, cy = b.y + q.lx * bs + q.ly * bc;
+    const a = b.a + q.la, c = Math.cos(a), s = Math.sin(a);
+    const dx = px - cx, dy = py - cy;
+    const lx = dx * c + dy * s, ly = -dx * s + dy * c;   // 部品のローカル座標
+    const hw = q.hx + r, hh = q.hy + r;
+    if (Math.abs(lx) >= hw || Math.abs(ly) >= hh) return null;
+    const penX = hw - Math.abs(lx), penY = hh - Math.abs(ly);
+    let nx = 0, ny = 0, pen;
+    if (penX < penY){ nx = Math.sign(lx) || 1; pen = penX; }
+    else { ny = Math.sign(ly) || 1; pen = penY; }
+    const wx = nx * c - ny * s, wy = nx * s + ny * c;     // 押し出す向き（ワールド）
+    return { x:wx * pen, y:wy * pen, pen };
+  }
+  // 入り込んだ分（上限あり）に比例して剛体を押し返す
+  function pushBody(b, k, x, y, mass){
+    const pen = Math.min(k.pen, PUSH_MAX_PEN);
+    if (pen <= 0) return;
+    const j = mass * PUSH_K * pen / k.pen / STEP;
+    bodyImpulse(b, -k.x * j, -k.y * j, x, y);
+    b.asleep = false; b.still = 0;
+    if (b !== box) capSpeed(b);
+  }
+  // 崩れた部品の速さと回転を上限までに抑える（軽い部品が押されたり挟まれたりしてはじけ飛ばないように）
+  function capSpeed(b){
+    const v = Math.hypot(b.vx, b.vy);
+    if (v > PIECE_MAX_SPEED){ b.vx *= PIECE_MAX_SPEED / v; b.vy *= PIECE_MAX_SPEED / v; }
+    b.w = Math.max(-PIECE_MAX_SPIN, Math.min(PIECE_MAX_SPIN, b.w));
+  }
+  // ぶつかった勢い speed が強ければ、このステップの終わりにその近くの部品を傷める
+  function hitStall(speed, x, y, vx, vy){
+    if (speed < STALL_DAMAGE_SPEED || !stallParts.length) return;
+    pendingHits.push({ speed, x, y, vx, vy });
+  }
+
+  // 剛体を1ステップ進める（重力・床との押し返しと摩擦）。床に打ちつけた勢いの最大値を返す
+  // 部品どうしのぶつかりと一緒に解くため、「重力と床の押し返し」「位置を進めて眠らせる」の2つに分けてある
+  function stepBody(b, h){
+    const r = bodyPre(b, h);
+    if (r) bodyPost(b, h);
+    return r || { speed:0, x:0 };
+  }
+  function bodyPre(b, h){
+    b.hits = null;
+    if (b.asleep) return null;
+    b.vy -= GRAVITY * h;
+    // 床にめり込んだ点を集める
+    const c = Math.cos(b.a), s = Math.sin(b.a), hits = [];
+    let impact = 0, ix = 0;
+    for (const [lx, ly] of b.pts){
+      const rx = lx * c - ly * s, ry = lx * s + ly * c, depth = -(b.y + ry);
+      if (depth > 0){
+        hits.push({ rx, ry, depth, jn:0, jt:0 });
+        const v = -(b.vy + b.w * rx);
+        if (v > impact){ impact = v; ix = b.x + rx; }
+      }
+    }
+    b.hits = hits;
+    floorSolve(b, h, 8);
+    return { speed:impact, x:ix };
+  }
+  // 床からの押し返しと摩擦（点ごとに力積を繰り返し当てて収める）
+  function floorSolve(b, h, iters){
+    if (!b.hits) return;
+    for (let it = 0; it < iters; it++){
+      for (const k of b.hits){
+        const vy = b.vy + b.w * k.rx;
+        // 屋台（壊れる前）は速さで押し戻す。崩れた部品は位置で直す（bodyPost）。速さで押すと勢いが増えて跳ね続けるため
+        const bias = b === box ? Math.max(0, k.depth - 0.002) * 0.2 / h : 0;
+        const kn = 1 / b.m + k.rx * k.rx / b.I;
+        const jn = Math.max(0, k.jn - (vy - bias) / kn), dn = jn - k.jn;
+        k.jn = jn;
+        b.vy += dn / b.m; b.w += k.rx * dn / b.I;
+
+        const vx = b.vx - b.w * k.ry;
+        const kt = 1 / b.m + k.ry * k.ry / b.I;
+        const lim = b.friction * k.jn;
+        const jt = Math.max(-lim, Math.min(lim, k.jt - vx / kt)), dt = jt - k.jt;
+        k.jt = jt;
+        b.vx += dt / b.m; b.w -= k.ry * dt / b.I;
+      }
+    }
+  }
+  function bodyPost(b, h){
+    if (b.asleep) return;
+    if (b !== box){
+      capSpeed(b);
+      const v = Math.hypot(b.vx, b.vy);
+      // 他の部品の上に載ってゆっくり動いているときは、積み重なりの細かい震えを止めるため少しずつ勢いを落とす
+      if (b.touch && v < PIECE_REST_SPEED){
+        const k = Math.max(0, 1 - PIECE_REST_DAMP * h);
+        b.vx *= k; b.vy *= k; b.w *= k;
+      }
+    }
+    b.x += b.vx * h; b.y += b.vy * h; b.a += b.w * h;
+    if (b !== box && b.vz){
+      // 奥行き方向：床か他の部品に触れていれば摩擦で止まっていく。壁と画面手前で跳ね返る
+      if ((b.hits && b.hits.length) || b.touch){ const dv = b.friction * GRAVITY * h; b.vz = Math.abs(b.vz) <= dv ? 0 : b.vz - Math.sign(b.vz) * dv; }
+      let dz = b.vz * h;
+      if (b.z0 + dz < PIECE_Z_MIN){ dz = PIECE_Z_MIN - b.z0; b.vz = Math.abs(b.vz) * 0.3; }
+      if (b.z1 + dz > PIECE_Z_MAX){ dz = PIECE_Z_MAX - b.z1; b.vz = -Math.abs(b.vz) * 0.3; }
+      b.pz += dz; b.z0 += dz; b.z1 += dz;
+    }
+    if (b !== box){
+      // 床にめり込んだ分は位置を持ち上げて戻す
+      const c = Math.cos(b.a), s = Math.sin(b.a);
+      let low = 0;
+      for (const [lx, ly] of b.pts) low = Math.min(low, b.y + lx * s + ly * c);
+      if (low < -0.001) b.y -= low + 0.001;
+    }
+    // 床（か他の部品）の上で止まったら眠らせる（細かい震えを止める）。押されたら起こす
+    const n = (b.hits ? b.hits.length : 0) + (b.touch || 0);
+    if (n >= 2 && Math.abs(b.vx) + Math.abs(b.vy) + Math.abs(b.vz || 0) < SLEEP_SPEED && Math.abs(b.w) < SLEEP_SPIN){
+      if ((b.still += h) > 0.5){ b.asleep = true; b.vx = b.vy = b.w = 0; b.vz = 0; }
+    } else b.still = 0;
+  }
+
+  function stepStall(h){
+    const live = stallParts.some(q => q.frame);
+    let hit = null;
+    if (live) hit = bodyPre(box, h);
+    for (const pc of pieces) bodyPre(pc, h);
+    collidePieces(h);   // 部品どうしのぶつかり（床の押し返しと交互に解く）
+    if (live){
+      bodyPost(box, h);
+      // 床に強く打ちつけたら、打ちつけた所の近くが傷む
+      if (hit && hit.speed > STALL_BREAK_FALL) pendingHits.push({ speed:hit.speed - STALL_BREAK_FALL + STALL_DAMAGE_SPEED, x:hit.x, y:0, vx:0, vy:0 });
+    }
+    for (const pc of pieces){ bodyPost(pc, h); stepTip(pc, h); }
+  }
+
+  // ---------- 崩れた部品どうしのぶつかり ----------
+  // 外れた部品と、まだ残っている屋台の部品を、それぞれ傾いた箱として扱う（奥行きの範囲が重なるものどうしだけ）。
+  // 箱の角が相手の箱に入り込んでいたら、入り込んだ向きに押し返す力積と摩擦を当てる。
+  // 外れた時点で既に重なっていた組（重ねたコーン、天板に沈めた冷凍ケースなど）は、一度離れるまでぶつけない
+  // ただし重なったまま積もってしまわないよう、PIECE_GHOST_TIME 秒たったらぶつけて、ゆっくり押し広げる
+  const ghosts = new WeakMap();   // 見た目の物体 → 今はぶつけない相手の見た目の物体と、ぶつけ始める時刻
+  let simTime = 0;
+  function addGhost(a, b){
+    if (!ghosts.has(a)) ghosts.set(a, new Map());
+    if (!ghosts.has(b)) ghosts.set(b, new Map());
+    const until = simTime + PIECE_GHOST_TIME;
+    ghosts.get(a).set(b, until); ghosts.get(b).set(a, until);
+  }
+  function removeGhost(a, b){ ghosts.get(a)?.delete(b); ghosts.get(b)?.delete(a); }
+  function shapeList(){
+    const list = [];
+    for (const pc of pieces) list.push({ b:pc, key:pc.obj, x:pc.x, y:pc.y, a:pc.a, hx:pc.hx, hy:pc.hy, z0:pc.z0, z1:pc.z1 });
+    if (stallParts.length){
+      const c = Math.cos(box.a), s = Math.sin(box.a);
+      for (const q of stallParts) list.push({ b:box, key:q.obj, x:box.x + q.lx * c - q.ly * s, y:box.y + q.lx * s + q.ly * c, a:box.a + q.la, hx:q.hx, hy:q.hy, z0:q.z0, z1:q.z1 });
+    }
+    for (const sh of list){
+      const c = Math.abs(Math.cos(sh.a)), s = Math.abs(Math.sin(sh.a));
+      sh.ex = sh.hx * c + sh.hy * s; sh.ey = sh.hx * s + sh.hy * c;   // 外接する軸に沿った箱の半分の大きさ
+    }
+    return list;
+  }
+  const near = (A, B) => A.b !== B.b && A.z0 < B.z1 && B.z0 < A.z1 && Math.abs(A.x - B.x) < A.ex + B.ex && Math.abs(A.y - B.y) < A.ey + B.ey;
+  // 2つの箱の重なり：重なりが一番浅い向き（分離軸）を法線にする（B から A へ）。重なっていなければ null
+  function satPair(A, B){
+    const axes = [[Math.cos(A.a), Math.sin(A.a)], [-Math.sin(A.a), Math.cos(A.a)], [Math.cos(B.a), Math.sin(B.a)], [-Math.sin(B.a), Math.cos(B.a)]];
+    const dx = A.x - B.x, dy = A.y - B.y;
+    let best = null;
+    for (const [ax, ay] of axes){
+      const ra = A.hx * Math.abs(Math.cos(A.a) * ax + Math.sin(A.a) * ay) + A.hy * Math.abs(-Math.sin(A.a) * ax + Math.cos(A.a) * ay);
+      const rb = B.hx * Math.abs(Math.cos(B.a) * ax + Math.sin(B.a) * ay) + B.hy * Math.abs(-Math.sin(B.a) * ax + Math.cos(B.a) * ay);
+      const d = dx * ax + dy * ay, o = ra + rb - Math.abs(d);
+      if (o <= 0) return null;
+      if (!best || o < best.depth){
+        // 中心がほぼ同じ所にあると押す向きが毎回入れ替わって離れなくなるので、そのときは向きを決め打ちする（上向き、横なら番号で）
+        let sg = d < 0 ? -1 : 1;
+        if (Math.abs(d) < 0.005) sg = Math.abs(ay) > 0.3 ? Math.sign(ay) : ((A.b.id || 0) < (B.b.id || 0) ? 1 : -1);
+        best = { nx:ax * sg, ny:ay * sg, depth:o };
+      }
+    }
+    return best;
+  }
+  // 重なっている2つの箱の接点（相手に入り込んだ角）を contacts に足す。法線と深さは組で共通
+  function pairContacts(A, B, contacts, pairs, zpairs){
+    const sat = satPair(A, B);
+    if (!sat) return;
+    // 奥行きの重なりの方が浅いときは、奥行き方向にずらして離す（積み上がらず、奥行き方向にも広がるように）
+    const oz = Math.min(A.z1, B.z1) - Math.max(A.z0, B.z0);
+    if (oz < sat.depth && !(A.b === box && B.b === box)){
+      zpairs.push({ A:A.b, B:B.b, s:(A.z0 + A.z1) < (B.z0 + B.z1) ? -1 : 1, depth:oz });
+      return;
+    }
+    const pts = [];
+    cornersIn(A, B, pts); cornersIn(B, A, pts);
+    if (!pts.length) pts.push({ px:(A.x + B.x) / 2, py:(A.y + B.y) / 2 });   // 辺どうしが交差しているだけのとき
+    for (const p of pts) contacts.push({ A:A.b, B:B.b, px:p.px, py:p.py, nx:sat.nx, ny:sat.ny });
+    pairs.push({ A:A.b, B:B.b, nx:sat.nx, ny:sat.ny, depth:sat.depth });
+  }
+  // A の角のうち B に入り込んでいるものを pts に足す
+  function cornersIn(A, B, contacts){
+    const ca = Math.cos(A.a), sa = Math.sin(A.a), cb = Math.cos(B.a), sb = Math.sin(B.a);
+    for (const [u, v] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]){
+      const px = A.x + u * A.hx * ca - v * A.hy * sa, py = A.y + u * A.hx * sa + v * A.hy * ca;
+      const dx = px - B.x, dy = py - B.y;
+      const lx = dx * cb + dy * sb, ly = -dx * sb + dy * cb;
+      if (Math.abs(lx) >= B.hx || Math.abs(ly) >= B.hy) continue;
+      contacts.push({ px, py });
+    }
+  }
+  const overlapping = (A, B) => !!satPair(A, B);
+  // 部品が外れた瞬間に、その時点で重なっている相手を覚える
+  function markGhosts(pc){
+    const list = shapeList(), me = list.find(sh => sh.b === pc);
+    if (!me) return;
+    for (const sh of list) if (sh !== me && sh.z0 < me.z1 && me.z0 < sh.z1 && Math.abs(me.x - sh.x) < me.ex + sh.ex && Math.abs(me.y - sh.y) < me.ey + sh.ey && overlapping(me, sh)) addGhost(me.key, sh.key);
+  }
+  function collidePieces(h){
+    simTime += h;
+    box.touch = 0;
+    for (const pc of pieces) pc.touch = 0;
+    if (!pieces.length) return;
+    const list = shapeList(), contacts = [], pairs = [], zpairs = [];
+    for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++){
+      const A = list[i], B = list[j];
+      if (!near(A, B)) continue;
+      const g = ghosts.get(A.key);
+      if (g && g.has(B.key)){
+        if (simTime < g.get(B.key) && overlapping(A, B)) continue;
+        removeGhost(A.key, B.key);
+      }
+      pairContacts(A, B, contacts, pairs, zpairs);
+      // 深く重なっているのに止まっている（眠っている）部品は起こして押し広げる。浅い重なりなら止まったままでよい
+      const pr = pairs[pairs.length - 1];
+      if (pr && pr.A === A.b && pr.B === B.b){
+        if (pr.depth > PIECE_WAKE_DEPTH){ for (const b of [A.b, B.b]) if (b.asleep && b !== box){ b.asleep = false; b.still = 0; } }
+        else if (A.b.asleep && B.b.asleep){ pairs.pop(); while (contacts.length && contacts[contacts.length - 1].A === A.b && contacts[contacts.length - 1].B === B.b) contacts.pop(); }
+      }
+    }
+    for (const k of contacts){ k.jn = 0; k.jt = 0; }
+    for (const pr of pairs){ pr.A.touch = (pr.A.touch || 0) + 2; pr.B.touch = (pr.B.touch || 0) + 2; }   // 他の部品に載っている（床に2点で着いているのと同じに数える）
+    // 重い板と軽いコーンの重さの差が大きいと、板がコーンの山に沈み込むので、ぶつかりでは重さの差を縮めて扱う
+    const inv = b => b.asleep ? 0 : 1 / Math.min(b.m, PIECE_HIT_MASS_MAX), invI = b => b.asleep ? 0 : Math.max(1, b.m / PIECE_HIT_MASS_MAX) / b.I;
+    for (let it = 0; it < PIECE_HIT_ITER; it++){
+      for (const k of contacts){
+        const A = k.A, B = k.B;
+        const rax = k.px - A.x, ray = k.py - A.y, rbx = k.px - B.x, rby = k.py - B.y;
+        // 接点での相対速度（A − B）
+        const vx = (A.vx - A.w * ray) - (B.vx - B.w * rby), vy = (A.vy + A.w * rax) - (B.vy + B.w * rbx);
+        const ra = rax * k.ny - ray * k.nx, rb = rbx * k.ny - rby * k.nx;
+        const kn = inv(A) + inv(B) + ra * ra * invI(A) + rb * rb * invI(B);
+        if (kn <= 0) continue;
+        const vn = vx * k.nx + vy * k.ny;
+        const jn = Math.max(0, k.jn - vn / kn), dn = jn - k.jn;   // 入り込みは速さではなく位置で直す（下）ので、ここでは止めるだけ
+        k.jn = jn;
+        const tx = -k.ny, ty = k.nx, vt = vx * tx + vy * ty;
+        const rta = rax * ty - ray * tx, rtb = rbx * ty - rby * tx;
+        const kt = inv(A) + inv(B) + rta * rta * invI(A) + rtb * rtb * invI(B);
+        const lim = PIECE_FRICTION * k.jn;
+        const jt = Math.max(-lim, Math.min(lim, k.jt - vt / kt)), dt = jt - k.jt;
+        k.jt = jt;
+        const ix = k.nx * dn + tx * dt, iy = k.ny * dn + ty * dt;
+        // 眠っている相手に勢いよく当たったら起こす（載っているだけなら起こさない）
+        if (vn < -PIECE_WAKE_SPEED || Math.abs(vt) > PIECE_WAKE_SPEED){
+          for (const b of [A, B]) if (b.asleep && b !== box){ b.asleep = false; b.still = 0; }
+        }
+        A.vx += ix * inv(A); A.vy += iy * inv(A); A.w += (rax * iy - ray * ix) * invI(A);
+        B.vx -= ix * inv(B); B.vy -= iy * inv(B); B.w -= (rbx * iy - rby * ix) * invI(B);
+      }
+      for (const pc of pieces) floorSolve(pc, h, 2);
+      floorSolve(box, h, 2);
+    }
+    // 入り込んだ分は位置を直接ずらして戻す（速さで押し戻すと勢いが増えて、積み重なった部品が震え続けるため）
+    // 止まっている部品も位置は動かす（止まった部品が壁になって、重なりが残り続けないように）。壊れる前の屋台は動かさない
+    const invP = b => (b === box && b.asleep) ? 0 : 1 / Math.min(b.m, PIECE_HIT_MASS_MAX);
+    // 奥行き方向の重なり：位置をずらし、近づく向きの速さを止める（屋台は奥行き方向には動かさない）
+    for (const k of zpairs){
+      const ia = k.A === box ? 0 : invP(k.A), ib = k.B === box ? 0 : invP(k.B), sum = ia + ib;
+      if (sum <= 0) continue;
+      const d = Math.min(PIECE_PUSH_MAX * h, Math.max(0, k.depth - 0.002) * 0.4) / sum;
+      for (const [b, sg, w] of [[k.A, k.s, ia], [k.B, -k.s, ib]]){
+        if (!w) continue;
+        const dz = sg * d * w;
+        b.pz += dz; b.z0 += dz; b.z1 += dz;
+        if ((b.vz || 0) * sg < 0) b.vz = 0;
+        if (k.depth > PIECE_WAKE_DEPTH && b.asleep){ b.asleep = false; b.still = 0; }
+      }
+      k.A.touch = (k.A.touch || 0) + 1; k.B.touch = (k.B.touch || 0) + 1;
+    }
+    for (const k of pairs){
+      const ia = invP(k.A), ib = invP(k.B), sum = ia + ib;
+      if (sum <= 0) continue;
+      const d = Math.min(PIECE_PUSH_MAX * h, Math.max(0, k.depth - 0.002) * 0.4) / sum;
+      k.A.x += k.nx * d * ia; k.A.y += k.ny * d * ia;
+      k.B.x -= k.nx * d * ib; k.B.y -= k.ny * d * ib;
+    }
+  }
+  // 奥行き方向に倒れる板：床に立っている間は重力で倒れていき、倒れきったら寝た板（厚さが高さになる）に置き換える
+  function upHalf(pc){ return Math.abs(pc.hx * Math.sin(pc.a)) + Math.abs(pc.hy * Math.cos(pc.a)); }
+  function stepTip(pc, h){
+    const t = pc.tip;
+    if (!t || t.done) return;
+    const ey = upHalf(pc);
+    if (pc.y - ey < 0.01) t.w += 3 * GRAVITY / (4 * ey) * Math.sin(t.ang + t.s * 1e-3) * h;   // 下の辺を軸に倒れる棒と同じ
+    t.ang += t.w * h;
+    if (Math.abs(t.ang) < Math.PI / 2) return;
+    // 倒れきった：寝た板の形にする（見た目の向きは va と tip に残す）
+    const sg = Math.sign(t.ang), ex = Math.abs(pc.hx * Math.cos(pc.a)) + Math.abs(pc.hy * Math.sin(pc.a));
+    pc.y = pc.y - ey + t.dz / 2;
+    pc.pz = pc.pz + sg * (t.dz / 2 + ey);
+    pc.va = pc.a; pc.a = 0; pc.w = 0;
+    pc.hx = ex; pc.hy = t.dz / 2;
+    pc.pts = [[-ex, -pc.hy], [ex, -pc.hy], [ex, pc.hy], [-ex, pc.hy]];
+    pc.I = pc.m * (ex * ex + pc.hy * pc.hy) / 3;
+    pc.z0 = pc.pz - ey; pc.z1 = pc.pz + ey;
+    t.ang = sg * Math.PI / 2; t.done = true;
+    pc.asleep = false; pc.still = 0;
+  }
+
+  // ステップの終わりに、たまったぶつかりで部品を傷め、外れた部品と支えを失った部品を外す
+  function updateStallDamage(){
+    for (const hit of pendingHits){
+      const dmg = (hit.speed - STALL_DAMAGE_SPEED) / STALL_DAMAGE_PER_HP;
+      const bc = Math.cos(box.a), bs = Math.sin(box.a);
+      for (const q of stallParts.slice()){
+        const x = box.x + q.lx * bc - q.ly * bs, y = box.y + q.lx * bs + q.ly * bc;
+        // ぶつかるのは腕が動く面（z=0）なので、奥行きの離れも距離に入れる（奥や手前の物は傷まない）
+        const dz = q.z0 > 0 ? q.z0 : (q.z1 < 0 ? -q.z1 : 0);
+        const d = Math.hypot(x - hit.x, y - hit.y, dz);
+        if (d >= STALL_HIT_RADIUS) continue;
+        const k = 1 - d / STALL_HIT_RADIUS;
+        // 商品はぶつかれば台から落ちる。骨組みは耐久が尽きたら外れる
+        if (q.kind === 'item' || (q.hp -= dmg * k) <= 0) detachPart(q, hit, k);
+      }
+    }
+    pendingHits.length = 0;
+    if (!stallParts.length) return;
+    // 支えを失った部品を外す（外れると別の部品の支えが無くなることがあるので、変わらなくなるまで繰り返す）
+    for (let changed = true; changed; ){
+      changed = false;
+      const has = kind => stallParts.some(q => q.kind === kind);
+      const legs = stallParts.filter(q => q.kind === 'leg').length;
+      const tilt = Math.abs(Math.atan2(Math.sin(box.a), Math.cos(box.a)));
+      for (const q of stallParts.slice()){
+        let drop = false;
+        if (!has('top') || legs <= 1) drop = true;                                      // 天板が外れるか脚が1本以下になると全部崩れる
+        if (q.kind === 'item') drop = drop || tilt > q.slide || !(typeof q.on === 'string' ? has(q.on) : stallParts.includes(q.on));   // 傾くか、載っている物が外れると商品が落ちる
+        if ((q.kind === 'roof' || q.kind === 'beam') && !has('post')) drop = true;       // 柱が無いと屋根が落ちる
+        if (q.kind === 'flap' && !stallParts.some(r => r.kind === 'roof' && r.side === q.side)) drop = true;   // 屋根が無いと垂れ飾りも落ちる
+        if (drop){ detachPart(q, null, 0); changed = true; }
+      }
+    }
+  }
+
+  // 部品を屋台から外し、今の位置と勢いのまま別の剛体にする。hit があれば、近いほど（k）その勢いで飛ぶ
+  function detachPart(q, hit, k){
+    const i = stallParts.indexOf(q);
+    if (i < 0) return;
+    stallParts.splice(i, 1);
+    const bc = Math.cos(box.a), bs = Math.sin(box.a);
+    const x = box.x + q.lx * bc - q.ly * bs, y = box.y + q.lx * bs + q.ly * bc;
+    // 屋台の動き（回転を含む）を引き継ぎ、少しはじけさせる
+    let vx = box.vx - box.w * (y - box.y), vy = box.vy + box.w * (x - box.x);
+    const ra = Math.random() * Math.PI, rs = STALL_BREAK_BURST * Math.random();
+    vx += Math.cos(ra) * rs; vy += Math.sin(ra) * rs;
+    if (hit){ vx += hit.vx * k * STALL_HIT_TRANSFER; vy += hit.vy * k * STALL_HIT_TRANSFER; }
+    const m = Math.max(PIECE_MIN_MASS, 4 * q.hx * q.hy * PIECE_DENSITY);
+    { const v0 = Math.hypot(vx, vy); if (v0 > PIECE_MAX_SPEED){ vx *= PIECE_MAX_SPEED / v0; vy *= PIECE_MAX_SPEED / v0; } }   // 速すぎる勢いは抑える
+    // ランダムな力：向きは上向きの範囲（床に押し付けて打ち消されないように）でランダム、強さは最大の4〜10割で、部品のランダムな点にかける（中心から外れた分だけ回る）。
+    // 立ったまま床に残らないよう、重い部品にも同じ速さが付くようにする
+    const fa = Math.PI * (0.1 + 0.8 * Math.random()), fv = STALL_BREAK_RAND_SPEED * (0.4 + 0.6 * Math.random());   // 弱すぎて何も起きないことが無いよう下限を付ける
+    const jx = Math.cos(fa) * fv * m, jy = Math.sin(fa) * fv * m;
+    vx += jx / m; vy += jy / m;
+    const pa = box.a + q.la, pc = Math.cos(pa), ps = Math.sin(pa);
+    const px = (Math.random() * 2 - 1) * q.hx, py = (Math.random() * 2 - 1) * q.hy;   // 力をかける点（部品の中、中心から）
+    const rx = px * pc - py * ps, ry = px * ps + py * pc;
+    const pI = m * (q.hx * q.hx + q.hy * q.hy) / 3;
+    const fw = Math.max(-STALL_BREAK_RAND_SPIN, Math.min(STALL_BREAK_RAND_SPIN, (rx * jy - ry * jx) / pI));
+    let w = box.w + (Math.random() - 0.5) * STALL_BREAK_SPIN + fw;
+    if (Math.abs(w) < STALL_BREAK_MIN_SPIN) w = (w < 0 ? -1 : 1) * STALL_BREAK_MIN_SPIN;
+    w = Math.max(-PIECE_MAX_SPIN, Math.min(PIECE_MAX_SPIN, w));   // 回転が打ち消し合って小さくなっても少しは回す
+    pieces.push({
+      id:++pieceId, obj:q.obj, x, y, a:box.a + q.la, vx, vy, w, vz:(Math.random() * 2 - 1) * PIECE_SPREAD_Z,
+      m, I:m * (q.hx * q.hx + q.hy * q.hy) / 3, friction:0.6, still:0, asleep:false,
+      lx:0, ly:0, la:0, hx:q.hx, hy:q.hy, z0:q.z0, z1:q.z1, pz:q.pz, ox:q.ox, oy:q.oy,
+      pts:[[-q.hx, -q.hy], [q.hx, -q.hy], [q.hx, q.hy], [-q.hx, q.hy]]
+    });
+    // 奥行き方向に薄い板（手前・奥の板）は、物理が腕の面（x-y）の中だけなので、そのままだと立ったまま残る。
+    // 奥か手前のどちらかへ倒れる回転を別に持たせ、倒れきったら寝た板の形に置き換える
+    const dz = q.z1 - q.z0;
+    if (dz < q.hy && dz < q.hx * 0.5){
+      const sg = Math.random() < 0.5 ? -1 : 1;
+      pieces[pieces.length - 1].tip = { ang:0, w:sg * STALL_TIP_SPIN * (0.5 + Math.random()), s:sg, dz, done:false };
+    }
+    counterMesh.remove(q.obj);
+    scene.add(q.obj);
+    markGhosts(pieces[pieces.length - 1]);
+    box.asleep = false; box.still = 0;
+    if (q.frame) updateStallPts();
+  }
+
+  function stepArm(h){
+    for (const p of PTS){
+      const vx = (p.x - p.px) * DAMP, vy = (p.y - p.py) * DAMP;
+      p.px = p.x; p.py = p.y;
+      p.x += vx; p.y += vy - GRAVITY * h * h;
+    }
+    // 手を目標へ引く。揺れ戻しは手の速度だけ減らして抑え、肘と棒はぶらぶらのまま残す
+    W.px = W.x - (W.x - W.px) * HAND_DAMP;
+    W.py = W.y - (W.y - W.py) * HAND_DAMP;
+    // 手を引き寄せる先は、今の肩から ARM_MIN_REACH〜腕を伸ばしきる少し手前 の範囲に収める
+    // （折りたたみきると肘の向きが定まらず、届かない所へ引っ張り続けると伸びきった腕が震えるため）
+    let gx = target.x, gy = target.y;
+    const rx = gx - S.x, ry = gy - S.y, rd = Math.hypot(rx, ry);
+    const maxReach = L_UPPER + L_FORE - 0.03;
+    if (rd < ARM_MIN_REACH || rd > maxReach){
+      let dx = rx, dy = ry, dd = rd;
+      if (dd < 1e-4){ dx = W.x - S.x; dy = W.y - S.y; dd = Math.hypot(dx, dy) || 1; }
+      const r = Math.min(maxReach, Math.max(ARM_MIN_REACH, rd));
+      gx = S.x + dx / dd * r; gy = S.y + dy / dd * r;
+    }
+    W.x += (gx - W.x) * PULL;
+    W.y += (gy - W.y) * PULL;
+    for (let i = 0; i < ITER; i++){
+      solveDist(S, E, L_UPPER);
+      solveDist(E, W, L_FORE);
+      solveDist(W, T, L_ROD);
+      solveWrist();
+      solveElbow();
+      collide(E, 0.045, i === 0); collide(W, 0.045, i === 0); collide(T, 0.06, i === 0);
+    }
+  }
+
+  // アイスの中心と速さ
+  const ice = { x:0, y:0, vx:0, vy:0 };
+  function updateIce(){
+    const dx = T.x - W.x, dy = T.y - W.y, d = Math.hypot(dx, dy) || 1e-6;
+    ice.x = T.x + dx / d * ICE_OFFSET;
+    ice.y = T.y + dy / d * ICE_OFFSET;
+    ice.vx = (T.x - T.px) / STEP;
+    ice.vy = (T.y - T.py) / STEP;
+  }
+
+  // ---------- 客の手 ----------
+  // wait（構えてアイスを追う）→ windup（手を引く＝合図）→ lunge（伸ばす）→ miss → back → wait
+  // x, y はコーンの口の位置（ここでアイスを受け取る）。手はそこから口の向き (ax, ay) の逆へ CUP_DIST の所
+  const cpu = { x:0, y:0, ax:0, ay:1, state:'wait', t:0, dx:0, dy:0, travel:0, maxTravel:0, feint:false, speed:0, homing:0, lean:0 };
+
+  function hoverPoint(){
+    const sx = C_HIP.x, sy = C_HIP.y + C_TORSO;
+    const dx = sx - ice.x, dy = sy - ice.y, d = Math.hypot(dx, dy) || 1e-6;
+    return { x: ice.x + dx / d * HOVER_DIST, y: ice.y + dy / d * HOVER_DIST };
+  }
+  function resetCpu(){
+    updateIce();
+    const hp = hoverPoint();
+    Object.assign(cpu, { x:hp.x, y:hp.y, ax:0, ay:1, state:'wait', t:START_WAIT, lean:0 });
+  }
+  function follow(px, py, k){ cpu.x += (px - cpu.x) * k; cpu.y += (py - cpu.y) * k; }
+
+  function stepCpu(h){
+    const prevX = cpu.x, prevY = cpu.y;   // 手の勢い（屋台にぶつかったときに使う）
+    switch (cpu.state){
+      case 'wait': {
+        const hp = hoverPoint();
+        follow(hp.x, hp.y, Math.min(1, HOVER_FOLLOW * h));
+        if ((cpu.t -= h) <= 0){
+          cpu.state = 'windup';
+          cpu.t = diffWind(count);
+          cpu.feint = Math.random() < diffFeint(count);
+        }
+        break;
+      }
+      case 'windup': {
+        // アイスに狙いをつけたまま、少し手を引く
+        const hp = hoverPoint();
+        const ax = hp.x - ice.x, ay = hp.y - ice.y, al = Math.hypot(ax, ay) || 1e-6;
+        follow(hp.x + ax / al * WINDUP_BACK, hp.y + ay / al * WINDUP_BACK, Math.min(1, HOVER_FOLLOW * 2 * h));
+        if ((cpu.t -= h) <= 0){
+          if (cpu.feint){ cpu.state = 'wait'; cpu.t = 0.3 + Math.random() * 0.4; break; }
+          const lead = diffLead(count);
+          const tx = ice.x + ice.vx * lead, ty = ice.y + ice.vy * lead;
+          const dx = tx - cpu.x, dy = ty - cpu.y, d = Math.hypot(dx, dy) || 1e-6;
+          Object.assign(cpu, {
+            state:'lunge', dx:dx / d, dy:dy / d, travel:0, maxTravel:d + OVERSHOOT,
+            speed:diffSpeed(count), homing:diffHoming(count)
+          });
+        }
+        break;
+      }
+      case 'lunge': {
+        if (cpu.homing > 0){
+          // 伸ばしながらアイスの方へ向きを変える
+          const cur = Math.atan2(cpu.dy, cpu.dx);
+          let da = Math.atan2(ice.y - cpu.y, ice.x - cpu.x) - cur;
+          da = Math.atan2(Math.sin(da), Math.cos(da));
+          const mx = cpu.homing * h;
+          da = Math.max(-mx, Math.min(mx, da));
+          cpu.dx = Math.cos(cur + da); cpu.dy = Math.sin(cur + da);
+        }
+        const s = cpu.speed * h;
+        cpu.x += cpu.dx * s; cpu.y += cpu.dy * s;
+        cpu.travel += s;
+        if (cpu.travel >= cpu.maxTravel){ cpu.state = 'miss'; cpu.t = MISS_PAUSE; dodged(); }
+        break;
+      }
+      case 'miss':
+        if ((cpu.t -= h) <= 0) cpu.state = 'back';
+        break;
+      case 'back': {
+        const hp = hoverPoint();
+        const dx = hp.x - cpu.x, dy = hp.y - cpu.y, d = Math.hypot(dx, dy);
+        const s = BACK_SPEED * h;
+        if (d <= s){ cpu.state = 'wait'; cpu.t = diffWait(count); }
+        else { cpu.x += dx / d * s; cpu.y += dy / d * s; }
+        break;
+      }
+      case 'got':
+        // 取ったアイスを手元へ引き寄せる
+        follow(C_HIP.x - 0.2, C_HIP.y + 0.45, Math.min(1, 3 * h));
+        break;
+    }
+    cpu.y = Math.max(0.08, cpu.y);
+
+    // コーンの口の向き：上向きを基本に、アイスの方へ傾ける（取ったあとは真上）
+    let wx = 0, wy = 1;
+    if (cpu.state !== 'got'){
+      const dx = ice.x - cpu.x, dy = ice.y - cpu.y, d = Math.hypot(dx, dy) || 1e-6;
+      wx += dx / d * CUP_TILT; wy += dy / d * CUP_TILT;
+    }
+    const wl = Math.hypot(wx, wy) || 1e-6, k = Math.min(1, 8 * h);
+    cpu.ax += (wx / wl - cpu.ax) * k; cpu.ay += (wy / wl - cpu.ay) * k;
+    const al = Math.hypot(cpu.ax, cpu.ay) || 1e-6;
+    cpu.ax /= al; cpu.ay /= al;
+
+    // 客の手とコーンが屋台に当たったら押す（客の手は止まらない）。強くぶつかれば屋台が壊れる
+    const cvx = (cpu.x - prevX) / h, cvy = (cpu.y - prevY) / h;
+    for (const [x, y] of [[cpu.x, cpu.y], [cpu.x - cpu.ax * CUP_DIST, cpu.y - cpu.ay * CUP_DIST]]){
+      forEachCollider(HAND_R, (b, q) => {
+        const k = hitPart(b, q, x, y, HAND_R);
+        if (!k) return;
+        pushBody(b, k, x, y, CPU_PUSH_MASS);
+        hitStall(-(cvx * k.x + cvy * k.y) / k.pen, x, y, cvx, cvy);
+      });
+    }
+
+    // 取られるのは、客がアイスを狙って手を伸ばしている間だけ（構え・空振り・戻りの間は触れても取られない）
+    const touch = Math.hypot(cpu.x - ice.x, cpu.y - ice.y) < CUP_R + ICE_R;
+    if (cpu.state === 'lunge' && touch) caught();
+    else if (touch && !graze.on && !graze.used && state === 'playing'){ graze.on = graze.used = true; }   // 掠り（見た目だけ）
+  }
+
+  // ---------- ゲームの状態 ----------
+  let state = 'playing';   // playing / caught（取られて結果待ち）/ over
+  let count = 0;           // かわした回数（客の強さに使う）
+  let elapsed = 0;         // 取られていない秒数（スコア）
+  let overT = 0;
+  let newBest = false;   // 今回のプレイで最高記録を更新した
+
+  function dodged(){
+    if (state !== 'playing') return;
+    count++;
+  }
+  function caught(){
+    if (state !== 'playing') return;
+    state = 'caught';
+    cpu.state = 'got';
+    overT = OVER_DELAY;
+    slowT = SLOW_TIME;
+    wantShot = true;
+    drag = null;
+    $('time').textContent = fmt(elapsed);
+    newBest = elapsed > best;
+    if (newBest){ best = elapsed; saveBest(); }
+  }
+  function showResult(){
+    state = 'over';
+    $('res-count').textContent = fmt(elapsed) + '秒';
+    $('res-best').textContent = '最高 ' + fmt(best) + '秒';
+    // 最高記録を更新したら、文言を出して飛び出させる（毎回アニメーションをやり直すため、一度クラスを外して付け直す）
+    const nb = $('res-new'), rc = $('res-count');
+    nb.classList.remove('show'); rc.classList.remove('new');
+    nb.classList.toggle('hidden', !newBest);
+    if (newBest){ void nb.offsetWidth; nb.classList.add('show'); rc.classList.add('new'); }
+    $('result').classList.remove('hidden');
+    $('retry').focus({ preventScroll:true });
+  }
+  function restart(){
+    $('result').classList.add('hidden');
+    $('share-view').classList.add('hidden');
+    count = 0;
+    elapsed = 0;
+    $('time').textContent = fmt(0);
+    resetBox();
+    resetArm();
+    resetCpu();
+    trail.length = 0;
+    slowT = 0;
+    graze.on = graze.used = false;
+    randomIceColor();
+    drag = null;
+    state = 'playing';
+  }
+
+  // ---------- 隠しコマンド：次の回を黄金のアイスにする ----------
+  function secretCommand(){ forceGold = true; }
+  // PC：数字キーを SECRET_KEYS の順に押す
+  let keyLog = '';
+  document.addEventListener('keydown', e => {
+    keyLog = (keyLog + (e.key.length === 1 ? e.key : ' ')).slice(-SECRET_KEYS.length);
+    if (keyLog !== SECRET_KEYS) return;
+    keyLog = '';
+    secretCommand();
+  });
+  // スマホ：ゲーム画面の4隅を同時に CORNER_HOLD 秒押さえ続ける
+  const cornerTouches = new Map();   // 隅を押さえている指（pointerId → 隅の番号）
+  let cornerTimer = 0;
+  let cornerGesture = false;         // 2つ以上の隅を同時に押さえた（指を離したときのボタンの反応を止める）
+  function cornerOf(x, y){
+    const g = $('game').getBoundingClientRect();
+    const l = x < g.left + CORNER_SIZE, r = x > g.right - CORNER_SIZE, t = y < g.top + CORNER_SIZE, b = y > g.bottom - CORNER_SIZE;
+    return t && l ? 0 : t && r ? 1 : b && l ? 2 : b && r ? 3 : -1;
+  }
+  const heldCorners = () => new Set(cornerTouches.values()).size;
+  document.addEventListener('pointerdown', e => {
+    if (e.pointerType !== 'touch') return;
+    const c = cornerOf(e.clientX, e.clientY);
+    if (c < 0) return;
+    cornerTouches.set(e.pointerId, c);
+    if (heldCorners() >= 2) cornerGesture = true;
+    if (heldCorners() === 4 && !cornerTimer){
+      cornerTimer = setTimeout(() => { cornerTimer = 0; secretCommand(); }, CORNER_HOLD * 1000);
+    }
+  }, true);
+  const cornerRelease = e => {
+    if (!cornerTouches.delete(e.pointerId)) return;
+    if (cornerTimer && heldCorners() < 4){ clearTimeout(cornerTimer); cornerTimer = 0; }   // 1本でも離したらやり直し
+    if (cornerTouches.size === 0) setTimeout(() => { cornerGesture = false; }, 400);
+  };
+  document.addEventListener('pointerup', cornerRelease, true);
+  document.addEventListener('pointercancel', cornerRelease, true);
+  // 隅にボタンがあっても、隅を押さえたあと指を離したときにボタンが反応しないようにする
+  document.addEventListener('click', e => {
+    if (cornerGesture){ e.preventDefault(); e.stopPropagation(); }
+  }, true);
+
+  // ---------- 入力 ----------
+  // 画面のどこを触っても、指を動かした分だけ手を動かす（指で手が隠れないように）
+  let drag = null;
+  cv.addEventListener('pointerdown', e => {
+    if (e.pointerType === 'touch' && cornerOf(e.clientX, e.clientY) >= 0) return;   // 隠しコマンドで隅を押さえた指では操作しない
+    if (state !== 'playing' || drag) return;
+    e.preventDefault();
+    const p = toWorld(e.clientX, e.clientY);
+    if (!p) return;
+    cv.setPointerCapture(e.pointerId);
+    drag = { id:e.pointerId, x0:p.x, y0:p.y, tx0:target.x, ty0:target.y };
+  });
+  cv.addEventListener('pointermove', e => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const p = toWorld(e.clientX, e.clientY);
+    if (!p) return;
+    target.x = drag.tx0 + (p.x - drag.x0) * DRAG_GAIN;
+    target.y = drag.ty0 + (p.y - drag.y0) * DRAG_GAIN;
+    clampTarget();
+  });
+  const endDrag = e => { if (drag && e.pointerId === drag.id) drag = null; };
+  cv.addEventListener('pointerup', endDrag);
+  cv.addEventListener('pointercancel', endDrag);
+
+  const keys = new Set();
+  document.addEventListener('keydown', e => {
+    if (!$('share-view').classList.contains('hidden')){
+      if (e.key === 'Escape') closeShareView();
+      return;
+    }
+    if (state === 'over' && (e.key === ' ' || e.key === 'Enter')){ e.preventDefault(); restart(); return; }
+    if (e.key.startsWith('Arrow')){ e.preventDefault(); keys.add(e.key); }
+  });
+  document.addEventListener('keyup', e => keys.delete(e.key));
+  addEventListener('blur', () => keys.clear());
+
+  // iPhone(Safari)で長押しや指の移動により文字選択・拡大鏡が出てドラッグが奪われるのを防ぐ
+  document.addEventListener('touchstart', e => { if (e.target === cv) e.preventDefault(); }, { passive:false });
+  document.addEventListener('touchmove', e => { if (drag) e.preventDefault(); }, { passive:false });
+  document.addEventListener('selectstart', e => {
+    const t = e.target.nodeType === 1 ? e.target : e.target.parentElement;
+    if (!(t && t.closest('#share-text'))) e.preventDefault();
+  });
+  document.addEventListener('contextmenu', e => { if (e.target === cv) e.preventDefault(); });
+  // スマホでのダブルタップ拡大を防ぐ（拡大すると元に戻せなくなるため）
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', e => {
+    const now = Date.now();
+    if (now - lastTouchEnd < 350) e.preventDefault();
+    lastTouchEnd = now;
+  }, { passive:false });
+
+  // ---------- 結果画面・共有 ----------
+  $('retry').addEventListener('pointerdown', e => e.stopPropagation());
+  $('retry').addEventListener('click', restart);
+
+  function shareText(){
+    return `アイスを${fmt(elapsed)}秒取られなかった！\n最高 ${fmt(best)}秒\n${new URL('./', location.href).href}\n#トルコアイス3D`;
+  }
+  // 結果画像：画面の中央を正方形に切り出し、上に結果を書く
+  const shareCv = document.createElement('canvas');
+  shareCv.width = shareCv.height = 600;
+  // 取られた瞬間の画面を残しておく（取られた直後に描いたフレームを、アイスを中心にした正方形で切り出す）
+  const catchShot = document.createElement('canvas');
+  catchShot.width = catchShot.height = 600;
+  let wantShot = false;
+  const _sp = new THREE.Vector3();
+  function takeCatchShot(){
+    const side = Math.min(cv.width, cv.height);
+    _sp.set(ball.position.x, ball.position.y, 0).project(camera);
+    const cx = (_sp.x + 1) / 2 * cv.width, cy = (1 - _sp.y) / 2 * cv.height;
+    const sx = Math.max(0, Math.min(cv.width - side, cx - side / 2));
+    const sy = Math.max(0, Math.min(cv.height - side, cy - side / 2));
+    catchShot.getContext('2d').drawImage(cv, sx, sy, side, side, 0, 0, 600, 600);
+  }
+  function resultCanvas(){
+    const g = shareCv.getContext('2d');
+    g.fillStyle = css('--bg');
+    g.fillRect(0, 0, 600, 600);
+    g.drawImage(catchShot, 0, 0, 600, 600);   // 取られた瞬間の画面
+    g.fillStyle = css('--panel');
+    g.fillRect(0, 0, 600, 110);
+    g.fillStyle = css('--fg');
+    g.textAlign = 'center';
+    g.textBaseline = 'middle';
+    g.font = '700 44px "Hiragino Sans","Hiragino Kaku Gothic ProN","Yu Gothic","Noto Sans JP",system-ui,sans-serif';
+    g.fillText(`${fmt(elapsed)}秒 取られなかった！`, 300, 58);
+    return shareCv;
+  }
+  // 結果をPNG画像にする（共有シートの制約があるため同期処理で作る）
+  function resultImageFile(c){
+    const bin = atob(c.toDataURL('image/png').split(',')[1]);   // toBlob の非同期コールバックは避ける
+    const buf = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) buf[i] = bin.charCodeAt(i);
+    return new File([buf], 'result.png', { type:'image/png' });
+  }
+
+  $('share').addEventListener('pointerdown', e => e.stopPropagation());
+  $('share').addEventListener('click', () => {
+    const text = shareText();
+    const c = resultCanvas();
+    const file = resultImageFile(c);
+    // 3) 共有シートが無い・使えない環境: 文面をコピーし、共有される内容（結果画像と文面）を画面に出す
+    const fallback = () => {
+      navigator.clipboard?.writeText(text).catch(() => {});
+      $('share-img').src = c.toDataURL('image/png');
+      $('share-text').textContent = text;
+      $('share-view').classList.remove('hidden');
+      $('share-close').focus({ preventScroll:true });
+    };
+    // 共有シートが出なかったときは 3) へ：失敗した（埋め込み表示で共有が禁止されている等）とき、
+    // またはキャンセル扱いでも押してすぐ（SHARE_INSTANT 秒未満）に終わったとき（シートを出せないアプリ内ブラウザ等）。
+    // 共有シートを開いてから自分で閉じたキャンセルでは何もしない
+    const shareStart = performance.now();
+    const failed = err => {
+      const instant = performance.now() - shareStart < SHARE_INSTANT * 1000;
+      if (!err || err.name !== 'AbortError' || instant) fallback();
+    };
+    // 1) 画像を渡せる共有シート（スマホなど）: 文面＋結果画像
+    if (navigator.canShare && navigator.canShare({ files:[file] })){
+      navigator.share({ text, files:[file] }).catch(failed);
+      return;
+    }
+    // 2) 画像を渡せない共有シート: 文面のみ
+    if (navigator.share){
+      navigator.share({ text }).catch(failed);
+      return;
+    }
+    fallback();
+  });
+  function closeShareView(){
+    $('share-view').classList.add('hidden');
+    $('share').focus({ preventScroll:true });
+  }
+  $('share-close').addEventListener('click', closeShareView);
+  $('share-view').addEventListener('pointerdown', e => e.stopPropagation());
+
+  // ---------- 描画 ----------
+  const _u = new THREE.Vector3();
+
+  function drawCustomer(dt){
+    // 手の位置はコーンの口から逆向きに CUP_DIST
+    const hx = cpu.x - cpu.ax * CUP_DIST, hy = cpu.y - cpu.ay * CUP_DIST;
+    // コーン：口を (ax, ay) へ向ける（とがった側が手に来る）
+    cone.position.set(cpu.x - cpu.ax * 0.065, cpu.y - cpu.ay * 0.065, 0);
+    cone.quaternion.setFromUnitVectors(UPV, _u.set(cpu.ax, cpu.ay, 0));
+
+    // 手が届かないときは腰から前へ乗り出す。それでも届かない分は腕が伸びる
+    let want = C_LEAN_MAX;
+    for (let a = 0; a <= C_LEAN_MAX; a += 0.02){
+      const sx = C_HIP.x - Math.sin(a) * C_TORSO, sy = C_HIP.y + Math.cos(a) * C_TORSO;
+      if (Math.hypot(hx - sx, hy - sy) <= C_REACH){ want = a; break; }
+    }
+    cpu.lean += (want - cpu.lean) * Math.min(1, dt * 10);
+    const ux = -Math.sin(cpu.lean), uy = Math.cos(cpu.lean);
+    const sx = C_HIP.x + ux * C_TORSO, sy = C_HIP.y + uy * C_TORSO;
+
+    cBody.rotation.z = cpu.lean;
+
+    // 奥の腕：下ろしたまま。乗り出したときはカウンターに刺さらないよう体に沿わせる
+    {
+      const z = BODY_Z * 2;
+      let ax = -ux * 0.8, ay = -uy * 0.8 - 0.4;
+      const al = Math.hypot(ax, ay); ax /= al; ay /= al;
+      const ex = sx + ax * C_UP + 0.02, ey = sy + ay * C_UP;
+      const wx = ex + ax * C_FORE + 0.03, wy = ey + ay * C_FORE;
+      setLimb(cFarUpper, sx, sy, z, ex, ey, z);
+      setLimb(cFarFore, ex, ey, z, wx, wy, z);
+      placeFist(cFarHand, ex, ey, z, wx, wy, z);
+    }
+
+    // 2本の骨のIK（肘は下側に曲げる）
+    const dx = hx - sx, dy = hy - sy, d = Math.max(Math.hypot(dx, dy), 1e-4);
+    const full = (C_UP + C_FORE) * 0.98, st = d > full ? d / full : 1;
+    const a = C_UP * st, b = C_FORE * st;
+    const cosB = Math.max(-1, Math.min(1, (a * a + d * d - b * b) / (2 * a * d)));
+    const ang = Math.atan2(dy, dx) + Math.acos(cosB);
+    const ex = sx + Math.cos(ang) * a, ey = sy + Math.sin(ang) * a;
+    setLimb(cUpper, sx, sy, 0, ex, ey, 0);
+    setLimb(cFore, ex, ey, 0, hx, hy, 0);
+    placeFist(cHand, ex, ey, 0, hx, hy, 0);
+  }
+
+  function drawVendor(dt){
+    vBody.rotation.z = -vend.lean;
+
+    // 顔をアイスの方へ上下に向ける
+    const hr = C_TORSO + 0.18;
+    const hx = V_HIP.x + Math.sin(vend.lean) * hr, hy = V_HIP.y + Math.cos(vend.lean) * hr;
+    let look = Math.atan2(ice.y - hy, ice.x - hx) + vend.lean;
+    look = Math.atan2(Math.sin(look), Math.cos(look));
+    look = Math.max(-V_LOOK_MAX, Math.min(V_LOOK_MAX, look));
+    vend.look += (look - vend.look) * Math.min(1, dt * 8);
+    vBody.userData.head.rotation.z = vend.look;
+
+    // 奥の腕：体を速く傾けると遅れて後ろへ振れる。前かがみのときは体に沿わせてカウンターに刺さらないようにする
+    const z = BODY_Z * 2;
+    const th = -vend.lean * 0.8 - Math.max(-0.6, Math.min(0.6, vend.vel * 0.12));   // 真下からの角度（前が正）
+    const ex = S.x + Math.sin(th) * L_UPPER, ey = S.y - Math.cos(th) * L_UPPER;
+    const wx = ex + Math.sin(th + 0.2) * L_FORE, wy = ey - Math.cos(th + 0.2) * L_FORE;
+    setLimb(vFarUpper, S.x, S.y, z, ex, ey, z);
+    setLimb(vFarFore, ex, ey, z, wx, wy, z);
+    placeFist(vFarHand, ex, ey, z, wx, wy, z);
+  }
+
+  function draw(dt){
+    counterMesh.position.set(box.x, box.y, 0);
+    counterMesh.rotation.z = box.a;
+    for (const pc of pieces){
+      const c = Math.cos(pc.a), s = Math.sin(pc.a);
+      const t = pc.tip;
+      if (t && !t.done){
+        // 下の辺（倒れる側）を軸に x 軸まわりに回す
+        const ey = upHalf(pc), sg = t.s, cs = Math.cos(t.ang), sn = Math.sin(t.ang);
+        pc.obj.position.set(pc.x, pc.y - ey + ey * cs + sg * t.dz / 2 * sn, pc.pz + sg * t.dz / 2 + ey * sn - sg * t.dz / 2 * cs);
+        pc.obj.rotation.set(t.ang, 0, pc.a);
+        continue;
+      }
+      pc.obj.position.set(pc.x + pc.ox * c - pc.oy * s, pc.y + pc.ox * s + pc.oy * c, pc.pz);
+      if (t){
+        // 寝た板：床の上での回転 × 倒れた向き × 倒れる前の回転
+        _qa.setFromAxisAngle(_zAxis, pc.a); _qb.setFromAxisAngle(_xAxis, t.ang); _qc.setFromAxisAngle(_zAxis, pc.va);
+        pc.obj.quaternion.copy(_qa).multiply(_qb).multiply(_qc);
+      }
+      else pc.obj.rotation.z = pc.obj.userData.flip ? -pc.a : pc.a;   // ひっくり返した物は x 軸で裏返っているので、回す向きも逆になる
+    }
+    drawVendor(dt);
+    setLimb(vUpper, S.x, S.y, 0, E.x, E.y, 0);
+    setLimb(vFore, E.x, E.y, 0, W.x, W.y, 0);
+    placeFist(vHand, E.x, E.y, 0, W.x, W.y, 0);
+    placeSeg(vRod, W.x, W.y, 0, T.x, T.y, 0, 0.008, 0.008);
+
+    const bp = ballPos();
+    ball.position.set(bp.x, bp.y, 0);
+    drawGraze(bp);
+    updateTrailMesh();
+
+    drawCustomer(dt);
+
+    ring.visible = state === 'playing';
+    ring.position.set(W.x, W.y, 0);
+    ring.quaternion.copy(camera.quaternion);
+
+    renderer.render(scene, camera);
+    if (wantShot){ wantShot = false; takeCatchShot(); }
+  }
+
+  // 見た目のアイスの位置：取られるまでは棒の先、取られたらコーンの口に載る
+  function ballPos(){
+    if (cpu.state === 'got') return { x:cpu.x + cpu.ax * 0.03, y:cpu.y + cpu.ay * 0.03 };
+    const dx = T.x - W.x, dy = T.y - W.y, d = Math.hypot(dx, dy) || 1e-6;
+    return { x:T.x + dx / d * ICE_OFFSET, y:T.y + dy / d * ICE_OFFSET };
+  }
+
+  // ---------- 掠り（見た目だけ） ----------
+  // on：表示中、used：このプレイで既に起きた
+  const graze = { on:false, used:false };
+  const grazeBlob = addSphere(GRAZE_BLOB_R, iceMat);
+  grazeBlob.visible = false;
+  // 伸びる部分：長さ方向（y：-0.5〜0.5）に輪を並べた筒。太さは毎フレーム、端を太く真ん中を細くして作り直す
+  const G_RINGS = 14, G_SEG = 12;
+  const grazeGeo = new THREE.BufferGeometry();
+  grazeGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(G_RINGS * G_SEG * 3), 3));
+  {
+    const idx = [];
+    for (let i = 0; i < G_RINGS - 1; i++) for (let j = 0; j < G_SEG; j++){
+      const a = i * G_SEG + j, b = i * G_SEG + (j + 1) % G_SEG, c = a + G_SEG, d = b + G_SEG;
+      idx.push(a, c, b, b, c, d);
+    }
+    grazeGeo.setIndex(idx);
+  }
+  const grazeStrand = new THREE.Mesh(grazeGeo, iceMat);
+  grazeStrand.frustumCulled = false;
+  grazeStrand.visible = false;
+  scene.add(grazeStrand);
+  function drawGraze(bp){
+    grazeBlob.visible = grazeStrand.visible = graze.on;
+    if (!graze.on) return;
+    // コーンの口の上（取られたときにアイスが載る位置と同じ）
+    const mx = cpu.x + cpu.ax * 0.03, my = cpu.y + cpu.ay * 0.03;
+    grazeBlob.position.set(mx, my, 0);
+    const len = Math.hypot(bp.x - mx, bp.y - my);
+    const mid = Math.max(GRAZE_MIN_R, Math.min(GRAZE_END_R, GRAZE_R0 * Math.sqrt(GRAZE_L0 / Math.max(len, 1e-3))));
+    const pos = grazeGeo.attributes.position.array;
+    for (let i = 0; i < G_RINGS; i++){
+      const t = i / (G_RINGS - 1);
+      const k = Math.pow(Math.abs(2 * t - 1), 3);   // 端で1、真ん中で0
+      const r = mid + (GRAZE_END_R - mid) * k;
+      for (let j = 0; j < G_SEG; j++){
+        const a = j / G_SEG * Math.PI * 2, o = (i * G_SEG + j) * 3;
+        pos[o] = Math.cos(a) * r; pos[o + 1] = t - 0.5; pos[o + 2] = Math.sin(a) * r;
+      }
+    }
+    grazeGeo.attributes.position.needsUpdate = true;
+    grazeGeo.computeVertexNormals();
+    placeSeg(grazeStrand, mx, my, 0, bp.x, bp.y, 0, 1, 1);
+  }
+
+  const _qa = new THREE.Quaternion(), _qb = new THREE.Quaternion(), _qc = new THREE.Quaternion();
+  const _xAxis = new THREE.Vector3(1, 0, 0), _zAxis = new THREE.Vector3(0, 0, 1);
+
+  // ---------- ループ ----------
+  let acc = 0, last = performance.now(), slowT = 0;
+  function loop(now){
+    const dt = Math.min((now - last) / 1000, 1/30);
+    last = now;
+
+    if (state === 'playing' && keys.size){
+      const kx = (keys.has('ArrowRight') ? 1 : 0) - (keys.has('ArrowLeft') ? 1 : 0);
+      const ky = (keys.has('ArrowUp') ? 1 : 0) - (keys.has('ArrowDown') ? 1 : 0);
+      target.x += kx * KEY_SPEED * dt;
+      target.y += ky * KEY_SPEED * dt;
+      clampTarget();
+    }
+
+    // 取られた直後はスロー（演出の時間も物理も遅くする）
+    const scale = slowT > 0 ? SLOW_SCALE : 1;
+    slowT -= dt;
+    const sdt = dt * scale;
+    acc += sdt;
+    let n = 0;
+    while (acc >= STEP && n < 8){
+      stepVendor(STEP);
+      stepStall(STEP);
+      stepArm(STEP);
+      updateIce();
+      if (state === 'playing') elapsed += STEP;
+      stepCpu(STEP);
+      updateStallDamage();
+      trail.unshift(ballPos());
+      if (trail.length > TRAIL_N) trail.pop();
+      acc -= STEP;
+      n++;
+    }
+    if (n === 8) acc = 0;
+
+    if (state === 'playing') $('time').textContent = fmt(elapsed);
+    if (state === 'caught' && (overT -= dt) <= 0) showResult();
+
+    draw(sdt);
+    requestAnimationFrame(loop);
+  }
+
+  resetBox();
+  resetArm();
+  resetCpu();
+  randomIceColor();
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

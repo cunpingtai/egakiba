@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#24251f">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://egakiba.com/ja/sansa-online-temple/">
+<meta name="description" content="言葉をかけずに、同じお堂で手を合わせるオンラインの寺院、산사。">
+<title>산사 — オンライン寺院</title>
+<link rel="preload" href="/sansa-static/fonts/SansaQuietUI-Core.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+  .sansa-boot { position:fixed; inset:0; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:14px; padding:24px; background:#eeece3; color:#4d5144; font-family:Sansa Quiet UI,-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic","Noto Sans JP",sans-serif; text-align:center; }
+  .sansa-boot-mark { display:flex; margin-bottom:6px; color:#8a8068; }
+  .sansa-boot-mark svg { width:32px; height:32px; stroke-width:1; }
+  .sansa-boot h1 { margin:0; padding-left:5px; font-size:27px; font-weight:500; letter-spacing:5px; }
+  .sansa-boot p { margin:0; max-width:28rem; color:#838677; font-size:12px; line-height:1.7; }
+  .sansa-boot-dot { width:4px; height:4px; margin-top:18px; background:#a99a7b; border-radius:50%; animation:boot-breathe 1.8s ease-in-out infinite; }
+  .sansa-boot-retry { position:absolute; bottom:max(24px,env(safe-area-inset-bottom)); display:inline-flex; align-items:center; justify-content:center; min-height:44px; padding:0 16px; color:#64664f; font-size:13px; text-decoration:underline; text-underline-offset:3px; visibility:hidden; animation:boot-retry 0s 15s forwards; }
+  .sansa-boot-retry:focus-visible { outline:2px solid #988762; outline-offset:4px; }
+  .sansa-boot.is-error h1 { padding:0; font-size:21px; letter-spacing:0; }
+  .sansa-boot.is-error .sansa-boot-dot { display:none; }
+  .sansa-boot.is-error .sansa-boot-retry { position:static; visibility:visible; animation:none; }
+  @keyframes boot-breathe { 50% { opacity:.25; } }
+  @keyframes boot-retry { to { visibility:visible; } }
+  @media(prefers-reduced-motion:reduce) { .sansa-boot-dot { animation:none; } }
+</style>
+</head>
+<body>
+<div id="app">
+  <main id="sansa-boot" class="sansa-boot" role="status" aria-label="산사">
+    <span class="sansa-boot-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2 11c5-1 8-4 10-7 2 3 5 6 10 7M4 12h16M7 13v7m10-7v7M4 20h16M10 15h4v5"/></svg></span>
+    <h1 id="sansa-boot-title">산사</h1>
+    <p id="sansa-boot-message">お堂をひらいています</p>
+    <span class="sansa-boot-dot" aria-hidden="true"></span>
+    <a class="sansa-boot-retry" href="">もう一度入る</a>
+  </main>
+</div>
+<noscript><style>.sansa-boot{display:none}body{background:#20251f}</style><main style="padding:3rem;max-width:36rem;margin:auto;color:#f5f1e8;font-family:sans-serif;line-height:1.8"><h1>산사 · オンライン寺院</h1><p>数珠をまわし、礼をして、しばらく留まる場所です。</p><p>お堂を見るには、ブラウザの JavaScript を有効にしてください。</p></main></noscript>
+<script>window.SANSA_NAMES=["静かな雨", "小さな鈴", "朝の光", "遅いお茶", "木漏れ日", "白い息", "低い声", "山の風", "温かい石", "夜の廊下", "短い祈り", "遠い鐘", "薄い霧", "ゆっくり歩く人", "畳の縁", "湯呑み", "松の影", "冬の朝", "川音", "古い数珠", "灯りの下", "短い休み", "涼しい土", "細い煙", "朝の廊下"];</script>
+<script src="/sansa-static/local-hall.js?v=3"></script>
+<script type="module" src="./assets/index-B1bsjmrm.js?v=2"></script>
+</body>
+</html>

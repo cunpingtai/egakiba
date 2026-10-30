@@ -1,4 +1,4 @@
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
+import { HeadContent, Scripts, createRootRoute, useRouterState } from '@tanstack/react-router'
 
 import { SiteFrame } from '../site-ads'
 import appCss from '../styles.css?url'
@@ -33,8 +33,10 @@ export const Route = createRootRoute({
 })
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  const pathname = useRouterState({ select: (state) => state.location.pathname })
+  const lang = pathname.startsWith('/ko/') ? 'ko' : pathname.startsWith('/fr/') ? 'fr' : pathname.startsWith('/en/') ? 'en' : 'ja'
   return (
-    <html lang="ja">
+    <html lang={lang}>
       <head>
         <HeadContent />
         <meta name="google-adsense-account" content="ca-pub-8048514016010081" />

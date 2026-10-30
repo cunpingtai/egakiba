@@ -18,11 +18,15 @@ import { kazokuHref } from './kazoku-igai/seo'
 import { hariHref } from './acupuncture-darts/seo'
 import { concafeHref } from './concafe-simulator/seo'
 import { hankoHref } from './hanko-hankouki/seo'
+import { beerHref } from './beer-pour/seo'
+import { sansaHref } from './sansa/seo'
 import { siteInfoHref } from './site-info/seo'
 import { uwakiHref } from './uwaki-jinmon/seo'
 import { interrogationHref } from './interrogation-games/seo'
 import { regionHref } from './regional-differences/seo'
 import { drawingHref } from './drawing-games/seo'
+import { coasterHref } from './rakugaki-coaster/seo'
+import { turkishIceHref } from './turkish-ice-cream-3d/seo'
 import { shodoHref } from './shodo-simulator-3d/seo'
 import { zipperHref } from './zipper-finger/seo'
 
@@ -127,6 +131,22 @@ export function siteIndexLinks() {
     { id: 'concafe-simulator/guide', href: concafeHref('guide/'), label: 'コンカフェ嬢シミュレーターの攻略' },
     { id: 'concafe-simulator/endings', href: concafeHref('endings/'), label: 'コンカフェ嬢シミュレーターの全エンディング' },
     { id: 'hanko-hankouki', href: hankoHref(), label: 'ハンコう期' },
+    { id: 'beer-pour', href: beerHref(), label: 'ビールをいい感じにつぐ' },
+    { id: 'beer-pour/100-points', href: beerHref('100-points/'), label: 'ビールをいい感じにつぐ 100点' },
+    { id: 'ja/sansa-online-temple', href: sansaHref('ja'), label: '산사' },
+    { id: 'ja/sansa-online-temple/how-to', href: sansaHref('ja', 'how-to/'), label: '산사の遊び方' },
+    { id: 'ko/sansa', href: sansaHref('ko'), label: '산사 온라인 절' },
+    { id: 'ko/sansa/how-to', href: sansaHref('ko', 'how-to/'), label: '온라인 절 하는 법' },
+    { id: 'fr/sansa', href: sansaHref('fr'), label: 'Sansa（Français）' },
+    { id: 'fr/sansa/how-to', href: sansaHref('fr', 'how-to/'), label: 'Sansa, comment entrer' },
+    { id: 'en/sansa', href: sansaHref('en'), label: 'Sansa（English）' },
+    { id: 'en/sansa/how-to', href: sansaHref('en', 'how-to/'), label: 'How to enter Sansa' },
+    { id: 'rakugaki-coaster', href: coasterHref(), label: 'らくがきコースター' },
+    { id: 'rakugaki-coaster/how-to-play', href: coasterHref('how-to-play/'), label: 'らくがきコースターの遊び方' },
+    { id: 'rakugaki-coaster/share', href: coasterHref('share/'), label: 'らくがきコースターの共有' },
+    { id: 'rakugaki-coaster/faq', href: coasterHref('faq/'), label: 'らくがきコースターの質問' },
+    { id: 'turkish-ice-cream-3d', href: turkishIceHref(), label: 'トルコアイス3D' },
+    { id: 'turkish-ice-cream-3d/guide', href: turkishIceHref('guide/'), label: 'トルコアイス3Dの攻略' },
     { id: 'about', href: siteInfoHref('about'), label: 'サイトについて' },
     { id: 'contact', href: siteInfoHref('contact'), label: 'お問い合わせ' },
     { id: 'privacy', href: siteInfoHref('privacy'), label: 'プライバシーポリシー' },

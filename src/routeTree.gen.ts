@@ -22,6 +22,8 @@ import { Route as StrongestRouteImport } from './routes/strongest'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AcupunctureDartsIndexRouteImport } from './routes/acupuncture-darts/index'
 import { Route as AcupunctureDartsSlugRouteImport } from './routes/acupuncture-darts/$slug'
+import { Route as BeerPourIndexRouteImport } from './routes/beer-pour/index'
+import { Route as BeerPourSlugRouteImport } from './routes/beer-pour/$slug'
 import { Route as ConcafeSimulatorIndexRouteImport } from './routes/concafe-simulator/index'
 import { Route as ConcafeSimulatorSlugRouteImport } from './routes/concafe-simulator/$slug'
 import { Route as CookingGamesIndexRouteImport } from './routes/cooking-games/index'
@@ -54,6 +56,8 @@ import { Route as OneBreathIndexRouteImport } from './routes/one-breath/index'
 import { Route as OneBreathSlugRouteImport } from './routes/one-breath/$slug'
 import { Route as PrefectureGameIndexRouteImport } from './routes/prefecture-game/index'
 import { Route as PrefectureGameSlugRouteImport } from './routes/prefecture-game/$slug'
+import { Route as RakugakiCoasterIndexRouteImport } from './routes/rakugaki-coaster/index'
+import { Route as RakugakiCoasterSlugRouteImport } from './routes/rakugaki-coaster/$slug'
 import { Route as RegionalDifferencesIndexRouteImport } from './routes/regional-differences/index'
 import { Route as RegionalDifferencesSlugRouteImport } from './routes/regional-differences/$slug'
 import { Route as ShodoSimulator3dIndexRouteImport } from './routes/shodo-simulator-3d/index'
@@ -62,12 +66,22 @@ import { Route as ShusshinKenIndexRouteImport } from './routes/shusshin-ken/inde
 import { Route as ShusshinKenSlugRouteImport } from './routes/shusshin-ken/$slug'
 import { Route as SoftServeIndexRouteImport } from './routes/soft-serve/index'
 import { Route as SoftServeSlugRouteImport } from './routes/soft-serve/$slug'
+import { Route as TurkishIceCream3dIndexRouteImport } from './routes/turkish-ice-cream-3d/index'
+import { Route as TurkishIceCream3dSlugRouteImport } from './routes/turkish-ice-cream-3d/$slug'
 import { Route as TyphoonEscapeIndexRouteImport } from './routes/typhoon-escape/index'
 import { Route as TyphoonEscapeSlugRouteImport } from './routes/typhoon-escape/$slug'
 import { Route as UwakiJinmonIndexRouteImport } from './routes/uwaki-jinmon/index'
 import { Route as UwakiJinmonSlugRouteImport } from './routes/uwaki-jinmon/$slug'
 import { Route as ZipperFingerIndexRouteImport } from './routes/zipper-finger/index'
 import { Route as ZipperFingerSlugRouteImport } from './routes/zipper-finger/$slug'
+import { Route as EnSansaIndexRouteImport } from './routes/en/sansa/index'
+import { Route as EnSansaSlugRouteImport } from './routes/en/sansa/$slug'
+import { Route as FrSansaIndexRouteImport } from './routes/fr/sansa/index'
+import { Route as FrSansaSlugRouteImport } from './routes/fr/sansa/$slug'
+import { Route as JaSansaOnlineTempleIndexRouteImport } from './routes/ja/sansa-online-temple/index'
+import { Route as JaSansaOnlineTempleSlugRouteImport } from './routes/ja/sansa-online-temple/$slug'
+import { Route as KoSansaIndexRouteImport } from './routes/ko/sansa/index'
+import { Route as KoSansaSlugRouteImport } from './routes/ko/sansa/$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -132,6 +146,16 @@ const AcupunctureDartsIndexRoute = AcupunctureDartsIndexRouteImport.update({
 const AcupunctureDartsSlugRoute = AcupunctureDartsSlugRouteImport.update({
   id: '/acupuncture-darts/$slug',
   path: '/acupuncture-darts/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BeerPourIndexRoute = BeerPourIndexRouteImport.update({
+  id: '/beer-pour/',
+  path: '/beer-pour/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BeerPourSlugRoute = BeerPourSlugRouteImport.update({
+  id: '/beer-pour/$slug',
+  path: '/beer-pour/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConcafeSimulatorIndexRoute = ConcafeSimulatorIndexRouteImport.update({
@@ -294,6 +318,16 @@ const PrefectureGameSlugRoute = PrefectureGameSlugRouteImport.update({
   path: '/prefecture-game/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RakugakiCoasterIndexRoute = RakugakiCoasterIndexRouteImport.update({
+  id: '/rakugaki-coaster/',
+  path: '/rakugaki-coaster/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RakugakiCoasterSlugRoute = RakugakiCoasterSlugRouteImport.update({
+  id: '/rakugaki-coaster/$slug',
+  path: '/rakugaki-coaster/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RegionalDifferencesIndexRoute =
   RegionalDifferencesIndexRouteImport.update({
     id: '/regional-differences/',
@@ -335,6 +369,16 @@ const SoftServeSlugRoute = SoftServeSlugRouteImport.update({
   path: '/soft-serve/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TurkishIceCream3dIndexRoute = TurkishIceCream3dIndexRouteImport.update({
+  id: '/turkish-ice-cream-3d/',
+  path: '/turkish-ice-cream-3d/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TurkishIceCream3dSlugRoute = TurkishIceCream3dSlugRouteImport.update({
+  id: '/turkish-ice-cream-3d/$slug',
+  path: '/turkish-ice-cream-3d/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TyphoonEscapeIndexRoute = TyphoonEscapeIndexRouteImport.update({
   id: '/typhoon-escape/',
   path: '/typhoon-escape/',
@@ -365,6 +409,47 @@ const ZipperFingerSlugRoute = ZipperFingerSlugRouteImport.update({
   path: '/zipper-finger/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EnSansaIndexRoute = EnSansaIndexRouteImport.update({
+  id: '/en/sansa/',
+  path: '/en/sansa/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EnSansaSlugRoute = EnSansaSlugRouteImport.update({
+  id: '/en/sansa/$slug',
+  path: '/en/sansa/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FrSansaIndexRoute = FrSansaIndexRouteImport.update({
+  id: '/fr/sansa/',
+  path: '/fr/sansa/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FrSansaSlugRoute = FrSansaSlugRouteImport.update({
+  id: '/fr/sansa/$slug',
+  path: '/fr/sansa/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JaSansaOnlineTempleIndexRoute =
+  JaSansaOnlineTempleIndexRouteImport.update({
+    id: '/ja/sansa-online-temple/',
+    path: '/ja/sansa-online-temple/',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const JaSansaOnlineTempleSlugRoute = JaSansaOnlineTempleSlugRouteImport.update({
+  id: '/ja/sansa-online-temple/$slug',
+  path: '/ja/sansa-online-temple/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KoSansaIndexRoute = KoSansaIndexRouteImport.update({
+  id: '/ko/sansa/',
+  path: '/ko/sansa/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KoSansaSlugRoute = KoSansaSlugRouteImport.update({
+  id: '/ko/sansa/$slug',
+  path: '/ko/sansa/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -379,6 +464,7 @@ export interface FileRoutesByFullPath {
   '/strongest': typeof StrongestRoute
   '/terms': typeof TermsRoute
   '/acupuncture-darts/$slug': typeof AcupunctureDartsSlugRoute
+  '/beer-pour/$slug': typeof BeerPourSlugRoute
   '/concafe-simulator/$slug': typeof ConcafeSimulatorSlugRoute
   '/daruma/$slug': typeof DarumaSlugRoute
   '/dashimaki-game/$slug': typeof DashimakiGameSlugRoute
@@ -394,14 +480,17 @@ export interface FileRoutesByFullPath {
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
   '/prefecture-game/$slug': typeof PrefectureGameSlugRoute
+  '/rakugaki-coaster/$slug': typeof RakugakiCoasterSlugRoute
   '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
+  '/turkish-ice-cream-3d/$slug': typeof TurkishIceCream3dSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/acupuncture-darts/': typeof AcupunctureDartsIndexRoute
+  '/beer-pour/': typeof BeerPourIndexRoute
   '/concafe-simulator/': typeof ConcafeSimulatorIndexRoute
   '/cooking-games/': typeof CookingGamesIndexRoute
   '/daruma/': typeof DarumaIndexRoute
@@ -419,13 +508,23 @@ export interface FileRoutesByFullPath {
   '/omurice/': typeof OmuriceIndexRoute
   '/one-breath/': typeof OneBreathIndexRoute
   '/prefecture-game/': typeof PrefectureGameIndexRoute
+  '/rakugaki-coaster/': typeof RakugakiCoasterIndexRoute
   '/regional-differences/': typeof RegionalDifferencesIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
   '/shusshin-ken/': typeof ShusshinKenIndexRoute
   '/soft-serve/': typeof SoftServeIndexRoute
+  '/turkish-ice-cream-3d/': typeof TurkishIceCream3dIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
   '/uwaki-jinmon/': typeof UwakiJinmonIndexRoute
   '/zipper-finger/': typeof ZipperFingerIndexRoute
+  '/en/sansa/$slug': typeof EnSansaSlugRoute
+  '/fr/sansa/$slug': typeof FrSansaSlugRoute
+  '/ja/sansa-online-temple/$slug': typeof JaSansaOnlineTempleSlugRoute
+  '/ko/sansa/$slug': typeof KoSansaSlugRoute
+  '/en/sansa/': typeof EnSansaIndexRoute
+  '/fr/sansa/': typeof FrSansaIndexRoute
+  '/ja/sansa-online-temple/': typeof JaSansaOnlineTempleIndexRoute
+  '/ko/sansa/': typeof KoSansaIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -440,6 +539,7 @@ export interface FileRoutesByTo {
   '/strongest': typeof StrongestRoute
   '/terms': typeof TermsRoute
   '/acupuncture-darts/$slug': typeof AcupunctureDartsSlugRoute
+  '/beer-pour/$slug': typeof BeerPourSlugRoute
   '/concafe-simulator/$slug': typeof ConcafeSimulatorSlugRoute
   '/daruma/$slug': typeof DarumaSlugRoute
   '/dashimaki-game/$slug': typeof DashimakiGameSlugRoute
@@ -455,14 +555,17 @@ export interface FileRoutesByTo {
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
   '/prefecture-game/$slug': typeof PrefectureGameSlugRoute
+  '/rakugaki-coaster/$slug': typeof RakugakiCoasterSlugRoute
   '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
+  '/turkish-ice-cream-3d/$slug': typeof TurkishIceCream3dSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/acupuncture-darts': typeof AcupunctureDartsIndexRoute
+  '/beer-pour': typeof BeerPourIndexRoute
   '/concafe-simulator': typeof ConcafeSimulatorIndexRoute
   '/cooking-games': typeof CookingGamesIndexRoute
   '/daruma': typeof DarumaIndexRoute
@@ -480,13 +583,23 @@ export interface FileRoutesByTo {
   '/omurice': typeof OmuriceIndexRoute
   '/one-breath': typeof OneBreathIndexRoute
   '/prefecture-game': typeof PrefectureGameIndexRoute
+  '/rakugaki-coaster': typeof RakugakiCoasterIndexRoute
   '/regional-differences': typeof RegionalDifferencesIndexRoute
   '/shodo-simulator-3d': typeof ShodoSimulator3dIndexRoute
   '/shusshin-ken': typeof ShusshinKenIndexRoute
   '/soft-serve': typeof SoftServeIndexRoute
+  '/turkish-ice-cream-3d': typeof TurkishIceCream3dIndexRoute
   '/typhoon-escape': typeof TyphoonEscapeIndexRoute
   '/uwaki-jinmon': typeof UwakiJinmonIndexRoute
   '/zipper-finger': typeof ZipperFingerIndexRoute
+  '/en/sansa/$slug': typeof EnSansaSlugRoute
+  '/fr/sansa/$slug': typeof FrSansaSlugRoute
+  '/ja/sansa-online-temple/$slug': typeof JaSansaOnlineTempleSlugRoute
+  '/ko/sansa/$slug': typeof KoSansaSlugRoute
+  '/en/sansa': typeof EnSansaIndexRoute
+  '/fr/sansa': typeof FrSansaIndexRoute
+  '/ja/sansa-online-temple': typeof JaSansaOnlineTempleIndexRoute
+  '/ko/sansa': typeof KoSansaIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -502,6 +615,7 @@ export interface FileRoutesById {
   '/strongest': typeof StrongestRoute
   '/terms': typeof TermsRoute
   '/acupuncture-darts/$slug': typeof AcupunctureDartsSlugRoute
+  '/beer-pour/$slug': typeof BeerPourSlugRoute
   '/concafe-simulator/$slug': typeof ConcafeSimulatorSlugRoute
   '/daruma/$slug': typeof DarumaSlugRoute
   '/dashimaki-game/$slug': typeof DashimakiGameSlugRoute
@@ -517,14 +631,17 @@ export interface FileRoutesById {
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
   '/prefecture-game/$slug': typeof PrefectureGameSlugRoute
+  '/rakugaki-coaster/$slug': typeof RakugakiCoasterSlugRoute
   '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
+  '/turkish-ice-cream-3d/$slug': typeof TurkishIceCream3dSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/acupuncture-darts/': typeof AcupunctureDartsIndexRoute
+  '/beer-pour/': typeof BeerPourIndexRoute
   '/concafe-simulator/': typeof ConcafeSimulatorIndexRoute
   '/cooking-games/': typeof CookingGamesIndexRoute
   '/daruma/': typeof DarumaIndexRoute
@@ -542,13 +659,23 @@ export interface FileRoutesById {
   '/omurice/': typeof OmuriceIndexRoute
   '/one-breath/': typeof OneBreathIndexRoute
   '/prefecture-game/': typeof PrefectureGameIndexRoute
+  '/rakugaki-coaster/': typeof RakugakiCoasterIndexRoute
   '/regional-differences/': typeof RegionalDifferencesIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
   '/shusshin-ken/': typeof ShusshinKenIndexRoute
   '/soft-serve/': typeof SoftServeIndexRoute
+  '/turkish-ice-cream-3d/': typeof TurkishIceCream3dIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
   '/uwaki-jinmon/': typeof UwakiJinmonIndexRoute
   '/zipper-finger/': typeof ZipperFingerIndexRoute
+  '/en/sansa/$slug': typeof EnSansaSlugRoute
+  '/fr/sansa/$slug': typeof FrSansaSlugRoute
+  '/ja/sansa-online-temple/$slug': typeof JaSansaOnlineTempleSlugRoute
+  '/ko/sansa/$slug': typeof KoSansaSlugRoute
+  '/en/sansa/': typeof EnSansaIndexRoute
+  '/fr/sansa/': typeof FrSansaIndexRoute
+  '/ja/sansa-online-temple/': typeof JaSansaOnlineTempleIndexRoute
+  '/ko/sansa/': typeof KoSansaIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -565,6 +692,7 @@ export interface FileRouteTypes {
     | '/strongest'
     | '/terms'
     | '/acupuncture-darts/$slug'
+    | '/beer-pour/$slug'
     | '/concafe-simulator/$slug'
     | '/daruma/$slug'
     | '/dashimaki-game/$slug'
@@ -580,14 +708,17 @@ export interface FileRouteTypes {
     | '/omurice/$slug'
     | '/one-breath/$slug'
     | '/prefecture-game/$slug'
+    | '/rakugaki-coaster/$slug'
     | '/regional-differences/$slug'
     | '/shodo-simulator-3d/$slug'
     | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
+    | '/turkish-ice-cream-3d/$slug'
     | '/typhoon-escape/$slug'
     | '/uwaki-jinmon/$slug'
     | '/zipper-finger/$slug'
     | '/acupuncture-darts/'
+    | '/beer-pour/'
     | '/concafe-simulator/'
     | '/cooking-games/'
     | '/daruma/'
@@ -605,13 +736,23 @@ export interface FileRouteTypes {
     | '/omurice/'
     | '/one-breath/'
     | '/prefecture-game/'
+    | '/rakugaki-coaster/'
     | '/regional-differences/'
     | '/shodo-simulator-3d/'
     | '/shusshin-ken/'
     | '/soft-serve/'
+    | '/turkish-ice-cream-3d/'
     | '/typhoon-escape/'
     | '/uwaki-jinmon/'
     | '/zipper-finger/'
+    | '/en/sansa/$slug'
+    | '/fr/sansa/$slug'
+    | '/ja/sansa-online-temple/$slug'
+    | '/ko/sansa/$slug'
+    | '/en/sansa/'
+    | '/fr/sansa/'
+    | '/ja/sansa-online-temple/'
+    | '/ko/sansa/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -626,6 +767,7 @@ export interface FileRouteTypes {
     | '/strongest'
     | '/terms'
     | '/acupuncture-darts/$slug'
+    | '/beer-pour/$slug'
     | '/concafe-simulator/$slug'
     | '/daruma/$slug'
     | '/dashimaki-game/$slug'
@@ -641,14 +783,17 @@ export interface FileRouteTypes {
     | '/omurice/$slug'
     | '/one-breath/$slug'
     | '/prefecture-game/$slug'
+    | '/rakugaki-coaster/$slug'
     | '/regional-differences/$slug'
     | '/shodo-simulator-3d/$slug'
     | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
+    | '/turkish-ice-cream-3d/$slug'
     | '/typhoon-escape/$slug'
     | '/uwaki-jinmon/$slug'
     | '/zipper-finger/$slug'
     | '/acupuncture-darts'
+    | '/beer-pour'
     | '/concafe-simulator'
     | '/cooking-games'
     | '/daruma'
@@ -666,13 +811,23 @@ export interface FileRouteTypes {
     | '/omurice'
     | '/one-breath'
     | '/prefecture-game'
+    | '/rakugaki-coaster'
     | '/regional-differences'
     | '/shodo-simulator-3d'
     | '/shusshin-ken'
     | '/soft-serve'
+    | '/turkish-ice-cream-3d'
     | '/typhoon-escape'
     | '/uwaki-jinmon'
     | '/zipper-finger'
+    | '/en/sansa/$slug'
+    | '/fr/sansa/$slug'
+    | '/ja/sansa-online-temple/$slug'
+    | '/ko/sansa/$slug'
+    | '/en/sansa'
+    | '/fr/sansa'
+    | '/ja/sansa-online-temple'
+    | '/ko/sansa'
   id:
     | '__root__'
     | '/'
@@ -687,6 +842,7 @@ export interface FileRouteTypes {
     | '/strongest'
     | '/terms'
     | '/acupuncture-darts/$slug'
+    | '/beer-pour/$slug'
     | '/concafe-simulator/$slug'
     | '/daruma/$slug'
     | '/dashimaki-game/$slug'
@@ -702,14 +858,17 @@ export interface FileRouteTypes {
     | '/omurice/$slug'
     | '/one-breath/$slug'
     | '/prefecture-game/$slug'
+    | '/rakugaki-coaster/$slug'
     | '/regional-differences/$slug'
     | '/shodo-simulator-3d/$slug'
     | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
+    | '/turkish-ice-cream-3d/$slug'
     | '/typhoon-escape/$slug'
     | '/uwaki-jinmon/$slug'
     | '/zipper-finger/$slug'
     | '/acupuncture-darts/'
+    | '/beer-pour/'
     | '/concafe-simulator/'
     | '/cooking-games/'
     | '/daruma/'
@@ -727,13 +886,23 @@ export interface FileRouteTypes {
     | '/omurice/'
     | '/one-breath/'
     | '/prefecture-game/'
+    | '/rakugaki-coaster/'
     | '/regional-differences/'
     | '/shodo-simulator-3d/'
     | '/shusshin-ken/'
     | '/soft-serve/'
+    | '/turkish-ice-cream-3d/'
     | '/typhoon-escape/'
     | '/uwaki-jinmon/'
     | '/zipper-finger/'
+    | '/en/sansa/$slug'
+    | '/fr/sansa/$slug'
+    | '/ja/sansa-online-temple/$slug'
+    | '/ko/sansa/$slug'
+    | '/en/sansa/'
+    | '/fr/sansa/'
+    | '/ja/sansa-online-temple/'
+    | '/ko/sansa/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -749,6 +918,7 @@ export interface RootRouteChildren {
   StrongestRoute: typeof StrongestRoute
   TermsRoute: typeof TermsRoute
   AcupunctureDartsSlugRoute: typeof AcupunctureDartsSlugRoute
+  BeerPourSlugRoute: typeof BeerPourSlugRoute
   ConcafeSimulatorSlugRoute: typeof ConcafeSimulatorSlugRoute
   DarumaSlugRoute: typeof DarumaSlugRoute
   DashimakiGameSlugRoute: typeof DashimakiGameSlugRoute
@@ -764,14 +934,17 @@ export interface RootRouteChildren {
   OmuriceSlugRoute: typeof OmuriceSlugRoute
   OneBreathSlugRoute: typeof OneBreathSlugRoute
   PrefectureGameSlugRoute: typeof PrefectureGameSlugRoute
+  RakugakiCoasterSlugRoute: typeof RakugakiCoasterSlugRoute
   RegionalDifferencesSlugRoute: typeof RegionalDifferencesSlugRoute
   ShodoSimulator3dSlugRoute: typeof ShodoSimulator3dSlugRoute
   ShusshinKenSlugRoute: typeof ShusshinKenSlugRoute
   SoftServeSlugRoute: typeof SoftServeSlugRoute
+  TurkishIceCream3dSlugRoute: typeof TurkishIceCream3dSlugRoute
   TyphoonEscapeSlugRoute: typeof TyphoonEscapeSlugRoute
   UwakiJinmonSlugRoute: typeof UwakiJinmonSlugRoute
   ZipperFingerSlugRoute: typeof ZipperFingerSlugRoute
   AcupunctureDartsIndexRoute: typeof AcupunctureDartsIndexRoute
+  BeerPourIndexRoute: typeof BeerPourIndexRoute
   ConcafeSimulatorIndexRoute: typeof ConcafeSimulatorIndexRoute
   CookingGamesIndexRoute: typeof CookingGamesIndexRoute
   DarumaIndexRoute: typeof DarumaIndexRoute
@@ -789,13 +962,23 @@ export interface RootRouteChildren {
   OmuriceIndexRoute: typeof OmuriceIndexRoute
   OneBreathIndexRoute: typeof OneBreathIndexRoute
   PrefectureGameIndexRoute: typeof PrefectureGameIndexRoute
+  RakugakiCoasterIndexRoute: typeof RakugakiCoasterIndexRoute
   RegionalDifferencesIndexRoute: typeof RegionalDifferencesIndexRoute
   ShodoSimulator3dIndexRoute: typeof ShodoSimulator3dIndexRoute
   ShusshinKenIndexRoute: typeof ShusshinKenIndexRoute
   SoftServeIndexRoute: typeof SoftServeIndexRoute
+  TurkishIceCream3dIndexRoute: typeof TurkishIceCream3dIndexRoute
   TyphoonEscapeIndexRoute: typeof TyphoonEscapeIndexRoute
   UwakiJinmonIndexRoute: typeof UwakiJinmonIndexRoute
   ZipperFingerIndexRoute: typeof ZipperFingerIndexRoute
+  EnSansaSlugRoute: typeof EnSansaSlugRoute
+  FrSansaSlugRoute: typeof FrSansaSlugRoute
+  JaSansaOnlineTempleSlugRoute: typeof JaSansaOnlineTempleSlugRoute
+  KoSansaSlugRoute: typeof KoSansaSlugRoute
+  EnSansaIndexRoute: typeof EnSansaIndexRoute
+  FrSansaIndexRoute: typeof FrSansaIndexRoute
+  JaSansaOnlineTempleIndexRoute: typeof JaSansaOnlineTempleIndexRoute
+  KoSansaIndexRoute: typeof KoSansaIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -889,6 +1072,20 @@ declare module '@tanstack/react-router' {
       path: '/acupuncture-darts/$slug'
       fullPath: '/acupuncture-darts/$slug'
       preLoaderRoute: typeof AcupunctureDartsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/beer-pour/': {
+      id: '/beer-pour/'
+      path: '/beer-pour'
+      fullPath: '/beer-pour/'
+      preLoaderRoute: typeof BeerPourIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/beer-pour/$slug': {
+      id: '/beer-pour/$slug'
+      path: '/beer-pour/$slug'
+      fullPath: '/beer-pour/$slug'
+      preLoaderRoute: typeof BeerPourSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/concafe-simulator/': {
@@ -1115,6 +1312,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrefectureGameSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/rakugaki-coaster/': {
+      id: '/rakugaki-coaster/'
+      path: '/rakugaki-coaster'
+      fullPath: '/rakugaki-coaster/'
+      preLoaderRoute: typeof RakugakiCoasterIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rakugaki-coaster/$slug': {
+      id: '/rakugaki-coaster/$slug'
+      path: '/rakugaki-coaster/$slug'
+      fullPath: '/rakugaki-coaster/$slug'
+      preLoaderRoute: typeof RakugakiCoasterSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/regional-differences/': {
       id: '/regional-differences/'
       path: '/regional-differences'
@@ -1171,6 +1382,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SoftServeSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/turkish-ice-cream-3d/': {
+      id: '/turkish-ice-cream-3d/'
+      path: '/turkish-ice-cream-3d'
+      fullPath: '/turkish-ice-cream-3d/'
+      preLoaderRoute: typeof TurkishIceCream3dIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/turkish-ice-cream-3d/$slug': {
+      id: '/turkish-ice-cream-3d/$slug'
+      path: '/turkish-ice-cream-3d/$slug'
+      fullPath: '/turkish-ice-cream-3d/$slug'
+      preLoaderRoute: typeof TurkishIceCream3dSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/typhoon-escape/': {
       id: '/typhoon-escape/'
       path: '/typhoon-escape'
@@ -1213,6 +1438,62 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ZipperFingerSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/en/sansa/': {
+      id: '/en/sansa/'
+      path: '/en/sansa'
+      fullPath: '/en/sansa/'
+      preLoaderRoute: typeof EnSansaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/en/sansa/$slug': {
+      id: '/en/sansa/$slug'
+      path: '/en/sansa/$slug'
+      fullPath: '/en/sansa/$slug'
+      preLoaderRoute: typeof EnSansaSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fr/sansa/': {
+      id: '/fr/sansa/'
+      path: '/fr/sansa'
+      fullPath: '/fr/sansa/'
+      preLoaderRoute: typeof FrSansaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/fr/sansa/$slug': {
+      id: '/fr/sansa/$slug'
+      path: '/fr/sansa/$slug'
+      fullPath: '/fr/sansa/$slug'
+      preLoaderRoute: typeof FrSansaSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ja/sansa-online-temple/': {
+      id: '/ja/sansa-online-temple/'
+      path: '/ja/sansa-online-temple'
+      fullPath: '/ja/sansa-online-temple/'
+      preLoaderRoute: typeof JaSansaOnlineTempleIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ja/sansa-online-temple/$slug': {
+      id: '/ja/sansa-online-temple/$slug'
+      path: '/ja/sansa-online-temple/$slug'
+      fullPath: '/ja/sansa-online-temple/$slug'
+      preLoaderRoute: typeof JaSansaOnlineTempleSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ko/sansa/': {
+      id: '/ko/sansa/'
+      path: '/ko/sansa'
+      fullPath: '/ko/sansa/'
+      preLoaderRoute: typeof KoSansaIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ko/sansa/$slug': {
+      id: '/ko/sansa/$slug'
+      path: '/ko/sansa/$slug'
+      fullPath: '/ko/sansa/$slug'
+      preLoaderRoute: typeof KoSansaSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1229,6 +1510,7 @@ const rootRouteChildren: RootRouteChildren = {
   StrongestRoute: StrongestRoute,
   TermsRoute: TermsRoute,
   AcupunctureDartsSlugRoute: AcupunctureDartsSlugRoute,
+  BeerPourSlugRoute: BeerPourSlugRoute,
   ConcafeSimulatorSlugRoute: ConcafeSimulatorSlugRoute,
   DarumaSlugRoute: DarumaSlugRoute,
   DashimakiGameSlugRoute: DashimakiGameSlugRoute,
@@ -1244,14 +1526,17 @@ const rootRouteChildren: RootRouteChildren = {
   OmuriceSlugRoute: OmuriceSlugRoute,
   OneBreathSlugRoute: OneBreathSlugRoute,
   PrefectureGameSlugRoute: PrefectureGameSlugRoute,
+  RakugakiCoasterSlugRoute: RakugakiCoasterSlugRoute,
   RegionalDifferencesSlugRoute: RegionalDifferencesSlugRoute,
   ShodoSimulator3dSlugRoute: ShodoSimulator3dSlugRoute,
   ShusshinKenSlugRoute: ShusshinKenSlugRoute,
   SoftServeSlugRoute: SoftServeSlugRoute,
+  TurkishIceCream3dSlugRoute: TurkishIceCream3dSlugRoute,
   TyphoonEscapeSlugRoute: TyphoonEscapeSlugRoute,
   UwakiJinmonSlugRoute: UwakiJinmonSlugRoute,
   ZipperFingerSlugRoute: ZipperFingerSlugRoute,
   AcupunctureDartsIndexRoute: AcupunctureDartsIndexRoute,
+  BeerPourIndexRoute: BeerPourIndexRoute,
   ConcafeSimulatorIndexRoute: ConcafeSimulatorIndexRoute,
   CookingGamesIndexRoute: CookingGamesIndexRoute,
   DarumaIndexRoute: DarumaIndexRoute,
@@ -1269,13 +1554,23 @@ const rootRouteChildren: RootRouteChildren = {
   OmuriceIndexRoute: OmuriceIndexRoute,
   OneBreathIndexRoute: OneBreathIndexRoute,
   PrefectureGameIndexRoute: PrefectureGameIndexRoute,
+  RakugakiCoasterIndexRoute: RakugakiCoasterIndexRoute,
   RegionalDifferencesIndexRoute: RegionalDifferencesIndexRoute,
   ShodoSimulator3dIndexRoute: ShodoSimulator3dIndexRoute,
   ShusshinKenIndexRoute: ShusshinKenIndexRoute,
   SoftServeIndexRoute: SoftServeIndexRoute,
+  TurkishIceCream3dIndexRoute: TurkishIceCream3dIndexRoute,
   TyphoonEscapeIndexRoute: TyphoonEscapeIndexRoute,
   UwakiJinmonIndexRoute: UwakiJinmonIndexRoute,
   ZipperFingerIndexRoute: ZipperFingerIndexRoute,
+  EnSansaSlugRoute: EnSansaSlugRoute,
+  FrSansaSlugRoute: FrSansaSlugRoute,
+  JaSansaOnlineTempleSlugRoute: JaSansaOnlineTempleSlugRoute,
+  KoSansaSlugRoute: KoSansaSlugRoute,
+  EnSansaIndexRoute: EnSansaIndexRoute,
+  FrSansaIndexRoute: FrSansaIndexRoute,
+  JaSansaOnlineTempleIndexRoute: JaSansaOnlineTempleIndexRoute,
+  KoSansaIndexRoute: KoSansaIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

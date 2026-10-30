@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string; beerPour: string; sansa: string; coaster: string; turkishIce: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -186,6 +186,38 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: '逃走',
       title: 'ハンコう期',
       description: '追いかけてくるハンコから、紙の上を逃げる。',
+    },
+    {
+      id: 'beer-pour',
+      href: links.beerPour,
+      mark: '泡',
+      kicker: '注ぎ',
+      title: 'ビールをいい感じにつぐ',
+      description: '瓶ビールをジョッキについで、泡7：3を狙う。',
+    },
+    {
+      id: 'sansa-online-temple',
+      href: links.sansa,
+      mark: '寺',
+      kicker: '静けさ',
+      title: '산사',
+      description: '言葉をかけずに、同じお堂で手を合わせる。',
+    },
+    {
+      id: 'rakugaki-coaster',
+      href: links.coaster,
+      mark: '車',
+      kicker: '一筆書き',
+      title: 'らくがきコースター',
+      description: '描いた線が、そのままジェットコースターになる。',
+    },
+    {
+      id: 'turkish-ice-cream-3d',
+      href: links.turkishIce,
+      mark: '氷',
+      kicker: '3D',
+      title: 'トルコアイス3D',
+      description: 'お客さんの手から、アイスを守り続ける。',
     },
   ]
 }

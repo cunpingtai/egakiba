@@ -1,0 +1,2030 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ビールをいい感じにつぐ</title>
+<meta name="description" content="瓶ビールをジョッキにつぐだけ。泡7：3、ふち盛りを狙え。登録不要、ブラウザで遊べます。">
+<meta name="robots" content="noindex,follow">
+<link rel="canonical" href="https://egakiba.com/beer-pour/">
+<meta name="theme-color" content="#FFF6DC">
+<style>.bar .site, footer.foot { display: none !important; }</style>
+<style>
+/* 色はインク＋地＋主役（ビールの黄）＋アクセント2色（コーラル、ティール）だけ */
+:root {
+  --bg: #fff6dc;
+  --panel: #ffffff;
+  --ink: #1f2433;
+  --sub: #5c6478;
+  --accent: #ff5a4e;
+  --accent-ink: #ffffff;
+  --accent2: #ffc933;
+  --teal: #2ec4b6;
+  --line: #eadfc4;
+  --stage: #140c06;
+  --font: system-ui, -apple-system, "Hiragino Sans", "Noto Sans JP", sans-serif;
+  --en: system-ui, -apple-system, "Hiragino Sans", sans-serif;
+  --skew: -10deg;
+  --bw: 3px;
+}
+* { box-sizing: border-box; }
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  touch-action: manipulation; /* ダブルタップでの拡大を止める */
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font);
+  font-weight: 700;
+  -webkit-tap-highlight-color: transparent;
+}
+/* 画面の角に薄いハーフトーン */
+body::before, body::after {
+  content: ""; position: fixed; width: 240px; height: 240px; pointer-events: none; z-index: 0; opacity: .14;
+  background-image: radial-gradient(var(--ink) 1.4px, transparent 1.7px); background-size: 11px 11px;
+}
+body::before { top: 0; right: 0; -webkit-mask-image: radial-gradient(circle at 100% 0, #000, transparent 70%); mask-image: radial-gradient(circle at 100% 0, #000, transparent 70%); }
+body::after { bottom: 0; left: 0; -webkit-mask-image: radial-gradient(circle at 0 100%, #000, transparent 70%); mask-image: radial-gradient(circle at 0 100%, #000, transparent 70%); }
+.app {
+  position: relative; z-index: 1;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: max(12px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+}
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 4px 0 14px; }
+.title {
+  flex: none; white-space: nowrap; margin: 0 0 0 4px; font-size: clamp(14px, 4.2vw, 17px); font-weight: 900; letter-spacing: .02em; line-height: 1;
+  padding: 8px 14px 9px; background: var(--accent2); border: var(--bw) solid var(--ink); border-radius: 3px;
+  box-shadow: 4px 4px 0 var(--ink); transform: skewX(var(--skew));
+}
+.title > span { display: inline-block; transform: skewX(calc(var(--skew) * -1)); }
+.site { display: inline-flex; align-items: center; gap: 6px; flex: none; color: var(--sub); font-size: 13px; text-decoration: none; }
+.pp-logo { width: 24px; height: 24px; flex: none; }
+
+/* ---- 盤面（3D） ---- */
+.stage { position: relative; background: var(--stage); border: var(--bw) solid var(--ink); border-radius: 6px; box-shadow: 6px 6px 0 var(--ink); overflow: hidden; }
+#cv { display: block; width: 100%; aspect-ratio: 360 / 560; touch-action: none; outline: none; }
+.hud { position: absolute; inset: 0; pointer-events: none; }
+.err { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px; text-align: center; color: #fff; line-height: 1.7; }
+.en { font-family: var(--en); font-style: italic; font-weight: 800; letter-spacing: .12em; }
+.stroke { color: #fff; -webkit-text-stroke: 5px var(--ink); paint-order: stroke fill; text-shadow: 3px 3px 0 var(--ink); }
+.sticker {
+  display: inline-block; background: var(--panel); color: var(--ink); border: var(--bw) solid var(--ink); border-radius: 3px;
+  box-shadow: 3px 3px 0 var(--ink); transform: skewX(var(--skew));
+}
+.sticker > * { transform: skewX(calc(var(--skew) * -1)); }
+
+/* タイマー */
+.timer { position: absolute; top: 10px; right: 12px; text-align: right; line-height: 1; }
+.timer small { display: block; font-size: 12px; margin-bottom: 2px; }
+.timer b { display: block; font-family: var(--en); font-style: italic; font-weight: 800; font-size: 46px; font-variant-numeric: tabular-nums; }
+.timer.hurry b { color: var(--accent); animation: shake .32s ease-in-out infinite; }
+@keyframes shake { 0%, 100% { transform: translateX(0) } 25% { transform: translateX(-2px) rotate(-1deg) } 75% { transform: translateX(2px) rotate(1deg) } }
+
+/* 目標（左上） */
+.target { position: absolute; top: 12px; left: 12px; padding: 5px 10px 6px; }
+.target > div { display: flex; flex-direction: column; gap: 1px; line-height: 1.15; }
+.target small { font-size: 10px; color: var(--sub); }
+.target b { font-size: 15px; font-weight: 900; }
+.target em { font-style: normal; font-size: 11px; }
+
+/* 勢いゲージ（右） */
+.gauge { position: absolute; right: 16px; top: 27%; height: 36%; width: 46px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.gauge small { font-size: 12px; }
+.g-track {
+  position: relative; flex: 1; width: 22px; border: var(--bw) solid var(--ink); border-radius: 3px; overflow: hidden;
+  background: repeating-linear-gradient(45deg, rgba(31, 36, 51, .22) 0 4px, transparent 4px 8px), var(--panel);
+  box-shadow: 3px 3px 0 var(--ink); transform: skewY(-10deg);
+}
+.g-fill { position: absolute; left: 0; right: 0; bottom: 0; height: 0; background: var(--accent2); border-top: var(--bw) solid var(--ink); }
+.g-fill.hot { background: var(--accent); }
+.g-word { position: absolute; top: 100%; right: -4px; margin-top: 14px; padding: 3px 8px 4px; white-space: nowrap; font-size: 12px; font-weight: 900; background: var(--teal); }
+.g-word[data-empty="1"] { visibility: hidden; }
+
+/* ヒント（下） */
+.hint { position: absolute; left: 50%; bottom: 14px; translate: -50% 0; padding: 7px 12px 8px; font-size: 12px; line-height: 1.45; text-align: center; white-space: nowrap; transition: opacity .35s; }
+.hint.gone { opacity: 0; }
+
+/* ちょろちょろ注ぎが続いたときのヘルプ */
+.tip { position: absolute; left: 0; right: 0; top: 30%; width: max-content; max-width: calc(100% - 24px); margin: 0 auto; padding: 9px 14px 10px; background: var(--teal); font-size: 14px; line-height: 1.45; white-space: nowrap; }
+.tip > span { display: flex; align-items: center; gap: 10px; }
+.tip b { font-weight: 900; }
+.tip em { font-style: normal; background: var(--accent2); padding: 0 4px; border: 2px solid var(--ink); }
+.tip .arrow { position: relative; flex: none; width: 22px; height: 30px; animation: nudge .9s ease-in-out infinite; }
+.tip .arrow::before, .tip .arrow::after { content: ""; position: absolute; left: 3px; width: 13px; height: 13px; border-left: 5px solid var(--ink); border-top: 5px solid var(--ink); transform: rotate(45deg); }
+.tip .arrow::before { top: 4px; }
+.tip .arrow::after { top: 15px; opacity: .45; }
+.tip.show { animation: tipin .35s cubic-bezier(.3, 1.5, .5, 1) both; }
+@keyframes tipin { 0% { opacity: 0; scale: .7 } 100% { opacity: 1; scale: 1 } }
+@keyframes nudge { 0%, 100% { translate: 0 4px } 50% { translate: 0 -4px } }
+
+/* タイトル */
+.title-ov { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: 18px 16px 18px; transition: opacity .3s; }
+.title-ov.out { opacity: 0; }
+.logo-big { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; font-weight: 900; font-size: 40px; line-height: 1.04; letter-spacing: .01em; }
+.logo-big span { color: #fff; -webkit-text-stroke: 8px var(--ink); paint-order: stroke fill; text-shadow: 4px 4px 0 var(--ink); }
+.logo-big span.em { color: var(--accent2); font-size: 1.35em; }
+.logo-big .tag { margin-top: 8px; font-size: 12px; padding: 4px 10px 5px; background: var(--teal); }
+.goal { align-self: center; padding: 10px 18px 12px; background: var(--bg); text-align: center; transform: rotate(-2.5deg); border: var(--bw) solid var(--ink); border-radius: 4px; box-shadow: 5px 5px 0 var(--ink); }
+.goal small { display: block; font-size: 12px; color: var(--sub); }
+.goal b { display: block; font-size: 26px; font-weight: 900; margin: 2px 0 4px; }
+.goal p { margin: 0; font-size: 12px; line-height: 1.6; }
+
+/* 結果（盤面の上のステッカー） */
+.res-ov { position: absolute; inset: 0; padding: 14px; }
+/* 点数ブロック: ビールの左、縦はジョッキの真ん中あたり */
+.scorebox { position: absolute; left: 12px; top: 21%; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.rank { padding: 6px 14px 7px; font-size: 20px; font-weight: 900; background: var(--accent2); border: var(--bw) solid var(--ink); border-radius: 3px; box-shadow: 4px 4px 0 var(--ink); transform: rotate(-4deg); }
+.score { display: flex; align-items: baseline; gap: 2px; margin-left: 2px; line-height: .86; transform-origin: 20% 70%; }
+.score b { font-family: var(--en); font-style: italic; font-weight: 800; font-size: clamp(84px, 27vw, 108px); font-variant-numeric: tabular-nums; -webkit-text-stroke-width: 7px; text-shadow: 5px 5px 0 var(--ink); }
+.score i { font-family: var(--en); font-style: italic; font-weight: 800; font-size: clamp(38px, 12vw, 48px); font-variant-numeric: tabular-nums; -webkit-text-stroke-width: 6px; text-shadow: 4px 4px 0 var(--ink); }
+.score span { font-size: 22px; margin-left: 4px; }
+.score.wide b { font-size: clamp(68px, 21vw, 88px); }
+.score.punch { animation: punch .35s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes punch { 0% { transform: scale(1.18) } 100% { transform: scale(1) } }
+.ratio { position: absolute; left: 12px; bottom: 16px; padding: 5px 12px 6px; font-size: 15px; font-weight: 900; background: var(--teal); }
+.ratio b { font-family: var(--en); font-style: italic; font-weight: 800; font-size: 20px; }
+.best { position: absolute; right: 12px; bottom: 16px; padding: 5px 10px 6px; font-size: 13px; background: var(--accent); color: #fff; }
+.best.new > span { animation: blink 1s steps(2) infinite; }
+@keyframes blink { 50% { opacity: .35 } }
+.pop-in { animation: popin .32s cubic-bezier(.3, 1.6, .5, 1) both; }
+@keyframes popin { 0% { transform: scale(.6) rotate(-8deg); opacity: 0 } 70% { transform: scale(1.08) rotate(-4deg); opacity: 1 } 100% { transform: scale(1) rotate(-4deg) } }
+
+/* リプレイ */
+.replay-badge { position: absolute; top: 12px; left: 12px; padding: 5px 12px 6px; font-size: 14px; background: var(--accent); color: #fff; }
+.replay-badge i { display: inline-block; width: 9px; height: 9px; margin-right: 6px; border-radius: 50%; background: #fff; border: 2px solid var(--ink); vertical-align: 1px; animation: blink 1s steps(2) infinite; font-style: normal; }
+.stage-ctl { position: absolute; right: 10px; bottom: 12px; display: flex; gap: 8px; pointer-events: auto; }
+
+/* トースト */
+.toast { position: absolute; left: 50%; top: 40%; translate: -50% -50%; padding: 10px 18px 12px; font-size: 26px; font-weight: 900; background: var(--accent); color: #fff; white-space: nowrap; }
+
+/* ---- ボタン（平行四辺形＋ハードシャドウ。押すと沈む） ---- */
+button, a.btn {
+  font: inherit; font-weight: 900; font-size: 16px; cursor: pointer; touch-action: manipulation; text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 18px;
+  color: var(--ink); background: var(--panel); border: var(--bw) solid var(--ink); border-radius: 3px;
+  box-shadow: 4px 4px 0 var(--ink); transform: skewX(var(--skew)); transition: transform .06s, box-shadow .06s;
+}
+button > span, a.btn > span { display: inline-block; transform: skewX(calc(var(--skew) * -1)); }
+button:active, a.btn:active { transform: skewX(var(--skew)) translate(4px, 4px); box-shadow: 0 0 0 var(--ink); }
+button:focus-visible, a.btn:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+button:disabled { opacity: .45; cursor: default; }
+.primary { background: var(--accent); color: var(--accent-ink); }
+.stage-ctl button { min-height: 38px; padding: 0 12px; font-size: 13px; box-shadow: 3px 3px 0 var(--ink); }
+.controls { display: flex; margin-top: 16px; }
+.go { flex: 1; min-height: 60px; font-size: 22px; background: var(--accent2); box-shadow: 5px 5px 0 var(--ink); }
+.go:active { transform: skewX(var(--skew)) translate(5px, 5px); }
+.msg { min-height: 1.5em; margin: 8px 2px 0; color: var(--sub); font-size: 14px; }
+.msg.err { color: #c23b22; }
+
+/* ---- 結果（盤面の下） ---- */
+.result { margin-top: 14px; display: grid; gap: 16px; }
+.actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 10px; }
+.actions .wide { grid-column: 1 / -1; }
+.res-actions { position: absolute; left: 14px; right: 16px; top: 55%; display: grid; gap: 12px; pointer-events: auto; animation: rise .3s cubic-bezier(.3, 1.5, .5, 1) both; }
+.res-actions .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.res-actions .post { min-height: 54px; font-size: 18px; background: var(--ink); color: #fff; box-shadow: 4px 4px 0 var(--accent2); }
+.res-actions .post:active { box-shadow: 0 0 0 var(--accent2); }
+.res-actions .replay { background: var(--teal); white-space: nowrap; font-size: clamp(12px, 3.6vw, 15px); padding: 0 8px; }
+.res-actions .again { background: var(--accent2); white-space: nowrap; }
+/* 結果画面のふにゃもらけの位置（tools/build.mjs が足した）。画面の下の右に立ち、名前とリンクは左（足もとの高さ）、フキダシはその上。
+   下にあった札は上へ移す（2026-10-20 本人の指示）: 自己ベストは左上、ビールと泡の比率は右上 */
+.res-ov .funya-react { right: 20px; bottom: 14px; }
+.res-ov .best { left: 12px; right: auto; top: 14px; bottom: auto; }
+.res-ov .ratio { left: auto; right: 12px; top: 14px; bottom: auto; }
+@keyframes rise { 0% { opacity: 0; translate: 0 24px } 100% { opacity: 1; translate: 0 0 } }
+.actions .sub { background: var(--panel); }
+.panel { position: relative; background: var(--panel); border: var(--bw) solid var(--ink); border-radius: 4px; box-shadow: 5px 5px 0 var(--ink); padding: 18px 14px 14px; }
+.tab { position: absolute; top: -13px; left: 10px; padding: 2px 10px 3px; font-size: 13px; background: var(--ink); color: var(--accent2); transform: skewX(var(--skew)); }
+.tab > span { display: inline-block; transform: skewX(calc(var(--skew) * -1)); }
+.comment { margin: 0 0 12px; font-size: 14px; line-height: 1.6; }
+.rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.rows li { display: grid; grid-template-columns: 6.4em 1fr 3.2em; align-items: center; gap: 10px; font-size: 13px; }
+.rows .lab { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
+.rows .lab em { font-style: normal; font-size: 11px; color: var(--sub); }
+.rows .bar { position: relative; height: 14px; border: 2px solid var(--ink); border-radius: 2px; overflow: hidden; transform: skewX(var(--skew)); background: repeating-linear-gradient(45deg, rgba(31, 36, 51, .16) 0 3px, transparent 3px 6px), var(--panel); }
+.rows .bar i { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--accent2); border-right: 2px solid var(--ink); transition: width .7s cubic-bezier(.2, .9, .25, 1); }
+.rows li.pen .bar i { background: var(--accent); }
+.rows .pt { text-align: right; font-family: var(--en); font-style: italic; font-weight: 800; font-size: 19px; font-variant-numeric: tabular-nums; }
+.rows li.pen .pt { color: var(--accent); }
+.card { background: var(--panel); border: var(--bw) solid var(--ink); border-radius: 4px; box-shadow: 5px 5px 0 var(--ink); padding: 10px; }
+.card img { display: block; width: 100%; height: auto; border-radius: 3px; }
+.share-text { margin: 10px 4px 2px; white-space: pre-wrap; word-break: break-all; font: inherit; font-size: 14px; line-height: 1.6; user-select: text; -webkit-user-select: text; }
+.foot { margin-top: 28px; text-align: center; font-size: 12px; }
+.foot a { display: inline-flex; align-items: center; gap: 6px; color: var(--sub); font-size: 14px; text-decoration: none; }
+.foot .pp-logo { width: 28px; height: 28px; }
+[hidden] { display: none !important; }
+@media (prefers-reduced-motion: reduce) { .tip .arrow, .tip.show, .res-actions, .timer.hurry b, .best.new > span, .replay-badge i, .score.punch, .pop-in { animation: none; } }
+</style>
+<style>
+/* ぽかぽかゲームで足した見た目（tools/build.mjs） */
+/* 太さが1つしかない書体（Dela Gothic One など）に、ブラウザが太字を作ると字がつぶれる。作らせない */
+:root{font-synthesis:none}
+/* 「ぽかぽかゲーム」へのリンク */
+.site{display:inline-flex;align-items:center;gap:8px;font-size:16px;font-weight:900;color:var(--ink,#1F2433);text-decoration:none;min-height:40px}
+.site .pp-logo{width:32px;height:32px;flex:none}
+/* 見出しの右の小さいリンク（Web 版の大きさ） */
+.bar .site{gap:6px;min-height:30px;font-size:13px;color:var(--sub)}
+.bar .site .pp-logo{width:24px;height:24px}
+/* ロゴのふにゃもらけの顔（tools/build.mjs が足した） */
+.pp-funya{display:inline-block;background:url(data:image/webp;base64,UklGRkYOAABXRUJQVlA4WAoAAAAQAAAAXwAAXwAAQUxQSCkEAAABoLVtmyFJntEbEd/ats2xZ87Wtm3btm3bxpFte2xrNayO+L73oHt7qjK/iJgAtDgkAYCFN9zpnIc/GDzjv/mNxvzZM0Z9/tyV+2+1GABIQp2DAJDup700eDab2Db8ldO7JQAp1CUmIA66fQjbWylq1pGZlqJs/8dNvQFIqENIwOrn/UySuaixiaYlk+RXJywHpFC5BKx3+0zSsrKlmkmOv3INIFUrAqvd/C+ZlRXUQs64cgWEWCFBPG0ymY0VtUyOPRqQqoSIbp+T2Vhhy+Q7myGGSiTgrHnMxopb5n8nAKkCguVfIQtrWMhnl0ZqmaDLYGZjLS3z180gLRLs+A8za5s5cxtISwSHKQtrXNh2IKQFguOpylqr8RhI0wQnsBhrboVnQ5okOIbFWHsrPB7SFMFeLEYHrXB3SBMS+sxTpYums7shLlAMq46n0snCkcvHuAAhhfdY6Gbmm5DQuYSLmelo5ulInYronot5YmXeZoidCEm+Z6GrhZ+F1ImE05jpbOYxSP8Tw8ozVb1Rm7xsDB0l3MJMdwuvQuoghtX/M/PH7J9VQmgnuJqZDmdeAQEQwlKTTD1Sm7w0AiA4lIUuFx4FASK+MK/sK0QkdFWj06ZdkAQ3MXuVeTUkLDSc6pXy1xTQg0a3zbYEzmH2K/MU4E0Wz17G4qOpfimHLbJ1Gx03NjY7gOoYjXtfxeJZ4SXPe/fEl1TPlB+NoHlm/HO6d1Nn03XjrDbfyIZ6p/41vGv8R/Nt1hTfjFN/9+7P96ieKT96iMWzwqfO8u6y7WieKfdZ61+aX8bGFukXql/KEYviKWa/Cl8Bjvcs8wxgCzW/zLoCMoLqlXKYBMFDlr3KvB2SsA3VK2V/pBAWHk71Se33FADBZcw+ZZ4NASLWnG3mkdnfKyEASHiI2aPMWyAAEMOG89X8MZ21ZojtkHAvsz+ZNyChwxhW/VvNG9Vpy4fQERJOZ/Ym8wQk/G9I6VsWXwq/jAmdTOjSVswTK42t0CkIzmb2JPMsCDodBG8z+5H5FiR0DjEuP4LFi8IRy8eIBY3YepapD6qzuiBiwRN2MjUPrHBXCJopOILF6meZx0HQ3IVwIovVzQrPg6DZgpOoWi9VngtB8wVHGkudCnk8BK0U7Pwvc30y/9sdgtYKuvzJbPWwzGHdIWi1YLnnyVKHQr6xIgStT8BJs5mtalY47xwgoYohYYv3yGxVskx+2g0xoKICHDuezFYVy+SkkwME1Y0BK17/N5m1CprJf25YBSGi0glY55ZppGVtjWYjZ9y6LpBQ9ZCAVU77niRzUWuGackk+dO5qwEpoIYxARh4x1C211LUrCMzLUXZfsgdgyKQImoaBMBC3U97aViDTWyMePXMHgJAAmockgDAolvud8XTnwyeMquoljlTB3/6zBX7bbUYAEgKaDEAVlA4IPYJAAAwKwCdASpgAGAAPjEUiEKiISEVXq58IAMEtABjHtCs30UzU8Avivwr/Qua5p7zU+bPHp/lfYL5hP6s9I/zAft5+x3vT/jN7t/7r6gH9m6hf9jPYY/YD03fZG/dL0hv//nJP9m/B3wM/uX5B9jP5e9jM499s/2X5Gexve/wAvWH+e/Jj8iuPxAB9WP83+WvMV9ff9V50v5IczRQA/M3+V+3f6WP57/e/5Xzv/mP+D/5P+Z+Ab+U/1T/g/4D94++J+u3sWfrv/92ukAtT9bph5ivBL6z8uyv1MwFvAUV6g5ZZYabYqHVoo7c8FOaWY2SNuahgBmEvRikhWqZ3eWTOqv1Qvh8mQmnM1pN61Saum7SnOYfFGjBFnBZ+moPfh2+beUY932EoWjB6kaOTSuah0AnFnxbjR9h/Os8SCnT1v8V2qyILin3Srl2oUqg549k5JYBNdpnG+xT6bnx8dXKUTX3kAAA/v7om8xR1Bp0zkDfdV5b2anKoiuWtnTmOnc9/xGqudSg6XofCH1ZgDikNXJFY/1n5AzdR0OyHruJK1rbojsVvLwUUDpJ3Sd3KyBeVnJvnmEKRVyahwQA/qHQ0QDnUrwlr4gW0LA0rslpPC38evZs4ssg74df8A8H6pKUZbiHbsmJK9QqTJFZo4SdG3DiZFdTrZ0QGYbPMpvYeqJMRj9z1rc8tP/+avVLHnQ5UOHVPWD1QYQeGNq0sQcE2lW0eZg9xM2YAibn7lCYfG725QyaqvqpSdLC3kMUm8Fv6qX6g936xOZN9P50S82NalMuWzRbYYeQpPyQZsmzojc/RMHU8SVtvc+WW7JvQxAk5eWofpaAasiQY2gTye03ckbGJK8A1PoNQJDNT75x9nmAnkUvxE1jj34Q299UwxtqE+3l2Lhfa5Pa1vfY/T2ly5bF5YwR/HsJW3p2pqtS8fX6P1sLNXvIoKZaEXOpzIeG2XZ7TciqCVFvkQwES0fJfgyBsquiJ+jA+4mrc20QdaIvKcgpmxOIm0JOok1zzf3C6Bv6v6O6T/pivf/ZkAgPmiXOizqnyfopAP8MXnyst1yRAT1hC+qEhvkGgfG0yR2EjCNeEK2KXp9zK+3cX5xecqiaxKm6oMzsS6oU0CgKR5Z4YitZNp1SADu+WhHIb/6tuQjDjNSU8+IDMFmMik8+r6uEcU7J63Ct7gX/BuvZ7jRsHrB30Lqdj1hEQpwlz7YIbwmsz4TQNhzSl3GOjq2W66tUZG/gchhFb3CHlE6BToaojdJP5bojfVdyItiw9/6kM+Twx2RyM1VNvxFFcAkSYK59O5iLc9eFs5YyQVHDHXlGLN1o6vCGBTComSX5hnHLuD+yWWxLvcLpj02Vw8Gz3kV8ZNNeIcIcgI7AGMz0zMB9D9tzl/h4KzESRHndNhgcJLZ0si29TFrx7f5taMrqPvFNxBCqw8lX8+vbBXloNefcuZqJK5mXHJqdGoHlNEqMerfSGivl6/+benIEb81WigeOHqKhRJAWH9B92jUWk7GDFmuLbkCRvLL2alFCJoueiOA+w/I7MjcVKaDpCeh6BtwJLXAu0mjk3/dSeD4WZ6ZSbql58ZmyR6yKxN80VR67UVwxvlrQKiZfqhlf+523zyOzUqa48+s+t9PzCuMsRDC9i52x/MQcQ/WKAze9CgP1akAk23mM4nk8xrEgMtrRz7NNqP/bvv522GiENcLOwyYTtSVy2z7Lxpn+29pgIHaGW3Lcsqmrwjs/9AgoEiK8FYI6o325aamo+Xtwxsgq43CZu7alsP45jHZ2E/4zTi/MEv45l86huoABPkKDvHEoH7Nh4mlOyF0xXcp+xgz5A2u4jXNzDIaX/rQPRpUIvkJgUbkdAjjPdf/hnfJ35knKOxzCu2Av4P4pRwlvLUJNdL90igbZ/4T8D1C75N2PecauTspjylKFdODrGuLrFkN5YRldbvL7rCYgMS3oUVOCOHzTqxvhdNv/+dkwJ3fAaD/wVTy0G1eR0P+XdIpWwbojG3C+0sTNL68TwCETTsInfvWxk6r21X7P7Yzm4pfVQB/uxJi27DlwwvkjzwkB61hqdiyXey3j2kgH9aTaudwYUqPsZgx8aRG+Bq20QQBvB0nDL2PadGUQnN6jkto0ZbNKPn+Z/4l6CMkl+hg7YwLuqV613eza7GeR4v71f9PFe3RTzpH77s8FbQTtrUtEimCmfUNVvnIiB7ZeEkodpiDD7tz7b43M2+F0dXq+eNExed2V1fC+1UlNQO0E5gsU8J7+ygXiteMtDlzHS2d7Dbtja9WQ05K790WBJavh9Q6hUQkz3p6UxU9EPErhVLEPEZ4MpOuyg70ISxyfJneUX7d4qMBDRI07rC5AHjlygBo6SVBt5k/CWXS5c9eGfanNnc2Dwb69PV1gB9C5vlp/sislvuc9n7f0AyEFnz1pk30vI42uis143mAoTOibnKm9Mrnrkh8sb+mIn7VNC4uiLjHIdY/p9U58kpxOcvZMf7keDzyuJBT2kXHaGDCSnhbYAev8uXvaxSi/XjSSRkafsG492HPp3d2fOQI03AcPqK0S2HaIr/oKjFm3adxFaaaFaDNgy6QNj0GcoJVzsviTWuoxXXLBgZjY+RSTx/fPzpUAk/zJiS/+IQVxXKDJn/jQ+QwofcQGT4vRXjvrWW/Qf+aU7IR/9Ih1urOATK5NcytbjaSUgV/SnhTXB86gPhm9BJy3sMhRIzmCpinyEvyMx8wKTceOyARDTxRSi1xulYarV0ADjHnNlCWjFCIypnW9HIhbWKbmV7eVdOjrP9yhQLG96HfDwclE3uTvLZemo4ztqAyvn7NyK4j2Q3Oi3vTobYg3zENbE6F3TLLnRfmEWYjy5jj6BIrF2Sz5y6z7T7WP3AeTKm4bgk4nllkF6N+9XsJIH5M0wrrXDrpG5c9shO9WDJsLploOtuJxdWQLDeTIbuFFIGmHqxcc+TY03whMd8AHCjif+fqlaBXAPgyslIj89hF7oYxUo1kPwIQmyMpG7aZWSN8ftm8O2U+BfkHk9JuYjl+sdXaHGw/94hQFHg/+0GVSXDX6ZbUnnzfajGa8WVN7d+nrSoiqHn4FmtmZMUjiKBgq4Ar98mnhpfMP4eMYKGG7Cof/y74uGmPC19vS/jkW6Orrm6PQ+DgvWJ28iFs+4EXroxYr2kBJA8GzFFRpYl02rLYTwet4y8W5vjSzeNQSNPMVy5XmroV/7jexzZRrGVyD2bbNVlQPCc3OKuUQcVNrOhACsu+DmYWTGrIIcO1p19admBgxq+I16PmBkbG9ZNAgw/2ZDd8s6tnv5zG9LwV/JT/nxQvTgN8t/JnSENIc0cXAnuOi1HuTxyUgAgkDmPqu9lJQ4lj1xpp5lf5W/pEAnjvtwNDaB/aLdD+zCDzF42Dx6vwAAAA=) center/contain no-repeat}
+</style>
+</head>
+<body>
+<script>
+'use strict';
+const FunyaPanel = { open() {}, close() {} };
+const FunyaResult = { show() {}, hide() {} };
+</script>
+<main class="app">
+  <header class="bar">
+    <h1 class="title"><span id="gameTitle">ビールをいい感じにつぐ</span></h1>
+    <a class="site" href="/"><!--logo--><span class="pp-logo pp-funya" aria-hidden="true"></span><!--/logo--><span>ぽかぽかゲーム</span></a>
+  </header>
+
+  <section class="stage" id="stage">
+    <canvas id="cv" tabindex="0" aria-label="ゲーム画面。長押しで瓶をかたむける"></canvas>
+    <div class="hud">
+      <div class="title-ov" id="titleOv">
+        <div class="logo-big"><span>ビールを</span><span>いい感じに</span><span class="em">つぐ</span></div>
+        <div class="goal"><small class="en">GOAL</small><b>ビール7：泡3</b><p>泡のてっぺんは、ふちから3〜4mm盛る<br>注ぎはじめたら12秒以内に出す</p></div>
+      </div>
+      <div class="target sticker" id="target" hidden><div><small>目標</small><b>ビール7：泡3</b><em>ふち＋3〜4mm</em></div></div>
+      <div class="timer" id="timer" hidden><small class="en stroke">TIME</small><b class="stroke" id="tVal">12.0</b></div>
+      <div class="gauge" id="gauge" hidden><small class="en stroke">FLOW</small><div class="g-track"><div class="g-fill" id="gFill"></div></div><div class="g-word sticker" id="gWord" data-empty="1"><span id="gWordT">トクトク</span></div></div>
+      <div class="tip sticker" id="tip" hidden><span><i class="arrow" aria-hidden="true"></i><b>押したまま<em>指を上にずらす</em>と<br>瓶がかたむいて、たくさん出る</b></span></div>
+      <div class="hint sticker" id="hint" hidden><span>長押しで瓶をかたむける<br>押したまま指を上にずらすと勢いアップ</span></div>
+      <div class="res-ov" id="resOv" hidden>
+        <div class="scorebox">
+          <div class="rank" id="rRank">名人の一杯</div>
+          <div class="score stroke" id="rScoreBox"><b id="rScore">0</b><i id="rDec">.0</i><span>点</span></div>
+        </div>
+        <div class="ratio sticker" id="rRatio"><span>ビール <b id="rBeer">70</b> ： 泡 <b id="rFoam">30</b></span></div>
+        <div class="best sticker" id="rBest" hidden><span class="en" id="rBestT">NEW BEST</span></div>
+        <div class="res-actions" id="resActions">
+          <button type="button" class="post" id="btnPost"><span>結果をシェア</span></button>
+          <div class="row">
+            <button type="button" class="replay" id="btnReplay"><span>リプレイを見る</span></button>
+            <button type="button" class="again" id="btnAgain"><span>もう一杯</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="replay-badge sticker" id="replayBadge" hidden><span class="en"><i></i><span id="replayT">REPLAY ×2.5</span></span></div>
+      <div class="toast sticker" id="toast" hidden><span id="toastT"></span></div>
+    </div>
+    <div class="stage-ctl" id="playCtl" hidden>
+      <button type="button" id="btnFast"><span>早送り</span></button>
+      <button type="button" id="btnSkip"><span>結果へ</span></button>
+    </div>
+  </section>
+
+  <div class="controls" id="controls">
+    <button class="go" id="btnGo" type="button"><span id="btnGoT">注ぎはじめる</span></button>
+  </div>
+  <p class="msg" id="msg" role="status" aria-live="polite"></p>
+
+  <section class="result" id="result" hidden>
+    <div class="panel">
+      <div class="tab en"><span>RESULT</span></div>
+      <p class="comment" id="rComment"></p>
+      <ul class="rows" id="rRows"></ul>
+    </div>
+    <div class="card">
+      <img id="cardImg" alt="結果カード" width="1080" height="1080">
+      <pre class="share-text" id="shareText"></pre>
+    </div>
+    <div class="actions">
+      <button class="sub wide" type="button" id="btnCopy"><span>結果をコピー</span></button>
+    </div>
+  </section>
+
+  <footer class="foot"><a href="/"><!--logo--><span class="pp-logo pp-funya" aria-hidden="true"></span><!--/logo--><span>ぽかぽかゲーム</span></a></footer>
+</main>
+
+<script type="module">
+import * as THREE from './vendor/three.module.js';
+
+/* =====================================================================
+   設定（ゲームごとに変える）
+   ===================================================================== */
+const GAME_ID = 'beer-pour';            // slug。publish-game が上書きする
+const GAME_TITLE = 'ビールをいい感じにつぐ';
+const DEFAULT_WORD = '';                // ことばを使わないゲーム
+const MAX_LEN = 10;                     // （ことばを使わないので未使用）
+const MAX_SECONDS = 60;                 // 1回の最長時間（秒）。注ぎはじめてからの制限時間は TIME_LIMIT（12秒、ゲーム本体）
+const STAGE_W = 360, STAGE_H = 560;     // 盤面の論理サイズ（縦長の3D画面）。画面幅で変えない
+const SHARE_EMOJI = '🍺';               // コピー文の1行目に付ける絵文字
+const METER_ON = '🍺', METER_OFF = '⬜'; // コピー文のメーター
+const SHARE_HASHTAG = '#ビールをいい感じにつぐ';
+const GAME_NG_WORDS = [];               // このゲームだけで足す禁止語（部分一致）
+const BEACON_URL = '';                  // publish-game が差し込む。空なら送らない
+const QUOTE_POST = '';                  // 告知ポストの URL。publish-game が game-meta の quotePost から差し込む。シェア文の最後に付けると、Xでポストしたときに告知ポストの引用になる
+
+/* =====================================================================
+   共通部分（基本は変えない）
+   ===================================================================== */
+
+// ---- ことばの整形と ?w= ----
+function cleanWord(s) {
+  return Array.from(String(s || '').normalize('NFC').replace(/[\r\n\t]/g, '').trim()).slice(0, MAX_LEN).join('');
+}
+function readWordParam() {
+  try {
+    const w = new URLSearchParams(location.search).get('w');
+    return w ? cleanWord(w) : '';
+  } catch (e) { return ''; }
+}
+function pageUrl() {
+  return new URL('./', location.href).href;
+}
+function challengeUrl(word) {
+  return pageUrl() + '?w=' + encodeURIComponent(word);
+}
+
+// ---- ことばから種を作る擬似乱数（Math.random は使わない） ----
+function hashString(str) {
+  // cyrb128 の先頭32bit
+  let h1 = 1779033703, h2 = 3144134277, h3 = 1013904242, h4 = 2773480762;
+  for (let i = 0; i < str.length; i++) {
+    const k = str.charCodeAt(i);
+    h1 = h2 ^ Math.imul(h1 ^ k, 597399067);
+    h2 = h3 ^ Math.imul(h2 ^ k, 2869860233);
+    h3 = h4 ^ Math.imul(h3 ^ k, 951274213);
+    h4 = h1 ^ Math.imul(h4 ^ k, 2716044179);
+  }
+  h1 = Math.imul(h3 ^ (h1 >>> 18), 597399067);
+  h2 = Math.imul(h4 ^ (h2 >>> 22), 2869860233);
+  h3 = Math.imul(h1 ^ (h3 >>> 17), 951274213);
+  h4 = Math.imul(h2 ^ (h4 >>> 19), 2716044179);
+  return ((h1 ^ h2 ^ h3 ^ h4) >>> 0);
+}
+function makeRng(word, salt) {
+  let a = hashString(GAME_ID + '|' + (salt || '') + '|' + word);
+  const next = function () { // mulberry32
+    a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+  next.range = (lo, hi) => lo + (hi - lo) * next();
+  next.int = (lo, hi) => Math.floor(lo + (hi - lo + 1) * next()); // lo 以上 hi 以下
+  next.pick = (arr) => arr[Math.floor(next() * arr.length)];
+  next.shuffle = (arr) => { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(next() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; };
+  return next;
+}
+
+// ---- 禁止リスト（部分一致。カタカナとひらがな、全角と半角、空白の差は無視） ----
+const NG_WORDS = [
+  '死ね', 'しね', '殺す', 'ころす', '殺せ', 'ころせ', '自殺', 'じさつ',
+  'きちがい', '基地外', '気違い', 'がいじ', '池沼', 'めくら', 'つんぼ', 'かたわ', 'びっこ',
+  '土人', 'ちゃんころ', '部落',
+  'れいぷ', '強姦', 'ちんこ', 'ちんぽ', 'まんこ',
+];
+function normForNg(s) {
+  return String(s).normalize('NFKC').toLowerCase()
+    .replace(/[ァ-ヶ]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0x60))
+    .replace(/[\s・･.,、。\-_ー〜~!！?？「」『』()（）]/g, '');
+}
+const NG_NORMALIZED = NG_WORDS.concat(GAME_NG_WORDS).map(normForNg).filter(Boolean);
+function isNgWord(word) {
+  const w = normForNg(word);
+  return NG_NORMALIZED.some((ng) => w.includes(ng));
+}
+
+// ---- 計測ビーコン（BEACON_URL が空なら何もしない） ----
+const SESSION = (() => {
+  try { const b = new Uint8Array(8); crypto.getRandomValues(b); return Array.from(b, (x) => x.toString(16).padStart(2, '0')).join(''); }
+  catch (e) { return ''; }
+})();
+const VIA = (readWordParam() || new URLSearchParams(location.search).has('c')) ? 'link' : 'direct'; // ?c=1 は共有リンクの目印（tools/build.mjs が足した）
+function beacon(event, data) {
+  if (!BEACON_URL) return;
+  try {
+    const body = Object.assign({ g: GAME_ID, e: event, s: SESSION, v: VIA, w: Array.from(state.word || '').slice(0, 20).join('') }, data || {});
+    // text/plain にして CORS の事前確認を避ける
+    navigator.sendBeacon(BEACON_URL, new Blob([JSON.stringify(body)], { type: 'text/plain' }));
+  } catch (e) { /* 計測の失敗で遊びを止めない */ }
+}
+
+// ---- 「ジャーン」（ぽかぽかゲームの合図。宣伝動画の終わりの札と同じ音） ----
+// 最初の画面を出したときと、結果を出したときに鳴らす。どのゲームでも同じ音にする（変えない、消さない）
+// ctx は AudioContext、dest はつなぐ先（ゲームの音量ノードか ctx.destination）。約1.4秒
+/*jaan*/function pokapokaJaan(ctx, dest, when) {
+  if (!ctx) return;
+  const t = when == null ? ctx.currentTime : when;
+  const bus = ctx.createGain(); bus.gain.value = 0.55;
+  const comp = ctx.createDynamicsCompressor();
+  comp.threshold.value = -14; comp.knee.value = 10; comp.ratio.value = 6; comp.attack.value = 0.003; comp.release.value = 0.25;
+  bus.connect(comp); comp.connect(dest || ctx.destination);
+  const tone = (type, f0, f1, dur, vol) => {
+    const o = ctx.createOscillator(), g = ctx.createGain(); o.type = type;
+    o.frequency.setValueAtTime(f0, t); o.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t + dur);
+    g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+    o.connect(g); g.connect(bus); o.start(t); o.stop(t + dur + 0.02);
+  };
+  tone('sine', 160, 42, 0.26, 1.1);                                                                       // キック
+  [440, 554.37, 659.25].forEach((f) => { tone('sawtooth', f, f, 1.4, 0.15); tone('square', f * 2, f * 2, 1.4, 0.075); }); // 和音（A）
+  { const o = ctx.createOscillator(), lp = ctx.createBiquadFilter(), g = ctx.createGain();              // ベース
+    o.type = 'square'; o.frequency.value = 55; lp.type = 'lowpass'; lp.frequency.value = 520;
+    g.gain.setValueAtTime(0.5, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.6);
+    o.connect(lp); lp.connect(g); g.connect(bus); o.start(t); o.stop(t + 0.62); }
+  { const n = Math.ceil(ctx.sampleRate * 1.5), buf = ctx.createBuffer(1, n, ctx.sampleRate), d = buf.getChannelData(0); // シンバル
+    let s = 9; for (let i = 0; i < n; i++) { s = (s * 1664525 + 1013904223) >>> 0; d[i] = s / 2147483648 - 1; }   // 毎回同じ音にする（Math.random を使わない）
+    const src = ctx.createBufferSource(), f = ctx.createBiquadFilter(), g = ctx.createGain();
+    src.buffer = buf; f.type = 'highpass'; f.frequency.setValueAtTime(7000, t); f.frequency.exponentialRampToValueAtTime(3000, t + 1.3);
+    g.gain.setValueAtTime(0.5, t); g.gain.exponentialRampToValueAtTime(0.001, t + 1.3);
+    src.connect(f); f.connect(g); g.connect(bus); src.start(t); src.stop(t + 1.32); }
+}/*/jaan*/
+
+// ---- 音（初回タップ後に解禁。鳴らさないゲームは beep を呼ばなければよい。jaan は必ず鳴らす） ----
+const Sound = {
+  ctx: null,
+  muted: false,
+  unlock() {
+    if (this.ctx) return;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return;
+    try { this.ctx = new AC(); if (this.ctx.state === 'suspended') this.ctx.resume(); } catch (e) { this.ctx = null; }
+  },
+  beep(freq, dur, vol, type) {
+    const c = this.ctx;
+    if (!c || this.muted) return;
+    const t = c.currentTime, o = c.createOscillator(), g = c.createGain();
+    o.type = type || 'sine'; o.frequency.setValueAtTime(freq || 660, t);
+    g.gain.setValueAtTime(vol || 0.05, t); g.gain.exponentialRampToValueAtTime(0.0001, t + (dur || 0.08));
+    o.connect(g).connect(c.destination); o.start(t); o.stop(t + (dur || 0.08) + 0.02);
+  },
+  // 「ジャーン」。音が解禁されていればすぐ鳴る。初回タップ前（開いた直後）なら、最初のタップのときに鳴る
+  jaan() {
+    const play = () => { if (this.ctx && !this.muted) pokapokaJaan(this.ctx, this.ctx.destination); };
+    if (this.ctx && this.ctx.state === 'running') { play(); return; }
+    if (this.jaanWait) return;
+    this.jaanWait = true;
+    const evs = ['pointerdown', 'keydown'];
+    const once = () => { evs.forEach((ev) => document.removeEventListener(ev, once, true)); this.jaanWait = false; this.unlock(); play(); };
+    evs.forEach((ev) => document.addEventListener(ev, once, true));
+  },
+};
+['pointerdown', 'keydown'].forEach((ev) => document.addEventListener(ev, () => Sound.unlock(), { once: true, capture: true }));
+
+// ---- フォント ----
+const FONT_FAMILY = '"Noto Sans JP", system-ui, sans-serif';
+async function loadFont(text) {
+  if (!document.fonts || !document.fonts.load) return;
+  try {
+    await Promise.race([
+      document.fonts.load('700 64px "Noto Sans JP"', text || 'あ'),
+      new Promise((r) => setTimeout(r, 2000)),
+    ]);
+  } catch (e) { /* 読めなければ端末のフォントで続ける */ }
+}
+
+// ---- ことばを升に分ける ----
+// 論理サイズの見えない canvas に描き、cell px ごとにインクの濃さを見る
+function textToCells(word, opt) {
+  opt = opt || {};
+  const cell = opt.cell || 4;
+  const areaW = opt.width || STAGE_W * 0.9;
+  const areaH = opt.height || STAGE_H * 0.6;
+  const threshold = opt.threshold != null ? opt.threshold : 0.45;
+  const c = document.createElement('canvas');
+  const x = c.getContext('2d', { willReadFrequently: true });
+  let px = 200;
+  x.font = '700 ' + px + 'px ' + FONT_FAMILY;
+  const m = x.measureText(word || ' ');
+  px = Math.floor(Math.min(px * areaW / Math.max(1, m.width), areaH * 0.9));
+  x.font = '700 ' + px + 'px ' + FONT_FAMILY;
+  const tw = Math.ceil(x.measureText(word || ' ').width);
+  const cols = Math.max(1, Math.ceil(tw / cell) + 2);
+  const rows = Math.max(1, Math.ceil(px * 1.3 / cell) + 2);
+  c.width = cols * cell; c.height = rows * cell;
+  x.font = '700 ' + px + 'px ' + FONT_FAMILY;
+  x.textBaseline = 'middle'; x.textAlign = 'center'; x.fillStyle = '#000';
+  x.fillText(word, c.width / 2, c.height / 2);
+  const data = x.getImageData(0, 0, c.width, c.height).data;
+  const ink = new Uint8Array(cols * rows);
+  let count = 0;
+  for (let r = 0; r < rows; r++) {
+    for (let q = 0; q < cols; q++) {
+      let sum = 0;
+      for (let yy = 0; yy < cell; yy++) {
+        const base = ((r * cell + yy) * c.width + q * cell) * 4 + 3;
+        for (let xx = 0; xx < cell; xx++) sum += data[base + xx * 4];
+      }
+      if (sum / (cell * cell * 255) >= threshold) { ink[r * cols + q] = 1; count++; }
+    }
+  }
+  return {
+    cols, rows, cell, ink, count,
+    x0: Math.round((STAGE_W - cols * cell) / 2), // 盤面中央に置いたときの左上
+    y0: Math.round((STAGE_H - rows * cell) / 2),
+  };
+}
+
+// ---- 共有（X へのポストとコピー） ----
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch (e) { /* 次の方法へ */ }
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.setAttribute('readonly', '');
+  ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0;font-size:16px;';
+  document.body.appendChild(ta);
+  ta.select(); ta.setSelectionRange(0, text.length);
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+  ta.remove();
+  return ok;
+}
+// ---- 結果テキストと結果カード ----
+function meterText(n, max) {
+  n = Math.max(0, Math.min(max, n | 0));
+  return METER_ON.repeat(n) + METER_OFF.repeat(max - n);
+}
+function buildShareText(word, r) {
+  // ことばを使わないゲームのため: ことばが空なら「」の行を省き、挑戦リンクの代わりにページの URL を付ける（最小限の変更）
+  const lines = [GAME_TITLE + ' ' + SHARE_EMOJI].concat(word ? ['「' + word + '」'] : [], [r.headline], r.lines || [], r.extra ? [r.extra] : []);
+  if (r.meterMax) lines.push(meterText(r.meter, r.meterMax));
+  if (SHARE_HASHTAG) lines.push(SHARE_HASHTAG);
+  lines.push(pageUrl());
+  if (QUOTE_POST) lines.push(QUOTE_POST);
+  return lines.join('\n');
+}
+function fitFont(ctx, text, maxW, px, weight) {
+  for (; px > 10; px -= 2) {
+    ctx.font = (weight || 700) + ' ' + px + 'px ' + FONT_FAMILY;
+    if (ctx.measureText(text).width <= maxW) break;
+  }
+  return px;
+}
+function renderCard(word, r) {
+  const W = 1080, H = 1080;
+  const c = document.createElement('canvas');
+  c.width = W; c.height = H;
+  const x = c.getContext('2d');
+  const css = getComputedStyle(document.documentElement);
+  const col = (n) => css.getPropertyValue(n).trim();
+  x.fillStyle = col('--bg'); x.fillRect(0, 0, W, H);
+  x.fillStyle = col('--panel');
+  roundRect(x, 40, 40, W - 80, H - 80, 48); x.fill();
+  x.textAlign = 'center'; x.textBaseline = 'middle';
+  x.fillStyle = col('--sub'); x.font = '700 40px ' + FONT_FAMILY;
+  x.fillText(GAME_TITLE, W / 2, 120);
+  // 絵（ゲームが描く。無ければことばを大きく）
+  // ことばを使わないゲームのため: ことばが空なら、ことばの行を省いて絵を縦に広げる（最小限の変更）
+  if (Game.drawCardArt) Game.drawCardArt(x, 90, word ? 170 : 150, W - 180, word ? 430 : 574);
+  // ことば
+  if (word) {
+    x.fillStyle = col('--ink');
+    fitFont(x, '「' + word + '」', W - 160, 110);
+    x.fillText('「' + word + '」', W / 2, 660);
+  }
+  // 見出しと数字
+  x.fillStyle = col('--accent');
+  fitFont(x, r.headline, W - 160, 72);
+  x.fillText(r.headline, W / 2, 780);
+  x.fillStyle = col('--ink');
+  (r.lines || []).slice(0, 2).forEach((line, i) => {
+    fitFont(x, line, W - 200, 44);
+    x.fillText(line, W / 2, 860 + i * 56);
+  });
+  // メーター
+  if (r.meterMax) {
+    const size = 44, gap = 12, total = r.meterMax * size + (r.meterMax - 1) * gap;
+    for (let i = 0; i < r.meterMax; i++) {
+      x.fillStyle = i < r.meter ? col('--accent') : col('--line');
+      roundRect(x, W / 2 - total / 2 + i * (size + gap), 965, size, size, 10); x.fill();
+    }
+  }
+  x.fillStyle = col('--sub'); x.font = '700 28px ' + FONT_FAMILY;
+  x.fillText(pageUrl().replace(/^https?:\/\//, '').replace(/\/$/, ''), W / 2, 1040);
+  return c;
+}
+function roundRect(x, l, t, w, h, r) {
+  x.beginPath();
+  x.moveTo(l + r, t); x.arcTo(l + w, t, l + w, t + h, r); x.arcTo(l + w, t + h, l, t + h, r);
+  x.arcTo(l, t + h, l, t, r); x.arcTo(l, t, l + w, t, r); x.closePath();
+}
+
+
+/* =====================================================================
+   画面と進行
+   3D の対話型ゲームのため、テンプレートの「2D canvas を自動で進める」部分を差し替えた。
+   - 盤面は WebGL の canvas#cv（2D コンテキストは取らない）。描画は Game.draw がフレームごとに行う
+   - 遊びは 1/60 秒の固定ステップ（Game.step）で進める。フレームレートで結果が変わらない
+   - 結果は finish() で出す。カード、コピー文、X でポスト、ビーコン、「ジャーン」はテンプレートと同じ流れ
+   - 「早送り」と「結果へ」はリプレイ中に出す（遊んでいる最中の「結果へ」は「これで出す」）
+   ===================================================================== */
+const $ = (id) => document.getElementById(id);
+const cv = $('cv');
+const state = { phase: 'title', word: '', speed: 1, simTime: 0, acc: 0, last: 0, raf: 0, result: null, text: '', round: 0 };
+const STEP = 1 / 60; // 固定ステップ。フレームレートで結果が変わらないようにする
+
+function setMsg(text, isErr) {
+  const m = $('msg');
+  m.textContent = text || '';
+  m.classList.toggle('err', !!isErr);
+}
+function setGo(mode) {
+  const b = $('btnGo');
+  $('controls').hidden = mode === 'none';
+  $('btnGoT').textContent = mode === 'serve' ? 'これで出す' : '注ぎはじめる';
+  b.dataset.mode = mode;
+  b.disabled = mode === 'serve';
+}
+function start() {
+  Sfx.init();
+  state.round++;
+  Game.setup(String(state.round), makeRng('round', String(state.round)));
+  state.phase = 'playing'; state.speed = 1; state.simTime = 0; state.acc = 0; state.last = performance.now();
+  $('result').hidden = true; $('playCtl').hidden = true;
+  setGo('serve'); setMsg('');
+  beacon('start');
+}
+function frame(t) {
+  const dt = Math.min(0.1, Math.max(0, (t - state.last) / 1000));
+  state.last = t;
+  const ph = state.phase;
+  // the head keeps settling for a moment after serving; the result is already on screen while it does
+  if (ph === 'playing' || ph === 'serving' || ph === 'replay' || (ph === 'result' && Game.settling())) {
+    state.acc += dt * state.speed;
+    let n = 0;
+    while (state.acc >= STEP && n < 600) {
+      state.acc -= STEP; n++;
+      if (advance()) {
+        state.acc = 0;
+        if (state.phase === 'replay') endReplay(); else if (state.phase === 'result') Game.settled(); else finish();
+        break;
+      }
+    }
+  }
+  Game.draw(dt);
+  state.raf = requestAnimationFrame(frame);
+}
+function advance() {
+  if (state.phase === 'replay') return Game.step(STEP);
+  state.simTime += STEP;
+  if (state.phase === 'playing' && state.simTime >= MAX_SECONDS) Game.serve(true);
+  return Game.step(STEP);
+}
+function skipToEnd() {
+  if (state.phase === 'replay') {
+    let guard = Math.ceil((MAX_SECONDS + 5) / STEP);
+    while (guard-- > 0 && !Game.step(STEP)) { /* 最後まで進める */ }
+    endReplay();
+  } else if (state.phase === 'playing') Game.serve(false);
+}
+function finish() {
+  state.phase = 'result';
+  const r = Game.result();
+  state.result = r;
+  state.text = buildShareText(state.word, r);
+  $('shareText').textContent = state.text;
+  $('cardImg').removeAttribute('src'); // カードは泡が落ち着いてから描く（renderResultCard）。保存ボタンは置かない。見せてスクショしてもらう
+  $('playCtl').hidden = true; $('result').hidden = false; setGo('none');
+  Game.showResult(r);
+  beacon('result', { n: r.score, l: r.level, d: Math.round(state.simTime * 10) / 10 });
+  Sound.jaan(); // 結果が出たところで「ジャーン」（ぽかぽかゲームの合図。消さない）
+}
+function renderResultCard() {
+  if (state.result) $('cardImg').src = renderCard(state.word, state.result).toDataURL('image/png');
+}
+function startReplay() {
+  if (state.phase !== 'result') return;
+  Game.finishSettle();
+  Game.startReplay();
+  state.phase = 'replay'; state.speed = 2.5; state.acc = 0;
+  $('playCtl').hidden = false; $('btnFast').firstChild.textContent = '早送り';
+  const top = $('stage').getBoundingClientRect().top + window.scrollY - 12;
+  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+}
+function endReplay() {
+  state.phase = 'result'; state.speed = 1;
+  $('playCtl').hidden = true;
+  Game.endReplay();
+}
+
+$('btnGo').addEventListener('click', () => {
+  const mode = $('btnGo').dataset.mode;
+  if (mode === 'serve') Game.serve(false);
+  else if (state.phase === 'title' || state.phase === 'result') start();
+});
+$('btnFast').addEventListener('click', () => {
+  if (state.phase !== 'replay') return;
+  state.speed = state.speed === 2.5 ? 5 : 2.5;
+  $('btnFast').firstChild.textContent = state.speed === 2.5 ? '早送り' : 'ゆっくり';
+  $('replayT').textContent = 'REPLAY ×' + state.speed;
+});
+$('btnSkip').addEventListener('click', skipToEnd);
+$('btnReplay').addEventListener('click', startReplay);
+$('btnAgain').addEventListener('click', () => {
+  const top = $('stage').getBoundingClientRect().top + window.scrollY - 12;
+  window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  start();
+});
+$('btnCopy').addEventListener('click', async () => {
+  const ok = await copyText(state.text);
+  setMsg(ok ? 'コピーしました' : '下の文を長押ししてコピーしてください', !ok);
+  if (ok) beacon('share_copy');
+});
+$('btnPost').addEventListener('click', async () => {
+  const url = pageUrl();
+  const payload = { title: GAME_TITLE, text: state.text, url };
+  try {
+    if (navigator.share) {
+      const data = navigator.canShare && !navigator.canShare(payload) ? { title: GAME_TITLE, url } : payload;
+      await navigator.share(data);
+      return;
+    }
+  } catch (e) {
+    if (e && e.name === 'AbortError') return;
+  }
+  const ok = await copyText(url);
+  setMsg(ok ? 'ページの住所をコピーしました' : '住所を長押ししてコピーしてください', !ok);
+});
+window.addEventListener('resize', () => Game.resize());
+
+/* =====================================================================
+   ゲーム本体（ここを書き換える）
+   ===================================================================== */
+/* ------------------------------------------------------------------
+   SIM: beer + foam model (units: cm, mL, seconds). No rendering here.
+------------------------------------------------------------------- */
+// SIM-BEGIN
+const YB = 1.60, RIM = 14.5, R0 = 3.45, R1 = 3.60;          // inner jug: bottom height, rim height, radii (~510 mL)
+const VRIM = Math.PI / 3 * (RIM - YB) * (R0 * R0 + R0 * R1 + R1 * R1); // ~424 mL
+const BOTTLE = 633, QMAX = 90, EXP = 4.0, REFINE = 0.4, TIME_LIMIT = 12;                   // 大瓶, max flow mL/s, foam expansion
+const clamp01 = (x) => Math.min(1, Math.max(0, x));
+const smooth01 = (a, b, x) => { const t = clamp01((x - a) / (b - a)); return t * t * (3 - 2 * t); };
+function rIn(y) { return R0 + (R1 - R0) * (y - YB) / (RIM - YB); }
+function vol(y) {
+  if (y <= YB) return 0;
+  if (y <= RIM) { const r = rIn(y); return Math.PI / 3 * (y - YB) * (R0 * R0 + R0 * r + r * r); }
+  return VRIM + Math.PI * R1 * R1 * (y - RIM);
+}
+function hOf(V) {
+  if (V <= 0) return YB;
+  if (V >= VRIM) return RIM + (V - VRIM) / (Math.PI * R1 * R1);
+  let a = YB, b = RIM;
+  for (let i = 0; i < 26; i++) { const m = (a + b) / 2; if (vol(m) < V) a = m; else b = m; }
+  return (a + b) / 2;
+}
+// how high a head can stand above the rim before it slides over (fine foam stands taller)
+function crownMax(c) { return 0.62 - 0.48 * clamp01((c - 0.1) / 0.6); }
+function newSim() { return { L: 0, F: 0, c: 0, Ff: 0, Fc: 0, Pf: 0, Pc: 0, spilledL: 0, spilledF: 0, poured: 0, haze: 0, t: 0, q: 0, glug: 0 }; }
+// The head is two populations: fine bubbles (stable) and coarse bubbles (collapse fast).
+// A hard pour makes mostly coarse head; waiting thins it out, and a gentle top-up lifts the fine head back up.
+function simStep(S, qn, exitY, dt) {
+  S.t += dt;
+  let q = 0, glug = 0;
+  if (qn > 0.001 && S.poured < BOTTLE) {
+    glug = qn > 0.5 ? (qn - 0.5) / 0.5 : 0;                   // ドクドク: pulsing at high flow
+    q = qn * QMAX * (1 + 0.45 * glug * Math.sin(S.t * Math.PI * 2 * 6.5));
+    q = Math.max(0, Math.min(q, (BOTTLE - S.poured) / dt));
+  }
+  S.q = q; S.glug = glug;
+  const dV = q * dt; S.poured += dV;
+  if (dV > 0) {
+    const fall = Math.max(0, exitY - hOf(S.L));
+    const hf = Math.min(1.5, Math.max(0.45, fall / 14));
+    const phi = Math.min(0.92, 0.01 + 1.0 * Math.pow(qn, 2.6) * hf);  // share of poured beer that turns into head
+    S.L += dV * (1 - phi);
+    const nf = dV * phi * EXP;
+    const cin = Math.min(1, 0.05 + 1.1 * Math.pow(qn, 1.3) + 0.2 * glug); // the harder the pour, the coarser the bubbles
+    S.Pc += nf * cin; S.Pf += nf * (1 - cin);                   // new head keeps swelling for a moment after it forms
+    S.haze = Math.min(1, S.haze + dt * 2.4 * qn * qn * hf);
+  }
+  const g = 1 - Math.exp(-dt / 0.6);
+  const tf = S.Pf * g, tc = S.Pc * g;
+  S.Pf -= tf; S.Pc -= tc; S.Ff += tf; S.Fc += tc;
+  const df = S.Ff * 0.010 * dt, dc = S.Fc * 0.10 * dt;          // coarse head collapses ~10x faster
+  S.Ff -= df; S.Fc -= dc; S.Ff += dc * REFINE;                  // part of a settling coarse head tightens into fine head
+  S.L += (df + dc * (1 - REFINE)) / EXP;
+  S.haze = Math.max(0, S.haze - dt * 0.12);
+  if (S.L > VRIM) { const ex = S.L - VRIM; S.L = VRIM; S.spilledL += ex; }
+  S.F = S.Ff + S.Fc; S.c = S.F > 1e-6 ? S.Fc / S.F : 0;
+  const lim = RIM + crownMax(S.c);
+  if (hOf(S.L + S.F) > lim) {
+    const ex = (S.L + S.F) - vol(lim), take = Math.min(ex, S.F), k = take / (S.F || 1);
+    S.Ff -= S.Ff * k; S.Fc -= S.Fc * k; S.spilledF += take;
+    S.F = S.Ff + S.Fc;
+  }
+  return S;
+}
+// let the head finish swelling (used when the glass is served)
+function settle(S, seconds) { const h = 1 / 60; for (let t = 0; t < seconds; t += h) simStep(S, 0, 0, h); return S; }
+const TARGET_RATIO = 0.30, CROWN_LO = 0.25, CROWN_HI = 0.45;   // 7:3, head 2.5–4.5mm above the rim
+function judge(S, elapsed) {
+  const yL = hOf(S.L), yF = hOf(S.L + S.F), tot = yF - YB;
+  const spill = S.spilledL + S.spilledF / EXP;
+  const ratio = tot > 0.01 ? (yF - yL) / tot : 0;
+  const top = yF - RIM;
+  if (tot < 0.6) return { empty: true, score: 0, ratio: 0, top, spill, sR: 0, sF: 0, sQ: 0, pen: 0, c: S.c, elapsed };
+  // strict: ±0.2% of 30% foam is full marks, 2% off loses ~10, 4% off loses ~30
+  const d = Math.max(0, Math.abs(ratio - TARGET_RATIO) - 0.002);
+  const sR = Math.exp(-Math.pow(d / 0.03, 2));
+  // crown 2.5–4.5mm is full marks; 1mm outside loses ~8, 3mm outside loses ~31
+  const dTop = top < CROWN_LO ? CROWN_LO - top : top > CROWN_HI ? top - CROWN_HI : 0;
+  const sF = Math.exp(-Math.pow(dTop / 0.2, 2));
+  const sQ = clamp01((0.42 - S.c) / 0.16) * clamp01(ratio / 0.15);
+  const pen = Math.min(40, spill * 3);
+  const raw = 40 * sR + 35 * sF + 25 * sQ - pen;
+  const score = Math.round(Math.max(0, Math.min(100, raw)) * 10) / 10;
+  return { empty: false, score, ratio, top, spill, sR, sF, sQ, pen, c: S.c, elapsed };
+}
+// SIM-END
+
+/* ------------------------------------------------------------------
+   Renderer / scene
+------------------------------------------------------------------- */
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ canvas: cv, antialias: true, powerPreference: 'high-performance' });
+} catch (e) {
+  const d = document.createElement('div'); d.className = 'err';
+  d.textContent = 'この端末では3D表示を始められませんでした。WebGLが使えるブラウザで開いてください。';
+  $('stage').appendChild(d); throw e;
+}
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.0;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+const MAXANISO = renderer.capabilities.getMaxAnisotropy();
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(0x0e0804, 75, 190);
+const camera = new THREE.PerspectiveCamera(30, 1, 1, 900);
+
+const U = { time: { value: 0 }, haze: { value: 0 }, liq: { value: new THREE.Vector2(YB, YB) } };
+
+function mulberry32(a) { return function () { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+/* ---------- procedural textures ---------- */
+function canvasTex(w, h, draw, { srgb = true, repeat = false } = {}) {
+  const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+  draw(cv.getContext('2d'), w, h);
+  const t = new THREE.CanvasTexture(cv);
+  if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+  if (repeat) t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.anisotropy = MAXANISO;
+  return t;
+}
+function heightToNormal(H, N, strength) {
+  const data = new Uint8Array(N * N * 4);
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+    const xl = (x + N - 1) % N, xr = (x + 1) % N, yu = (y + N - 1) % N, yd = (y + 1) % N;
+    let nx = -(H[y * N + xr] - H[y * N + xl]) * strength;
+    let ny = (H[yd * N + x] - H[yu * N + x]) * strength;
+    let nz = 1; const l = Math.hypot(nx, ny, nz); nx /= l; ny /= l; nz /= l;
+    const i = (y * N + x) * 4;
+    data[i] = (nx * 0.5 + 0.5) * 255; data[i + 1] = (ny * 0.5 + 0.5) * 255; data[i + 2] = (nz * 0.5 + 0.5) * 255; data[i + 3] = 255;
+  }
+  const t = new THREE.DataTexture(data, N, N, THREE.RGBAFormat);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping; t.generateMipmaps = true;
+  t.minFilter = THREE.LinearMipmapLinearFilter; t.magFilter = THREE.LinearFilter; t.anisotropy = MAXANISO; t.needsUpdate = true;
+  return t;
+}
+// Foam: weighted Voronoi bubbles, tileable
+function makeFoamTextures() {
+  const N = 512, g = 22, G = Math.ceil(N / g), rand = mulberry32(7);
+  const sx = new Float32Array(G * G), sy = new Float32Array(G * G), sw = new Float32Array(G * G);
+  for (let j = 0; j < G; j++) for (let i = 0; i < G; i++) {
+    const k = j * G + i;
+    sx[k] = (i + 0.5 + (rand() - 0.5) * 0.9) * g; sy[k] = (j + 0.5 + (rand() - 0.5) * 0.9) * g;
+    sw[k] = Math.pow(rand(), 2.2) * g * 0.55;
+  }
+  const H = new Float32Array(N * N), E = new Float32Array(N * N);
+  for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+    const ci = Math.floor(x / g), cj = Math.floor(y / g);
+    let d1 = 1e9, d2 = 1e9, w1 = 0;
+    for (let dj = -2; dj <= 2; dj++) for (let di = -2; di <= 2; di++) {
+      const ii = (ci + di + G) % G, jj = (cj + dj + G) % G, k = jj * G + ii;
+      let dx = x - sx[k], dy = y - sy[k];
+      if (dx > N / 2) dx -= N; if (dx < -N / 2) dx += N; if (dy > N / 2) dy -= N; if (dy < -N / 2) dy += N;
+      const d = Math.sqrt(dx * dx + dy * dy) - sw[k];
+      if (d < d1) { d2 = d1; d1 = d; w1 = sw[k]; } else if (d < d2) d2 = d;
+    }
+    const e = clamp01((d2 - d1) / (Math.abs(d2) + Math.abs(d1) + 1e-3));
+    const dome = Math.sqrt(Math.max(0, 1 - (1 - e) * (1 - e)));
+    H[y * N + x] = dome * (0.6 + w1 / g);
+    E[y * N + x] = e;
+  }
+  const normal = heightToNormal(H, N, 1.6);
+  const cv = document.createElement('canvas'); cv.width = cv.height = N;
+  const ctx = cv.getContext('2d'); const img = ctx.createImageData(N, N);
+  for (let i = 0; i < N * N; i++) {
+    const e = E[i], crease = 1 - smooth01(0.0, 0.16, e), hi = smooth01(0.55, 1.0, e);
+    const r = 253 - crease * 12 + hi * 2, gg = 248 - crease * 22, b = 236 - crease * 46;
+    img.data[i * 4] = r; img.data[i * 4 + 1] = gg; img.data[i * 4 + 2] = b; img.data[i * 4 + 3] = 255;
+  }
+  ctx.putImageData(img, 0, 0);
+  const map = new THREE.CanvasTexture(cv); map.colorSpace = THREE.SRGBColorSpace;
+  map.wrapS = map.wrapT = THREE.RepeatWrapping; map.anisotropy = MAXANISO;
+  return { map, normal };
+}
+// Condensation droplets on the cold glass
+function makeDropletNormal() {
+  const N = 512, H = new Float32Array(N * N), rand = mulberry32(21);
+  const add = (cx, cy, r, amp) => {
+    const r2 = r * r;
+    for (let y = Math.floor(cy - r); y <= Math.ceil(cy + r); y++) for (let x = Math.floor(cx - r); x <= Math.ceil(cx + r); x++) {
+      const dx = x - cx, dy = (y - cy) * 0.92, d2 = dx * dx + dy * dy; if (d2 > r2) continue;
+      const h = Math.sqrt(1 - d2 / r2) * amp * r, i = ((y + N) % N) * N + ((x + N) % N);
+      if (h > H[i]) H[i] = h;
+    }
+  };
+  for (let i = 0; i < 2600; i++) add(rand() * N, rand() * N, 0.8 + rand() * 1.8, 0.5);
+  for (let i = 0; i < 260; i++) add(rand() * N, rand() * N, 3 + rand() * 6, 0.45);
+  for (let i = 0; i < 14; i++) add(rand() * N, rand() * N, 7 + rand() * 7, 0.4);
+  return heightToNormal(H, N, 0.55);
+}
+function makeWood() {
+  const W = 1024, Hh = 256, rand = mulberry32(3);
+  const perm = new Float32Array(512); for (let i = 0; i < 512; i++) perm[i] = rand();
+  const vn = (x, y) => { const xi = Math.floor(x), yi = Math.floor(y), xf = x - xi, yf = y - yi;
+    const h = (a, b) => perm[((a * 73 + b * 151) & 511 + 512) % 512];
+    const u = xf * xf * (3 - 2 * xf), v = yf * yf * (3 - 2 * yf);
+    return (h(xi, yi) * (1 - u) + h(xi + 1, yi) * u) * (1 - v) + (h(xi, yi + 1) * (1 - u) + h(xi + 1, yi + 1) * u) * v; };
+  const cv = document.createElement('canvas'); cv.width = W; cv.height = Hh;
+  const ctx = cv.getContext('2d'), img = ctx.createImageData(W, Hh), H = new Float32Array(W * Hh);
+  for (let y = 0; y < Hh; y++) for (let x = 0; x < W; x++) {
+    const n = vn(x * 0.006, y * 0.05) * 0.6 + vn(x * 0.02, y * 0.16) * 0.3 + vn(x * 0.08, y * 0.5) * 0.1;
+    const ring = 0.5 + 0.5 * Math.sin((y * 0.11 + n * 9.0) * Math.PI);
+    const grain = Math.pow(ring, 3) * 0.55 + vn(x * 0.4, y * 1.5) * 0.18;
+    const t = clamp01(0.25 + grain * 0.7 + (n - 0.5) * 0.3);
+    const i = (y * W + x) * 4;
+    img.data[i] = 62 + t * 56; img.data[i + 1] = 34 + t * 34; img.data[i + 2] = 18 + t * 18; img.data[i + 3] = 255;
+    H[y * W + x] = grain;
+  }
+  ctx.putImageData(img, 0, 0);
+  const map = new THREE.CanvasTexture(cv); map.colorSpace = THREE.SRGBColorSpace; map.wrapS = map.wrapT = THREE.RepeatWrapping; map.anisotropy = MAXANISO;
+  return map;
+}
+function makeCork() {
+  return canvasTex(256, 256, (ctx, w, h) => {
+    const rand = mulberry32(11);
+    ctx.fillStyle = '#9a7048'; ctx.fillRect(0, 0, w, h);
+    for (let i = 0; i < 5200; i++) {
+      const x = rand() * w, y = rand() * h, r = 0.4 + rand() * 1.8, s = rand();
+      ctx.fillStyle = s < 0.5 ? `rgba(70,44,22,${0.25 + rand() * 0.4})` : `rgba(190,150,105,${0.2 + rand() * 0.35})`;
+      ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+    }
+  }, { repeat: true });
+}
+function makeBokeh() {
+  return canvasTex(1024, 512, (ctx, w, h) => {
+    const rand = mulberry32(5);
+    const bg = ctx.createLinearGradient(0, 0, 0, h);
+    bg.addColorStop(0, '#0d0704'); bg.addColorStop(0.55, '#1c100a'); bg.addColorStop(1, '#0b0603');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, w, h);
+    const glow = ctx.createRadialGradient(w * 0.62, h * 0.5, 10, w * 0.62, h * 0.5, w * 0.5);
+    glow.addColorStop(0, 'rgba(120,62,20,0.55)'); glow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = glow; ctx.fillRect(0, 0, w, h);
+    const cols = [[255, 180, 90], [255, 140, 60], [255, 210, 140], [230, 80, 50], [255, 196, 120], [140, 205, 200]];
+    ctx.globalCompositeOperation = 'lighter';
+    for (let i = 0; i < 70; i++) {
+      const c = cols[i % 17 === 0 ? 5 : Math.floor(rand() * 5)];
+      const x = rand() * w, y = h * (0.2 + rand() * 0.55), r = 10 + Math.pow(rand(), 1.6) * 60, a = 0.08 + rand() * 0.26;
+      const gr = ctx.createRadialGradient(x, y, r * 0.15, x, y, r);
+      gr.addColorStop(0, `rgba(${c[0]},${c[1]},${c[2]},${a})`); gr.addColorStop(0.75, `rgba(${c[0]},${c[1]},${c[2]},${a * 0.8})`); gr.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+    }
+    ctx.globalCompositeOperation = 'source-over';
+  });
+}
+function drawLabel(ctx, w, h) {
+  ctx.fillStyle = '#efe4c6'; ctx.fillRect(0, 0, w, h);
+  const paper = ctx.createLinearGradient(0, 0, w, 0);
+  paper.addColorStop(0, 'rgba(120,90,40,0.25)'); paper.addColorStop(0.5, 'rgba(255,255,255,0)'); paper.addColorStop(1, 'rgba(120,90,40,0.25)');
+  ctx.fillStyle = paper; ctx.fillRect(0, 0, w, h);
+  ctx.strokeStyle = '#b8862e'; ctx.lineWidth = 14; ctx.strokeRect(34, 34, w - 68, h - 68);
+  ctx.lineWidth = 4; ctx.strokeRect(64, 64, w - 128, h - 128);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#7a5418'; ctx.font = '900 64px "Noto Sans JP", "Hiragino Sans", sans-serif';
+  ctx.fillText('KOGANE  LAGER', w / 2, 170);
+  ctx.beginPath(); ctx.arc(w / 2, h * 0.52, 190, 0, Math.PI * 2); ctx.fillStyle = '#9c2116'; ctx.fill();
+  ctx.lineWidth = 8; ctx.strokeStyle = '#d6a64a'; ctx.stroke();
+  ctx.fillStyle = '#f6e9c8'; ctx.font = '900 250px "Noto Sans JP", "Hiragino Sans", sans-serif';
+  ctx.fillText('生', w / 2, h * 0.53);
+  ctx.fillStyle = '#7a5418'; ctx.font = '900 46px "Noto Sans JP", "Hiragino Sans", sans-serif';
+  ctx.fillText('黄 金 ラ ガ ー', w / 2, h - 190);
+  ctx.font = '700 30px "Noto Sans JP", sans-serif'; ctx.fillText('BEER · 633ml', w / 2, h - 128);
+}
+
+/* ---------- lathe geometry with controllable normals & uvs ---------- */
+function latheGeo(nPts, seg, withColor) {
+  const g = new THREE.BufferGeometry(), nv = (seg + 1) * nPts;
+  const mk = (n) => new THREE.BufferAttribute(new Float32Array(nv * n), n).setUsage(THREE.DynamicDrawUsage);
+  g.setAttribute('position', mk(3)); g.setAttribute('normal', mk(3)); g.setAttribute('uv', mk(2));
+  if (withColor) g.setAttribute('color', mk(3));
+  const idx = [];
+  for (let i = 0; i < seg; i++) for (let j = 0; j < nPts - 1; j++) {
+    const a = i * nPts + j, b = (i + 1) * nPts + j, c = (i + 1) * nPts + j + 1, d = i * nPts + j + 1;
+    idx.push(a, b, d, c, d, b);
+  }
+  g.setIndex(idx); g.userData = { nPts, seg };
+  return g;
+}
+const _nr = new Float32Array(64), _ny = new Float32Array(64), _cum = new Float32Array(64);
+function setLathe(g, pts, opt = {}) {
+  const { nPts, seg } = g.userData, n = pts.length;
+  if (n !== nPts) throw new Error('lathe point count');
+  let acc = 0;
+  for (let j = 0; j < n; j++) {
+    if (j > 0) acc += Math.hypot(pts[j][0] - pts[j - 1][0], pts[j][1] - pts[j - 1][1]);
+    _cum[j] = acc;
+    let sx = 0, sy = 0;
+    if (j > 0) { const dx = pts[j][0] - pts[j - 1][0], dy = pts[j][1] - pts[j - 1][1], l = Math.hypot(dx, dy); if (l > 1e-6) { sx += dy / l; sy -= dx / l; } }
+    if (j < n - 1) { const dx = pts[j + 1][0] - pts[j][0], dy = pts[j + 1][1] - pts[j][1], l = Math.hypot(dx, dy); if (l > 1e-6) { sx += dy / l; sy -= dx / l; } }
+    const l = Math.hypot(sx, sy) || 1; _nr[j] = sx / l; _ny[j] = sy / l;
+  }
+  const P = g.attributes.position.array, Nm = g.attributes.normal.array, UV = g.attributes.uv.array, C = g.attributes.color ? g.attributes.color.array : null;
+  const uRep = opt.uRep || 3, vLen = opt.vLen || 7;
+  for (let i = 0; i <= seg; i++) {
+    const ph = i / seg * Math.PI * 2, s = Math.sin(ph), c = Math.cos(ph);
+    for (let j = 0; j < n; j++) {
+      const k = i * n + j, r = pts[j][0], y = pts[j][1];
+      P[k * 3] = r * s; P[k * 3 + 1] = y; P[k * 3 + 2] = r * c;
+      Nm[k * 3] = _nr[j] * s; Nm[k * 3 + 1] = _ny[j]; Nm[k * 3 + 2] = _nr[j] * c;
+      if (opt.uv) opt.uv(UV, k, i / seg, j, r, y, _cum[j], s, c);
+      else { UV[k * 2] = i / seg * uRep; UV[k * 2 + 1] = _cum[j] / vLen; }
+      if (C && opt.color) opt.color(C, k, j, y);
+    }
+  }
+  g.attributes.position.needsUpdate = true; g.attributes.normal.needsUpdate = true; g.attributes.uv.needsUpdate = true;
+  if (C) g.attributes.color.needsUpdate = true;
+  g.computeBoundingSphere();
+}
+function staticLathe(pts, seg, opt) { const g = latheGeo(pts.length, seg, false); setLathe(g, pts, opt); return g; }
+
+/* ---------- environment (soft boxes + warm bar glow) ---------- */
+function buildEnvironment() {
+  const s = new THREE.Scene();
+  s.add(new THREE.Mesh(new THREE.BoxGeometry(120, 70, 120), new THREE.MeshBasicMaterial({ color: 0x1a110a, side: THREE.BackSide })));
+  const panel = (w, h, col, k, x, y, z) => {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: new THREE.Color(col).multiplyScalar(k), side: THREE.DoubleSide }));
+    m.position.set(x, y, z); m.lookAt(0, 0, 0); s.add(m);
+  };
+  panel(14, 46, 0xfff0d8, 7.0, -34, 6, 22);   // tall soft box, front left
+  panel(5, 46, 0xffe0b0, 5.0, 38, 4, 12);     // strip, right
+  panel(46, 12, 0xffc27a, 1.6, 0, 32, -4);    // warm ceiling
+  panel(90, 10, 0xff9a40, 1.3, 0, -2, -55);   // back-bar glow
+  for (let i = 0; i < 9; i++) panel(3, 3, 0xffb060, 6, -40 + i * 10, 14 + (i % 3) * 4, -50);
+  const pm = new THREE.PMREMGenerator(renderer);
+  const tex = pm.fromScene(s, 0.02).texture; pm.dispose();
+  return tex;
+}
+scene.environment = buildEnvironment();
+
+/* ---------- lights ---------- */
+const key = new THREE.DirectionalLight(0xffe2bd, 5.6);
+key.position.set(-22, 40, 26); key.castShadow = true;
+key.shadow.mapSize.set(2048, 2048);
+Object.assign(key.shadow.camera, { left: -22, right: 22, top: 22, bottom: -22, near: 5, far: 120 });
+key.shadow.bias = -0.0004; key.shadow.normalBias = 0.03; key.shadow.radius = 4;
+scene.add(key);
+const rimLight = new THREE.DirectionalLight(0xffc98a, 3.2); rimLight.position.set(12, 22, -40); scene.add(rimLight);
+scene.add(new THREE.HemisphereLight(0x6a4c38, 0x0c0603, 0.7));
+
+/* ---------- set: counter, coaster, backdrop ---------- */
+const wood = makeWood(); wood.repeat.set(3.4, 6);
+const counter = new THREE.Mesh(new THREE.BoxGeometry(420, 4, 190),
+  new THREE.MeshPhysicalMaterial({ map: wood, roughness: 0.55, specularIntensity: 0.3, clearcoat: 0.25, clearcoatRoughness: 0.4, envMapIntensity: 0.3 }));
+counter.position.set(0, -2, -60); counter.receiveShadow = true; scene.add(counter);
+const cork = makeCork(); cork.repeat.set(1.6, 1.6);
+const coaster = new THREE.Mesh(new THREE.CylinderGeometry(4.9, 4.9, 0.28, 72), new THREE.MeshStandardMaterial({ map: cork, roughness: 0.92, envMapIntensity: 0.4 }));
+coaster.position.y = 0.14; coaster.receiveShadow = true; coaster.castShadow = true; scene.add(coaster);
+const backdrop = new THREE.Mesh(new THREE.PlaneGeometry(560, 280), new THREE.MeshBasicMaterial({ map: makeBokeh(), fog: false }));
+backdrop.position.set(0, 18, -170); scene.add(backdrop);
+// warm caustic the beer throws on the counter
+const causticTex = canvasTex(128, 256, (ctx, w, h) => {
+  const g = ctx.createRadialGradient(w / 2, h * 0.42, 2, w / 2, h * 0.5, w * 0.5);
+  g.addColorStop(0, 'rgba(255,200,110,1)'); g.addColorStop(0.35, 'rgba(255,150,40,0.55)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.save(); ctx.scale(1, 2); ctx.fillStyle = g; ctx.fillRect(0, 0, w, h / 2); ctx.restore();
+});
+const caustic = new THREE.Mesh(new THREE.PlaneGeometry(7, 12), new THREE.MeshBasicMaterial({ map: causticTex, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -2 }));
+caustic.rotation.x = -Math.PI / 2; caustic.rotation.z = 0.55; caustic.position.set(2.6, 0.29, -5.0); scene.add(caustic);
+
+/* ---------- the glass ---------- */
+const rig = new THREE.Group(); rig.position.y = 0.28; scene.add(rig);
+const cup = new THREE.Group(); rig.add(cup);
+// 中ジョッキ: thick straight walls, heavy base, rounded rim, D handle
+const OUT0 = 3.95, OUT1 = 4.05, FIL = 0.22;                  // outer radius at foot / at rim, inner bottom fillet
+const rimArc = []; for (let i = 1; i <= 16; i++) { const a = i / 16 * Math.PI; rimArc.push([(OUT1 + R1) / 2 + (OUT1 - R1) / 2 * Math.cos(a), RIM + (OUT1 - R1) / 2 * Math.sin(a)]); }
+const outerPts = [[0, 0.14], [2.9, 0.1], [3.4, 0.0], [3.78, 0.03], [3.9, 0.12], [OUT0, 0.28], [(OUT0 + OUT1) / 2, 7.4], [OUT1, RIM], ...rimArc];
+const filC = [rIn(YB + FIL) - FIL, YB + FIL];
+const innerPts = [[R1, RIM], [(R0 + R1) / 2, (YB + RIM) / 2], [rIn(YB + FIL), YB + FIL]];
+for (let i = 1; i <= 5; i++) { const a = -i / 5 * Math.PI / 2; innerPts.push([filC[0] + FIL * Math.cos(a), filC[1] + FIL * Math.sin(a)]); }
+innerPts.push([1.4, YB], [0, YB]);
+const droplets = makeDropletNormal();
+const glassBase = { color: 0xffffff, metalness: 0, roughness: 0.03, transmission: 1, thickness: 0.6, ior: 1.5, specularIntensity: 1, envMapIntensity: 1.15, attenuationColor: new THREE.Color(0xe6f6ee), attenuationDistance: 26 };
+const glassOuter = new THREE.Mesh(staticLathe(outerPts, 128, { uRep: 3, vLen: 7 }),
+  new THREE.MeshPhysicalMaterial({ ...glassBase, normalMap: droplets, normalScale: new THREE.Vector2(0.5, 0.5) }));
+const glassInner = new THREE.Mesh(staticLathe(innerPts, 128, {}), new THREE.MeshPhysicalMaterial({ ...glassBase }));
+const handleCurve = new THREE.CatmullRomCurve3([[3.99, 12.4], [5.3, 12.35], [6.35, 11.6], [6.7, 9.6], [6.65, 6.6], [6.2, 4.6], [5.2, 3.75], [3.97, 3.6]].map(([x, y]) => new THREE.Vector3(x, y, 0)));
+const handle = new THREE.Mesh(new THREE.TubeGeometry(handleCurve, 80, 0.56, 18, false),
+  new THREE.MeshPhysicalMaterial({ ...glassBase, thickness: 0.12, normalMap: droplets, normalScale: new THREE.Vector2(0.35, 0.35) }));
+handle.scale.z = 0.72;
+const handleArm = new THREE.Group(); handleArm.rotation.y = Math.PI + 0.42; handleArm.add(handle);
+cup.add(handleArm);
+cup.add(glassOuter, glassInner);
+
+/* ---------- beer material (physical base + procedural glow, carbonation, haze) ---------- */
+const BEER_COMMON = `
+uniform float uTime; uniform float uHaze; uniform vec2 uLiq;
+varying vec3 vLoc; varying float vNy; varying vec2 vUv0;
+float bh11(float n){ return fract(sin(n*127.1)*43758.5453); }
+float bh21(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+float bnoise(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f);
+  return mix(mix(bh21(i),bh21(i+vec2(1.,0.)),f.x), mix(bh21(i+vec2(0.,1.)),bh21(i+vec2(1.,1.)),f.x), f.y); }
+vec3 beerBody(float ndv){
+  vec3 cEdge=vec3(1.0,0.66,0.12), cMid=vec3(0.80,0.34,0.016), cDeep=vec3(0.32,0.09,0.003);
+  vec3 c=mix(cEdge,cMid,smoothstep(0.06,0.55,ndv));
+  return mix(c,cDeep,smoothstep(0.5,1.0,ndv)*0.62);
+}`;
+const BEER_LIQ = `{
+  vec3 Vd = normalize(vViewPosition);
+  float ndv = clamp(abs(dot(normal, Vd)),0.,1.);
+  float side = 1.0 - smoothstep(0.5, 0.9, abs(vNy));
+  float yN = clamp((vLoc.y-uLiq.x)/max(0.05, uLiq.y-uLiq.x), 0., 1.);
+  vec3 c = beerBody(mix(0.2, ndv, side));
+  c *= mix(0.72, 1.06, clamp((vLoc.y-1.1)/13.0,0.,1.));
+  float r = length(vLoc.xz);
+  float ang = atan(vLoc.z, vLoc.x);
+  float cols = 64.0;
+  float u = (ang/6.2831853+0.5)*cols;
+  float id = floor(u);
+  float rnd = bh11(id+3.7);
+  float act = step(0.62, rnd);
+  float spd = 2.2 + 3.5*bh11(id+11.3);
+  float spc = 0.42 + 0.9*bh11(id+5.1);
+  float yy = (vLoc.y - uTime*spd)/spc + rnd*17.0;
+  float cell = floor(yy);
+  float jx = (bh11(cell*1.7+id*9.1)-0.5)*0.5;
+  vec2 dd = vec2((fract(u)-0.5-jx*0.4)*(6.2831853*r/cols), (fract(yy)-0.5)*spc);
+  float br = 0.02 + 0.02*bh11(cell+id*3.3) + 0.02*yN;
+  float dl = length(dd);
+  float b = 1.0 - smoothstep(br*0.55, br, dl);
+  float spec = 1.0 - smoothstep(0.0, br*0.45, length(dd - vec2(-br*0.3, br*0.3)));
+  c += side * act * (b*vec3(0.22,0.16,0.07) + spec*vec3(0.5,0.45,0.32));
+  float hm = smoothstep(1.0-uHaze-0.2, 1.0-uHaze+0.2, yN) * uHaze;
+  float hn = bnoise(vec2(ang*7.0, vLoc.y*2.2 - uTime*1.6));
+  c = mix(c, vec3(0.98,0.80,0.46), clamp(hm*0.32*(0.7+0.6*hn),0.,0.4));
+  totalEmissiveRadiance += c * 0.66;
+}`;
+const BEER_STREAM = `{
+  vec3 Vd = normalize(vViewPosition);
+  float ndv = clamp(abs(dot(normal, Vd)),0.,1.);
+  vec3 c = beerBody(ndv*0.65);
+  float s = bnoise(vec2(vUv0.x*9.0, vUv0.y*16.0 - uTime*20.0));
+  c *= 0.82 + 0.4*s;
+  totalEmissiveRadiance += c * 1.0;
+}`;
+function beerMaterial(mode) {
+  const m = new THREE.MeshPhysicalMaterial({ color: 0x1c0d03, roughness: 0.05, metalness: 0, envMapIntensity: 0.9, ior: 1.34, specularIntensity: 1 });
+  m.onBeforeCompile = (sh) => {
+    sh.uniforms.uTime = U.time; sh.uniforms.uHaze = U.haze; sh.uniforms.uLiq = U.liq;
+    sh.vertexShader = sh.vertexShader
+      .replace('#include <common>', '#include <common>\nvarying vec3 vLoc; varying float vNy; varying vec2 vUv0;')
+      .replace('#include <begin_vertex>', '#include <begin_vertex>\nvLoc = position; vNy = normal.y; vUv0 = uv;');
+    sh.fragmentShader = sh.fragmentShader
+      .replace('#include <common>', '#include <common>\n' + BEER_COMMON)
+      .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n' + (mode === 0 ? BEER_LIQ : BEER_STREAM));
+  };
+  m.customProgramCacheKey = () => 'beer' + mode;
+  return m;
+}
+const liquidGeo = latheGeo(8, 96, false);
+const liquid = new THREE.Mesh(liquidGeo, beerMaterial(0)); liquid.castShadow = true; liquid.visible = false; cup.add(liquid);
+
+/* ---------- foam ---------- */
+const foamTex = makeFoamTextures();
+const foamMat = new THREE.MeshPhysicalMaterial({
+  color: 0xffffff, vertexColors: true, map: foamTex.map, normalMap: foamTex.normal, normalScale: new THREE.Vector2(0.6, 0.6),
+  roughness: 0.5, metalness: 0, sheen: 0.5, sheenColor: new THREE.Color(0xfff2da), sheenRoughness: 0.5,
+  emissive: new THREE.Color(0x6a5a3e), envMapIntensity: 0.85
+});
+const FOAM_PTS = 22, ARC_N = 8, TOP_N = 10;
+const foamGeo = latheGeo(FOAM_PTS, 96, true);
+const foam = new THREE.Mesh(foamGeo, foamMat); foam.castShadow = true; foam.visible = false; cup.add(foam);
+
+const E_IN = 0.006;
+function liquidProfile(yL) {
+  // follow the inner bottom fillet only up to the beer level, so a shallow pour has no folded-over edge
+  const fr = FIL - E_IN, b = YB + E_IN, p = [[0, b]];
+  const aMax = yL >= filC[1] ? 0 : Math.asin(Math.max(-1, Math.min(0, (yL - filC[1]) / fr)));
+  for (let i = 0; i < 3; i++) { const a = -Math.PI / 2 + (aMax + Math.PI / 2) * i / 2; p.push([filC[0] + fr * Math.cos(a), Math.max(b, filC[1] + fr * Math.sin(a))]); }
+  const rt = yL >= YB + FIL ? rIn(yL) - E_IN : p[3][0];
+  p.push([rt, Math.max(yL, p[3][1])], [rt, Math.max(yL, p[3][1])], [rt * 0.5, Math.max(yL, p[3][1])], [0, Math.max(yL, p[3][1])]);
+  return p;
+}
+function wallR(y) { return y >= YB + FIL ? rIn(y) - E_IN : filC[0] + Math.sqrt(Math.max(0, Math.pow(FIL - E_IN, 2) - Math.pow(filC[1] - y, 2))); }
+function foamProfile(yL, yF, c) {
+  const p = [];
+  const rb = wallR(yL);
+  p.push([0, yL], [rb, yL], [rb, yL]);
+  if (yF <= RIM) {
+    const e = Math.min(0.24, (yF - yL) * 0.45), yS = yF - e, rS = wallR(yS);
+    p.push([rS, yS]);
+    const cx = rS - e;
+    for (let i = 1; i <= ARC_N; i++) { const a = i / ARC_N * Math.PI / 2; p.push([cx + e * Math.cos(a), yS + e * Math.sin(a)]); }
+    const dome = 0.03 + 0.05 * (1 - c);
+    for (let i = 1; i <= TOP_N; i++) { const t = i / TOP_N, r = cx * (1 - t); p.push([r, yF + dome * (1 - (r / cx) * (r / cx))]); }
+  } else {
+    const hC = yF - RIM, bulge = Math.min(0.16, hC * 0.45), R = R1 + bulge;
+    p.push([R1 - E_IN, RIM], [R1 - E_IN, RIM]);               // hard edge: keeps the side's shading independent of the crown
+    const n = ARC_N + TOP_N - 1, pe = 2.8;
+    for (let i = 1; i <= n; i++) {
+      const a = i / n * Math.PI / 2, ca = Math.cos(a), sa = Math.sin(a);
+      const rr = R * Math.pow(ca, 2 / pe) * (1 + 0.025 * Math.sin(a * 2));
+      p.push([i === n ? 0 : rr, RIM + hC * Math.pow(sa, 2 / pe)]);
+    }
+  }
+  return p;
+}
+const _gold = new THREE.Color(0.93, 0.66, 0.30), _cream = new THREE.Color(1.0, 0.975, 0.92), _creamC = new THREE.Color(1.0, 0.93, 0.78), _tmpC = new THREE.Color();
+let lastLiqY = -1, lastFoam = [-1, -1, -1];
+function updateBeerMeshes(S) {
+  const yL = hOf(S.L), yF = hOf(S.L + S.F);
+  liquid.visible = S.L > 0.25;
+  if (liquid.visible && Math.abs(yL - lastLiqY) > 0.002) { setLathe(liquidGeo, liquidProfile(yL), { uRep: 3, vLen: 7 }); lastLiqY = yL; }
+  U.liq.value.set(YB, yL); U.haze.value = S.haze;
+  const thick = yF - yL;
+  foam.visible = thick > 0.035;
+  if (foam.visible && (Math.abs(yL - lastFoam[0]) > 0.002 || Math.abs(yF - lastFoam[1]) > 0.002 || Math.abs(S.c - lastFoam[2]) > 0.01)) {
+    const pts = foamProfile(yL, yF, S.c);
+    const flat = pts.map((q, j) => { const a = pts[Math.max(0, j - 1)], b = pts[Math.min(pts.length - 1, j + 1)]; return j > 2 && Math.abs(b[0] - a[0]) > Math.abs(b[1] - a[1]) * 1.2; });
+    _tmpC.copy(_cream).lerp(_creamC, clamp01(S.c * 1.6));
+    setLathe(foamGeo, pts, {
+      uv: (UV, k, f, j, r, y, cum, s, c) => {
+        if (flat[j]) { UV[k * 2] = r * s / 7 + 0.5; UV[k * 2 + 1] = r * c / 7 + 0.5; }
+        else { UV[k * 2] = f * 3; UV[k * 2 + 1] = y / 7; }
+      },
+      color: (C, k, j, y) => {
+        const t = clamp01((y - yL) / 0.55);
+        C[k * 3] = _gold.r + (_tmpC.r - _gold.r) * t; C[k * 3 + 1] = _gold.g + (_tmpC.g - _gold.g) * t; C[k * 3 + 2] = _gold.b + (_tmpC.b - _gold.b) * t;
+      }
+    });
+    lastFoam = [yL, yF, S.c];
+    const kRep = 4.2 - 2.0 * smooth01(0.08, 0.55, S.c);
+    foamTex.map.repeat.set(kRep, kRep); foamTex.normal.repeat.set(kRep, kRep);
+    const ns = 0.42 + 0.45 * clamp01(S.c);
+    foamMat.normalScale.set(ns, ns);
+  }
+  caustic.material.opacity = 0.34 * clamp01((S.L + S.F * 0.2) / VRIM);
+}
+
+/* ---------- spill: a foam sheet rolls over the rim and runs down the outside in tongues; beer pools at the foot ---------- */
+const SPA = 200, SPV = 56, TAU = Math.PI * 2;
+const spillProf = [];                                        // rows along the path: [r, y, nr, ny, s(cm from rim crest)]
+{
+  const rc = (OUT1 + R1) / 2, rr = (OUT1 - R1) / 2 + 0.05, nArc = 10;
+  for (let i = 0; i <= nArc; i++) { const a = Math.PI - i / nArc * Math.PI; spillProf.push([rc + rr * Math.cos(a), RIM + rr * Math.sin(a), Math.cos(a), Math.sin(a), 0]); }
+  const n = SPV - nArc - 1;
+  for (let i = 1; i <= n; i++) { const y = RIM - 0.05 - (RIM - 0.45) * i / n; spillProf.push([OUT0 + (OUT1 - OUT0) * (y - 0.28) / (RIM - 0.28) + 0.03, y, 1, 0, 0]); }
+  let acc = 0;
+  for (let j = 1; j < spillProf.length; j++) { acc += Math.hypot(spillProf[j][0] - spillProf[j - 1][0], spillProf[j][1] - spillProf[j - 1][1]); spillProf[j][4] = acc; }
+  const crest = spillProf[nArc / 2][4]; for (const q of spillProf) q[4] -= crest;
+}
+const SPILL_MAX = spillProf[SPV - 1][4];
+const spillGeo = new THREE.BufferGeometry();
+{
+  const nv = (SPA + 1) * SPV, uv = new Float32Array(nv * 2), idx = [];
+  spillGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(nv * 3), 3).setUsage(THREE.DynamicDrawUsage));
+  spillGeo.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(nv * 3), 3).setUsage(THREE.DynamicDrawUsage));
+  spillGeo.setAttribute('color', new THREE.BufferAttribute(new Float32Array(nv * 4), 4).setUsage(THREE.DynamicDrawUsage));
+  for (let i = 0; i <= SPA; i++) for (let j = 0; j < SPV; j++) { const k = i * SPV + j; uv[k * 2] = i / SPA * 3.6; uv[k * 2 + 1] = spillProf[j][4] / 7; }
+  spillGeo.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  for (let i = 0; i < SPA; i++) for (let j = 0; j < SPV - 1; j++) { const a = i * SPV + j, b = (i + 1) * SPV + j, c = (i + 1) * SPV + j + 1, d = i * SPV + j + 1; idx.push(a, d, b, b, d, c); }
+  spillGeo.setIndex(idx);
+}
+const spillMat = new THREE.MeshPhysicalMaterial({
+  color: 0xffffff, vertexColors: true, transparent: true, depthWrite: false, side: THREE.FrontSide,
+  map: foamTex.map, normalMap: foamTex.normal, normalScale: new THREE.Vector2(0.5, 0.5),
+  roughness: 0.22, clearcoat: 0.6, clearcoatRoughness: 0.1, sheen: 0.3, sheenColor: new THREE.Color(0xfff2da),
+  emissive: new THREE.Color(0x3a2c18), envMapIntensity: 1.1
+});
+const spillMesh = new THREE.Mesh(spillGeo, spillMat); spillMesh.visible = false; spillMesh.frustumCulled = false; spillMesh.renderOrder = 2; cup.add(spillMesh);
+// Overflow runs mostly down one side. Each run is a foam tongue (slow) with a thin wet beer film ahead of it (fast).
+const spill = { lobes: [], collar: 0, puddle: 0, dirty: true };
+function newSpill(rand) {
+  const side = (rand() - 0.5) * 1.8;                          // the side it spills over, biased toward the viewer
+  spill.lobes = [];
+  for (let i = 0; i < 9; i++) {
+    const near = i < 7;
+    spill.lobes.push({ a: ((near ? side + (rand() - 0.5) * 2.2 : rand() * TAU) + TAU * 2) % TAU, w: 0.08 + rand() * 0.12, k: 0.5 + rand() * 0.55,
+      thr: i * 0.5 + rand() * 0.5, th: 0.05 + rand() * 0.08, len: 0, wet: 0, wob: rand() * 10 });
+  }
+  spill.collar = 0; spill.puddle = 0; spill.dirty = true;
+  spillMesh.visible = false; puddle.visible = false;
+}
+function lenAt(phi) {
+  let Lf = 0, Lw = 0, T = 0, band = 0;
+  for (const l of spill.lobes) {
+    if (l.wet <= 0) continue;
+    let d = Math.abs(phi - l.a) % TAU; if (d > Math.PI) d = TAU - d;
+    band = Math.max(band, Math.exp(-Math.pow(d / (l.w * 3), 2)));
+    const q = d / l.w;
+    if (q < 1 && l.len > 0) {
+      const v = l.len * Math.pow(1 - q * q, 0.75) * (1 + 0.08 * Math.sin(phi * 37 + l.wob) + 0.05 * Math.sin(phi * 83 + l.wob * 2));
+      if (v > Lf) Lf = v;
+      T = Math.max(T, l.th * Math.sqrt(1 - q * q));
+    }
+    const qw = d / (l.w * 1.4);
+    if (qw < 1) { const v = l.wet * Math.pow(1 - qw * qw, 0.6) * (1 + 0.06 * Math.sin(phi * 53 + l.wob)); if (v > Lw) Lw = v; }
+  }
+  const lip = spill.collar * band;                            // foam lip only where it is actually going over
+  if (lip > Lf) { Lf = lip; T = Math.max(T, 0.035 * band); }
+  return [Lf, Math.max(Lw, Lf), T];
+}
+const _cream2 = [1.0, 0.975, 0.92], _wet = [0.78, 0.47, 0.12];
+function rebuildSpill() {
+  const P = spillGeo.attributes.position.array, C = spillGeo.attributes.color.array;
+  for (let i = 0; i <= SPA; i++) {
+    const phi = (Math.PI + i / SPA * TAU) % TAU, sn = Math.sin(phi), cs = Math.cos(phi);
+    const [Lf, Lw, T] = lenAt(phi);
+    for (let j = 0; j < SPV; j++) {
+      const [r, y, nr, ny, sp] = spillProf[j], k = i * SPV + j;
+      const covF = Lf > 0.001 ? Lf - sp : -1, covW = Lw > 0.001 ? Lw - sp : -1;
+      const tip = clamp01(sp / Math.max(0.6, Lf));
+      const thick = covF > 0 ? T * smooth01(0, 0.45, covF) * (1 - 0.6 * tip) * (0.8 + 0.2 * Math.sin(sp * 6 + phi * 11)) : 0;
+      const off = 0.008 + thick, rr = r + nr * off;
+      P[k * 3] = rr * sn; P[k * 3 + 1] = y + ny * off; P[k * 3 + 2] = rr * cs;
+      const fa = smooth01(-0.1, 0.12, covF) * (0.92 - 0.35 * smooth01(0.55, 1.0, tip));   // foam: soft edges, thinner near its end
+      const wa = covW > 0 ? 0.34 * smooth01(0, 0.7, covW) * (0.75 + 0.25 * Math.sin(sp * 3.1 + phi * 17)) : 0;  // wet film
+      const a = Math.max(fa, wa), m = a > 0 ? fa / a : 0;
+      const ft = smooth01(0.5, 1.0, tip) * 0.5;
+      for (let ch = 0; ch < 3; ch++) {
+        const foamC = _cream2[ch] + (_wet[ch] - _cream2[ch]) * ft;
+        C[k * 4 + ch] = _wet[ch] + (foamC - _wet[ch]) * m;
+      }
+      C[k * 4 + 3] = a;
+    }
+  }
+  spillGeo.attributes.position.needsUpdate = true; spillGeo.attributes.color.needsUpdate = true;
+  spillGeo.computeVertexNormals();
+  spill.dirty = false;
+}
+// beer that ran down to the foot: irregular glossy puddle
+const puddleGeo = new THREE.CircleGeometry(1, 96);
+{ const P = puddleGeo.attributes.position.array; for (let i = 3; i < P.length; i += 3) { const a = Math.atan2(P[i + 1], P[i]), k = 1 + 0.12 * Math.sin(3 * a + 1.3) + 0.07 * Math.sin(7 * a + 0.4) + 0.04 * Math.sin(13 * a); P[i] *= k; P[i + 1] *= k; } }
+const puddle = new THREE.Mesh(puddleGeo, new THREE.MeshPhysicalMaterial({ color: 0xa8651a, roughness: 0.03, transparent: true, opacity: 0, clearcoat: 1, clearcoatRoughness: 0.02, emissive: 0x341802, envMapIntensity: 1.5, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -3 }));
+puddle.rotation.x = -Math.PI / 2; puddle.position.set(0.2, 0.285, 0.4); puddle.visible = false; scene.add(puddle);
+function updateSpill(S, dt, noBuild) {
+  const sf = S.spilledF, sl = S.spilledL + S.spilledF / EXP;
+  const reach = Math.sqrt(sf) * 0.95;                         // how far the overflowing head has travelled, cm
+  let moving = spill.dirty, far = 0;
+  const tc = Math.min(0.7, reach * 0.25);
+  if (tc > spill.collar + 0.002) { spill.collar += (tc - spill.collar) * (1 - Math.exp(-dt * 4)); moving = true; }
+  for (const l of spill.lobes) {
+    const tf = Math.min(SPILL_MAX, Math.max(0, reach * l.k - l.thr));
+    const tw = tf > 0 || l.wet > 0 ? Math.min(SPILL_MAX, Math.max(tf * 1.5 + 1.2, S.spilledL > 1 ? SPILL_MAX : 0)) : 0;
+    if (tf > l.len + 0.002) { l.len = Math.min(tf, l.len + dt * (0.35 + 1.1 * Math.min(1, (tf - l.len) / 3))); moving = true; }   // foam slides slowly
+    if (tw > l.wet + 0.002) { l.wet = Math.min(tw, l.wet + dt * (1.2 + 2.5 * Math.min(1, (tw - l.wet) / 4))); moving = true; }  // beer runs ahead
+    far = Math.max(far, l.wet);
+  }
+  spillMesh.visible = spill.collar > 0.01 || far > 0;
+  if (moving && spillMesh.visible) { if (noBuild) spill.dirty = true; else rebuildSpill(); }
+  const pt = Math.max(clamp01((far - (SPILL_MAX - 0.6)) / 0.6) * clamp01(sl / 30), clamp01(S.spilledL / 12));
+  if (pt > spill.puddle) spill.puddle += (pt - spill.puddle) * (1 - Math.exp(-dt * 1.2));
+  puddle.visible = spill.puddle > 0.01;
+  if (puddle.visible) { const pr = 4.2 + 2.2 * spill.puddle; puddle.scale.set(pr, pr * 0.92, 1); puddle.material.opacity = 0.14 + 0.4 * spill.puddle; }
+}
+
+/* ---------- stream ---------- */
+const SN = 28, SM = 12;
+const streamGeo = new THREE.BufferGeometry();
+{
+  const nv = SN * (SM + 1);
+  streamGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(nv * 3), 3).setUsage(THREE.DynamicDrawUsage));
+  streamGeo.setAttribute('normal', new THREE.BufferAttribute(new Float32Array(nv * 3), 3).setUsage(THREE.DynamicDrawUsage));
+  const uv = new Float32Array(nv * 2);
+  for (let i = 0; i < SN; i++) for (let j = 0; j <= SM; j++) { const k = i * (SM + 1) + j; uv[k * 2] = j / SM; uv[k * 2 + 1] = i / (SN - 1); }
+  streamGeo.setAttribute('uv', new THREE.BufferAttribute(uv, 2));
+  const idx = [];
+  for (let i = 0; i < SN - 1; i++) for (let j = 0; j < SM; j++) {
+    const a = i * (SM + 1) + j, b = (i + 1) * (SM + 1) + j, c = (i + 1) * (SM + 1) + j + 1, d = i * (SM + 1) + j + 1;
+    idx.push(a, d, b, b, d, c);
+  }
+  streamGeo.setIndex(idx);
+}
+const stream = new THREE.Mesh(streamGeo, beerMaterial(1)); stream.visible = false; stream.frustumCulled = false; stream.castShadow = true; rig.add(stream);
+const _sp = [], _sr = []; for (let i = 0; i < SN; i++) { _sp.push(new THREE.Vector3()); _sr.push(0); }
+const _t = new THREE.Vector3(), _n1 = new THREE.Vector3(), _n2 = new THREE.Vector3(), _Z = new THREE.Vector3(0, 0, 1);
+const streamState = { on: false, head: 0, tail: 0, T: 0.15, exit: new THREE.Vector3(), inside: new THREE.Vector3(), vel: new THREE.Vector3(), r0: 0.3, v0: 20, yT: YB, qn: 0 };
+function buildStream(time) {
+  const st = streamState, g = 981;
+  const s0 = st.tail, s1 = st.head;
+  if (s1 - s0 < 0.01) { stream.visible = false; return; }
+  stream.visible = true;
+  // ring 0 sits inside the bottle neck so the stream always leaves from the mouth itself
+  for (let i = 0; i < SN; i++) {
+    const p = _sp[i];
+    if (i === 0) {
+      if (s0 < 0.002) { p.copy(st.inside); _sr[0] = st.r0 * 1.05; continue; }
+    }
+    const f = s0 + (s1 - s0) * Math.max(0, i - 1) / (SN - 2), t = st.T * f;
+    p.set(st.exit.x + st.vel.x * t, st.exit.y + st.vel.y * t - 0.5 * g * t * t, st.exit.z);
+    const sp = Math.hypot(st.vel.x, st.vel.y - g * t);
+    let r = st.r0 * Math.sqrt(st.v0 / Math.max(st.v0, sp));
+    let bump = 0; for (const gt of glugTimes) { const ag = (time - gt) / st.T; if (ag >= -0.05 && ag < 1.3) bump += Math.exp(-Math.pow((f - ag) / 0.1, 2)); }
+    r *= 1 + 0.3 * bump;
+    const w = f * (0.25 + st.qn);
+    p.x += Math.sin(time * 29 + i * 0.9) * 0.035 * w; p.z += Math.cos(time * 23 + i * 1.3) * 0.03 * w;
+    if (p.y < RIM + 0.2) { const lim = rIn(Math.min(RIM, Math.max(YB, p.y))) - r - 0.02; if (Math.abs(p.x) > lim) p.x = Math.sign(p.x) * lim; }
+    _sr[i] = r;
+  }
+  const P = streamGeo.attributes.position.array, Nn = streamGeo.attributes.normal.array;
+  for (let i = 0; i < SN; i++) {
+    const a = _sp[Math.max(0, i - 1)], b = _sp[Math.min(SN - 1, i + 1)];
+    _t.subVectors(b, a).normalize();
+    _n1.copy(_Z).addScaledVector(_t, -_t.dot(_Z)).normalize(); _n2.crossVectors(_t, _n1);
+    for (let j = 0; j <= SM; j++) {
+      const ph = j / SM * Math.PI * 2, cs = Math.cos(ph), sn = Math.sin(ph), k = (i * (SM + 1) + j) * 3;
+      const nx = _n1.x * cs + _n2.x * sn, ny = _n1.y * cs + _n2.y * sn, nz = _n1.z * cs + _n2.z * sn;
+      P[k] = _sp[i].x + nx * _sr[i]; P[k + 1] = _sp[i].y + ny * _sr[i]; P[k + 2] = _sp[i].z + nz * _sr[i];
+      Nn[k] = nx; Nn[k + 1] = ny; Nn[k + 2] = nz;
+    }
+  }
+  streamGeo.attributes.position.needsUpdate = true; streamGeo.attributes.normal.needsUpdate = true;
+}
+
+/* ---------- bottle ---------- */
+const bottlePts = [[0, 0], [3.55, 0], [3.75, 0.12], [3.84, 0.45], [3.86, 1.0], [3.86, 17.2], [3.80, 18.3], [3.62, 19.3], [3.30, 20.3], [2.85, 21.3], [2.35, 22.3], [1.90, 23.3], [1.58, 24.3], [1.42, 25.3], [1.38, 26.3], [1.38, 27.6], [1.48, 27.75], [1.56, 28.05], [1.56, 28.55], [1.46, 28.88], [1.25, 29.0], [0.95, 29.0], [0.92, 28.6], [0, 28.4]];
+const bottle = new THREE.Group(); rig.add(bottle);
+const bottleBody = new THREE.Mesh(staticLathe(bottlePts, 96, {}), new THREE.MeshPhysicalMaterial({ color: 0x3a1906, roughness: 0.06, metalness: 0, clearcoat: 1, clearcoatRoughness: 0.03, envMapIntensity: 1.5, emissive: 0x140701 }));
+bottleBody.position.y = -29; bottleBody.castShadow = true; bottle.add(bottleBody);
+const labelCv = document.createElement('canvas'); labelCv.width = 1024; labelCv.height = 960;
+drawLabel(labelCv.getContext('2d'), 1024, 960);
+const labelTex = new THREE.CanvasTexture(labelCv); labelTex.colorSpace = THREE.SRGBColorSpace; labelTex.anisotropy = MAXANISO;
+const label = new THREE.Mesh(new THREE.CylinderGeometry(3.878, 3.878, 9.2, 64, 1, true, -1.25, 2.5), new THREE.MeshStandardMaterial({ map: labelTex, roughness: 0.55, envMapIntensity: 0.6 }));
+label.position.y = -29 + 3.4 + 4.6; bottle.add(label);
+const foil = new THREE.Mesh(new THREE.CylinderGeometry(1.395, 1.40, 1.7, 48, 1, true), new THREE.MeshStandardMaterial({ color: 0xd8a948, metalness: 1, roughness: 0.28 }));
+foil.position.y = -29 + 26.35; bottle.add(foil);
+
+
+/* ---------- sound (procedural, physically modelled) ----------
+   Liquid noise is made of bubbles. Each bubble rings as a damped sine whose pitch is set by its radius
+   (Minnaert: f ≈ 3.26 kHz·mm / r) and rises only slightly as it decays (van den Doel's model).
+   Thousands of them per second, pre-rendered into seamless loops, give the splash its texture;
+   a peaking filter on top is the jug's air column, rising in pitch as it fills.
+   トク: air gulping into the bottle neck, a short noise-excited resonance plus a few bubbles. */
+function synthBubbleLoop(ctx, seconds, o) {
+  const sr = ctx.sampleRate, N = Math.floor(seconds * sr), buf = ctx.createBuffer(1, N, sr), out = buf.getChannelData(0);
+  const rand = mulberry32(o.seed), count = Math.floor(o.rate * seconds);
+  for (let k = 0; k < count; k++) {
+    const r = o.rMin * Math.pow(o.rMax / o.rMin, Math.pow(rand(), o.skew || 1.8));   // mm, mostly small bubbles
+    const f0 = 3260 / r, d = 0.13 * f0 + 0.0072 * Math.pow(f0, 1.5), sig = 0.1 * d;
+    const A = o.amp * Math.pow(r / o.rMax, 0.9) * (0.35 + 0.65 * rand());
+    const start = Math.floor(rand() * N), len = Math.min(Math.floor(sr * 5 / d), Math.floor(sr * 0.09));
+    const ed = Math.exp(-d / sr), df = f0 * sig / sr;
+    let ph = rand() * 6.283, f = f0, e = 1;
+    for (let i = 0; i < len; i++) {
+      ph += 6.283185 * f / sr; f += df; e *= ed;
+      out[(start + i) % N] += A * Math.sin(ph) * e * (i < 20 ? i / 20 : 1);
+    }
+  }
+  if (o.noise) {                                             // the rush of the stream itself, low-passed
+    const a = Math.exp(-6.283 * o.noiseLP / sr); let y = 0;
+    for (let pass = 0; pass < 2; pass++) for (let i = 0; i < N; i++) { y = a * y + (1 - a) * (rand() * 2 - 1); if (pass) out[i] += y * o.noise; }
+  }
+  let ss = 0; for (let i = 0; i < N; i++) ss += out[i] * out[i];
+  const g = (o.rms || 0.1) / Math.sqrt(ss / N + 1e-12); for (let i = 0; i < N; i++) out[i] *= g;
+  return buf;
+}
+function synthGlug(ctx, seed, f) {
+  const sr = ctx.sampleRate, N = Math.floor(0.18 * sr), buf = ctx.createBuffer(1, N, sr), out = buf.getChannelData(0), rand = mulberry32(seed);
+  const res = (fc, Q, gain, glide, burst) => {               // noise burst into a 2-pole resonator
+    let y1 = 0, y2 = 0; const nb = Math.floor(burst * sr);
+    for (let i = 0; i < N; i++) {
+      const t = i / sr, fi = fc * (1 + glide * Math.min(1, t / 0.05)), w = 6.283185 * fi / sr, rr = Math.exp(-Math.PI * fi / (Q * sr));
+      const x = i < nb ? (rand() * 2 - 1) * (1 - i / nb) : 0;
+      const y = 2 * rr * Math.cos(w) * y1 - rr * rr * y2 + x; y2 = y1; y1 = y; out[i] += y * gain;
+    }
+  };
+  res(f, 10, 1.0, 0.22, 0.006);
+  res(f * 2.3, 7, 0.35, 0.15, 0.004);
+  for (let k = 0; k < 5; k++) {                              // bubbles breaking up in the neck
+    const r = 2.5 + rand() * 4.5, f0 = 3260 / r, d = 0.13 * f0 + 0.0072 * Math.pow(f0, 1.5), ed = Math.exp(-d / sr);
+    const st = Math.floor((0.004 + rand() * 0.04) * sr), A = 0.25 + rand() * 0.35; let ph = 0, e = 1, fr = f0;
+    for (let i = st; i < N; i++) { ph += 6.283185 * fr / sr; fr += f0 * 0.1 * d / sr; e *= ed; out[i] += A * Math.sin(ph) * e; if (e < 1e-3) break; }
+  }
+  let y = 0; const a = Math.exp(-6.283 * 220 / sr);           // soft low thump
+  for (let i = 0; i < Math.floor(0.02 * sr); i++) { y = a * y + (1 - a) * (rand() * 2 - 1) * 6; out[i] += y * (1 - i / (0.02 * sr)); }
+  let pk = 0; for (let i = 0; i < N; i++) pk = Math.max(pk, Math.abs(out[i]));
+  for (let i = 0; i < N; i++) out[i] *= 0.9 / (pk || 1) * Math.min(1, (N - i) / (0.02 * sr));
+  return buf;
+}
+const GLUG_BASE = 420;
+class SoundEngine {
+  constructor(ctx) {
+    this.ctx = ctx; this.rng = makeRng('sfx', 'glug');
+    this.master = ctx.createGain(); this.master.gain.value = 0.9;
+    const comp = ctx.createDynamicsCompressor();
+    comp.threshold.value = -16; comp.ratio.value = 4; comp.attack.value = 0.003; comp.release.value = 0.2;
+    this.master.connect(comp); comp.connect(ctx.destination);
+    const loop = (buf, off) => { const s = ctx.createBufferSource(); s.buffer = buf; s.loop = true; s.start(0, off || 0); return s; };
+    const gain = (v) => { const g = ctx.createGain(); g.gain.value = v || 0; return g; };
+    // three textures: a thin trickle, a steady pour, a gush
+    const trickle = synthBubbleLoop(ctx, 3, { seed: 11, rate: 260, rMin: 0.6, rMax: 2.6, amp: 1, noise: 0.1, noiseLP: 2500, rms: 0.1 });
+    const pour = synthBubbleLoop(ctx, 3, { seed: 23, rate: 900, rMin: 0.8, rMax: 6, amp: 1, noise: 0.25, noiseLP: 1400, rms: 0.1 });
+    const gush = synthBubbleLoop(ctx, 3, { seed: 37, rate: 1700, rMin: 1.2, rMax: 10, skew: 1.4, amp: 1, noise: 0.5, noiseLP: 900, rms: 0.1 });
+    this.liquid = gain(0.42);
+    this.fill = ctx.createBiquadFilter(); this.fill.type = 'peaking'; this.fill.frequency.value = 600; this.fill.Q.value = 3; this.fill.gain.value = 10;
+    this.muffle = ctx.createBiquadFilter(); this.muffle.type = 'lowpass'; this.muffle.frequency.value = 9000; this.muffle.Q.value = 0.5;
+    this.liquid.connect(this.fill); this.fill.connect(this.muffle); this.muffle.connect(this.master);
+    this.gT = gain(); this.gP = gain(); this.gG = gain();
+    loop(trickle).connect(this.gT); loop(pour, 1.1).connect(this.gP); loop(gush, 2.0).connect(this.gG);
+    this.gT.connect(this.liquid); this.gP.connect(this.liquid); this.gG.connect(this.liquid);
+    // head crackle (the earlier, quieter version): sparse tiny clicks, high-passed
+    const sr = ctx.sampleRate, crackle = ctx.createBuffer(1, sr * 3, sr), cd = crackle.getChannelData(0), R = makeRng('sfx', 'crackle');
+    for (let i = 0; i < cd.length; i++) {
+      if (R() < 320 / sr) {
+        const amp = Math.pow(R(), 2.2) * (R() < 0.5 ? -1 : 1), len = 4 + ((R() * 26) | 0);
+        for (let k = 0; k < len && i + k < cd.length; k++) cd[i + k] += amp * Math.exp(-k / (len / 3)) * (k % 2 ? -1 : 1);
+      }
+    }
+    const fzHP = ctx.createBiquadFilter(); fzHP.type = 'highpass'; fzHP.frequency.value = 2200;
+    this.fzG = gain(); loop(crackle).connect(fzHP); fzHP.connect(this.fzG); this.fzG.connect(this.master);
+    this.glugs = [0, 1, 2, 3, 4].map((i) => synthGlug(ctx, 101 + i * 17, GLUG_BASE));
+    this.glugBus = gain(1); this.glugBus.connect(this.master);
+  }
+  // called every frame; at = audio time
+  update(at, dt, qn, pulse, airCm, foamOver, foamVol, coarse) {
+    const on = qn > 0.002, loud = on ? 0.35 + 0.65 * Math.sqrt(qn) : 0, surge = 1 + 0.7 * pulse;
+    const wT = on ? 1 - smooth01(0.12, 0.4, qn) : 0, wG = smooth01(0.45, 0.95, qn), wP = on ? Math.max(0, 1 - wT - wG * 0.6) : 0;
+    this.gT.gain.setTargetAtTime(1.1 * loud * wT, at, 0.04);
+    this.gP.gain.setTargetAtTime(1.0 * loud * wP * surge, at, 0.03);
+    this.gG.gain.setTargetAtTime(1.0 * loud * wG * surge, at, 0.03);
+    const f = Math.min(5000, Math.max(300, 34300 / (4 * Math.max(0.9, airCm))));   // jug air column: rises as it fills
+    this.fill.frequency.setTargetAtTime(f, at, 0.08);
+    this.muffle.frequency.setTargetAtTime(foamOver > 0.8 ? 1600 : 9000, at, 0.15);  // pouring under a thick head
+    this.fzG.gain.setTargetAtTime(Math.min(0.16, foamVol / 1400) * (0.35 + 0.9 * coarse), at, 0.12);
+  }
+  glug(at, freq, amp) {
+    const c = this.ctx, s = c.createBufferSource(), g = c.createGain();
+    s.buffer = this.glugs[(this.rng() * this.glugs.length) | 0];
+    s.playbackRate.value = Math.min(1.2, Math.max(0.6, freq / GLUG_BASE));
+    g.gain.value = amp * 2.4;
+    s.connect(g); g.connect(this.glugBus); s.start(at + 0.003);
+  }
+  blip(at, freq, dur, type, vol) {
+    const c = this.ctx, o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, at); g.gain.setValueAtTime(vol, at); g.gain.exponentialRampToValueAtTime(0.0001, at + dur);
+    o.connect(g); g.connect(this.master); o.start(at); o.stop(at + dur + 0.02);
+  }
+  thud(at) {                                                                   // the jug set down on the cork coaster
+    const c = this.ctx, o = c.createOscillator(), g = c.createGain();
+    o.type = 'sine'; o.frequency.setValueAtTime(120, at); o.frequency.exponentialRampToValueAtTime(70, at + 0.16);
+    g.gain.setValueAtTime(0.55, at); g.gain.exponentialRampToValueAtTime(0.0001, at + 0.2);
+    o.connect(g); g.connect(this.master); o.start(at); o.stop(at + 0.22);
+    this.blip(at + 0.01, 2600, 0.07, 'triangle', 0.03);
+  }
+}
+
+
+/* ---------- sound wrapper: our engine runs on the template's AudioContext (so 「ジャーン」 and the game share one) ---------- */
+const Sfx = {
+  e: null,
+  init() {
+    Sound.unlock();
+    const c = Sound.ctx; if (!c) return;
+    if (c.state === 'suspended') c.resume();
+    if (!this.e) { try { this.e = new SoundEngine(c); } catch (_) { this.e = null; } }
+  },
+  ok() { return !!this.e && this.e.ctx.state === 'running' && !Sound.muted; },
+  now() { return this.e.ctx.currentTime; },
+  update(...a) { if (this.ok()) this.e.update(this.now(), ...a); },
+  glug(f, amp) { if (this.ok()) this.e.glug(this.now(), f, amp); },
+  blip(f, d, t, v) { if (this.ok()) this.e.blip(this.now(), f, d, t, v); },
+  thud() { if (this.ok()) this.e.thud(this.now()); },
+  tick() { this.blip(1500, 0.04, 'square', 0.04); },
+  cheer() { this.blip(880, 0.18, 'triangle', 0.12); setTimeout(() => this.blip(1320, 0.3, 'triangle', 0.12), 120); }
+};
+// build the sound engine right after the first tap, so 「注ぎはじめる」 doesn't stall on synthesis
+['pointerdown', 'keydown'].forEach((ev) => document.addEventListener(ev, () => setTimeout(() => Sfx.init(), 0), { once: true, capture: true }));
+
+/* ---------- game state ---------- */
+let S = newSim();
+const ctl = { holding: false, tilt: 0, pressY: 0, keyHeld: false };
+const pose = { theta: 58, vel: 0, engage: 0, away: 0 };
+const TH_REST = 58, TH_MAX = 140;
+const pivotRest = new THREE.Vector3(6.2, 27.2, 0), pivotPour = new THREE.Vector3(2.5, 22.6, 0), pivotAway = new THREE.Vector3(22, 40, 4);
+const pvSim = new THREE.Vector3(), pvVis = new THREE.Vector3();
+let flowN = 0, qnNow = 0, elapsed = 0, started = false, serveT = -1, frozen = false;
+let glugRng = makeRng('glug', '0'), glugTimer = 0, glugPulse = 0;
+const glugTimes = [];
+let glugCount = 0;                                   // トクトクが鳴った回数（シェア文の一文。tools/build.mjs が足した）
+let clockT = 0, lastTickSec = -1, roundSeed = '0';
+const REC_MAX = Math.ceil((MAX_SECONDS + 5) / STEP);
+const rec = { hold: new Uint8Array(REC_MAX), tilt: new Float32Array(REC_MAX), len: 0, first: -1, serve: -1, timeUp: false };
+let replayIdx = 0, cardShot = null, lastJudge = null, settleDone = true, cardToken = 0;
+// help for players who keep trickling: shown until they pour hard once, then never again (also on later visits)
+let learnedTilt = false, lowPourT = 0, tipOn = false;
+try { learnedTilt = localStorage.getItem('beer-pour-tilt-learned') === '1'; } catch (_) { /* 保存できない環境でも遊べる */ }
+let best = null;
+try { const v = parseFloat(localStorage.getItem('beer-pour-best')); if (!isNaN(v)) best = v; } catch (_) { /* 保存できない環境でも遊べる */ }
+const _R = (th, x, y) => { const c = Math.cos(th), s = Math.sin(th); return [x * c - y * s, x * s + y * c]; };
+function glugRate(qn) { return 3.8 + 5.5 * qn; }
+function glugPitchAt(poured) { return 480 * Math.sqrt(60 / (60 + poured)); }
+
+function setFoam(F, c) { S.Ff = F * (1 - c); S.Fc = F * c; S.Pf = S.Pc = 0; S.F = F; S.c = c; }
+function presetPerfect() {
+  S = newSim();
+  const yF = RIM + 0.32, yL = YB + 0.70 * (yF - YB);
+  S.L = vol(yL); setFoam(vol(yF) - S.L, 0.1);
+  lastLiqY = -1; lastFoam = [-1, -1, -1];
+}
+// everything a round depends on comes from here, so a replay starts from exactly the same place
+function resetRound(seed) {
+  S = newSim(); flowN = 0; qnNow = 0; elapsed = 0; started = false; serveT = -1;
+  Object.assign(pose, { theta: TH_REST, vel: 0, engage: 0.35 });
+  glugRng = makeRng('glug', seed); glugTimer = 0; glugPulse = 0; glugTimes.length = 0; glugCount = 0;
+  const st = streamState; st.on = false; st.head = st.tail = 0;
+  newSpill(makeRng('spill', seed));
+  lastLiqY = -1; lastFoam = [-1, -1, -1];
+  cup.rotation.y = 0;
+}
+presetPerfect();
+
+/* ---------- HUD ---------- */
+const hud = {
+  titleOv: $('titleOv'), target: $('target'), timer: $('timer'), tVal: $('tVal'), gauge: $('gauge'), gFill: $('gFill'), gWord: $('gWord'), gWordT: $('gWordT'),
+  hint: $('hint'), tip: $('tip'), resOv: $('resOv'), rRank: $('rRank'), rScoreBox: $('rScoreBox'), rScore: $('rScore'), rDec: $('rDec'), rBeer: $('rBeer'), rFoam: $('rFoam'),
+  rBest: $('rBest'), rBestT: $('rBestT'), replayBadge: $('replayBadge'), replayT: $('replayT'), toast: $('toast'), toastT: $('toastT'), rRows: $('rRows'), rComment: $('rComment')
+};
+let toastTimer = 0;
+function toast(msg) {
+  hud.toastT.textContent = msg; hud.toast.hidden = false;
+  hud.toast.classList.remove('pop-in'); void hud.toast.offsetWidth; hud.toast.classList.add('pop-in');
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { hud.toast.hidden = true; }, 1400);
+}
+function showPlayHud(on) { hud.target.hidden = hud.timer.hidden = hud.gauge.hidden = !on; }
+function rankOf(r) {
+  if (r.empty) return 'まだ空っぽ';
+  const s = r.score;
+  return s >= 99 ? '神の一杯' : s >= 93 ? '名人の一杯' : s >= 85 ? 'うまい一杯' : s >= 70 ? 'まあまあの一杯' : s >= 50 ? '新人バイトの一杯' : '事故の一杯';
+}
+function levelOf(r) { if (r.empty) return 0; const s = r.score; return s >= 99 ? 5 : s >= 93 ? 4 : s >= 85 ? 3 : s >= 70 ? 2 : s >= 50 ? 1 : 0; }
+function commentOf(r) {
+  if (r.empty) return 'ジョッキがほぼ空のまま出しちゃった。';
+  const pct = Math.round(r.ratio * 100);
+  const losses = [['spill', r.pen], ['ratio', 40 * (1 - r.sR)], ['fill', 35 * (1 - r.sF)], ['fine', 25 * (1 - r.sQ)]].sort((x, y) => y[1] - x[1]);
+  const [k, v] = losses[0];
+  if (v < 1.2) return r.score >= 99 ? '文句なし。7：3、ふち盛り、きめ細かい泡。' : 'ほぼ完璧。あとはミリ単位の勝負。';
+  if (k === 'spill') return 'あふれた。泡は止めたあとも少しふくらむので、早めに止めよう。';
+  if (k === 'ratio') return r.ratio < TARGET_RATIO ? `泡が${pct}%で少ない。勢いよく注ぐと泡が立つ。` : `泡が${pct}%で多い。泡が落ち着くのを待ってから、そっと注ぎ足そう。`;
+  if (k === 'fill') return r.top < -0.5 ? 'ふちまで届いていない。もっと攻めよう。' : r.top < CROWN_LO ? 'ふちから3〜4mm、泡を盛り上げたい。' : '盛りすぎ。こぼれる寸前。';
+  return '泡が粗い。勢いで立てた泡は、少し待つと粗い泡が消えてきめ細かくなる。';
+}
+function fineOf(c) { return c < 0.18 ? 'きめ細かい' : c < 0.3 ? 'ふつう' : '粗い'; }
+
+/* ---------- input ---------- */
+cv.addEventListener('pointerdown', (e) => {
+  Sfx.init();
+  if (state.phase !== 'playing' || serveT >= 0) return;
+  ctl.holding = true; ctl.pressY = e.clientY; ctl.tilt = 0.24;
+  try { cv.setPointerCapture(e.pointerId); } catch (_) { /* 古い端末 */ }
+  e.preventDefault();
+});
+cv.addEventListener('pointermove', (e) => {
+  if (!ctl.holding || ctl.keyHeld) return;
+  ctl.tilt = clamp01(0.24 + (ctl.pressY - e.clientY) / (0.42 * cv.clientHeight));
+});
+const release = () => { if (!ctl.keyHeld) ctl.holding = false; };
+cv.addEventListener('pointerup', release);
+cv.addEventListener('pointercancel', release);
+cv.addEventListener('contextmenu', (e) => e.preventDefault());
+window.addEventListener('keydown', (e) => {
+  if (state.phase !== 'playing' || serveT >= 0) return;
+  if (e.code === 'Space') { e.preventDefault(); Sfx.init(); if (!ctl.keyHeld) { ctl.keyHeld = true; ctl.holding = true; ctl.tilt = 0.35; } }
+  else if (e.code === 'ArrowUp' && ctl.keyHeld) { e.preventDefault(); ctl.tilt = clamp01(ctl.tilt + 0.1); }
+  else if (e.code === 'ArrowDown' && ctl.keyHeld) { e.preventDefault(); ctl.tilt = clamp01(ctl.tilt - 0.1); }
+  else if (e.code === 'Enter' && !$('btnGo').disabled) { e.preventDefault(); Game.serve(false); }
+});
+window.addEventListener('keyup', (e) => { if (e.code === 'Space') { ctl.keyHeld = false; ctl.holding = false; } });
+
+/* ---------- camera (fixed portrait stage, so framing is the same on every device) ---------- */
+const STAGE_A = STAGE_W / STAGE_H, TAN_H = Math.tan(THREE.MathUtils.degToRad(15));
+const camCur = { tx: 0.4, ty: 8.8, tz: 0, dist: 69, yaw: 0, pitch: 0.12, sx: 0, sy: 0 };
+function camGoal(ph, t) {
+  if (ph === 'playing' || ph === 'serving' || ph === 'replay') return { tx: 0.2, ty: 14.4, tz: 0, dist: Math.max(16.6 / TAN_H, 7.4 / (TAN_H * STAGE_A)), yaw: 0, pitch: 0.10, sx: 0, sy: 0 };
+  if (ph === 'title') return { tx: 0.4, ty: 8.8, tz: 0, dist: Math.max(18.6 / TAN_H, 7.8 / (TAN_H * STAGE_A)), yaw: Math.sin(t * 0.22) * 0.2, pitch: 0.12, sx: 0, sy: -0.03 };
+  return { tx: 0, ty: 8.0, tz: 0, dist: 17.8 / TAN_H, yaw: Math.sin(t * 0.3) * 0.32, pitch: 0.17, sx: -0.25, sy: 0.2 };
+}
+function placeCamera(cam, c) {
+  const cp = Math.cos(c.pitch);
+  cam.position.set(c.tx + c.dist * Math.sin(c.yaw) * cp, c.ty + c.dist * Math.sin(c.pitch), c.tz + c.dist * Math.cos(c.yaw) * cp);
+  cam.lookAt(c.tx, c.ty, c.tz);
+}
+function applyCamera(dt, t) {
+  const ph = state.phase === 'serving' ? 'result' : state.phase;
+  const g = camGoal(ph, t), k = 1 - Math.exp(-dt * (ph === 'title' ? 1.5 : 3.2));
+  for (const key2 of Object.keys(camCur)) camCur[key2] += (g[key2] - camCur[key2]) * k;
+  placeCamera(camera, camCur);
+  const W = cv.clientWidth || STAGE_W, H = cv.clientHeight || STAGE_H;
+  camera.setViewOffset(W, H, camCur.sx * W, camCur.sy * H, W, H);
+}
+// the card picture: the finished jug on the bar, drawn once at the end of a round
+function snapshot(w, h) {
+  const prevPR = renderer.getPixelRatio(), prevW = cv.clientWidth, prevH = cv.clientHeight;
+  const cam = new THREE.PerspectiveCamera(30, w / h, 1, 900);
+  placeCamera(cam, { tx: 0, ty: 8.6, tz: 0, dist: 10.6 / TAN_H, yaw: 0.28, pitch: 0.16 });
+  const bv = bottle.visible, sv = stream.visible, ry = cup.rotation.y;
+  bottle.visible = false; stream.visible = false; cup.rotation.y = 0;
+  renderer.setPixelRatio(1); renderer.setSize(w, h, false);
+  renderer.render(scene, cam);
+  const c = document.createElement('canvas'); c.width = w; c.height = h;
+  c.getContext('2d').drawImage(renderer.domElement, 0, 0, w, h);
+  renderer.setPixelRatio(prevPR); renderer.setSize(prevW, prevH, false);
+  bottle.visible = bv; stream.visible = sv; cup.rotation.y = ry;
+  return c;
+}
+
+/* =====================================================================
+   ゲーム本体
+   約束: setup で1回分を用意 / step は 1/60 秒進めて、終わったら true / draw はフレームごとの描画
+         result は { headline, lines, meter, meterMax, level, score } を返す
+   ===================================================================== */
+const Game = {
+  init() {
+    presetPerfect();
+    this.resize();
+    hud.titleOv.hidden = false;
+    setGo('start');
+    if (document.fonts && document.fonts.load) {
+      Promise.all([document.fonts.load('900 60px "Noto Sans JP"'), document.fonts.load('700 30px "Noto Sans JP"')])
+        .then(() => { drawLabel(labelCv.getContext('2d'), 1024, 960); labelTex.needsUpdate = true; }).catch(() => {});
+    }
+  },
+  resize() {
+    const W = cv.clientWidth || STAGE_W, H = cv.clientHeight || STAGE_H;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(W, H, false);
+    camera.aspect = W / H; camera.updateProjectionMatrix();
+  },
+  setup(seed) {
+    roundSeed = seed;
+    resetRound(seed);
+    rec.len = 0; rec.first = -1; rec.serve = -1; rec.timeUp = false;
+    lastTickSec = -1; cardShot = null; lowPourT = 0; settleDone = true; cardToken++;
+    hud.titleOv.classList.add('out'); setTimeout(() => { hud.titleOv.hidden = true; }, 300);
+    hud.resOv.hidden = true; hud.replayBadge.hidden = true; FunyaResult.hide();
+    showPlayHud(true); hud.hint.hidden = false; hud.hint.classList.remove('gone');
+    hud.timer.classList.remove('hurry'); hud.tVal.textContent = TIME_LIMIT.toFixed(1);
+    pose.away = 0;
+    cv.focus({ preventScroll: true });
+  },
+  serve(timeUp) {
+    if (state.phase !== 'playing') return;
+    serveT = 0; rec.serve = rec.len; rec.timeUp = !!timeUp;
+    ctl.holding = false; ctl.keyHeld = false; flowN = 0; qnNow = 0;
+    state.phase = 'serving'; settleDone = false;
+    setGo('none');
+    if (timeUp) toast('タイムアップ！');
+    Sfx.thud();
+    finish();                                        // show the result right away (judged on the settled head, see result())
+  },
+  settling() { return serveT >= 0 && !settleDone; },
+  settled() {
+    settleDone = true;
+    const tok = ++cardToken;
+    setTimeout(() => { if (tok !== cardToken || state.phase !== 'result') return; cardShot = snapshot(900, 560); renderResultCard(); }, 60);
+  },
+  finishSettle() {                                   // used when the replay is opened before the head has settled
+    let guard = 400;
+    while (this.settling() && guard-- > 0) { if (this.step(STEP)) this.settled(); }
+  },
+  step(dt) {
+    const replay = state.phase === 'replay';
+    let hold = false, tilt = 0;
+    if (replay) {
+      if (replayIdx >= rec.len) return true;
+      if (replayIdx === rec.serve) { serveT = 0; flowN = 0; if (rec.timeUp) toast('タイムアップ！'); Sfx.thud(); }
+      hold = !!rec.hold[replayIdx]; tilt = rec.tilt[replayIdx]; replayIdx++;
+    } else {
+      hold = state.phase === 'playing' && ctl.holding; tilt = ctl.tilt;
+      if (rec.len < REC_MAX) { rec.hold[rec.len] = hold ? 1 : 0; rec.tilt[rec.len] = tilt; if (hold && rec.first < 0) rec.first = rec.len; rec.len++; }
+    }
+    const serving = serveT >= 0;
+    if (serving) hold = false;
+    // the bottle in the hand
+    const thT = hold ? TH_REST + tilt * (TH_MAX - TH_REST) : TH_REST;
+    const kS = 70, dS = 2 * Math.sqrt(kS) * 0.85;
+    pose.vel += ((thT - pose.theta) * kS - pose.vel * dS) * dt; pose.theta += pose.vel * dt;
+    pose.engage += ((hold ? 1 : 0.35) - pose.engage) * (1 - Math.exp(-dt * (hold ? 9 : 3)));
+    pvSim.lerpVectors(pivotRest, pivotPour, pose.engage);
+    const th = THREE.MathUtils.degToRad(pose.theta);
+    // flow from tilt
+    const th0 = 74 + 26 * (S.poured / BOTTLE);
+    const raw = serving ? 0 : Math.pow(clamp01((pose.theta - th0) / (TH_MAX - th0)), 1.25);
+    flowN += (raw - flowN) * (1 - Math.exp(-dt * 6));
+    const qn = flowN < 0.004 ? 0 : flowN; qnNow = qn;
+    const ex = 0.85 * (1 - 0.45 * qn);
+    const [ox, oy] = _R(th, -ex, 0.12);
+    const exitX = pvSim.x + ox, exitY = pvSim.y + oy;
+    if (!frozen) simStep(S, qn, exitY, dt);
+    if (!started && qn > 0) { started = true; hud.hint.classList.add('gone'); }
+    if (!replay && state.phase === 'playing') {
+      if (!learnedTilt && qn >= 0.4) { learnedTilt = true; try { localStorage.setItem('beer-pour-tilt-learned', '1'); } catch (_) { /* 保存できなくても今回は出さない */ } }
+      lowPourT = !learnedTilt && hold && qn > 0 && qn < 0.22 ? lowPourT + dt : 0;
+    }
+    if (started && !serving) elapsed = Math.min(TIME_LIMIT, elapsed + dt);
+    // トク: glugs only once the bottle neck runs full (gentle pours trickle smoothly)
+    glugPulse *= Math.exp(-dt * 14);
+    if (qn > 0.15 && S.q > 0) {
+      glugTimer -= dt;
+      if (glugTimer <= 0) {
+        Sfx.glug(glugPitchAt(S.poured) * (0.92 + 0.16 * glugRng()), 0.34 * smooth01(0.15, 0.35, qn) * (0.8 + 0.4 * glugRng()));
+        glugCount++; glugTimes.push(clockT); if (glugTimes.length > 5) glugTimes.shift();
+        glugPulse = 1; glugTimer = (0.85 + 0.3 * glugRng()) / glugRate(qn);
+      }
+    } else glugTimer = 0.03;
+    // stream
+    const st = streamState;
+    if (qn > 0 && S.q > 0.01) {
+      const md = [-Math.sin(th), Math.cos(th)], blend = 0.25 + 0.6 * qn;
+      let dx = md[0] * blend, dy = -1 * (1 - blend) + md[1] * blend; const dl = Math.hypot(dx, dy); dx /= dl; dy /= dl;
+      st.v0 = 10 + 38 * qn; st.qn = qn;
+      st.vel.set(dx * st.v0, dy * st.v0, 0);
+      st.exit.set(exitX, exitY, 0);
+      const [ix, iy] = _R(th, -ex * 0.8, -1.4); st.inside.set(pvSim.x + ix, pvSim.y + iy, 0);
+      st.r0 = Math.min(0.72, Math.max(0.07, Math.sqrt(S.q / (Math.PI * st.v0)))) * 0.92;
+      st.yT = hOf(S.L);
+      const fallH = Math.max(0.1, exitY - st.yT);
+      st.T = (st.vel.y + Math.sqrt(st.vel.y * st.vel.y + 2 * 981 * fallH)) / 981;
+      if (!st.on) { st.on = true; st.head = 0; st.tail = 0; }
+      st.tail = 0; st.head = Math.min(1, st.head + dt / Math.max(0.05, st.T));
+    } else if (st.on) {
+      st.tail = Math.min(1, st.tail + dt / Math.max(0.05, st.T));
+      if (st.tail >= 1) { st.on = false; st.head = st.tail = 0; }
+    }
+    updateSpill(S, dt, true);                        // the mesh is rebuilt in draw, at most once a frame
+    if (serving) { serveT += dt; if (serveT >= 1.7) return true; }
+    if (!replay && state.phase === 'playing' && started && elapsed >= TIME_LIMIT) this.serve(true);
+    return false;
+  },
+  draw(dt) {
+    const ph = state.phase, vdt = ph === 'replay' ? dt * state.speed : dt;
+    clockT += vdt; U.time.value = clockT;
+    // the bottle (lifting away after serving is only a visual)
+    const awayT = (ph === 'serving' || ph === 'result') ? 1 : 0;
+    pose.away += (awayT - pose.away) * (1 - Math.exp(-dt * 2.5));
+    if (ph === 'title') pose.engage += (0 - pose.engage) * (1 - Math.exp(-dt * 3));
+    pvVis.lerpVectors(pivotRest, pivotPour, pose.engage).lerp(pivotAway, pose.away);
+    bottle.position.copy(pvVis); bottle.rotation.z = THREE.MathUtils.degToRad(pose.theta);
+    bottle.visible = pose.away < 0.98;
+    buildStream(clockT);
+    updateBeerMeshes(S);
+    if (spill.dirty && spillMesh.visible) rebuildSpill();
+    const live = ph === 'playing' || ph === 'replay';
+    Sfx.update(vdt, live ? qnNow : 0, glugPulse, RIM + 0.4 - hOf(S.L), hOf(S.L + S.F) - hOf(S.L), live || this.settling() ? S.F : 0, S.c);
+    // HUD
+    if (live || ph === 'serving') {
+      const remain = Math.max(0, TIME_LIMIT - elapsed);
+      hud.tVal.textContent = remain.toFixed(1);
+      const hurry = started && remain <= 5 && serveT < 0;
+      hud.timer.classList.toggle('hurry', hurry);
+      const sec = Math.ceil(remain);
+      if (ph === 'playing' && hurry && remain > 0 && sec !== lastTickSec) { lastTickSec = sec; Sfx.blip(1200, 0.05, 'square', 0.05); }
+      const q = live ? qnNow : 0;
+      hud.gFill.style.height = (q * 100).toFixed(1) + '%';
+      hud.gFill.classList.toggle('hot', q > 0.7);
+      hud.gWord.dataset.empty = q > 0 ? '0' : '1';
+      if (q > 0) hud.gWordT.textContent = q < 0.22 ? 'ちょろちょろ' : q < 0.5 ? 'トクトク' : q < 0.75 ? 'ドクドク' : 'ドボドボ';
+      if (ph === 'playing') $('btnGo').disabled = !(S.L + S.F > 25);
+    }
+    const wantTip = ph === 'playing' && !learnedTilt && lowPourT > 2;
+    if (wantTip !== tipOn) {
+      tipOn = wantTip; hud.tip.hidden = !wantTip;
+      if (wantTip) { hud.tip.classList.remove('show'); void hud.tip.offsetWidth; hud.tip.classList.add('show'); }
+    }
+    if (ph === 'result') cup.rotation.y += dt * 0.25;
+    applyCamera(dt, clockT);
+    renderer.render(scene, camera);
+  },
+  result() {
+    // judge the head as it will be once it has finished swelling: the same steps the game is about to run, done now
+    const P = Object.assign({}, S);
+    for (let t = Math.max(0, serveT); t < 1.7; t += STEP) simStep(P, 0, 0, STEP);
+    const r = lastJudge = judge(P, elapsed);
+    const p = Math.round(r.ratio * 100), mm = Math.round(r.top * 10), level = levelOf(r);
+    return {
+      headline: r.empty ? 'まだ空っぽ' : `${rankOf(r)} ${r.score.toFixed(1)}点`,
+      lines: r.empty ? ['ジョッキがほぼ空のまま'] : [`ビール${100 - p}：泡${p} / ふち${mm >= 0 ? '+' : ''}${mm}mm`, `泡が${fineOf(r.c)} / こぼれ${Math.round(r.spill)}mL`],
+      extra: r.empty ? '' : glugCount ? `瓶がトクトク${glugCount}回鳴った` : '瓶は一度もトクトク鳴らなかった',
+      meter: level, meterMax: 5, level, score: r.score
+    };
+  },
+  showResult() {
+    const r = lastJudge;
+    showPlayHud(false); hud.hint.hidden = true; hud.replayBadge.hidden = true;
+    hud.rRank.textContent = rankOf(r);
+    const p = Math.round(r.ratio * 100);
+    hud.rBeer.textContent = r.empty ? '0' : String(100 - p); hud.rFoam.textContent = String(p);
+    const isBest = !r.empty && (best === null || r.score > best), prev = best;
+    if (isBest) { best = r.score; try { localStorage.setItem('beer-pour-best', String(best)); } catch (_) { /* 保存できなくても続ける */ } }
+    hud.rBest.hidden = best === null;
+    hud.rBest.classList.toggle('new', isBest && prev !== null);
+    hud.rBestT.textContent = isBest && prev !== null ? 'NEW BEST' : 'BEST ' + (best === null ? '' : best.toFixed(1));
+    hud.resOv.hidden = false;
+    FunyaResult.show(hud.resOv, { tier: ['fail', 'bad', 'normal', 'good', 'good', 'top'][levelOf(r)], best: isBest && prev !== null, seed: Math.round(r.score * 10), size: 42 });
+    hud.rRank.classList.remove('pop-in'); void hud.rRank.offsetWidth; hud.rRank.classList.add('pop-in');
+    // breakdown below the stage
+    hud.rComment.textContent = commentOf(r);
+    const mm = Math.round(r.top * 10);
+    const rows = [
+      ['泡の比率', `泡 ${(r.ratio * 100).toFixed(1)}%`, r.sR * 40, 40, false],
+      ['ふちとの高さ', mm >= 0 ? `ふち +${mm}mm` : `ふち ${mm}mm`, r.sF * 35, 35, false],
+      ['泡のきめ', fineOf(r.c), r.sQ * 25, 25, false],
+      ['こぼれ', `${Math.round(r.spill)}mL`, r.pen, 40, true]
+    ];
+    hud.rRows.innerHTML = '';
+    for (const [lab, note, pts, max, pen] of rows) {
+      const li = document.createElement('li'); if (pen) li.className = 'pen';
+      li.innerHTML = `<span class="lab">${lab}<em>${note}</em></span><span class="bar"><i></i></span><span class="pt">${pen ? (pts >= 0.05 ? '−' + pts.toFixed(1) : '0') : pts.toFixed(1)}</span>`;
+      li.querySelector('i').dataset.w = String(Math.round(clamp01(pts / max) * 100));
+      hud.rRows.appendChild(li);
+    }
+    requestAnimationFrame(() => requestAnimationFrame(() => { hud.rRows.querySelectorAll('i').forEach((i) => { i.style.width = i.dataset.w + '%'; }); }));
+    hud.rScoreBox.classList.toggle('wide', r.score >= 99.95);
+    this.countUp(r.score, r.empty ? 300 : 1000, true);
+  },
+  countUp(score, dur, sounds) {
+    const t0 = performance.now(); let lastShown = -1;
+    const setV = (v) => { hud.rScore.textContent = String(Math.floor(v + 1e-6)); hud.rDec.textContent = '.' + (Math.round(v * 10) % 10); };
+    setV(0);
+    const tick = () => {
+      const k = clamp01((performance.now() - t0) / dur), v = Math.round(score * (1 - Math.pow(1 - k, 3)) * 10) / 10;
+      if (v !== lastShown) { setV(v); if (sounds && Math.floor(v) !== Math.floor(lastShown) && Math.floor(v) % 4 === 0) Sfx.tick(); lastShown = v; }
+      if (k < 1) requestAnimationFrame(tick);
+      else { setV(score); hud.rScoreBox.classList.remove('punch'); void hud.rScoreBox.offsetWidth; hud.rScoreBox.classList.add('punch'); if (sounds && score >= 93) Sfx.cheer(); }
+    };
+    setTimeout(tick, 120);
+  },
+  startReplay() {
+    resetRound(roundSeed);
+    replayIdx = Math.max(0, rec.first - 20);
+    S.t = 0; for (let i = 0; i < replayIdx; i++) S.t += STEP;   // the only step-count dependent value in the sim; summed like the live run
+    pose.away = 0;
+    hud.resOv.hidden = true; showPlayHud(true); hud.hint.hidden = true; FunyaResult.hide();
+    hud.replayT.textContent = 'REPLAY ×2.5'; hud.replayBadge.hidden = false; hud.target.hidden = true;
+    hud.timer.classList.remove('hurry'); lastTickSec = -1;
+  },
+  endReplay() {
+    showPlayHud(false); hud.replayBadge.hidden = true;
+    hud.resOv.hidden = false; FunyaResult.show();
+    this.countUp(lastJudge.score, 500, false);
+  },
+  drawCardArt(c, x, y, w, h) {
+    const ink = '#1f2433';
+    c.save();
+    c.fillStyle = ink; roundRect(c, x + 14, y + 14, w - 14, h - 14, 16); c.fill();
+    if (cardShot) { c.save(); roundRect(c, x, y, w - 14, h - 14, 16); c.clip(); c.drawImage(cardShot, x, y, w - 14, h - 14); c.restore(); }
+    c.lineWidth = 8; c.strokeStyle = ink; roundRect(c, x, y, w - 14, h - 14, 16); c.stroke();
+    if (lastJudge && !lastJudge.empty) {                // ratio sticker
+      const p = Math.round(lastJudge.ratio * 100), txt = `ビール${100 - p}：泡${p}`;
+      c.font = '700 40px ' + FONT_FAMILY; const tw = c.measureText(txt).width;
+      c.translate(x + 30, y + 30); c.rotate(-0.06);
+      c.fillStyle = ink; c.fillRect(8, 8, tw + 40, 64);
+      c.fillStyle = '#ffc933'; c.fillRect(0, 0, tw + 40, 64);
+      c.lineWidth = 6; c.strokeStyle = ink; c.strokeRect(0, 0, tw + 40, 64);
+      c.fillStyle = ink; c.textAlign = 'left'; c.textBaseline = 'middle'; c.fillText(txt, 20, 34);
+    }
+    c.restore();
+  }
+};
+
+/* ---- 起動 ---- */
+(function boot() {
+  $('gameTitle').textContent = GAME_TITLE;
+  Game.init();
+  state.last = performance.now();
+  state.raf = requestAnimationFrame(frame);
+  beacon('view');
+  Sound.jaan(); // 最初の画面で「ジャーン」（ぽかぽかゲームの合図。開いた直後は音が出せないので、最初のタップで鳴る。消さない）
+})();
+
+// small hook for automated checks
+window.__beer = {
+  get S() { return S; }, get state() { return state.phase; }, rec, judge: () => judge(S, elapsed),
+  setTilt(t, hold) { ctl.tilt = t; ctl.holding = hold; ctl.keyHeld = hold; },
+  snapCam() { Object.assign(camCur, camGoal(state.phase === 'serving' ? 'result' : state.phase, clockT)); },
+  setSpeed(v) { state.speed = v; }
+};
+window.BEER = {
+  state() {
+    const yL = hOf(S.L), yF = hOf(S.L + S.F), tot = yF - YB, r = cv.getBoundingClientRect();
+    return { phase: state.phase, round: state.round, started, elapsed, remain: Math.max(0, TIME_LIMIT - elapsed), flow: qnNow, tilt: ctl.tilt, holding: ctl.holding,
+      beer: S.L, foam: S.F, coarse: S.c, poured: S.poured, spill: S.spilledL + S.spilledF / EXP, ratio: tot > 0.01 ? (yF - yL) / tot : 0, top: yF - RIM,
+      settling: Game.settling(), canServe: !$('btnGo').disabled, score: state.result ? state.result.score : null, level: state.result ? state.result.level : null,
+      rank: lastJudge ? rankOf(lastJudge) : '', best, card: !!$('cardImg').getAttribute('src'), canvas: { x: r.left, y: r.top, w: r.width, h: r.height } };
+  },
+};
+
+</script>
+</body>
+</html>

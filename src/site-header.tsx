@@ -20,6 +20,10 @@ import { kazokuHref } from './kazoku-igai/seo'
 import { hariHref } from './acupuncture-darts/seo'
 import { concafeHref } from './concafe-simulator/seo'
 import { hankoHref } from './hanko-hankouki/seo'
+import { beerHref } from './beer-pour/seo'
+import { sansaHref } from './sansa/seo'
+import { coasterHref } from './rakugaki-coaster/seo'
+import { turkishIceHref } from './turkish-ice-cream-3d/seo'
 import { uwakiHref } from './uwaki-jinmon/seo'
 import { softServeHref } from './soft-serve/seo'
 import { typhoonHref } from './typhoon-escape/seo'
@@ -70,6 +74,10 @@ function headerGames(root: string): HeaderGame[] {
     { id: 'acupuncture-darts', href: hariHref(), mark: '鍼', title: '鍼ダーツ', section: 'acupuncture-darts' },
     { id: 'concafe-simulator', href: concafeHref(), mark: '嬢', title: 'コンカフェ嬢シミュレーター', section: 'concafe-simulator' },
     { id: 'hanko-hankouki', href: hankoHref(), mark: '印', title: 'ハンコう期', section: 'hanko-hankouki' },
+    { id: 'beer-pour', href: beerHref(), mark: '泡', title: 'ビールをいい感じにつぐ', section: 'beer-pour' },
+    { id: 'sansa-online-temple', href: sansaHref('ja'), mark: '寺', title: '산사', section: 'ja/sansa-online-temple' },
+    { id: 'rakugaki-coaster', href: coasterHref(), mark: '車', title: 'らくがきコースター', section: 'rakugaki-coaster' },
+    { id: 'turkish-ice-cream-3d', href: turkishIceHref(), mark: '氷', title: 'トルコアイス3D', section: 'turkish-ice-cream-3d' },
   ]
 }
 

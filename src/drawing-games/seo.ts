@@ -30,6 +30,7 @@ export function getDrawingPage(): DrawingPage {
 export function drawingHead(page: DrawingPage = DRAWING_PAGE) {
   const canonical = drawingCanonical()
   const games = [
+    ['らくがきコースター', 'rakugaki-coaster/'],
     ['オム文字シミュレーター', 'omurice/'],
     ['ラクガキファイター', 'draw-fight/'],
     ['ジッパーフィンガー', 'zipper-finger/'],
