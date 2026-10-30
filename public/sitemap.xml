@@ -546,6 +546,31 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://egakiba.com/latteart-maker/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/latteart-maker/guide/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/latteart-maker/catalog/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/jinsei-walker/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/jinsei-walker/guide/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://egakiba.com/about/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>

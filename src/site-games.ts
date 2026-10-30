@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string; beerPour: string; sansa: string; coaster: string; turkishIce: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string; beerPour: string; sansa: string; coaster: string; turkishIce: string; latte: string; walker: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -218,6 +218,22 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: '3D',
       title: 'トルコアイス3D',
       description: 'お客さんの手から、アイスを守り続ける。',
+    },
+    {
+      id: 'latteart-maker',
+      href: links.latte,
+      mark: '乳',
+      kicker: '3D',
+      title: 'ラテアート注ぎました',
+      description: 'ミルクを注いで、エスプレッソに模様を描く。',
+    },
+    {
+      id: 'jinsei-walker',
+      href: links.walker,
+      mark: '歩',
+      kicker: '3D',
+      title: '人生ウォーカー',
+      description: '左右の足で、1歳から100歳まで歩く。',
     },
   ]
 }

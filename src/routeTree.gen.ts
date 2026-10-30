@@ -42,10 +42,14 @@ import { Route as HankoHankoukiIndexRouteImport } from './routes/hanko-hankouki/
 import { Route as IceBreakIndexRouteImport } from './routes/ice-break/index'
 import { Route as IceBreakSlugRouteImport } from './routes/ice-break/$slug'
 import { Route as InterrogationGamesIndexRouteImport } from './routes/interrogation-games/index'
+import { Route as JinseiWalkerIndexRouteImport } from './routes/jinsei-walker/index'
+import { Route as JinseiWalkerSlugRouteImport } from './routes/jinsei-walker/$slug'
 import { Route as KazokuIgaiIndexRouteImport } from './routes/kazoku-igai/index'
 import { Route as KazokuIgaiSlugRouteImport } from './routes/kazoku-igai/$slug'
 import { Route as KuroiEkitaiIndexRouteImport } from './routes/kuroi-ekitai/index'
 import { Route as KuroiEkitaiSlugRouteImport } from './routes/kuroi-ekitai/$slug'
+import { Route as LatteartMakerIndexRouteImport } from './routes/latteart-maker/index'
+import { Route as LatteartMakerSlugRouteImport } from './routes/latteart-maker/$slug'
 import { Route as LongPotatoIndexRouteImport } from './routes/long-potato/index'
 import { Route as LongPotatoSlugRouteImport } from './routes/long-potato/$slug'
 import { Route as OmuriceSimulatorIndexRouteImport } from './routes/omurice-simulator/index'
@@ -248,6 +252,16 @@ const InterrogationGamesIndexRoute = InterrogationGamesIndexRouteImport.update({
   path: '/interrogation-games/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JinseiWalkerIndexRoute = JinseiWalkerIndexRouteImport.update({
+  id: '/jinsei-walker/',
+  path: '/jinsei-walker/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JinseiWalkerSlugRoute = JinseiWalkerSlugRouteImport.update({
+  id: '/jinsei-walker/$slug',
+  path: '/jinsei-walker/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const KazokuIgaiIndexRoute = KazokuIgaiIndexRouteImport.update({
   id: '/kazoku-igai/',
   path: '/kazoku-igai/',
@@ -266,6 +280,16 @@ const KuroiEkitaiIndexRoute = KuroiEkitaiIndexRouteImport.update({
 const KuroiEkitaiSlugRoute = KuroiEkitaiSlugRouteImport.update({
   id: '/kuroi-ekitai/$slug',
   path: '/kuroi-ekitai/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LatteartMakerIndexRoute = LatteartMakerIndexRouteImport.update({
+  id: '/latteart-maker/',
+  path: '/latteart-maker/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LatteartMakerSlugRoute = LatteartMakerSlugRouteImport.update({
+  id: '/latteart-maker/$slug',
+  path: '/latteart-maker/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LongPotatoIndexRoute = LongPotatoIndexRouteImport.update({
@@ -473,8 +497,10 @@ export interface FileRoutesByFullPath {
   '/draw-fight/studio': typeof DrawFightStudioRoute
   '/hamburg/$slug': typeof HamburgSlugRoute
   '/ice-break/$slug': typeof IceBreakSlugRoute
+  '/jinsei-walker/$slug': typeof JinseiWalkerSlugRoute
   '/kazoku-igai/$slug': typeof KazokuIgaiSlugRoute
   '/kuroi-ekitai/$slug': typeof KuroiEkitaiSlugRoute
+  '/latteart-maker/$slug': typeof LatteartMakerSlugRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
@@ -501,8 +527,10 @@ export interface FileRoutesByFullPath {
   '/hanko-hankouki/': typeof HankoHankoukiIndexRoute
   '/ice-break/': typeof IceBreakIndexRoute
   '/interrogation-games/': typeof InterrogationGamesIndexRoute
+  '/jinsei-walker/': typeof JinseiWalkerIndexRoute
   '/kazoku-igai/': typeof KazokuIgaiIndexRoute
   '/kuroi-ekitai/': typeof KuroiEkitaiIndexRoute
+  '/latteart-maker/': typeof LatteartMakerIndexRoute
   '/long-potato/': typeof LongPotatoIndexRoute
   '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
   '/omurice/': typeof OmuriceIndexRoute
@@ -548,8 +576,10 @@ export interface FileRoutesByTo {
   '/draw-fight/studio': typeof DrawFightStudioRoute
   '/hamburg/$slug': typeof HamburgSlugRoute
   '/ice-break/$slug': typeof IceBreakSlugRoute
+  '/jinsei-walker/$slug': typeof JinseiWalkerSlugRoute
   '/kazoku-igai/$slug': typeof KazokuIgaiSlugRoute
   '/kuroi-ekitai/$slug': typeof KuroiEkitaiSlugRoute
+  '/latteart-maker/$slug': typeof LatteartMakerSlugRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
@@ -576,8 +606,10 @@ export interface FileRoutesByTo {
   '/hanko-hankouki': typeof HankoHankoukiIndexRoute
   '/ice-break': typeof IceBreakIndexRoute
   '/interrogation-games': typeof InterrogationGamesIndexRoute
+  '/jinsei-walker': typeof JinseiWalkerIndexRoute
   '/kazoku-igai': typeof KazokuIgaiIndexRoute
   '/kuroi-ekitai': typeof KuroiEkitaiIndexRoute
+  '/latteart-maker': typeof LatteartMakerIndexRoute
   '/long-potato': typeof LongPotatoIndexRoute
   '/omurice-simulator': typeof OmuriceSimulatorIndexRoute
   '/omurice': typeof OmuriceIndexRoute
@@ -624,8 +656,10 @@ export interface FileRoutesById {
   '/draw-fight/studio': typeof DrawFightStudioRoute
   '/hamburg/$slug': typeof HamburgSlugRoute
   '/ice-break/$slug': typeof IceBreakSlugRoute
+  '/jinsei-walker/$slug': typeof JinseiWalkerSlugRoute
   '/kazoku-igai/$slug': typeof KazokuIgaiSlugRoute
   '/kuroi-ekitai/$slug': typeof KuroiEkitaiSlugRoute
+  '/latteart-maker/$slug': typeof LatteartMakerSlugRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
@@ -652,8 +686,10 @@ export interface FileRoutesById {
   '/hanko-hankouki/': typeof HankoHankoukiIndexRoute
   '/ice-break/': typeof IceBreakIndexRoute
   '/interrogation-games/': typeof InterrogationGamesIndexRoute
+  '/jinsei-walker/': typeof JinseiWalkerIndexRoute
   '/kazoku-igai/': typeof KazokuIgaiIndexRoute
   '/kuroi-ekitai/': typeof KuroiEkitaiIndexRoute
+  '/latteart-maker/': typeof LatteartMakerIndexRoute
   '/long-potato/': typeof LongPotatoIndexRoute
   '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
   '/omurice/': typeof OmuriceIndexRoute
@@ -701,8 +737,10 @@ export interface FileRouteTypes {
     | '/draw-fight/studio'
     | '/hamburg/$slug'
     | '/ice-break/$slug'
+    | '/jinsei-walker/$slug'
     | '/kazoku-igai/$slug'
     | '/kuroi-ekitai/$slug'
+    | '/latteart-maker/$slug'
     | '/long-potato/$slug'
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
@@ -729,8 +767,10 @@ export interface FileRouteTypes {
     | '/hanko-hankouki/'
     | '/ice-break/'
     | '/interrogation-games/'
+    | '/jinsei-walker/'
     | '/kazoku-igai/'
     | '/kuroi-ekitai/'
+    | '/latteart-maker/'
     | '/long-potato/'
     | '/omurice-simulator/'
     | '/omurice/'
@@ -776,8 +816,10 @@ export interface FileRouteTypes {
     | '/draw-fight/studio'
     | '/hamburg/$slug'
     | '/ice-break/$slug'
+    | '/jinsei-walker/$slug'
     | '/kazoku-igai/$slug'
     | '/kuroi-ekitai/$slug'
+    | '/latteart-maker/$slug'
     | '/long-potato/$slug'
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
@@ -804,8 +846,10 @@ export interface FileRouteTypes {
     | '/hanko-hankouki'
     | '/ice-break'
     | '/interrogation-games'
+    | '/jinsei-walker'
     | '/kazoku-igai'
     | '/kuroi-ekitai'
+    | '/latteart-maker'
     | '/long-potato'
     | '/omurice-simulator'
     | '/omurice'
@@ -851,8 +895,10 @@ export interface FileRouteTypes {
     | '/draw-fight/studio'
     | '/hamburg/$slug'
     | '/ice-break/$slug'
+    | '/jinsei-walker/$slug'
     | '/kazoku-igai/$slug'
     | '/kuroi-ekitai/$slug'
+    | '/latteart-maker/$slug'
     | '/long-potato/$slug'
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
@@ -879,8 +925,10 @@ export interface FileRouteTypes {
     | '/hanko-hankouki/'
     | '/ice-break/'
     | '/interrogation-games/'
+    | '/jinsei-walker/'
     | '/kazoku-igai/'
     | '/kuroi-ekitai/'
+    | '/latteart-maker/'
     | '/long-potato/'
     | '/omurice-simulator/'
     | '/omurice/'
@@ -927,8 +975,10 @@ export interface RootRouteChildren {
   DrawFightStudioRoute: typeof DrawFightStudioRoute
   HamburgSlugRoute: typeof HamburgSlugRoute
   IceBreakSlugRoute: typeof IceBreakSlugRoute
+  JinseiWalkerSlugRoute: typeof JinseiWalkerSlugRoute
   KazokuIgaiSlugRoute: typeof KazokuIgaiSlugRoute
   KuroiEkitaiSlugRoute: typeof KuroiEkitaiSlugRoute
+  LatteartMakerSlugRoute: typeof LatteartMakerSlugRoute
   LongPotatoSlugRoute: typeof LongPotatoSlugRoute
   OmuriceSimulatorSlugRoute: typeof OmuriceSimulatorSlugRoute
   OmuriceSlugRoute: typeof OmuriceSlugRoute
@@ -955,8 +1005,10 @@ export interface RootRouteChildren {
   HankoHankoukiIndexRoute: typeof HankoHankoukiIndexRoute
   IceBreakIndexRoute: typeof IceBreakIndexRoute
   InterrogationGamesIndexRoute: typeof InterrogationGamesIndexRoute
+  JinseiWalkerIndexRoute: typeof JinseiWalkerIndexRoute
   KazokuIgaiIndexRoute: typeof KazokuIgaiIndexRoute
   KuroiEkitaiIndexRoute: typeof KuroiEkitaiIndexRoute
+  LatteartMakerIndexRoute: typeof LatteartMakerIndexRoute
   LongPotatoIndexRoute: typeof LongPotatoIndexRoute
   OmuriceSimulatorIndexRoute: typeof OmuriceSimulatorIndexRoute
   OmuriceIndexRoute: typeof OmuriceIndexRoute
@@ -1214,6 +1266,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InterrogationGamesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/jinsei-walker/': {
+      id: '/jinsei-walker/'
+      path: '/jinsei-walker'
+      fullPath: '/jinsei-walker/'
+      preLoaderRoute: typeof JinseiWalkerIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jinsei-walker/$slug': {
+      id: '/jinsei-walker/$slug'
+      path: '/jinsei-walker/$slug'
+      fullPath: '/jinsei-walker/$slug'
+      preLoaderRoute: typeof JinseiWalkerSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/kazoku-igai/': {
       id: '/kazoku-igai/'
       path: '/kazoku-igai'
@@ -1240,6 +1306,20 @@ declare module '@tanstack/react-router' {
       path: '/kuroi-ekitai/$slug'
       fullPath: '/kuroi-ekitai/$slug'
       preLoaderRoute: typeof KuroiEkitaiSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/latteart-maker/': {
+      id: '/latteart-maker/'
+      path: '/latteart-maker'
+      fullPath: '/latteart-maker/'
+      preLoaderRoute: typeof LatteartMakerIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/latteart-maker/$slug': {
+      id: '/latteart-maker/$slug'
+      path: '/latteart-maker/$slug'
+      fullPath: '/latteart-maker/$slug'
+      preLoaderRoute: typeof LatteartMakerSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/long-potato/': {
@@ -1519,8 +1599,10 @@ const rootRouteChildren: RootRouteChildren = {
   DrawFightStudioRoute: DrawFightStudioRoute,
   HamburgSlugRoute: HamburgSlugRoute,
   IceBreakSlugRoute: IceBreakSlugRoute,
+  JinseiWalkerSlugRoute: JinseiWalkerSlugRoute,
   KazokuIgaiSlugRoute: KazokuIgaiSlugRoute,
   KuroiEkitaiSlugRoute: KuroiEkitaiSlugRoute,
+  LatteartMakerSlugRoute: LatteartMakerSlugRoute,
   LongPotatoSlugRoute: LongPotatoSlugRoute,
   OmuriceSimulatorSlugRoute: OmuriceSimulatorSlugRoute,
   OmuriceSlugRoute: OmuriceSlugRoute,
@@ -1547,8 +1629,10 @@ const rootRouteChildren: RootRouteChildren = {
   HankoHankoukiIndexRoute: HankoHankoukiIndexRoute,
   IceBreakIndexRoute: IceBreakIndexRoute,
   InterrogationGamesIndexRoute: InterrogationGamesIndexRoute,
+  JinseiWalkerIndexRoute: JinseiWalkerIndexRoute,
   KazokuIgaiIndexRoute: KazokuIgaiIndexRoute,
   KuroiEkitaiIndexRoute: KuroiEkitaiIndexRoute,
+  LatteartMakerIndexRoute: LatteartMakerIndexRoute,
   LongPotatoIndexRoute: LongPotatoIndexRoute,
   OmuriceSimulatorIndexRoute: OmuriceSimulatorIndexRoute,
   OmuriceIndexRoute: OmuriceIndexRoute,

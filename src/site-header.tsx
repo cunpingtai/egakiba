@@ -24,6 +24,8 @@ import { beerHref } from './beer-pour/seo'
 import { sansaHref } from './sansa/seo'
 import { coasterHref } from './rakugaki-coaster/seo'
 import { turkishIceHref } from './turkish-ice-cream-3d/seo'
+import { latteHref } from './latteart-maker/seo'
+import { walkerHref } from './jinsei-walker/seo'
 import { uwakiHref } from './uwaki-jinmon/seo'
 import { softServeHref } from './soft-serve/seo'
 import { typhoonHref } from './typhoon-escape/seo'
@@ -78,6 +80,8 @@ function headerGames(root: string): HeaderGame[] {
     { id: 'sansa-online-temple', href: sansaHref('ja'), mark: '寺', title: '산사', section: 'ja/sansa-online-temple' },
     { id: 'rakugaki-coaster', href: coasterHref(), mark: '車', title: 'らくがきコースター', section: 'rakugaki-coaster' },
     { id: 'turkish-ice-cream-3d', href: turkishIceHref(), mark: '氷', title: 'トルコアイス3D', section: 'turkish-ice-cream-3d' },
+    { id: 'latteart-maker', href: latteHref(), mark: '乳', title: 'ラテアート注ぎました', section: 'latteart-maker' },
+    { id: 'jinsei-walker', href: walkerHref(), mark: '歩', title: '人生ウォーカー', section: 'jinsei-walker' },
   ]
 }
 

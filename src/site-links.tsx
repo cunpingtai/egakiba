@@ -27,6 +27,8 @@ import { regionHref } from './regional-differences/seo'
 import { drawingHref } from './drawing-games/seo'
 import { coasterHref } from './rakugaki-coaster/seo'
 import { turkishIceHref } from './turkish-ice-cream-3d/seo'
+import { latteHref } from './latteart-maker/seo'
+import { walkerHref } from './jinsei-walker/seo'
 import { shodoHref } from './shodo-simulator-3d/seo'
 import { zipperHref } from './zipper-finger/seo'
 
@@ -147,6 +149,11 @@ export function siteIndexLinks() {
     { id: 'rakugaki-coaster/faq', href: coasterHref('faq/'), label: 'らくがきコースターの質問' },
     { id: 'turkish-ice-cream-3d', href: turkishIceHref(), label: 'トルコアイス3D' },
     { id: 'turkish-ice-cream-3d/guide', href: turkishIceHref('guide/'), label: 'トルコアイス3Dの攻略' },
+    { id: 'latteart-maker', href: latteHref(), label: 'ラテアート注ぎました' },
+    { id: 'latteart-maker/guide', href: latteHref('guide/'), label: 'ラテアート注ぎましたの攻略' },
+    { id: 'latteart-maker/catalog', href: latteHref('catalog/'), label: 'ラテアート注ぎましたの図鑑' },
+    { id: 'jinsei-walker', href: walkerHref(), label: '人生ウォーカー' },
+    { id: 'jinsei-walker/guide', href: walkerHref('guide/'), label: '人生ウォーカーの攻略' },
     { id: 'about', href: siteInfoHref('about'), label: 'サイトについて' },
     { id: 'contact', href: siteInfoHref('contact'), label: 'お問い合わせ' },
     { id: 'privacy', href: siteInfoHref('privacy'), label: 'プライバシーポリシー' },
