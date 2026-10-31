@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ja" translate="no" class="notranslate">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google" content="notranslate">
+  <meta name="robots" content="noindex,follow">
+  <meta name="theme-color" content="#0f172a">
+  <title>天和シミュレーター</title>
+  <meta name="description" content="天和が出るまで配牌を繰り返す運試し">
+  <meta property="og:title" content="天和シミュレーター">
+  <meta property="og:description" content="天和が出るまで配牌を繰り返す運試し">
+  <meta property="og:url" content="https://egakiba.com/tenhou-simulator/">
+  <link rel="canonical" href="https://egakiba.com/tenhou-simulator/">
+  <link rel="icon" href="./favicon.svg">
+  <link rel="stylesheet" href="./app.css">
+  <style>
+    body {
+      background-color: #0f172a;
+      background-image: url('bg.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #94a3b8;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      overscroll-behavior: none;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .text-outline {
+      text-shadow:
+        1px 1px 0 #000, -1px -1px 0 #000,
+        1px -1px 0 #000, -1px 1px 0 #000,
+        0 4px 8px rgba(0,0,0,0.8);
+    }
+    @keyframes pulse-glow {
+      0% { filter: drop-shadow(0 0 10px rgba(245,158,11,0.5)); }
+      50% { filter: drop-shadow(0 0 25px rgba(245,158,11,1)); }
+      100% { filter: drop-shadow(0 0 10px rgba(245,158,11,0.5)); }
+    }
+    .anim-tenhou { animation: pulse-glow 2s infinite ease-in-out; }
+    @keyframes shake-fever {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      20% { transform: translate(-2px, 0px) rotate(0.5deg); }
+      40% { transform: translate(1px, -1px) rotate(0.5deg); }
+      60% { transform: translate(-2px, 1px) rotate(0deg); }
+      80% { transform: translate(-1px, -1px) rotate(0.5deg); }
+      100% { transform: translate(1px, -2px) rotate(-0.5deg); }
+    }
+    .shake-fever { animation: shake-fever 0.2s infinite; }
+    @keyframes shake-fever-hard {
+      0% { transform: translate(3px, 3px) rotate(0deg); }
+      20% { transform: translate(-4px, 0px) rotate(1deg); }
+      40% { transform: translate(3px, -3px) rotate(1deg); }
+      60% { transform: translate(-4px, 3px) rotate(0deg); }
+      80% { transform: translate(-3px, -3px) rotate(1deg); }
+      100% { transform: translate(3px, -4px) rotate(-1deg); }
+    }
+    .shake-fever-hard { animation: shake-fever-hard 0.1s infinite; }
+    .hand-tile-size {
+      width: clamp(14px, 5.8vw, 26px);
+      height: clamp(21px, 8.7vw, 39px);
+    }
+  </style>
+</head>
+<body class="h-[100dvh] w-full overflow-hidden flex flex-col items-center justify-center p-2 sm:p-4 relative">
+
+  <div class="absolute top-2 right-2 sm:top-4 sm:right-4 z-40">
+    <button id="menu-btn" onclick="toggleMenu()" type="button" class="bg-slate-800/80 hover:bg-slate-700 text-white w-9 h-9 sm:w-10 sm:h-10 rounded-full border border-slate-600 backdrop-blur-sm transition-all active:scale-95 flex items-center justify-center shadow-lg">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+    </button>
+
+    <div id="dropdown-menu" class="hidden absolute right-0 mt-2 w-44 bg-slate-800 border border-slate-600 rounded-md shadow-xl py-1 backdrop-blur-md">
+      <button onclick="showCard('main-card'); toggleMenu();" type="button" class="block w-full text-left px-4 py-2 text-xs text-white hover:bg-slate-700">🎲 シミュレーター</button>
+      <button onclick="showCard('about-card'); toggleMenu();" type="button" class="block w-full text-left px-4 py-2 text-xs text-emerald-400 hover:bg-slate-700">📖 使い方・規約</button>
+    </div>
+  </div>
+
+  <div id="main-card" class="w-full h-full max-w-lg rounded-2xl flex flex-col items-center justify-between text-center relative overflow-y-auto overflow-x-hidden no-scrollbar py-2 px-1 sm:p-4">
+
+    <div class="w-full pt-4 sm:pt-4 pb-1">
+      <h1 class="text-xl sm:text-3xl font-black text-[#34d399] tracking-widest text-outline leading-none">天和シミュレーター</h1>
+      <p class="text-[10px] sm:text-xs font-bold text-white mt-1 text-outline tracking-wider">雨が来るなぁ</p>
+    </div>
+
+    <div class="w-full flex flex-col justify-center my-0.5 sm:my-1 relative">
+      <div class="text-[10px] sm:text-xs font-bold text-white tracking-widest mb-0.5 text-outline">配牌数</div>
+      <div id="counter-display" class="text-white text-5xl sm:text-7xl font-black truncate px-2 leading-none tracking-tight font-mono text-outline">0</div>
+      <div id="status-text" class="text-[#34d399] text-[9px] sm:text-xs font-bold mt-1 uppercase tracking-widest opacity-0 transition-opacity text-outline">COMPLETE!</div>
+    </div>
+
+    <div class="min-h-[40px] sm:min-h-[60px] flex items-center justify-center my-1 sm:my-2 w-full flex-shrink-0">
+      <h2 id="result-main-text" class="opacity-0 transition-opacity duration-500 text-yellow-400 text-5xl sm:text-6xl font-black tracking-[0.2em] ml-2 text-center leading-none anim-tenhou text-outline">天和</h2>
+    </div>
+
+    <div id="active-hand-area" class="flex justify-center items-center w-full px-1 mb-2 sm:mb-4 opacity-0 transition-opacity duration-300 z-10 min-h-[30px] flex-shrink-0">
+      <div id="hand-tiles" class="flex gap-px"></div>
+      <div class="w-1.5 sm:w-2 flex-shrink-0"></div>
+      <div id="draw-tile" class="flex-shrink-0"></div>
+    </div>
+
+    <div id="result-details-box" class="opacity-0 pointer-events-none transition-opacity duration-500 bg-[#2d3748]/90 border border-slate-600 p-2 sm:p-4 rounded-xl w-full flex flex-col items-center shadow-2xl backdrop-blur-sm relative mb-2 flex-shrink-0 mt-3 sm:mt-5">
+      <div class="flex justify-center mb-1.5 sm:mb-2 relative -mt-6 sm:-mt-8 w-full">
+        <div class="absolute -inset-1 bg-gradient-to-r from-amber-400 via-yellow-200 to-amber-400 rounded-full blur opacity-50 w-3/4 mx-auto"></div>
+        <div class="relative bg-gradient-to-b from-red-700 to-red-900 border-2 border-yellow-400 text-white px-3 sm:px-5 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-black shadow-xl flex items-center justify-center gap-1 sm:gap-2 max-w-[95%] whitespace-nowrap">
+          <span class="text-sm sm:text-lg drop-shadow-md flex-shrink-0">👑</span>
+          <span id="result-badge-text" class="truncate">【称号】</span>
+          <span class="text-sm sm:text-lg drop-shadow-md flex-shrink-0">🏅</span>
+        </div>
+      </div>
+
+      <p id="probability-comment" class="text-[9px] sm:text-xs font-bold text-slate-300 leading-tight mb-2.5 sm:mb-4 text-center w-full px-1 sm:px-2 mt-1 sm:mt-2"></p>
+
+      <div id="real-time-estimation" class="grid grid-cols-2 gap-1.5 sm:gap-2 w-full mb-1.5 sm:mb-2"></div>
+
+      <div class="flex justify-center w-full mt-1">
+        <button id="share-btn" onclick="shareResult()" type="button" class="bg-black hover:bg-gray-800 text-white border border-gray-600 font-bold py-2 px-6 rounded-full flex items-center justify-center gap-1 shadow-lg active:scale-95 text-[11px] sm:text-xs transition-colors">
+          共有
+        </button>
+      </div>
+    </div>
+
+    <div class="w-full flex-shrink-0 mt-auto pt-1">
+      <div class="flex gap-2 w-full">
+        <button id="btn-start" onclick="startSimulation()" type="button" class="bg-gradient-to-r from-[#059669] to-[#10b981] text-white w-full font-black py-2.5 sm:py-4 rounded-xl text-base sm:text-xl shadow-lg active:scale-95 transition-all tracking-wider">
+          シミュレーション開始
+        </button>
+        <button id="btn-stop" onclick="stopSimulation()" type="button" class="hidden w-full bg-red-900/80 hover:bg-red-800 text-red-200 font-bold py-2.5 sm:py-4 rounded-xl text-base sm:text-xl border border-red-700 active:scale-95 transition-all">
+          停止
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="about-card" class="bg-slate-800/90 border border-slate-600 shadow-2xl w-full h-full max-w-lg rounded-2xl p-4 sm:p-6 flex flex-col relative hidden overflow-hidden backdrop-blur-md">
+    <div class="w-full pt-2 mb-4 text-center flex-shrink-0">
+      <h2 class="text-xl sm:text-2xl font-black text-emerald-400 drop-shadow">使い方・情報</h2>
+    </div>
+
+    <div class="flex-1 overflow-y-auto no-scrollbar space-y-4 pr-1 text-sm text-slate-300 min-h-0 pb-10">
+      <div class="bg-black/40 p-4 rounded-xl border border-white/10">
+        <h3 class="font-bold text-emerald-400 mb-2">🎲 遊び方</h3>
+        <p class="text-xs mb-2">「シミュレーション開始」ボタンを押すと、天和が出るまで自動で配牌されます。</p>
+        <p class="text-[10px] text-amber-200">※天和の確率は約33万分の1です。</p>
+      </div>
+
+      <div class="bg-black/40 p-4 rounded-xl border border-white/10">
+        <h3 class="font-bold text-emerald-400 mb-2">🏅 称号について</h3>
+        <p class="text-xs">引き当てた回数によって、結果画面に様々な称号とコメントが表示されます。</p>
+      </div>
+
+      <div class="bg-black/40 p-4 rounded-xl border border-white/10">
+        <h3 class="font-bold text-emerald-400 mb-2">👤 作者情報</h3>
+        <p class="text-xs">開発者: ろん</p>
+      </div>
+
+      <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-700/50 mt-4">
+        <h3 class="font-bold text-slate-400 mb-2 text-[11px]">📝 免責事項</h3>
+        <p class="text-[10px] text-slate-500">
+          当シミュレーターで表示される確率や結果は、プログラム上の計算結果であり、実際の麻雀ゲームや現実での確率との完全な一致を保証するものではありません。利用により生じたいかなる損害についても、運営者は一切の責任を負いません。
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const TILE_TYPES = [
+      'm1','m2','m3','m4','m5','m6','m7','m8','m9',
+      'p1','p2','p3','p4','p5','p6','p7','p8','p9',
+      's1','s2','s3','s4','s5','s6','s7','s8','s9',
+      'z1','z2','z3','z4','z5','z6','z7'
+    ];
+
+    const UNICODE_TILES = {
+      'm1':'🀇','m2':'🀈','m3':'🀉','m4':'🀊','m5':'🀋','m6':'🀌','m7':'🀍','m8':'🀎','m9':'🀏',
+      'p1':'🀙','p2':'🀚','p3':'🀛','p4':'🀜','p5':'🀝','p6':'🀞','p7':'🀟','p8':'🀠','p9':'🀡',
+      's1':'🀐','s2':'🀑','s3':'🀒','s4':'🀓','s5':'🀔','s6':'🀕','s7':'🀖','s8':'🀗','s9':'🀘',
+      'z1':'🀀','z2':'🀁','z3':'🀂','z4':'🀃','z5':'🀆','z6':'🀅','z7':'🀄'
+    };
+
+    let isRunning = false;
+    let attemptCount = 0;
+    let simTimer = null;
+    let lastResultHand14 = [];
+
+    let handImgElements = [];
+    let drawImgElement = null;
+
+    window.addEventListener('load', () => {
+      preloadImages();
+      setupHandDOM();
+    });
+
+    function preloadImages() {
+      TILE_TYPES.forEach(tile => {
+        const img = new Image();
+        img.src = `pai/${tile}.png`;
+      });
+    }
+
+    function setupHandDOM() {
+      const handBox = document.getElementById('hand-tiles');
+      const drawBox = document.getElementById('draw-tile');
+      handBox.innerHTML = '';
+      drawBox.innerHTML = '';
+      handImgElements = [];
+
+      for (let i = 0; i < 13; i++) {
+        const img = document.createElement('img');
+        img.className = 'hand-tile-size object-contain drop-shadow-md rounded-[2px]';
+        img.alt = '';
+        handBox.appendChild(img);
+        handImgElements.push(img);
+      }
+
+      drawImgElement = document.createElement('img');
+      drawImgElement.className = 'hand-tile-size object-contain drop-shadow-xl rounded-[2px]';
+      drawImgElement.alt = '';
+      drawBox.appendChild(drawImgElement);
+    }
+
+    function updateHandDisplay(hand14) {
+      if (!hand14 || hand14.length < 14) return;
+      const tiles = [...hand14];
+      const tsumo = tiles.pop();
+      tiles.sort();
+
+      for (let i = 0; i < 13; i++) {
+        handImgElements[i].src = `pai/${tiles[i]}.png`;
+      }
+      drawImgElement.src = `pai/${tsumo}.png`;
+    }
+
+    function toggleMenu() {
+      const menu = document.getElementById('dropdown-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    window.addEventListener('click', function(e) {
+      const menu = document.getElementById('dropdown-menu');
+      const menuBtn = document.getElementById('menu-btn');
+      if (!menu.classList.contains('hidden') && !menu.contains(e.target) && (!menuBtn || !menuBtn.contains(e.target))) {
+        menu.classList.add('hidden');
+      }
+    });
+
+    function showCard(cardId) {
+      if (isRunning && cardId !== 'main-card') {
+        alert('シミュレーション中は画面を切り替えられません。');
+        return;
+      }
+      document.getElementById('main-card').classList.add('hidden');
+      document.getElementById('about-card').classList.add('hidden');
+      document.getElementById(cardId).classList.remove('hidden');
+    }
+
+    function buildWall() {
+      const wall = [];
+      for (const tile of TILE_TYPES) {
+        wall.push(tile, tile, tile, tile);
+      }
+      for (let i = wall.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [wall[i], wall[j]] = [wall[j], wall[i]];
+      }
+      return wall;
+    }
+
+    function checkAgari(hand14) {
+      const counts = {};
+      hand14.forEach(t => counts[t] = (counts[t] || 0) + 1);
+      if (isKokushi(counts)) return true;
+      if (isChiitoitsu(counts)) return true;
+      return isStandardAgari(counts);
+    }
+
+    function isKokushi(counts) {
+      const yaochu = ['m1','m9','p1','p9','s1','s9','z1','z2','z3','z4','z5','z6','z7'];
+      let pair = false;
+      for (const tile of yaochu) {
+        if (!counts[tile]) return false;
+        if (counts[tile] >= 2) pair = true;
+      }
+      return pair;
+    }
+
+    function isChiitoitsu(counts) {
+      let uniquePairs = 0;
+      for (const tile in counts) {
+        if (counts[tile] === 2) uniquePairs++;
+        else if (counts[tile] >= 3) return false;
+      }
+      return uniquePairs === 7;
+    }
+
+    function isStandardAgari(counts) {
+      for (const base in counts) {
+        if (counts[base] >= 2) {
+          counts[base] -= 2;
+          if (checkMentsu(counts)) {
+            counts[base] += 2;
+            return true;
+          }
+          counts[base] += 2;
+        }
+      }
+      return false;
+    }
+
+    function checkMentsu(counts) {
+      let firstTile = null;
+      for (const base of Object.keys(counts).sort()) {
+        if (counts[base] > 0) {
+          firstTile = base;
+          break;
+        }
+      }
+
+      if (!firstTile) return true;
+
+      let success = false;
+      if (counts[firstTile] >= 3) {
+        counts[firstTile] -= 3;
+        success = checkMentsu(counts);
+        counts[firstTile] += 3;
+        if (success) return true;
+      }
+
+      const suit = firstTile.charAt(0);
+      const num = parseInt(firstTile.charAt(1));
+
+      if (['m', 'p', 's'].includes(suit) && num <= 7) {
+        const t2 = suit + (num + 1);
+        const t3 = suit + (num + 2);
+
+        if (counts[t2] > 0 && counts[t3] > 0) {
+          counts[firstTile]--; counts[t2]--; counts[t3]--;
+          success = checkMentsu(counts);
+          counts[firstTile]++; counts[t2]++; counts[t3]++;
+          if (success) return true;
+        }
+      }
+      return false;
+    }
+
+    function startSimulation() {
+      if (isRunning) return;
+
+      isRunning = true;
+      attemptCount = 0;
+
+      document.getElementById('btn-start').classList.add('hidden');
+      document.getElementById('btn-stop').classList.remove('hidden');
+      document.getElementById('main-card').classList.remove('shake-fever', 'shake-fever-hard');
+
+      document.getElementById('result-main-text').classList.add('opacity-0');
+      document.getElementById('result-details-box').classList.add('opacity-0', 'pointer-events-none');
+      document.getElementById('status-text').style.opacity = '0';
+
+      document.getElementById('active-hand-area').style.opacity = '1';
+
+      runBatch();
+    }
+
+    function stopSimulation() {
+      isRunning = false;
+      clearTimeout(simTimer);
+
+      document.getElementById('btn-start').classList.remove('hidden');
+      document.getElementById('btn-stop').classList.add('hidden');
+      document.getElementById('main-card').classList.remove('shake-fever', 'shake-fever-hard');
+    }
+
+    function runBatch() {
+      if (!isRunning) return;
+
+      let foundHand = null;
+      let lastAttemptHand = null;
+      const batchSize = 500;
+
+      for (let i = 0; i < batchSize; i++) {
+        attemptCount++;
+        const wall = buildWall();
+        const hand = wall.slice(0, 14);
+
+        if (checkAgari(hand)) {
+          foundHand = hand;
+          break;
+        }
+        lastAttemptHand = hand;
+      }
+
+      document.getElementById('counter-display').innerText = attemptCount.toLocaleString();
+
+      if (attemptCount >= 1000000) {
+        document.getElementById('main-card').classList.remove('shake-fever');
+        document.getElementById('main-card').classList.add('shake-fever-hard');
+      } else if (attemptCount >= 330000) {
+        document.getElementById('main-card').classList.add('shake-fever');
+      }
+
+      if (foundHand) {
+        handleSuccess(foundHand);
+      } else {
+        if (lastAttemptHand) updateHandDisplay(lastAttemptHand);
+        simTimer = setTimeout(runBatch, 0);
+      }
+    }
+
+    function handleSuccess(hand14) {
+      isRunning = false;
+      document.getElementById('btn-start').classList.remove('hidden');
+      document.getElementById('btn-stop').classList.add('hidden');
+      document.getElementById('main-card').classList.remove('shake-fever', 'shake-fever-hard');
+
+      const statusText = document.getElementById('status-text');
+      statusText.innerText = 'COMPLETE!';
+      statusText.style.opacity = '1';
+
+      lastResultHand14 = [...hand14];
+      updateHandDisplay(hand14);
+
+      let title = "";
+      let desc = "";
+
+      if (attemptCount === 1) {
+        title = "【称号】天に愛されし神";
+        desc = "1発ツモ！？天和確率は約33万分の1。今日のあなたは文字通り神です。";
+      } else if (attemptCount <= 100) {
+        title = "【称号】規格外の運王";
+        desc = "わずか" + attemptCount.toLocaleString() + "回での達成！隕石に直撃するレベルの奇跡的なヒキです。";
+      } else if (attemptCount <= 1000) {
+        title = "【称号】神の領域に達せし者";
+        desc = attemptCount.toLocaleString() + "回での天和。前世でどれほどの徳を積めばこんなことが起きるのでしょうか？";
+      } else if (attemptCount <= 10000) {
+        title = "【称号】雀神の申し子";
+        desc = "驚異的な強運！一生分の運をここで使い果たしていないか少し心配です。";
+      } else if (attemptCount <= 100000) {
+        title = "【称号】選ばれし強運";
+        desc = "確率の壁を余裕で打ち破りました。十分すぎるほど素晴らしい結果です！";
+      } else if (attemptCount <= 330000) {
+        title = "【称号】天和の探求者";
+        desc = "天和の平均確率は約33万分の1。見事に確率の収束を証明して見せました！";
+      } else if (attemptCount <= 1000000) {
+        title = "【称号】不屈の雀士";
+        desc = "少し沼にハマりましたが、諦めずに" + attemptCount.toLocaleString() + "回引き続けたその執念に敬意を表します。";
+      } else if (attemptCount <= 3300000) {
+        title = "【称号】苦行を越えし求道者";
+        desc = "平均の10倍近い大ハマり…。絶望の底から這い上がったあなたは求道者です。";
+      } else {
+        title = "【称号】悟りを開きし仏";
+        desc = attemptCount.toLocaleString() + "回…！？麻雀の神に見放された末の苦行を経て、あなたは自ら仏となりました。";
+      }
+
+      document.getElementById('result-badge-text').innerText = title;
+      document.getElementById('probability-comment').innerText = desc;
+
+      const totalMins = attemptCount * 4;
+      const totalHanchans = Math.floor(totalMins / 40);
+      const d = Math.floor(totalMins / (24 * 60));
+      const h = Math.floor((totalMins % (24 * 60)) / 60);
+      const m = totalMins % 60;
+
+      document.getElementById('real-time-estimation').innerHTML = `
+        <div class="bg-slate-700/50 p-1.5 sm:p-2 rounded-lg flex items-center justify-center gap-1.5 sm:gap-2 border border-slate-600 shadow-inner">
+          <div class="text-lg sm:text-2xl drop-shadow">🀄</div>
+          <div class="text-left leading-tight">
+            <div class="text-[8px] sm:text-[9px] text-slate-300 font-bold">リアル麻雀換算</div>
+            <div class="text-[10px] sm:text-xs font-black text-white">約 ${totalHanchans.toLocaleString()}半荘</div>
+          </div>
+        </div>
+        <div class="bg-slate-700/50 p-1.5 sm:p-2 rounded-lg flex items-center justify-center gap-1.5 sm:gap-2 border border-slate-600 shadow-inner">
+          <div class="text-lg sm:text-2xl drop-shadow">🗓️</div>
+          <div class="text-left leading-tight">
+            <div class="text-[8px] sm:text-[9px] text-slate-300 font-bold">リアル麻雀換算</div>
+            <div class="text-[10px] sm:text-xs font-black text-white">${d}日 ${h}時間 ${m}分</div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('result-main-text').classList.remove('opacity-0');
+      document.getElementById('result-details-box').classList.remove('opacity-0', 'pointer-events-none');
+    }
+
+    function shareResult() {
+      if (!lastResultHand14.length) return;
+      const tiles = [...lastResultHand14];
+      const tsumo = tiles.pop();
+      tiles.sort();
+      const tileString = tiles.map(t => UNICODE_TILES[t] || '').join('') + ' ' + (UNICODE_TILES[tsumo] || '');
+      const badgeTitle = document.getElementById('result-badge-text').innerText;
+      const text = `${badgeTitle}
+
+🎯 ${attemptCount.toLocaleString()}回で天和出た！
+
+${tileString}
+
+${new URL('./', location.href).href}
+#天和シミュレーター`;
+      const btn = document.getElementById('share-btn');
+      if (navigator.share) {
+        navigator.share({ text }).catch(() => {});
+        return;
+      }
+      navigator.clipboard?.writeText(text).then(() => {
+        btn.textContent = 'コピーしました';
+        setTimeout(() => { btn.textContent = '共有'; }, 1500);
+      }).catch(() => {});
+    }
+
+    window.toggleMenu = toggleMenu;
+    window.showCard = showCard;
+    window.startSimulation = startSimulation;
+    window.stopSimulation = stopSimulation;
+    window.shareResult = shareResult;
+  </script>
+</body>
+</html>

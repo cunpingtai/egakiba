@@ -29,6 +29,7 @@ import { walkerHref } from './jinsei-walker/seo'
 import { rollIceHref } from './roll-ice-simulator/seo'
 import { nnkoHref } from './nnko-quiz/seo'
 import { derbyHref } from './prefecture-derby/seo'
+import { tenhouHref } from './tenhou-simulator/seo'
 import { uwakiHref } from './uwaki-jinmon/seo'
 import { softServeHref } from './soft-serve/seo'
 import { typhoonHref } from './typhoon-escape/seo'
@@ -88,6 +89,7 @@ function headerGames(root: string): HeaderGame[] {
     { id: 'roll-ice-simulator', href: rollIceHref(), mark: '巻', title: 'なんでもロールアイスシミュレーター', section: 'roll-ice-simulator' },
     { id: 'nnko-quiz', href: nnkoHref(), mark: '〇', title: '〇んこクイズ', section: 'nnko-quiz' },
     { id: 'prefecture-derby', href: derbyHref(), mark: '馬', title: '都道府県ダービー', section: 'prefecture-derby' },
+    { id: 'tenhou-simulator', href: tenhouHref(), mark: '天', title: '天和シミュレーター', section: 'tenhou-simulator' },
   ]
 }
 

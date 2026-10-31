@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string; beerPour: string; sansa: string; coaster: string; turkishIce: string; latte: string; walker: string; rollIce: string; nnko: string; derby: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string; beerPour: string; sansa: string; coaster: string; turkishIce: string; latte: string; walker: string; rollIce: string; nnko: string; derby: string; tenhou: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -258,6 +258,14 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: '競馬',
       title: '都道府県ダービー',
       description: '支出がいちばん多い県に、持ち点を賭ける。',
+    },
+    {
+      id: 'tenhou-simulator',
+      href: links.tenhou,
+      mark: '天',
+      kicker: '麻雀',
+      title: '天和シミュレーター',
+      description: '天和が出るまで、配牌を繰り返す。',
     },
   ]
 }

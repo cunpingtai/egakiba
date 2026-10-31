@@ -32,6 +32,7 @@ import { walkerHref } from './jinsei-walker/seo'
 import { rollIceHref } from './roll-ice-simulator/seo'
 import { nnkoHref } from './nnko-quiz/seo'
 import { derbyHref } from './prefecture-derby/seo'
+import { tenhouHref } from './tenhou-simulator/seo'
 import { shodoHref } from './shodo-simulator-3d/seo'
 import { zipperHref } from './zipper-finger/seo'
 
@@ -163,6 +164,8 @@ export function siteIndexLinks() {
     { id: 'nnko-quiz/endings', href: nnkoHref('endings/'), label: '〇んこクイズのエンディング' },
     { id: 'prefecture-derby', href: derbyHref(), label: '都道府県ダービー' },
     { id: 'prefecture-derby/guide', href: derbyHref('guide/'), label: '都道府県ダービーの遊び方' },
+    { id: 'tenhou-simulator', href: tenhouHref(), label: '天和シミュレーター' },
+    { id: 'tenhou-simulator/probability', href: tenhouHref('probability/'), label: '天和シミュレーターの確率' },
     { id: 'about', href: siteInfoHref('about'), label: 'サイトについて' },
     { id: 'contact', href: siteInfoHref('contact'), label: 'お問い合わせ' },
     { id: 'privacy', href: siteInfoHref('privacy'), label: 'プライバシーポリシー' },

@@ -76,6 +76,8 @@ import { Route as ShusshinKenIndexRouteImport } from './routes/shusshin-ken/inde
 import { Route as ShusshinKenSlugRouteImport } from './routes/shusshin-ken/$slug'
 import { Route as SoftServeIndexRouteImport } from './routes/soft-serve/index'
 import { Route as SoftServeSlugRouteImport } from './routes/soft-serve/$slug'
+import { Route as TenhouSimulatorIndexRouteImport } from './routes/tenhou-simulator/index'
+import { Route as TenhouSimulatorSlugRouteImport } from './routes/tenhou-simulator/$slug'
 import { Route as TurkishIceCream3dIndexRouteImport } from './routes/turkish-ice-cream-3d/index'
 import { Route as TurkishIceCream3dSlugRouteImport } from './routes/turkish-ice-cream-3d/$slug'
 import { Route as TyphoonEscapeIndexRouteImport } from './routes/typhoon-escape/index'
@@ -429,6 +431,16 @@ const SoftServeSlugRoute = SoftServeSlugRouteImport.update({
   path: '/soft-serve/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TenhouSimulatorIndexRoute = TenhouSimulatorIndexRouteImport.update({
+  id: '/tenhou-simulator/',
+  path: '/tenhou-simulator/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TenhouSimulatorSlugRoute = TenhouSimulatorSlugRouteImport.update({
+  id: '/tenhou-simulator/$slug',
+  path: '/tenhou-simulator/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TurkishIceCream3dIndexRoute = TurkishIceCream3dIndexRouteImport.update({
   id: '/turkish-ice-cream-3d/',
   path: '/turkish-ice-cream-3d/',
@@ -550,6 +562,7 @@ export interface FileRoutesByFullPath {
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
+  '/tenhou-simulator/$slug': typeof TenhouSimulatorSlugRoute
   '/turkish-ice-cream-3d/$slug': typeof TurkishIceCream3dSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
@@ -583,6 +596,7 @@ export interface FileRoutesByFullPath {
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
   '/shusshin-ken/': typeof ShusshinKenIndexRoute
   '/soft-serve/': typeof SoftServeIndexRoute
+  '/tenhou-simulator/': typeof TenhouSimulatorIndexRoute
   '/turkish-ice-cream-3d/': typeof TurkishIceCream3dIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
   '/uwaki-jinmon/': typeof UwakiJinmonIndexRoute
@@ -635,6 +649,7 @@ export interface FileRoutesByTo {
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
+  '/tenhou-simulator/$slug': typeof TenhouSimulatorSlugRoute
   '/turkish-ice-cream-3d/$slug': typeof TurkishIceCream3dSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
@@ -668,6 +683,7 @@ export interface FileRoutesByTo {
   '/shodo-simulator-3d': typeof ShodoSimulator3dIndexRoute
   '/shusshin-ken': typeof ShusshinKenIndexRoute
   '/soft-serve': typeof SoftServeIndexRoute
+  '/tenhou-simulator': typeof TenhouSimulatorIndexRoute
   '/turkish-ice-cream-3d': typeof TurkishIceCream3dIndexRoute
   '/typhoon-escape': typeof TyphoonEscapeIndexRoute
   '/uwaki-jinmon': typeof UwakiJinmonIndexRoute
@@ -721,6 +737,7 @@ export interface FileRoutesById {
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
+  '/tenhou-simulator/$slug': typeof TenhouSimulatorSlugRoute
   '/turkish-ice-cream-3d/$slug': typeof TurkishIceCream3dSlugRoute
   '/typhoon-escape/$slug': typeof TyphoonEscapeSlugRoute
   '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
@@ -754,6 +771,7 @@ export interface FileRoutesById {
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
   '/shusshin-ken/': typeof ShusshinKenIndexRoute
   '/soft-serve/': typeof SoftServeIndexRoute
+  '/tenhou-simulator/': typeof TenhouSimulatorIndexRoute
   '/turkish-ice-cream-3d/': typeof TurkishIceCream3dIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
   '/uwaki-jinmon/': typeof UwakiJinmonIndexRoute
@@ -808,6 +826,7 @@ export interface FileRouteTypes {
     | '/shodo-simulator-3d/$slug'
     | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
+    | '/tenhou-simulator/$slug'
     | '/turkish-ice-cream-3d/$slug'
     | '/typhoon-escape/$slug'
     | '/uwaki-jinmon/$slug'
@@ -841,6 +860,7 @@ export interface FileRouteTypes {
     | '/shodo-simulator-3d/'
     | '/shusshin-ken/'
     | '/soft-serve/'
+    | '/tenhou-simulator/'
     | '/turkish-ice-cream-3d/'
     | '/typhoon-escape/'
     | '/uwaki-jinmon/'
@@ -893,6 +913,7 @@ export interface FileRouteTypes {
     | '/shodo-simulator-3d/$slug'
     | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
+    | '/tenhou-simulator/$slug'
     | '/turkish-ice-cream-3d/$slug'
     | '/typhoon-escape/$slug'
     | '/uwaki-jinmon/$slug'
@@ -926,6 +947,7 @@ export interface FileRouteTypes {
     | '/shodo-simulator-3d'
     | '/shusshin-ken'
     | '/soft-serve'
+    | '/tenhou-simulator'
     | '/turkish-ice-cream-3d'
     | '/typhoon-escape'
     | '/uwaki-jinmon'
@@ -978,6 +1000,7 @@ export interface FileRouteTypes {
     | '/shodo-simulator-3d/$slug'
     | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
+    | '/tenhou-simulator/$slug'
     | '/turkish-ice-cream-3d/$slug'
     | '/typhoon-escape/$slug'
     | '/uwaki-jinmon/$slug'
@@ -1011,6 +1034,7 @@ export interface FileRouteTypes {
     | '/shodo-simulator-3d/'
     | '/shusshin-ken/'
     | '/soft-serve/'
+    | '/tenhou-simulator/'
     | '/turkish-ice-cream-3d/'
     | '/typhoon-escape/'
     | '/uwaki-jinmon/'
@@ -1064,6 +1088,7 @@ export interface RootRouteChildren {
   ShodoSimulator3dSlugRoute: typeof ShodoSimulator3dSlugRoute
   ShusshinKenSlugRoute: typeof ShusshinKenSlugRoute
   SoftServeSlugRoute: typeof SoftServeSlugRoute
+  TenhouSimulatorSlugRoute: typeof TenhouSimulatorSlugRoute
   TurkishIceCream3dSlugRoute: typeof TurkishIceCream3dSlugRoute
   TyphoonEscapeSlugRoute: typeof TyphoonEscapeSlugRoute
   UwakiJinmonSlugRoute: typeof UwakiJinmonSlugRoute
@@ -1097,6 +1122,7 @@ export interface RootRouteChildren {
   ShodoSimulator3dIndexRoute: typeof ShodoSimulator3dIndexRoute
   ShusshinKenIndexRoute: typeof ShusshinKenIndexRoute
   SoftServeIndexRoute: typeof SoftServeIndexRoute
+  TenhouSimulatorIndexRoute: typeof TenhouSimulatorIndexRoute
   TurkishIceCream3dIndexRoute: typeof TurkishIceCream3dIndexRoute
   TyphoonEscapeIndexRoute: typeof TyphoonEscapeIndexRoute
   UwakiJinmonIndexRoute: typeof UwakiJinmonIndexRoute
@@ -1582,6 +1608,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SoftServeSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tenhou-simulator/': {
+      id: '/tenhou-simulator/'
+      path: '/tenhou-simulator'
+      fullPath: '/tenhou-simulator/'
+      preLoaderRoute: typeof TenhouSimulatorIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tenhou-simulator/$slug': {
+      id: '/tenhou-simulator/$slug'
+      path: '/tenhou-simulator/$slug'
+      fullPath: '/tenhou-simulator/$slug'
+      preLoaderRoute: typeof TenhouSimulatorSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/turkish-ice-cream-3d/': {
       id: '/turkish-ice-cream-3d/'
       path: '/turkish-ice-cream-3d'
@@ -1736,6 +1776,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShodoSimulator3dSlugRoute: ShodoSimulator3dSlugRoute,
   ShusshinKenSlugRoute: ShusshinKenSlugRoute,
   SoftServeSlugRoute: SoftServeSlugRoute,
+  TenhouSimulatorSlugRoute: TenhouSimulatorSlugRoute,
   TurkishIceCream3dSlugRoute: TurkishIceCream3dSlugRoute,
   TyphoonEscapeSlugRoute: TyphoonEscapeSlugRoute,
   UwakiJinmonSlugRoute: UwakiJinmonSlugRoute,
@@ -1769,6 +1810,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShodoSimulator3dIndexRoute: ShodoSimulator3dIndexRoute,
   ShusshinKenIndexRoute: ShusshinKenIndexRoute,
   SoftServeIndexRoute: SoftServeIndexRoute,
+  TenhouSimulatorIndexRoute: TenhouSimulatorIndexRoute,
   TurkishIceCream3dIndexRoute: TurkishIceCream3dIndexRoute,
   TyphoonEscapeIndexRoute: TyphoonEscapeIndexRoute,
   UwakiJinmonIndexRoute: UwakiJinmonIndexRoute,
