@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ja" data-ui-lang="ja" translate="no"><head><meta charset="utf-8">
+<script>
+var ADS = { enabled: false, banner: false, startBand: false, startBandShare: false, h5: 'off', failed: true, dry: false };
+</script>
+<meta name="google" content="notranslate">
+<!-- 画面サイズ固定：拡大させない -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>秋刀魚(骨抜き)｜焼きサンマの骨を抜く無料ブラウザゲーム</title>
+<meta name="description" content="焼きサンマの身を箸でほぐし、尾を折って、中骨を頭ごと一本で抜く骨抜きゲーム。押しすぎると身が崩れ、引き方が乱れると骨が折れる。インストール不要・登録不要で、スマホでもPCでも遊べる無料ブラウザゲームです。">
+<meta name="robots" content="noindex,follow">
+<meta name="theme-color" content="#0d0b0a">
+<link rel="canonical" href="https://egakiba.com/sanma-bonenuki/">
+<link rel="icon" href="./favicon.svg">
+<meta property="og:type" content="website">
+<meta property="og:title" content="秋刀魚(骨抜き)">
+<meta property="og:description" content="焼きサンマの中骨を、頭ごと一本で抜けるか。うまく抜ければ骨抜き名人、失敗すると…サンマが泳ぎだす。">
+<meta property="og:url" content="https://egakiba.com/sanma-bonenuki/">
+<style>
+/* タッチ操作の抑止：スクロール・拡大・長押しメニュー・引っぱって更新・文字選択を止める */
+html,body{margin:0;height:100%;background:#0d0b0a;overflow:hidden;overscroll-behavior:none;touch-action:none;color:#f3e6cf;
+  font-family:system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+canvas{display:block;touch-action:none}
+/* 結果画面の上の広告の帯：3D の画面に重ねず、ページの上に並べ、3D の画面はその下に縮める（だし巻きと同じ。AdSense のルール）。大きさは最初から固定。境目の線で、広告がゲームの一部に見えないように */
+#adTop{position:relative;z-index:100;box-sizing:border-box;padding:calc(4px + env(safe-area-inset-top)) 0 6px;background:#15110e;border-bottom:1px solid #f3e6cf40;display:flex;justify-content:center;overflow:hidden} /* z-index：周辺減光（#vignette）・暗転・読み込み画面を帯に重ねない */
+#adTop .adLabel{font-size:10px;line-height:14px;opacity:.6}
+#adTop ins{display:block}
+button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+.pill{background:#0008;border:1px solid #f3e6cf55;border-radius:16px;padding:6px 14px;font-size:14px}
+/* 周辺減光（暗い背景にスポットライト） */
+#vignette{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,transparent 45%,#000a 100%)}
+/* 右上に言語、その下に「？」（だし巻きと同じ） */
+#top{position:fixed;right:12px;top:calc(12px + env(safe-area-inset-top));display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+#credit{position:fixed;left:8px;bottom:calc(4px + env(safe-area-inset-bottom));font-size:10px;opacity:.45}
+#credit a{color:inherit}
+/* 所作の案内（初回だけ）。3D の位置に合わせて毎フレーム動かす */
+.guide{position:fixed;left:0;top:0;display:none;transform:translate(-50%,-100%);white-space:nowrap;pointer-events:none;font-size:14px;padding:3px 10px;border-radius:10px;background:#000b;border:1px solid #f3c06088;color:#f3c060;text-shadow:0 1px 2px #000;animation:bob 1.4s ease-in-out infinite}
+@keyframes bob{50%{margin-top:-4px}}
+#result{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom));transform:translate(-50%,20px);width:calc(100% - 24px);max-width:440px;box-sizing:border-box;
+  background:#1c1814ee;border:1px solid #f3e6cf44;border-radius:16px;padding:16px 18px 14px;text-align:center;opacity:0;pointer-events:none;transition:opacity .6s,transform .6s}
+#result.show{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#resName{font-size:22px;font-weight:bold;letter-spacing:.06em;margin-bottom:6px;word-break:keep-all;overflow-wrap:anywhere} /* 名前は区切り（<wbr>）でだけ改行 */
+#resAdvice{font-size:15px;line-height:1.6;opacity:.92}
+#result .row{display:flex;gap:8px;justify-content:center;margin-top:14px}
+#result .row button{padding:8px 12px;font-size:14px;white-space:nowrap}
+#result .row.tip{margin-top:10px}
+#result .tip a{display:inline-block;padding:7px 18px;font-size:14px;color:inherit;text-decoration:none}
+#result #share{background:#000;border-color:#f3e6cfaa;font-weight:bold}
+/* 読み込み中・遊び方（だし巻きと同じ見た目） */
+.overlay{position:fixed;inset:0;z-index:10;background:#000b;display:none;align-items:center;justify-content:center;padding:16px;box-sizing:border-box}
+#fade{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .5s;z-index:15}#fade.on{opacity:1}
+#loading,#lost{background:#0d0b0a;flex-direction:column;gap:14px;z-index:20}
+#lost{z-index:30;text-align:center;padding:0 24px}
+.loadT{font-size:28px;letter-spacing:.12em;text-shadow:0 2px 8px #000}
+.dots{display:flex;gap:10px}.dots i{width:10px;height:10px;border-radius:50%;background:#f3c060;animation:plt 1.2s infinite ease-in-out}
+.dots i:nth-child(2){animation-delay:.2s}.dots i:nth-child(3){animation-delay:.4s}
+@keyframes plt{0%,100%{opacity:.25;transform:scale(.7)}50%{opacity:1;transform:scale(1)}}
+.card{background:#1c1814;border:1px solid #f3e6cf33;border-radius:14px;padding:18px 18px 16px;max-width:440px;max-height:100%;overflow:auto;font-size:15px;line-height:1.55}
+.card h2{font-size:19px;margin:0 0 8px}.card h3{font-size:16px;margin:12px 0 4px}
+.card ol,.card ul{margin:0;padding-left:1.3em}.card ol.steps{list-style:none;padding-left:0}.card ol.steps li+li{margin-top:6px}
+.card .row{display:flex;gap:10px;justify-content:center;margin-top:14px}
+.card .row button{padding:9px 24px;font-size:16px}
+.hub-link{display:block;width:fit-content;margin:0 auto;padding:0 12px;line-height:40px;font-size:13px;color:#f3e6cfb3;text-decoration:underline;white-space:nowrap}
+/* 検索エンジン向けのゲーム名の見出し（画面には出さない） */
+.vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;border:0;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+#debug{position:fixed;left:8px;top:8px;font:11px/1.35 monospace;background:#000a;padding:6px;white-space:pre;display:none;pointer-events:none}
+/* 文言は日英の両方を書き、data-ui-lang と違うほうを隠す（<html lang> と title は書き換えない） */
+html[data-ui-lang="ja"] [lang="en"],html[data-ui-lang="en"] [lang="ja"]{display:none!important}
+/* 抜く向き：縦持ちは画面を90°回して頭が上になるので「上へ」（data-orient は main.js の fitCamera が付ける） */
+i.dl,i.du{font-style:normal}html[data-orient="portrait"] i.dl,html:not([data-orient="portrait"]) i.du{display:none}
+</style>
+<script>
+// 言語：?lang=en|ja → 切り替えボタンで保存した値 → ブラウザの言語（ja で始まれば日本語）
+(function () {
+  var q = new URLSearchParams(location.search).get('lang'), s = null;
+  try { s = localStorage.getItem('sanma_lang'); } catch (e) {}
+  document.documentElement.dataset.uiLang = q === 'ja' || q === 'en' ? q : document.documentElement.lang === 'en' ? 'en' : s || (navigator.language.indexOf('ja') === 0 ? 'ja' : 'en'); // 英語版 /en/（Worker が lang="en" にする）は英語で始める
+  document.documentElement.dataset.orient = innerWidth < innerHeight ? 'portrait' : 'landscape'; // 遊び方の「左へ／上へ」（あとは main.js が画面の向きに合わせる）
+})();
+</script>
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js","three/addons/":"./vendor/addons/"}}</script>
+</head><body>
+<h1 class="vh"><span lang="ja">秋刀魚(骨抜き)</span><span lang="en">Saury Deboning</span></h1>
+<div id="loading" class="overlay" style="display:flex"><div class="loadT"><span lang="ja">サンマを焼いています</span><span lang="en">Grilling the saury</span></div><div class="dots"><i></i><i></i><i></i></div></div>
+<div id="lost" class="overlay"><div class="loadT" id="lostText"></div></div>
+<div id="vignette"></div>
+<div id="fade"></div>
+<div id="top"><button id="lang" class="pill" type="button"><span lang="ja">English</span><span lang="en">日本語</span></button><button id="help" class="pill" type="button">?</button></div>
+<div id="credit">three.js (MIT License)</div>
+<div id="g-press" class="guide"><span lang="ja">箸で身を押して、全体をほぐす</span><span lang="en">Press the fish all over to loosen it</span></div>
+<div id="g-tail" class="guide"><span lang="ja">ほぐし終わったら、ドラッグで尾を折る</span><span lang="en">Once it's loose, drag to snap the tail</span></div>
+<div id="g-head" class="guide"><span lang="ja">頭をつまんで、<i class="dl">左</i><i class="du">上</i>へまっすぐ一定の速さで</span><span lang="en">Grab the head, pull <i class="dl">left</i><i class="du">up</i> — slow and steady</span></div>
+<div id="intro" class="overlay"><div class="card">
+  <h2><span lang="ja">サンマの骨を抜こう</span><span lang="en">Let's debone a saury!</span></h2>
+  <h3><span lang="ja">骨抜きの所作</span><span lang="en">How it's done</span></h3>
+  <ol class="steps">
+    <li lang="ja">1.箸で押してほぐす<br>　身をタップして全体を均一にほぐす</li>
+    <li lang="ja">2.尾を折る<br>　尾の付け根を短くなぞる</li>
+    <li lang="ja">3.中骨を抜く<br>　頭をドラッグして引き抜く<br>　（まっすぐ、一定の速さで）</li>
+    <li lang="en">1. Loosen it with chopsticks<br>&emsp;Tap the fish to loosen it evenly all over</li>
+    <li lang="en">2. Snap the tail<br>&emsp;Give the base of the tail a short swipe</li>
+    <li lang="en">3. Pull out the backbone<br>&emsp;Drag the head to pull it out<br>&emsp;(straight, at a steady pace)</li>
+  </ol>
+  <div class="row"><button id="start" class="pill" type="button"><span lang="ja">はじめる</span><span lang="en">Start</span></button></div>
+</div></div>
+<div id="result"><div id="resName"></div><div id="resAdvice"></div>
+  <div class="row"><button id="share" class="pill" type="button"><span lang="ja">結果をシェア</span><span lang="en">Share</span></button><button id="again" class="pill" type="button"><span lang="ja">もう一度</span><span lang="en">Play again</span></button></div>
+</div>
+<div id="debug"></div>
+<script type="module" src="main.js"></script>
+</body></html>

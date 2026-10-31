@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string; beerPour: string; sansa: string; coaster: string; turkishIce: string; latte: string; walker: string; rollIce: string; nnko: string; derby: string; tenhou: string; streamer: string; tsunde: string; koi: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string; beerPour: string; sansa: string; coaster: string; turkishIce: string; latte: string; walker: string; rollIce: string; nnko: string; derby: string; tenhou: string; streamer: string; tsunde: string; koi: string; bakuso: string; sanma: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -290,6 +290,22 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: '診断',
       title: '恋愛診断',
       description: 'ツンデレ比率診断、ラブタイプ診断、何デレ診断、ドパガキ診断。',
+    },
+    {
+      id: 'bakuso-kickboard',
+      href: links.bakuso,
+      mark: '走',
+      kicker: '通勤',
+      title: '爆走キックボード',
+      description: '山手線をキックボードで爆速通勤する。',
+    },
+    {
+      id: 'sanma-bonenuki',
+      href: links.sanma,
+      mark: '魚',
+      kicker: '骨抜き',
+      title: '秋刀魚(骨抜き)',
+      description: '焼きサンマの中骨を頭ごと一本で抜く。',
     },
   ]
 }

@@ -23,6 +23,7 @@ import { Route as StrongestRouteImport } from './routes/strongest'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AcupunctureDartsIndexRouteImport } from './routes/acupuncture-darts/index'
 import { Route as AcupunctureDartsSlugRouteImport } from './routes/acupuncture-darts/$slug'
+import { Route as BakusoKickboardIndexRouteImport } from './routes/bakuso-kickboard/index'
 import { Route as BeerPourIndexRouteImport } from './routes/beer-pour/index'
 import { Route as BeerPourSlugRouteImport } from './routes/beer-pour/$slug'
 import { Route as ConcafeSimulatorIndexRouteImport } from './routes/concafe-simulator/index'
@@ -74,6 +75,7 @@ import { Route as RegionalDifferencesIndexRouteImport } from './routes/regional-
 import { Route as RegionalDifferencesSlugRouteImport } from './routes/regional-differences/$slug'
 import { Route as RollIceSimulatorIndexRouteImport } from './routes/roll-ice-simulator/index'
 import { Route as RollIceSimulatorSlugRouteImport } from './routes/roll-ice-simulator/$slug'
+import { Route as SanmaBonenukiIndexRouteImport } from './routes/sanma-bonenuki/index'
 import { Route as ShodoSimulator3dIndexRouteImport } from './routes/shodo-simulator-3d/index'
 import { Route as ShodoSimulator3dSlugRouteImport } from './routes/shodo-simulator-3d/$slug'
 import { Route as ShusshinKenIndexRouteImport } from './routes/shusshin-ken/index'
@@ -172,6 +174,11 @@ const AcupunctureDartsIndexRoute = AcupunctureDartsIndexRouteImport.update({
 const AcupunctureDartsSlugRoute = AcupunctureDartsSlugRouteImport.update({
   id: '/acupuncture-darts/$slug',
   path: '/acupuncture-darts/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BakusoKickboardIndexRoute = BakusoKickboardIndexRouteImport.update({
+  id: '/bakuso-kickboard/',
+  path: '/bakuso-kickboard/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const BeerPourIndexRoute = BeerPourIndexRouteImport.update({
@@ -430,6 +437,11 @@ const RollIceSimulatorSlugRoute = RollIceSimulatorSlugRouteImport.update({
   path: '/roll-ice-simulator/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SanmaBonenukiIndexRoute = SanmaBonenukiIndexRouteImport.update({
+  id: '/sanma-bonenuki/',
+  path: '/sanma-bonenuki/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShodoSimulator3dIndexRoute = ShodoSimulator3dIndexRouteImport.update({
   id: '/shodo-simulator-3d/',
   path: '/shodo-simulator-3d/',
@@ -628,6 +640,7 @@ export interface FileRoutesByFullPath {
   '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/acupuncture-darts/': typeof AcupunctureDartsIndexRoute
+  '/bakuso-kickboard/': typeof BakusoKickboardIndexRoute
   '/beer-pour/': typeof BeerPourIndexRoute
   '/concafe-simulator/': typeof ConcafeSimulatorIndexRoute
   '/cooking-games/': typeof CookingGamesIndexRoute
@@ -654,6 +667,7 @@ export interface FileRoutesByFullPath {
   '/rakugaki-coaster/': typeof RakugakiCoasterIndexRoute
   '/regional-differences/': typeof RegionalDifferencesIndexRoute
   '/roll-ice-simulator/': typeof RollIceSimulatorIndexRoute
+  '/sanma-bonenuki/': typeof SanmaBonenukiIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
   '/shusshin-ken/': typeof ShusshinKenIndexRoute
   '/soft-serve/': typeof SoftServeIndexRoute
@@ -723,6 +737,7 @@ export interface FileRoutesByTo {
   '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/acupuncture-darts': typeof AcupunctureDartsIndexRoute
+  '/bakuso-kickboard': typeof BakusoKickboardIndexRoute
   '/beer-pour': typeof BeerPourIndexRoute
   '/concafe-simulator': typeof ConcafeSimulatorIndexRoute
   '/cooking-games': typeof CookingGamesIndexRoute
@@ -749,6 +764,7 @@ export interface FileRoutesByTo {
   '/rakugaki-coaster': typeof RakugakiCoasterIndexRoute
   '/regional-differences': typeof RegionalDifferencesIndexRoute
   '/roll-ice-simulator': typeof RollIceSimulatorIndexRoute
+  '/sanma-bonenuki': typeof SanmaBonenukiIndexRoute
   '/shodo-simulator-3d': typeof ShodoSimulator3dIndexRoute
   '/shusshin-ken': typeof ShusshinKenIndexRoute
   '/soft-serve': typeof SoftServeIndexRoute
@@ -820,6 +836,7 @@ export interface FileRoutesById {
   '/uwaki-jinmon/$slug': typeof UwakiJinmonSlugRoute
   '/zipper-finger/$slug': typeof ZipperFingerSlugRoute
   '/acupuncture-darts/': typeof AcupunctureDartsIndexRoute
+  '/bakuso-kickboard/': typeof BakusoKickboardIndexRoute
   '/beer-pour/': typeof BeerPourIndexRoute
   '/concafe-simulator/': typeof ConcafeSimulatorIndexRoute
   '/cooking-games/': typeof CookingGamesIndexRoute
@@ -846,6 +863,7 @@ export interface FileRoutesById {
   '/rakugaki-coaster/': typeof RakugakiCoasterIndexRoute
   '/regional-differences/': typeof RegionalDifferencesIndexRoute
   '/roll-ice-simulator/': typeof RollIceSimulatorIndexRoute
+  '/sanma-bonenuki/': typeof SanmaBonenukiIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
   '/shusshin-ken/': typeof ShusshinKenIndexRoute
   '/soft-serve/': typeof SoftServeIndexRoute
@@ -918,6 +936,7 @@ export interface FileRouteTypes {
     | '/uwaki-jinmon/$slug'
     | '/zipper-finger/$slug'
     | '/acupuncture-darts/'
+    | '/bakuso-kickboard/'
     | '/beer-pour/'
     | '/concafe-simulator/'
     | '/cooking-games/'
@@ -944,6 +963,7 @@ export interface FileRouteTypes {
     | '/rakugaki-coaster/'
     | '/regional-differences/'
     | '/roll-ice-simulator/'
+    | '/sanma-bonenuki/'
     | '/shodo-simulator-3d/'
     | '/shusshin-ken/'
     | '/soft-serve/'
@@ -1013,6 +1033,7 @@ export interface FileRouteTypes {
     | '/uwaki-jinmon/$slug'
     | '/zipper-finger/$slug'
     | '/acupuncture-darts'
+    | '/bakuso-kickboard'
     | '/beer-pour'
     | '/concafe-simulator'
     | '/cooking-games'
@@ -1039,6 +1060,7 @@ export interface FileRouteTypes {
     | '/rakugaki-coaster'
     | '/regional-differences'
     | '/roll-ice-simulator'
+    | '/sanma-bonenuki'
     | '/shodo-simulator-3d'
     | '/shusshin-ken'
     | '/soft-serve'
@@ -1109,6 +1131,7 @@ export interface FileRouteTypes {
     | '/uwaki-jinmon/$slug'
     | '/zipper-finger/$slug'
     | '/acupuncture-darts/'
+    | '/bakuso-kickboard/'
     | '/beer-pour/'
     | '/concafe-simulator/'
     | '/cooking-games/'
@@ -1135,6 +1158,7 @@ export interface FileRouteTypes {
     | '/rakugaki-coaster/'
     | '/regional-differences/'
     | '/roll-ice-simulator/'
+    | '/sanma-bonenuki/'
     | '/shodo-simulator-3d/'
     | '/shusshin-ken/'
     | '/soft-serve/'
@@ -1204,6 +1228,7 @@ export interface RootRouteChildren {
   UwakiJinmonSlugRoute: typeof UwakiJinmonSlugRoute
   ZipperFingerSlugRoute: typeof ZipperFingerSlugRoute
   AcupunctureDartsIndexRoute: typeof AcupunctureDartsIndexRoute
+  BakusoKickboardIndexRoute: typeof BakusoKickboardIndexRoute
   BeerPourIndexRoute: typeof BeerPourIndexRoute
   ConcafeSimulatorIndexRoute: typeof ConcafeSimulatorIndexRoute
   CookingGamesIndexRoute: typeof CookingGamesIndexRoute
@@ -1229,6 +1254,7 @@ export interface RootRouteChildren {
   RakugakiCoasterIndexRoute: typeof RakugakiCoasterIndexRoute
   RegionalDifferencesIndexRoute: typeof RegionalDifferencesIndexRoute
   RollIceSimulatorIndexRoute: typeof RollIceSimulatorIndexRoute
+  SanmaBonenukiIndexRoute: typeof SanmaBonenukiIndexRoute
   ShodoSimulator3dIndexRoute: typeof ShodoSimulator3dIndexRoute
   ShusshinKenIndexRoute: typeof ShusshinKenIndexRoute
   SoftServeIndexRoute: typeof SoftServeIndexRoute
@@ -1347,6 +1373,13 @@ declare module '@tanstack/react-router' {
       path: '/acupuncture-darts/$slug'
       fullPath: '/acupuncture-darts/$slug'
       preLoaderRoute: typeof AcupunctureDartsSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bakuso-kickboard/': {
+      id: '/bakuso-kickboard/'
+      path: '/bakuso-kickboard'
+      fullPath: '/bakuso-kickboard/'
+      preLoaderRoute: typeof BakusoKickboardIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/beer-pour/': {
@@ -1706,6 +1739,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RollIceSimulatorSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/sanma-bonenuki/': {
+      id: '/sanma-bonenuki/'
+      path: '/sanma-bonenuki'
+      fullPath: '/sanma-bonenuki/'
+      preLoaderRoute: typeof SanmaBonenukiIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shodo-simulator-3d/': {
       id: '/shodo-simulator-3d/'
       path: '/shodo-simulator-3d'
@@ -1979,6 +2019,7 @@ const rootRouteChildren: RootRouteChildren = {
   UwakiJinmonSlugRoute: UwakiJinmonSlugRoute,
   ZipperFingerSlugRoute: ZipperFingerSlugRoute,
   AcupunctureDartsIndexRoute: AcupunctureDartsIndexRoute,
+  BakusoKickboardIndexRoute: BakusoKickboardIndexRoute,
   BeerPourIndexRoute: BeerPourIndexRoute,
   ConcafeSimulatorIndexRoute: ConcafeSimulatorIndexRoute,
   CookingGamesIndexRoute: CookingGamesIndexRoute,
@@ -2004,6 +2045,7 @@ const rootRouteChildren: RootRouteChildren = {
   RakugakiCoasterIndexRoute: RakugakiCoasterIndexRoute,
   RegionalDifferencesIndexRoute: RegionalDifferencesIndexRoute,
   RollIceSimulatorIndexRoute: RollIceSimulatorIndexRoute,
+  SanmaBonenukiIndexRoute: SanmaBonenukiIndexRoute,
   ShodoSimulator3dIndexRoute: ShodoSimulator3dIndexRoute,
   ShusshinKenIndexRoute: ShusshinKenIndexRoute,
   SoftServeIndexRoute: SoftServeIndexRoute,

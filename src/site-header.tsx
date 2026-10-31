@@ -33,6 +33,8 @@ import { tenhouHref } from './tenhou-simulator/seo'
 import { streamerHref } from './streamer-life-simulator/seo'
 import { tsundeHref } from './tsundetsundetsunde/seo'
 import { koiHref } from './koi-shindan/seo'
+import { bakusoHref } from './bakuso-kickboard/seo'
+import { sanmaHref } from './sanma-bonenuki/seo'
 import { uwakiHref } from './uwaki-jinmon/seo'
 import { softServeHref } from './soft-serve/seo'
 import { typhoonHref } from './typhoon-escape/seo'
@@ -96,6 +98,8 @@ function headerGames(root: string): HeaderGame[] {
     { id: 'streamer-life-simulator', href: streamerHref(), mark: '声', title: '配信者人生シミュレーター', section: 'streamer-life-simulator' },
     { id: 'tsundetsundetsunde', href: tsundeHref(), mark: '積', title: 'ツンデツンデツンデ', section: 'tsundetsundetsunde' },
     { id: 'koi-shindan', href: koiHref(), mark: '恋', title: '恋愛診断', section: 'koi-shindan' },
+    { id: 'bakuso-kickboard', href: bakusoHref(), mark: '走', title: '爆走キックボード', section: 'bakuso-kickboard' },
+    { id: 'sanma-bonenuki', href: sanmaHref(), mark: '魚', title: '秋刀魚(骨抜き)', section: 'sanma-bonenuki' },
   ]
 }
 
