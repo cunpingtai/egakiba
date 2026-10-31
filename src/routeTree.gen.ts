@@ -80,6 +80,7 @@ import { Route as StreamerLifeSimulatorIndexRouteImport } from './routes/streame
 import { Route as StreamerLifeSimulatorSlugRouteImport } from './routes/streamer-life-simulator/$slug'
 import { Route as TenhouSimulatorIndexRouteImport } from './routes/tenhou-simulator/index'
 import { Route as TenhouSimulatorSlugRouteImport } from './routes/tenhou-simulator/$slug'
+import { Route as TsundetsundetsundeIndexRouteImport } from './routes/tsundetsundetsunde/index'
 import { Route as TurkishIceCream3dIndexRouteImport } from './routes/turkish-ice-cream-3d/index'
 import { Route as TurkishIceCream3dSlugRouteImport } from './routes/turkish-ice-cream-3d/$slug'
 import { Route as TyphoonEscapeIndexRouteImport } from './routes/typhoon-escape/index'
@@ -455,6 +456,11 @@ const TenhouSimulatorSlugRoute = TenhouSimulatorSlugRouteImport.update({
   path: '/tenhou-simulator/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TsundetsundetsundeIndexRoute = TsundetsundetsundeIndexRouteImport.update({
+  id: '/tsundetsundetsunde/',
+  path: '/tsundetsundetsunde/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TurkishIceCream3dIndexRoute = TurkishIceCream3dIndexRouteImport.update({
   id: '/turkish-ice-cream-3d/',
   path: '/turkish-ice-cream-3d/',
@@ -613,6 +619,7 @@ export interface FileRoutesByFullPath {
   '/soft-serve/': typeof SoftServeIndexRoute
   '/streamer-life-simulator/': typeof StreamerLifeSimulatorIndexRoute
   '/tenhou-simulator/': typeof TenhouSimulatorIndexRoute
+  '/tsundetsundetsunde/': typeof TsundetsundetsundeIndexRoute
   '/turkish-ice-cream-3d/': typeof TurkishIceCream3dIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
   '/uwaki-jinmon/': typeof UwakiJinmonIndexRoute
@@ -702,6 +709,7 @@ export interface FileRoutesByTo {
   '/soft-serve': typeof SoftServeIndexRoute
   '/streamer-life-simulator': typeof StreamerLifeSimulatorIndexRoute
   '/tenhou-simulator': typeof TenhouSimulatorIndexRoute
+  '/tsundetsundetsunde': typeof TsundetsundetsundeIndexRoute
   '/turkish-ice-cream-3d': typeof TurkishIceCream3dIndexRoute
   '/typhoon-escape': typeof TyphoonEscapeIndexRoute
   '/uwaki-jinmon': typeof UwakiJinmonIndexRoute
@@ -792,6 +800,7 @@ export interface FileRoutesById {
   '/soft-serve/': typeof SoftServeIndexRoute
   '/streamer-life-simulator/': typeof StreamerLifeSimulatorIndexRoute
   '/tenhou-simulator/': typeof TenhouSimulatorIndexRoute
+  '/tsundetsundetsunde/': typeof TsundetsundetsundeIndexRoute
   '/turkish-ice-cream-3d/': typeof TurkishIceCream3dIndexRoute
   '/typhoon-escape/': typeof TyphoonEscapeIndexRoute
   '/uwaki-jinmon/': typeof UwakiJinmonIndexRoute
@@ -883,6 +892,7 @@ export interface FileRouteTypes {
     | '/soft-serve/'
     | '/streamer-life-simulator/'
     | '/tenhou-simulator/'
+    | '/tsundetsundetsunde/'
     | '/turkish-ice-cream-3d/'
     | '/typhoon-escape/'
     | '/uwaki-jinmon/'
@@ -972,6 +982,7 @@ export interface FileRouteTypes {
     | '/soft-serve'
     | '/streamer-life-simulator'
     | '/tenhou-simulator'
+    | '/tsundetsundetsunde'
     | '/turkish-ice-cream-3d'
     | '/typhoon-escape'
     | '/uwaki-jinmon'
@@ -1061,6 +1072,7 @@ export interface FileRouteTypes {
     | '/soft-serve/'
     | '/streamer-life-simulator/'
     | '/tenhou-simulator/'
+    | '/tsundetsundetsunde/'
     | '/turkish-ice-cream-3d/'
     | '/typhoon-escape/'
     | '/uwaki-jinmon/'
@@ -1151,6 +1163,7 @@ export interface RootRouteChildren {
   SoftServeIndexRoute: typeof SoftServeIndexRoute
   StreamerLifeSimulatorIndexRoute: typeof StreamerLifeSimulatorIndexRoute
   TenhouSimulatorIndexRoute: typeof TenhouSimulatorIndexRoute
+  TsundetsundetsundeIndexRoute: typeof TsundetsundetsundeIndexRoute
   TurkishIceCream3dIndexRoute: typeof TurkishIceCream3dIndexRoute
   TyphoonEscapeIndexRoute: typeof TyphoonEscapeIndexRoute
   UwakiJinmonIndexRoute: typeof UwakiJinmonIndexRoute
@@ -1664,6 +1677,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TenhouSimulatorSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tsundetsundetsunde/': {
+      id: '/tsundetsundetsunde/'
+      path: '/tsundetsundetsunde'
+      fullPath: '/tsundetsundetsunde/'
+      preLoaderRoute: typeof TsundetsundetsundeIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/turkish-ice-cream-3d/': {
       id: '/turkish-ice-cream-3d/'
       path: '/turkish-ice-cream-3d'
@@ -1855,6 +1875,7 @@ const rootRouteChildren: RootRouteChildren = {
   SoftServeIndexRoute: SoftServeIndexRoute,
   StreamerLifeSimulatorIndexRoute: StreamerLifeSimulatorIndexRoute,
   TenhouSimulatorIndexRoute: TenhouSimulatorIndexRoute,
+  TsundetsundetsundeIndexRoute: TsundetsundetsundeIndexRoute,
   TurkishIceCream3dIndexRoute: TurkishIceCream3dIndexRoute,
   TyphoonEscapeIndexRoute: TyphoonEscapeIndexRoute,
   UwakiJinmonIndexRoute: UwakiJinmonIndexRoute,

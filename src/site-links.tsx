@@ -34,6 +34,7 @@ import { nnkoHref } from './nnko-quiz/seo'
 import { derbyHref } from './prefecture-derby/seo'
 import { tenhouHref } from './tenhou-simulator/seo'
 import { streamerHref } from './streamer-life-simulator/seo'
+import { tsundeHref } from './tsundetsundetsunde/seo'
 import { shodoHref } from './shodo-simulator-3d/seo'
 import { zipperHref } from './zipper-finger/seo'
 
@@ -169,6 +170,7 @@ export function siteIndexLinks() {
     { id: 'tenhou-simulator/probability', href: tenhouHref('probability/'), label: '天和シミュレーターの確率' },
     { id: 'streamer-life-simulator', href: streamerHref(), label: '配信者人生シミュレーター' },
     { id: 'streamer-life-simulator/endings', href: streamerHref('endings/'), label: '配信者人生シミュレーターの結末' },
+    { id: 'tsundetsundetsunde', href: tsundeHref(), label: 'ツンデツンデツンデ' },
     { id: 'about', href: siteInfoHref('about'), label: 'サイトについて' },
     { id: 'contact', href: siteInfoHref('contact'), label: 'お問い合わせ' },
     { id: 'privacy', href: siteInfoHref('privacy'), label: 'プライバシーポリシー' },
