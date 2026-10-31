@@ -60,6 +60,8 @@ import { Route as OmuriceIndexRouteImport } from './routes/omurice/index'
 import { Route as OmuriceSlugRouteImport } from './routes/omurice/$slug'
 import { Route as OneBreathIndexRouteImport } from './routes/one-breath/index'
 import { Route as OneBreathSlugRouteImport } from './routes/one-breath/$slug'
+import { Route as PrefectureDerbyIndexRouteImport } from './routes/prefecture-derby/index'
+import { Route as PrefectureDerbySlugRouteImport } from './routes/prefecture-derby/$slug'
 import { Route as PrefectureGameIndexRouteImport } from './routes/prefecture-game/index'
 import { Route as PrefectureGameSlugRouteImport } from './routes/prefecture-game/$slug'
 import { Route as RakugakiCoasterIndexRouteImport } from './routes/rakugaki-coaster/index'
@@ -346,6 +348,16 @@ const OneBreathSlugRoute = OneBreathSlugRouteImport.update({
   path: '/one-breath/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrefectureDerbyIndexRoute = PrefectureDerbyIndexRouteImport.update({
+  id: '/prefecture-derby/',
+  path: '/prefecture-derby/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrefectureDerbySlugRoute = PrefectureDerbySlugRouteImport.update({
+  id: '/prefecture-derby/$slug',
+  path: '/prefecture-derby/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrefectureGameIndexRoute = PrefectureGameIndexRouteImport.update({
   id: '/prefecture-game/',
   path: '/prefecture-game/',
@@ -530,6 +542,7 @@ export interface FileRoutesByFullPath {
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
+  '/prefecture-derby/$slug': typeof PrefectureDerbySlugRoute
   '/prefecture-game/$slug': typeof PrefectureGameSlugRoute
   '/rakugaki-coaster/$slug': typeof RakugakiCoasterSlugRoute
   '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
@@ -562,6 +575,7 @@ export interface FileRoutesByFullPath {
   '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
   '/omurice/': typeof OmuriceIndexRoute
   '/one-breath/': typeof OneBreathIndexRoute
+  '/prefecture-derby/': typeof PrefectureDerbyIndexRoute
   '/prefecture-game/': typeof PrefectureGameIndexRoute
   '/rakugaki-coaster/': typeof RakugakiCoasterIndexRoute
   '/regional-differences/': typeof RegionalDifferencesIndexRoute
@@ -613,6 +627,7 @@ export interface FileRoutesByTo {
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
+  '/prefecture-derby/$slug': typeof PrefectureDerbySlugRoute
   '/prefecture-game/$slug': typeof PrefectureGameSlugRoute
   '/rakugaki-coaster/$slug': typeof RakugakiCoasterSlugRoute
   '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
@@ -645,6 +660,7 @@ export interface FileRoutesByTo {
   '/omurice-simulator': typeof OmuriceSimulatorIndexRoute
   '/omurice': typeof OmuriceIndexRoute
   '/one-breath': typeof OneBreathIndexRoute
+  '/prefecture-derby': typeof PrefectureDerbyIndexRoute
   '/prefecture-game': typeof PrefectureGameIndexRoute
   '/rakugaki-coaster': typeof RakugakiCoasterIndexRoute
   '/regional-differences': typeof RegionalDifferencesIndexRoute
@@ -697,6 +713,7 @@ export interface FileRoutesById {
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
+  '/prefecture-derby/$slug': typeof PrefectureDerbySlugRoute
   '/prefecture-game/$slug': typeof PrefectureGameSlugRoute
   '/rakugaki-coaster/$slug': typeof RakugakiCoasterSlugRoute
   '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
@@ -729,6 +746,7 @@ export interface FileRoutesById {
   '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
   '/omurice/': typeof OmuriceIndexRoute
   '/one-breath/': typeof OneBreathIndexRoute
+  '/prefecture-derby/': typeof PrefectureDerbyIndexRoute
   '/prefecture-game/': typeof PrefectureGameIndexRoute
   '/rakugaki-coaster/': typeof RakugakiCoasterIndexRoute
   '/regional-differences/': typeof RegionalDifferencesIndexRoute
@@ -782,6 +800,7 @@ export interface FileRouteTypes {
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
     | '/one-breath/$slug'
+    | '/prefecture-derby/$slug'
     | '/prefecture-game/$slug'
     | '/rakugaki-coaster/$slug'
     | '/regional-differences/$slug'
@@ -814,6 +833,7 @@ export interface FileRouteTypes {
     | '/omurice-simulator/'
     | '/omurice/'
     | '/one-breath/'
+    | '/prefecture-derby/'
     | '/prefecture-game/'
     | '/rakugaki-coaster/'
     | '/regional-differences/'
@@ -865,6 +885,7 @@ export interface FileRouteTypes {
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
     | '/one-breath/$slug'
+    | '/prefecture-derby/$slug'
     | '/prefecture-game/$slug'
     | '/rakugaki-coaster/$slug'
     | '/regional-differences/$slug'
@@ -897,6 +918,7 @@ export interface FileRouteTypes {
     | '/omurice-simulator'
     | '/omurice'
     | '/one-breath'
+    | '/prefecture-derby'
     | '/prefecture-game'
     | '/rakugaki-coaster'
     | '/regional-differences'
@@ -948,6 +970,7 @@ export interface FileRouteTypes {
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
     | '/one-breath/$slug'
+    | '/prefecture-derby/$slug'
     | '/prefecture-game/$slug'
     | '/rakugaki-coaster/$slug'
     | '/regional-differences/$slug'
@@ -980,6 +1003,7 @@ export interface FileRouteTypes {
     | '/omurice-simulator/'
     | '/omurice/'
     | '/one-breath/'
+    | '/prefecture-derby/'
     | '/prefecture-game/'
     | '/rakugaki-coaster/'
     | '/regional-differences/'
@@ -1032,6 +1056,7 @@ export interface RootRouteChildren {
   OmuriceSimulatorSlugRoute: typeof OmuriceSimulatorSlugRoute
   OmuriceSlugRoute: typeof OmuriceSlugRoute
   OneBreathSlugRoute: typeof OneBreathSlugRoute
+  PrefectureDerbySlugRoute: typeof PrefectureDerbySlugRoute
   PrefectureGameSlugRoute: typeof PrefectureGameSlugRoute
   RakugakiCoasterSlugRoute: typeof RakugakiCoasterSlugRoute
   RegionalDifferencesSlugRoute: typeof RegionalDifferencesSlugRoute
@@ -1064,6 +1089,7 @@ export interface RootRouteChildren {
   OmuriceSimulatorIndexRoute: typeof OmuriceSimulatorIndexRoute
   OmuriceIndexRoute: typeof OmuriceIndexRoute
   OneBreathIndexRoute: typeof OneBreathIndexRoute
+  PrefectureDerbyIndexRoute: typeof PrefectureDerbyIndexRoute
   PrefectureGameIndexRoute: typeof PrefectureGameIndexRoute
   RakugakiCoasterIndexRoute: typeof RakugakiCoasterIndexRoute
   RegionalDifferencesIndexRoute: typeof RegionalDifferencesIndexRoute
@@ -1444,6 +1470,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OneBreathSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/prefecture-derby/': {
+      id: '/prefecture-derby/'
+      path: '/prefecture-derby'
+      fullPath: '/prefecture-derby/'
+      preLoaderRoute: typeof PrefectureDerbyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/prefecture-derby/$slug': {
+      id: '/prefecture-derby/$slug'
+      path: '/prefecture-derby/$slug'
+      fullPath: '/prefecture-derby/$slug'
+      preLoaderRoute: typeof PrefectureDerbySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/prefecture-game/': {
       id: '/prefecture-game/'
       path: '/prefecture-game'
@@ -1688,6 +1728,7 @@ const rootRouteChildren: RootRouteChildren = {
   OmuriceSimulatorSlugRoute: OmuriceSimulatorSlugRoute,
   OmuriceSlugRoute: OmuriceSlugRoute,
   OneBreathSlugRoute: OneBreathSlugRoute,
+  PrefectureDerbySlugRoute: PrefectureDerbySlugRoute,
   PrefectureGameSlugRoute: PrefectureGameSlugRoute,
   RakugakiCoasterSlugRoute: RakugakiCoasterSlugRoute,
   RegionalDifferencesSlugRoute: RegionalDifferencesSlugRoute,
@@ -1720,6 +1761,7 @@ const rootRouteChildren: RootRouteChildren = {
   OmuriceSimulatorIndexRoute: OmuriceSimulatorIndexRoute,
   OmuriceIndexRoute: OmuriceIndexRoute,
   OneBreathIndexRoute: OneBreathIndexRoute,
+  PrefectureDerbyIndexRoute: PrefectureDerbyIndexRoute,
   PrefectureGameIndexRoute: PrefectureGameIndexRoute,
   RakugakiCoasterIndexRoute: RakugakiCoasterIndexRoute,
   RegionalDifferencesIndexRoute: RegionalDifferencesIndexRoute,

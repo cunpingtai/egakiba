@@ -31,6 +31,7 @@ import { latteHref } from './latteart-maker/seo'
 import { walkerHref } from './jinsei-walker/seo'
 import { rollIceHref } from './roll-ice-simulator/seo'
 import { nnkoHref } from './nnko-quiz/seo'
+import { derbyHref } from './prefecture-derby/seo'
 import { shodoHref } from './shodo-simulator-3d/seo'
 import { zipperHref } from './zipper-finger/seo'
 
@@ -160,6 +161,8 @@ export function siteIndexLinks() {
     { id: 'roll-ice-simulator/guide', href: rollIceHref('guide/'), label: 'なんでもロールアイスシミュレーターの攻略' },
     { id: 'nnko-quiz', href: nnkoHref(), label: '〇んこクイズ' },
     { id: 'nnko-quiz/endings', href: nnkoHref('endings/'), label: '〇んこクイズのエンディング' },
+    { id: 'prefecture-derby', href: derbyHref(), label: '都道府県ダービー' },
+    { id: 'prefecture-derby/guide', href: derbyHref('guide/'), label: '都道府県ダービーの遊び方' },
     { id: 'about', href: siteInfoHref('about'), label: 'サイトについて' },
     { id: 'contact', href: siteInfoHref('contact'), label: 'お問い合わせ' },
     { id: 'privacy', href: siteInfoHref('privacy'), label: 'プライバシーポリシー' },
