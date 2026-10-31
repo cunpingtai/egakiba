@@ -30,6 +30,7 @@ import { rollIceHref } from './roll-ice-simulator/seo'
 import { nnkoHref } from './nnko-quiz/seo'
 import { derbyHref } from './prefecture-derby/seo'
 import { tenhouHref } from './tenhou-simulator/seo'
+import { streamerHref } from './streamer-life-simulator/seo'
 import { uwakiHref } from './uwaki-jinmon/seo'
 import { softServeHref } from './soft-serve/seo'
 import { typhoonHref } from './typhoon-escape/seo'
@@ -90,6 +91,7 @@ function headerGames(root: string): HeaderGame[] {
     { id: 'nnko-quiz', href: nnkoHref(), mark: '〇', title: '〇んこクイズ', section: 'nnko-quiz' },
     { id: 'prefecture-derby', href: derbyHref(), mark: '馬', title: '都道府県ダービー', section: 'prefecture-derby' },
     { id: 'tenhou-simulator', href: tenhouHref(), mark: '天', title: '天和シミュレーター', section: 'tenhou-simulator' },
+    { id: 'streamer-life-simulator', href: streamerHref(), mark: '声', title: '配信者人生シミュレーター', section: 'streamer-life-simulator' },
   ]
 }
 

@@ -32,6 +32,7 @@ import { rollIceHref } from '../roll-ice-simulator/seo'
 import { nnkoHref } from '../nnko-quiz/seo'
 import { derbyHref } from '../prefecture-derby/seo'
 import { tenhouHref } from '../tenhou-simulator/seo'
+import { streamerHref } from '../streamer-life-simulator/seo'
 import { uwakiHref } from '../uwaki-jinmon/seo'
 import { cookingHref } from '../cooking-games/seo'
 import { drawingHref } from '../drawing-games/seo'
@@ -158,7 +159,7 @@ function R9Shell() {
               <div><span className="section-kicker">GAMES</span><h2 id="game-shelf-title">あそべるゲーム</h2></div>
             </div>
             <div className="game-shelf-grid">
-              {siteGames({ drawFight: drawHref(), typhoonEscape: typhoonHref(), zipperFinger: zipperHref(), shodo: shodoHref(), dashimaki: dashimakiHref(), omurice: omuriceHref(), potato: potatoHref(), breath: breathHref(), hamburg: hamburgHref(), softServe: softServeHref(), ommoji: ommojiHref(), shusshinKen: shusshinHref(), uwakiJinmon: uwakiHref(), iceBreak: iceHref(), kuroiEkitai: kuroHref(), daruma: darumaHref(), prefectureGame: prefHref(), kazokuIgai: kazokuHref(), acupunctureDarts: hariHref(), concafeSim: concafeHref(), hanko: hankoHref(), beerPour: beerHref(), sansa: sansaHref('ja'), coaster: coasterHref(), turkishIce: turkishIceHref(), latte: latteHref(), walker: walkerHref(), rollIce: rollIceHref(), nnko: nnkoHref(), derby: derbyHref(), tenhou: tenhouHref() }).map((game) => (
+              {siteGames({ drawFight: drawHref(), typhoonEscape: typhoonHref(), zipperFinger: zipperHref(), shodo: shodoHref(), dashimaki: dashimakiHref(), omurice: omuriceHref(), potato: potatoHref(), breath: breathHref(), hamburg: hamburgHref(), softServe: softServeHref(), ommoji: ommojiHref(), shusshinKen: shusshinHref(), uwakiJinmon: uwakiHref(), iceBreak: iceHref(), kuroiEkitai: kuroHref(), daruma: darumaHref(), prefectureGame: prefHref(), kazokuIgai: kazokuHref(), acupunctureDarts: hariHref(), concafeSim: concafeHref(), hanko: hankoHref(), beerPour: beerHref(), sansa: sansaHref('ja'), coaster: coasterHref(), turkishIce: turkishIceHref(), latte: latteHref(), walker: walkerHref(), rollIce: rollIceHref(), nnko: nnkoHref(), derby: derbyHref(), tenhou: tenhouHref(), streamer: streamerHref() }).map((game) => (
                 <a className={`game-card game-card--${game.id}`} href={game.href} key={game.id} aria-current={game.here ? 'page' : undefined}>
                   <span className="game-card-mark" aria-hidden="true">{game.mark}</span>
                   <span className="game-card-body">

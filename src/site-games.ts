@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string; beerPour: string; sansa: string; coaster: string; turkishIce: string; latte: string; walker: string; rollIce: string; nnko: string; derby: string; tenhou: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string; beerPour: string; sansa: string; coaster: string; turkishIce: string; latte: string; walker: string; rollIce: string; nnko: string; derby: string; tenhou: string; streamer: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -266,6 +266,14 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: '麻雀',
       title: '天和シミュレーター',
       description: '天和が出るまで、配牌を繰り返す。',
+    },
+    {
+      id: 'streamer-life-simulator',
+      href: links.streamer,
+      mark: '声',
+      kicker: '人生',
+      title: '配信者人生シミュレーター',
+      description: '配信者として活動し、最後のポストまで進む。',
     },
   ]
 }
