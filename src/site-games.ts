@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string; beerPour: string; sansa: string; coaster: string; turkishIce: string; latte: string; walker: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string; beerPour: string; sansa: string; coaster: string; turkishIce: string; latte: string; walker: string; rollIce: string; nnko: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -234,6 +234,22 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: '3D',
       title: '人生ウォーカー',
       description: '左右の足で、1歳から100歳まで歩く。',
+    },
+    {
+      id: 'roll-ice-simulator',
+      href: links.rollIce,
+      mark: '巻',
+      kicker: '3D',
+      title: 'なんでもロールアイスシミュレーター',
+      description: 'フルーツを刻んで、冷たい鉄板でロールアイスを巻く。',
+    },
+    {
+      id: 'nnko-quiz',
+      href: links.nnko,
+      mark: '〇',
+      kicker: 'ホラー',
+      title: '〇んこクイズ',
+      description: '空欄に入る一文字を、五十音から選ぶ。',
     },
   ]
 }

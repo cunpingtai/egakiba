@@ -571,6 +571,26 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://egakiba.com/roll-ice-simulator/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/roll-ice-simulator/guide/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/nnko-quiz/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/nnko-quiz/endings/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://egakiba.com/about/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>

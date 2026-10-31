@@ -26,6 +26,8 @@ import { coasterHref } from './rakugaki-coaster/seo'
 import { turkishIceHref } from './turkish-ice-cream-3d/seo'
 import { latteHref } from './latteart-maker/seo'
 import { walkerHref } from './jinsei-walker/seo'
+import { rollIceHref } from './roll-ice-simulator/seo'
+import { nnkoHref } from './nnko-quiz/seo'
 import { uwakiHref } from './uwaki-jinmon/seo'
 import { softServeHref } from './soft-serve/seo'
 import { typhoonHref } from './typhoon-escape/seo'
@@ -82,6 +84,8 @@ function headerGames(root: string): HeaderGame[] {
     { id: 'turkish-ice-cream-3d', href: turkishIceHref(), mark: '氷', title: 'トルコアイス3D', section: 'turkish-ice-cream-3d' },
     { id: 'latteart-maker', href: latteHref(), mark: '乳', title: 'ラテアート注ぎました', section: 'latteart-maker' },
     { id: 'jinsei-walker', href: walkerHref(), mark: '歩', title: '人生ウォーカー', section: 'jinsei-walker' },
+    { id: 'roll-ice-simulator', href: rollIceHref(), mark: '巻', title: 'なんでもロールアイスシミュレーター', section: 'roll-ice-simulator' },
+    { id: 'nnko-quiz', href: nnkoHref(), mark: '〇', title: '〇んこクイズ', section: 'nnko-quiz' },
   ]
 }
 

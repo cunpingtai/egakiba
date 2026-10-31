@@ -52,6 +52,8 @@ import { Route as LatteartMakerIndexRouteImport } from './routes/latteart-maker/
 import { Route as LatteartMakerSlugRouteImport } from './routes/latteart-maker/$slug'
 import { Route as LongPotatoIndexRouteImport } from './routes/long-potato/index'
 import { Route as LongPotatoSlugRouteImport } from './routes/long-potato/$slug'
+import { Route as NnkoQuizIndexRouteImport } from './routes/nnko-quiz/index'
+import { Route as NnkoQuizSlugRouteImport } from './routes/nnko-quiz/$slug'
 import { Route as OmuriceSimulatorIndexRouteImport } from './routes/omurice-simulator/index'
 import { Route as OmuriceSimulatorSlugRouteImport } from './routes/omurice-simulator/$slug'
 import { Route as OmuriceIndexRouteImport } from './routes/omurice/index'
@@ -64,6 +66,8 @@ import { Route as RakugakiCoasterIndexRouteImport } from './routes/rakugaki-coas
 import { Route as RakugakiCoasterSlugRouteImport } from './routes/rakugaki-coaster/$slug'
 import { Route as RegionalDifferencesIndexRouteImport } from './routes/regional-differences/index'
 import { Route as RegionalDifferencesSlugRouteImport } from './routes/regional-differences/$slug'
+import { Route as RollIceSimulatorIndexRouteImport } from './routes/roll-ice-simulator/index'
+import { Route as RollIceSimulatorSlugRouteImport } from './routes/roll-ice-simulator/$slug'
 import { Route as ShodoSimulator3dIndexRouteImport } from './routes/shodo-simulator-3d/index'
 import { Route as ShodoSimulator3dSlugRouteImport } from './routes/shodo-simulator-3d/$slug'
 import { Route as ShusshinKenIndexRouteImport } from './routes/shusshin-ken/index'
@@ -302,6 +306,16 @@ const LongPotatoSlugRoute = LongPotatoSlugRouteImport.update({
   path: '/long-potato/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NnkoQuizIndexRoute = NnkoQuizIndexRouteImport.update({
+  id: '/nnko-quiz/',
+  path: '/nnko-quiz/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NnkoQuizSlugRoute = NnkoQuizSlugRouteImport.update({
+  id: '/nnko-quiz/$slug',
+  path: '/nnko-quiz/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const OmuriceSimulatorIndexRoute = OmuriceSimulatorIndexRouteImport.update({
   id: '/omurice-simulator/',
   path: '/omurice-simulator/',
@@ -361,6 +375,16 @@ const RegionalDifferencesIndexRoute =
 const RegionalDifferencesSlugRoute = RegionalDifferencesSlugRouteImport.update({
   id: '/regional-differences/$slug',
   path: '/regional-differences/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RollIceSimulatorIndexRoute = RollIceSimulatorIndexRouteImport.update({
+  id: '/roll-ice-simulator/',
+  path: '/roll-ice-simulator/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RollIceSimulatorSlugRoute = RollIceSimulatorSlugRouteImport.update({
+  id: '/roll-ice-simulator/$slug',
+  path: '/roll-ice-simulator/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShodoSimulator3dIndexRoute = ShodoSimulator3dIndexRouteImport.update({
@@ -502,12 +526,14 @@ export interface FileRoutesByFullPath {
   '/kuroi-ekitai/$slug': typeof KuroiEkitaiSlugRoute
   '/latteart-maker/$slug': typeof LatteartMakerSlugRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
+  '/nnko-quiz/$slug': typeof NnkoQuizSlugRoute
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
   '/prefecture-game/$slug': typeof PrefectureGameSlugRoute
   '/rakugaki-coaster/$slug': typeof RakugakiCoasterSlugRoute
   '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
+  '/roll-ice-simulator/$slug': typeof RollIceSimulatorSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
@@ -532,12 +558,14 @@ export interface FileRoutesByFullPath {
   '/kuroi-ekitai/': typeof KuroiEkitaiIndexRoute
   '/latteart-maker/': typeof LatteartMakerIndexRoute
   '/long-potato/': typeof LongPotatoIndexRoute
+  '/nnko-quiz/': typeof NnkoQuizIndexRoute
   '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
   '/omurice/': typeof OmuriceIndexRoute
   '/one-breath/': typeof OneBreathIndexRoute
   '/prefecture-game/': typeof PrefectureGameIndexRoute
   '/rakugaki-coaster/': typeof RakugakiCoasterIndexRoute
   '/regional-differences/': typeof RegionalDifferencesIndexRoute
+  '/roll-ice-simulator/': typeof RollIceSimulatorIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
   '/shusshin-ken/': typeof ShusshinKenIndexRoute
   '/soft-serve/': typeof SoftServeIndexRoute
@@ -581,12 +609,14 @@ export interface FileRoutesByTo {
   '/kuroi-ekitai/$slug': typeof KuroiEkitaiSlugRoute
   '/latteart-maker/$slug': typeof LatteartMakerSlugRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
+  '/nnko-quiz/$slug': typeof NnkoQuizSlugRoute
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
   '/prefecture-game/$slug': typeof PrefectureGameSlugRoute
   '/rakugaki-coaster/$slug': typeof RakugakiCoasterSlugRoute
   '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
+  '/roll-ice-simulator/$slug': typeof RollIceSimulatorSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
@@ -611,12 +641,14 @@ export interface FileRoutesByTo {
   '/kuroi-ekitai': typeof KuroiEkitaiIndexRoute
   '/latteart-maker': typeof LatteartMakerIndexRoute
   '/long-potato': typeof LongPotatoIndexRoute
+  '/nnko-quiz': typeof NnkoQuizIndexRoute
   '/omurice-simulator': typeof OmuriceSimulatorIndexRoute
   '/omurice': typeof OmuriceIndexRoute
   '/one-breath': typeof OneBreathIndexRoute
   '/prefecture-game': typeof PrefectureGameIndexRoute
   '/rakugaki-coaster': typeof RakugakiCoasterIndexRoute
   '/regional-differences': typeof RegionalDifferencesIndexRoute
+  '/roll-ice-simulator': typeof RollIceSimulatorIndexRoute
   '/shodo-simulator-3d': typeof ShodoSimulator3dIndexRoute
   '/shusshin-ken': typeof ShusshinKenIndexRoute
   '/soft-serve': typeof SoftServeIndexRoute
@@ -661,12 +693,14 @@ export interface FileRoutesById {
   '/kuroi-ekitai/$slug': typeof KuroiEkitaiSlugRoute
   '/latteart-maker/$slug': typeof LatteartMakerSlugRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
+  '/nnko-quiz/$slug': typeof NnkoQuizSlugRoute
   '/omurice-simulator/$slug': typeof OmuriceSimulatorSlugRoute
   '/omurice/$slug': typeof OmuriceSlugRoute
   '/one-breath/$slug': typeof OneBreathSlugRoute
   '/prefecture-game/$slug': typeof PrefectureGameSlugRoute
   '/rakugaki-coaster/$slug': typeof RakugakiCoasterSlugRoute
   '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
+  '/roll-ice-simulator/$slug': typeof RollIceSimulatorSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
@@ -691,12 +725,14 @@ export interface FileRoutesById {
   '/kuroi-ekitai/': typeof KuroiEkitaiIndexRoute
   '/latteart-maker/': typeof LatteartMakerIndexRoute
   '/long-potato/': typeof LongPotatoIndexRoute
+  '/nnko-quiz/': typeof NnkoQuizIndexRoute
   '/omurice-simulator/': typeof OmuriceSimulatorIndexRoute
   '/omurice/': typeof OmuriceIndexRoute
   '/one-breath/': typeof OneBreathIndexRoute
   '/prefecture-game/': typeof PrefectureGameIndexRoute
   '/rakugaki-coaster/': typeof RakugakiCoasterIndexRoute
   '/regional-differences/': typeof RegionalDifferencesIndexRoute
+  '/roll-ice-simulator/': typeof RollIceSimulatorIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
   '/shusshin-ken/': typeof ShusshinKenIndexRoute
   '/soft-serve/': typeof SoftServeIndexRoute
@@ -742,12 +778,14 @@ export interface FileRouteTypes {
     | '/kuroi-ekitai/$slug'
     | '/latteart-maker/$slug'
     | '/long-potato/$slug'
+    | '/nnko-quiz/$slug'
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
     | '/one-breath/$slug'
     | '/prefecture-game/$slug'
     | '/rakugaki-coaster/$slug'
     | '/regional-differences/$slug'
+    | '/roll-ice-simulator/$slug'
     | '/shodo-simulator-3d/$slug'
     | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
@@ -772,12 +810,14 @@ export interface FileRouteTypes {
     | '/kuroi-ekitai/'
     | '/latteart-maker/'
     | '/long-potato/'
+    | '/nnko-quiz/'
     | '/omurice-simulator/'
     | '/omurice/'
     | '/one-breath/'
     | '/prefecture-game/'
     | '/rakugaki-coaster/'
     | '/regional-differences/'
+    | '/roll-ice-simulator/'
     | '/shodo-simulator-3d/'
     | '/shusshin-ken/'
     | '/soft-serve/'
@@ -821,12 +861,14 @@ export interface FileRouteTypes {
     | '/kuroi-ekitai/$slug'
     | '/latteart-maker/$slug'
     | '/long-potato/$slug'
+    | '/nnko-quiz/$slug'
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
     | '/one-breath/$slug'
     | '/prefecture-game/$slug'
     | '/rakugaki-coaster/$slug'
     | '/regional-differences/$slug'
+    | '/roll-ice-simulator/$slug'
     | '/shodo-simulator-3d/$slug'
     | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
@@ -851,12 +893,14 @@ export interface FileRouteTypes {
     | '/kuroi-ekitai'
     | '/latteart-maker'
     | '/long-potato'
+    | '/nnko-quiz'
     | '/omurice-simulator'
     | '/omurice'
     | '/one-breath'
     | '/prefecture-game'
     | '/rakugaki-coaster'
     | '/regional-differences'
+    | '/roll-ice-simulator'
     | '/shodo-simulator-3d'
     | '/shusshin-ken'
     | '/soft-serve'
@@ -900,12 +944,14 @@ export interface FileRouteTypes {
     | '/kuroi-ekitai/$slug'
     | '/latteart-maker/$slug'
     | '/long-potato/$slug'
+    | '/nnko-quiz/$slug'
     | '/omurice-simulator/$slug'
     | '/omurice/$slug'
     | '/one-breath/$slug'
     | '/prefecture-game/$slug'
     | '/rakugaki-coaster/$slug'
     | '/regional-differences/$slug'
+    | '/roll-ice-simulator/$slug'
     | '/shodo-simulator-3d/$slug'
     | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
@@ -930,12 +976,14 @@ export interface FileRouteTypes {
     | '/kuroi-ekitai/'
     | '/latteart-maker/'
     | '/long-potato/'
+    | '/nnko-quiz/'
     | '/omurice-simulator/'
     | '/omurice/'
     | '/one-breath/'
     | '/prefecture-game/'
     | '/rakugaki-coaster/'
     | '/regional-differences/'
+    | '/roll-ice-simulator/'
     | '/shodo-simulator-3d/'
     | '/shusshin-ken/'
     | '/soft-serve/'
@@ -980,12 +1028,14 @@ export interface RootRouteChildren {
   KuroiEkitaiSlugRoute: typeof KuroiEkitaiSlugRoute
   LatteartMakerSlugRoute: typeof LatteartMakerSlugRoute
   LongPotatoSlugRoute: typeof LongPotatoSlugRoute
+  NnkoQuizSlugRoute: typeof NnkoQuizSlugRoute
   OmuriceSimulatorSlugRoute: typeof OmuriceSimulatorSlugRoute
   OmuriceSlugRoute: typeof OmuriceSlugRoute
   OneBreathSlugRoute: typeof OneBreathSlugRoute
   PrefectureGameSlugRoute: typeof PrefectureGameSlugRoute
   RakugakiCoasterSlugRoute: typeof RakugakiCoasterSlugRoute
   RegionalDifferencesSlugRoute: typeof RegionalDifferencesSlugRoute
+  RollIceSimulatorSlugRoute: typeof RollIceSimulatorSlugRoute
   ShodoSimulator3dSlugRoute: typeof ShodoSimulator3dSlugRoute
   ShusshinKenSlugRoute: typeof ShusshinKenSlugRoute
   SoftServeSlugRoute: typeof SoftServeSlugRoute
@@ -1010,12 +1060,14 @@ export interface RootRouteChildren {
   KuroiEkitaiIndexRoute: typeof KuroiEkitaiIndexRoute
   LatteartMakerIndexRoute: typeof LatteartMakerIndexRoute
   LongPotatoIndexRoute: typeof LongPotatoIndexRoute
+  NnkoQuizIndexRoute: typeof NnkoQuizIndexRoute
   OmuriceSimulatorIndexRoute: typeof OmuriceSimulatorIndexRoute
   OmuriceIndexRoute: typeof OmuriceIndexRoute
   OneBreathIndexRoute: typeof OneBreathIndexRoute
   PrefectureGameIndexRoute: typeof PrefectureGameIndexRoute
   RakugakiCoasterIndexRoute: typeof RakugakiCoasterIndexRoute
   RegionalDifferencesIndexRoute: typeof RegionalDifferencesIndexRoute
+  RollIceSimulatorIndexRoute: typeof RollIceSimulatorIndexRoute
   ShodoSimulator3dIndexRoute: typeof ShodoSimulator3dIndexRoute
   ShusshinKenIndexRoute: typeof ShusshinKenIndexRoute
   SoftServeIndexRoute: typeof SoftServeIndexRoute
@@ -1336,6 +1388,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LongPotatoSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/nnko-quiz/': {
+      id: '/nnko-quiz/'
+      path: '/nnko-quiz'
+      fullPath: '/nnko-quiz/'
+      preLoaderRoute: typeof NnkoQuizIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/nnko-quiz/$slug': {
+      id: '/nnko-quiz/$slug'
+      path: '/nnko-quiz/$slug'
+      fullPath: '/nnko-quiz/$slug'
+      preLoaderRoute: typeof NnkoQuizSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/omurice-simulator/': {
       id: '/omurice-simulator/'
       path: '/omurice-simulator'
@@ -1418,6 +1484,20 @@ declare module '@tanstack/react-router' {
       path: '/regional-differences/$slug'
       fullPath: '/regional-differences/$slug'
       preLoaderRoute: typeof RegionalDifferencesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roll-ice-simulator/': {
+      id: '/roll-ice-simulator/'
+      path: '/roll-ice-simulator'
+      fullPath: '/roll-ice-simulator/'
+      preLoaderRoute: typeof RollIceSimulatorIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/roll-ice-simulator/$slug': {
+      id: '/roll-ice-simulator/$slug'
+      path: '/roll-ice-simulator/$slug'
+      fullPath: '/roll-ice-simulator/$slug'
+      preLoaderRoute: typeof RollIceSimulatorSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/shodo-simulator-3d/': {
@@ -1604,12 +1684,14 @@ const rootRouteChildren: RootRouteChildren = {
   KuroiEkitaiSlugRoute: KuroiEkitaiSlugRoute,
   LatteartMakerSlugRoute: LatteartMakerSlugRoute,
   LongPotatoSlugRoute: LongPotatoSlugRoute,
+  NnkoQuizSlugRoute: NnkoQuizSlugRoute,
   OmuriceSimulatorSlugRoute: OmuriceSimulatorSlugRoute,
   OmuriceSlugRoute: OmuriceSlugRoute,
   OneBreathSlugRoute: OneBreathSlugRoute,
   PrefectureGameSlugRoute: PrefectureGameSlugRoute,
   RakugakiCoasterSlugRoute: RakugakiCoasterSlugRoute,
   RegionalDifferencesSlugRoute: RegionalDifferencesSlugRoute,
+  RollIceSimulatorSlugRoute: RollIceSimulatorSlugRoute,
   ShodoSimulator3dSlugRoute: ShodoSimulator3dSlugRoute,
   ShusshinKenSlugRoute: ShusshinKenSlugRoute,
   SoftServeSlugRoute: SoftServeSlugRoute,
@@ -1634,12 +1716,14 @@ const rootRouteChildren: RootRouteChildren = {
   KuroiEkitaiIndexRoute: KuroiEkitaiIndexRoute,
   LatteartMakerIndexRoute: LatteartMakerIndexRoute,
   LongPotatoIndexRoute: LongPotatoIndexRoute,
+  NnkoQuizIndexRoute: NnkoQuizIndexRoute,
   OmuriceSimulatorIndexRoute: OmuriceSimulatorIndexRoute,
   OmuriceIndexRoute: OmuriceIndexRoute,
   OneBreathIndexRoute: OneBreathIndexRoute,
   PrefectureGameIndexRoute: PrefectureGameIndexRoute,
   RakugakiCoasterIndexRoute: RakugakiCoasterIndexRoute,
   RegionalDifferencesIndexRoute: RegionalDifferencesIndexRoute,
+  RollIceSimulatorIndexRoute: RollIceSimulatorIndexRoute,
   ShodoSimulator3dIndexRoute: ShodoSimulator3dIndexRoute,
   ShusshinKenIndexRoute: ShusshinKenIndexRoute,
   SoftServeIndexRoute: SoftServeIndexRoute,

@@ -29,6 +29,8 @@ import { coasterHref } from './rakugaki-coaster/seo'
 import { turkishIceHref } from './turkish-ice-cream-3d/seo'
 import { latteHref } from './latteart-maker/seo'
 import { walkerHref } from './jinsei-walker/seo'
+import { rollIceHref } from './roll-ice-simulator/seo'
+import { nnkoHref } from './nnko-quiz/seo'
 import { shodoHref } from './shodo-simulator-3d/seo'
 import { zipperHref } from './zipper-finger/seo'
 
@@ -154,6 +156,10 @@ export function siteIndexLinks() {
     { id: 'latteart-maker/catalog', href: latteHref('catalog/'), label: 'ラテアート注ぎましたの図鑑' },
     { id: 'jinsei-walker', href: walkerHref(), label: '人生ウォーカー' },
     { id: 'jinsei-walker/guide', href: walkerHref('guide/'), label: '人生ウォーカーの攻略' },
+    { id: 'roll-ice-simulator', href: rollIceHref(), label: 'なんでもロールアイスシミュレーター' },
+    { id: 'roll-ice-simulator/guide', href: rollIceHref('guide/'), label: 'なんでもロールアイスシミュレーターの攻略' },
+    { id: 'nnko-quiz', href: nnkoHref(), label: '〇んこクイズ' },
+    { id: 'nnko-quiz/endings', href: nnkoHref('endings/'), label: '〇んこクイズのエンディング' },
     { id: 'about', href: siteInfoHref('about'), label: 'サイトについて' },
     { id: 'contact', href: siteInfoHref('contact'), label: 'お問い合わせ' },
     { id: 'privacy', href: siteInfoHref('privacy'), label: 'プライバシーポリシー' },
