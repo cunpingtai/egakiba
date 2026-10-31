@@ -35,6 +35,7 @@ import { tsundeHref } from './tsundetsundetsunde/seo'
 import { koiHref } from './koi-shindan/seo'
 import { bakusoHref } from './bakuso-kickboard/seo'
 import { sanmaHref } from './sanma-bonenuki/seo'
+import { yadoHref } from './shukuyo-note/seo'
 import { uwakiHref } from './uwaki-jinmon/seo'
 import { softServeHref } from './soft-serve/seo'
 import { typhoonHref } from './typhoon-escape/seo'
@@ -100,6 +101,7 @@ function headerGames(root: string): HeaderGame[] {
     { id: 'koi-shindan', href: koiHref(), mark: '恋', title: '恋愛診断', section: 'koi-shindan' },
     { id: 'bakuso-kickboard', href: bakusoHref(), mark: '走', title: '爆走キックボード', section: 'bakuso-kickboard' },
     { id: 'sanma-bonenuki', href: sanmaHref(), mark: '魚', title: '秋刀魚(骨抜き)', section: 'sanma-bonenuki' },
+    { id: 'shukuyo-note', href: yadoHref(), mark: '宿', title: '宿曜占い', section: 'shukuyo-note' },
   ]
 }
 

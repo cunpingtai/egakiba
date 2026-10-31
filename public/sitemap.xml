@@ -886,6 +886,41 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://egakiba.com/shukuyo-note/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/shukuyo-note/honmei/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/shukuyo-note/aisho/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/shukuyo-note/27shuku/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/shukuyo-note/28shuku/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/shukuyo-note/chigai/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://egakiba.com/shukuyo-note/keisan/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://egakiba.com/about/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>

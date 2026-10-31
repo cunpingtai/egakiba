@@ -78,6 +78,8 @@ import { Route as RollIceSimulatorSlugRouteImport } from './routes/roll-ice-simu
 import { Route as SanmaBonenukiIndexRouteImport } from './routes/sanma-bonenuki/index'
 import { Route as ShodoSimulator3dIndexRouteImport } from './routes/shodo-simulator-3d/index'
 import { Route as ShodoSimulator3dSlugRouteImport } from './routes/shodo-simulator-3d/$slug'
+import { Route as ShukuyoNoteIndexRouteImport } from './routes/shukuyo-note/index'
+import { Route as ShukuyoNotePageRouteImport } from './routes/shukuyo-note/$page'
 import { Route as ShusshinKenIndexRouteImport } from './routes/shusshin-ken/index'
 import { Route as ShusshinKenSlugRouteImport } from './routes/shusshin-ken/$slug'
 import { Route as SoftServeIndexRouteImport } from './routes/soft-serve/index'
@@ -452,6 +454,16 @@ const ShodoSimulator3dSlugRoute = ShodoSimulator3dSlugRouteImport.update({
   path: '/shodo-simulator-3d/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShukuyoNoteIndexRoute = ShukuyoNoteIndexRouteImport.update({
+  id: '/shukuyo-note/',
+  path: '/shukuyo-note/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShukuyoNotePageRoute = ShukuyoNotePageRouteImport.update({
+  id: '/shukuyo-note/$page',
+  path: '/shukuyo-note/$page',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ShusshinKenIndexRoute = ShusshinKenIndexRouteImport.update({
   id: '/shusshin-ken/',
   path: '/shusshin-ken/',
@@ -631,6 +643,7 @@ export interface FileRoutesByFullPath {
   '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
   '/roll-ice-simulator/$slug': typeof RollIceSimulatorSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
+  '/shukuyo-note/$page': typeof ShukuyoNotePageRoute
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
   '/streamer-life-simulator/$slug': typeof StreamerLifeSimulatorSlugRoute
@@ -669,6 +682,7 @@ export interface FileRoutesByFullPath {
   '/roll-ice-simulator/': typeof RollIceSimulatorIndexRoute
   '/sanma-bonenuki/': typeof SanmaBonenukiIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
+  '/shukuyo-note/': typeof ShukuyoNoteIndexRoute
   '/shusshin-ken/': typeof ShusshinKenIndexRoute
   '/soft-serve/': typeof SoftServeIndexRoute
   '/streamer-life-simulator/': typeof StreamerLifeSimulatorIndexRoute
@@ -728,6 +742,7 @@ export interface FileRoutesByTo {
   '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
   '/roll-ice-simulator/$slug': typeof RollIceSimulatorSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
+  '/shukuyo-note/$page': typeof ShukuyoNotePageRoute
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
   '/streamer-life-simulator/$slug': typeof StreamerLifeSimulatorSlugRoute
@@ -766,6 +781,7 @@ export interface FileRoutesByTo {
   '/roll-ice-simulator': typeof RollIceSimulatorIndexRoute
   '/sanma-bonenuki': typeof SanmaBonenukiIndexRoute
   '/shodo-simulator-3d': typeof ShodoSimulator3dIndexRoute
+  '/shukuyo-note': typeof ShukuyoNoteIndexRoute
   '/shusshin-ken': typeof ShusshinKenIndexRoute
   '/soft-serve': typeof SoftServeIndexRoute
   '/streamer-life-simulator': typeof StreamerLifeSimulatorIndexRoute
@@ -827,6 +843,7 @@ export interface FileRoutesById {
   '/regional-differences/$slug': typeof RegionalDifferencesSlugRoute
   '/roll-ice-simulator/$slug': typeof RollIceSimulatorSlugRoute
   '/shodo-simulator-3d/$slug': typeof ShodoSimulator3dSlugRoute
+  '/shukuyo-note/$page': typeof ShukuyoNotePageRoute
   '/shusshin-ken/$slug': typeof ShusshinKenSlugRoute
   '/soft-serve/$slug': typeof SoftServeSlugRoute
   '/streamer-life-simulator/$slug': typeof StreamerLifeSimulatorSlugRoute
@@ -865,6 +882,7 @@ export interface FileRoutesById {
   '/roll-ice-simulator/': typeof RollIceSimulatorIndexRoute
   '/sanma-bonenuki/': typeof SanmaBonenukiIndexRoute
   '/shodo-simulator-3d/': typeof ShodoSimulator3dIndexRoute
+  '/shukuyo-note/': typeof ShukuyoNoteIndexRoute
   '/shusshin-ken/': typeof ShusshinKenIndexRoute
   '/soft-serve/': typeof SoftServeIndexRoute
   '/streamer-life-simulator/': typeof StreamerLifeSimulatorIndexRoute
@@ -927,6 +945,7 @@ export interface FileRouteTypes {
     | '/regional-differences/$slug'
     | '/roll-ice-simulator/$slug'
     | '/shodo-simulator-3d/$slug'
+    | '/shukuyo-note/$page'
     | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
     | '/streamer-life-simulator/$slug'
@@ -965,6 +984,7 @@ export interface FileRouteTypes {
     | '/roll-ice-simulator/'
     | '/sanma-bonenuki/'
     | '/shodo-simulator-3d/'
+    | '/shukuyo-note/'
     | '/shusshin-ken/'
     | '/soft-serve/'
     | '/streamer-life-simulator/'
@@ -1024,6 +1044,7 @@ export interface FileRouteTypes {
     | '/regional-differences/$slug'
     | '/roll-ice-simulator/$slug'
     | '/shodo-simulator-3d/$slug'
+    | '/shukuyo-note/$page'
     | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
     | '/streamer-life-simulator/$slug'
@@ -1062,6 +1083,7 @@ export interface FileRouteTypes {
     | '/roll-ice-simulator'
     | '/sanma-bonenuki'
     | '/shodo-simulator-3d'
+    | '/shukuyo-note'
     | '/shusshin-ken'
     | '/soft-serve'
     | '/streamer-life-simulator'
@@ -1122,6 +1144,7 @@ export interface FileRouteTypes {
     | '/regional-differences/$slug'
     | '/roll-ice-simulator/$slug'
     | '/shodo-simulator-3d/$slug'
+    | '/shukuyo-note/$page'
     | '/shusshin-ken/$slug'
     | '/soft-serve/$slug'
     | '/streamer-life-simulator/$slug'
@@ -1160,6 +1183,7 @@ export interface FileRouteTypes {
     | '/roll-ice-simulator/'
     | '/sanma-bonenuki/'
     | '/shodo-simulator-3d/'
+    | '/shukuyo-note/'
     | '/shusshin-ken/'
     | '/soft-serve/'
     | '/streamer-life-simulator/'
@@ -1219,6 +1243,7 @@ export interface RootRouteChildren {
   RegionalDifferencesSlugRoute: typeof RegionalDifferencesSlugRoute
   RollIceSimulatorSlugRoute: typeof RollIceSimulatorSlugRoute
   ShodoSimulator3dSlugRoute: typeof ShodoSimulator3dSlugRoute
+  ShukuyoNotePageRoute: typeof ShukuyoNotePageRoute
   ShusshinKenSlugRoute: typeof ShusshinKenSlugRoute
   SoftServeSlugRoute: typeof SoftServeSlugRoute
   StreamerLifeSimulatorSlugRoute: typeof StreamerLifeSimulatorSlugRoute
@@ -1256,6 +1281,7 @@ export interface RootRouteChildren {
   RollIceSimulatorIndexRoute: typeof RollIceSimulatorIndexRoute
   SanmaBonenukiIndexRoute: typeof SanmaBonenukiIndexRoute
   ShodoSimulator3dIndexRoute: typeof ShodoSimulator3dIndexRoute
+  ShukuyoNoteIndexRoute: typeof ShukuyoNoteIndexRoute
   ShusshinKenIndexRoute: typeof ShusshinKenIndexRoute
   SoftServeIndexRoute: typeof SoftServeIndexRoute
   StreamerLifeSimulatorIndexRoute: typeof StreamerLifeSimulatorIndexRoute
@@ -1760,6 +1786,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShodoSimulator3dSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/shukuyo-note/': {
+      id: '/shukuyo-note/'
+      path: '/shukuyo-note'
+      fullPath: '/shukuyo-note/'
+      preLoaderRoute: typeof ShukuyoNoteIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shukuyo-note/$page': {
+      id: '/shukuyo-note/$page'
+      path: '/shukuyo-note/$page'
+      fullPath: '/shukuyo-note/$page'
+      preLoaderRoute: typeof ShukuyoNotePageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/shusshin-ken/': {
       id: '/shusshin-ken/'
       path: '/shusshin-ken'
@@ -2010,6 +2050,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegionalDifferencesSlugRoute: RegionalDifferencesSlugRoute,
   RollIceSimulatorSlugRoute: RollIceSimulatorSlugRoute,
   ShodoSimulator3dSlugRoute: ShodoSimulator3dSlugRoute,
+  ShukuyoNotePageRoute: ShukuyoNotePageRoute,
   ShusshinKenSlugRoute: ShusshinKenSlugRoute,
   SoftServeSlugRoute: SoftServeSlugRoute,
   StreamerLifeSimulatorSlugRoute: StreamerLifeSimulatorSlugRoute,
@@ -2047,6 +2088,7 @@ const rootRouteChildren: RootRouteChildren = {
   RollIceSimulatorIndexRoute: RollIceSimulatorIndexRoute,
   SanmaBonenukiIndexRoute: SanmaBonenukiIndexRoute,
   ShodoSimulator3dIndexRoute: ShodoSimulator3dIndexRoute,
+  ShukuyoNoteIndexRoute: ShukuyoNoteIndexRoute,
   ShusshinKenIndexRoute: ShusshinKenIndexRoute,
   SoftServeIndexRoute: SoftServeIndexRoute,
   StreamerLifeSimulatorIndexRoute: StreamerLifeSimulatorIndexRoute,

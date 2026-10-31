@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string; beerPour: string; sansa: string; coaster: string; turkishIce: string; latte: string; walker: string; rollIce: string; nnko: string; derby: string; tenhou: string; streamer: string; tsunde: string; koi: string; bakuso: string; sanma: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string; beerPour: string; sansa: string; coaster: string; turkishIce: string; latte: string; walker: string; rollIce: string; nnko: string; derby: string; tenhou: string; streamer: string; tsunde: string; koi: string; bakuso: string; sanma: string; yado: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -306,6 +306,14 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: '骨抜き',
       title: '秋刀魚(骨抜き)',
       description: '焼きサンマの中骨を頭ごと一本で抜く。',
+    },
+    {
+      id: 'shukuyo-note',
+      href: links.yado,
+      mark: '宿',
+      kicker: '占い',
+      title: '宿曜占い',
+      description: '本命宿と相性は、月の宿帖で診断する。',
     },
   ]
 }

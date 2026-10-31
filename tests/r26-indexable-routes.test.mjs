@@ -95,7 +95,7 @@ test('R26: sitemap contains the Japanese canonical landing URLs and no fragment 
   const sitemap = await read('public/sitemap.xml');
   const robots = await read('public/robots.txt');
   const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-  assert.equal(urls.length, 131 + indexablePaths().length);
+  assert.equal(urls.length, 138 + indexablePaths().length);
   for (const path of indexablePaths()) assert.ok(urls.includes(`${DEFAULT_SITE_URL}${path}`), `missing sitemap URL: ${path}`);
   assert.equal(sitemap.includes('<lastmod>'), false);
   assert.equal(new Set(urls).size, urls.length);
@@ -202,6 +202,10 @@ test('R26: sitemap contains the Japanese canonical landing URLs and no fragment 
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}tsundetsundetsunde/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}bakuso-kickboard/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}sanma-bonenuki/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}shukuyo-note/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}shukuyo-note/honmei/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}shukuyo-note/aisho/`));
+  assert.ok(urls.includes(`${DEFAULT_SITE_URL}shukuyo-note/keisan/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}ko/sansa/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}ko/sansa/how-to/`));
   assert.ok(urls.includes(`${DEFAULT_SITE_URL}ja/sansa-online-temple/`));

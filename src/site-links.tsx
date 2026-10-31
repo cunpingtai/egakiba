@@ -38,6 +38,7 @@ import { tsundeHref } from './tsundetsundetsunde/seo'
 import { koiHref } from './koi-shindan/seo'
 import { bakusoHref } from './bakuso-kickboard/seo'
 import { sanmaHref } from './sanma-bonenuki/seo'
+import { yadoHref } from './shukuyo-note/seo'
 import { shodoHref } from './shodo-simulator-3d/seo'
 import { zipperHref } from './zipper-finger/seo'
 
@@ -177,6 +178,13 @@ export function siteIndexLinks() {
     { id: 'koi-shindan', href: koiHref(), label: '恋愛診断' },
     { id: 'bakuso-kickboard', href: bakusoHref(), label: '爆走キックボード' },
     { id: 'sanma-bonenuki', href: sanmaHref(), label: '秋刀魚(骨抜き)' },
+    { id: 'shukuyo-note', href: yadoHref(), label: '宿曜占い' },
+    { id: 'shukuyo-note/honmei', href: yadoHref('honmei/'), label: '本命宿診断' },
+    { id: 'shukuyo-note/aisho', href: yadoHref('aisho/'), label: '宿曜の相性占い' },
+    { id: 'shukuyo-note/27shuku', href: yadoHref('27shuku/'), label: '27宿の性格' },
+    { id: 'shukuyo-note/28shuku', href: yadoHref('28shuku/'), label: '28宿占い' },
+    { id: 'shukuyo-note/chigai', href: yadoHref('chigai/'), label: '27宿と28宿の違い' },
+    { id: 'shukuyo-note/keisan', href: yadoHref('keisan/'), label: '本命宿の調べ方' },
     { id: 'about', href: siteInfoHref('about'), label: 'サイトについて' },
     { id: 'contact', href: siteInfoHref('contact'), label: 'お問い合わせ' },
     { id: 'privacy', href: siteInfoHref('privacy'), label: 'プライバシーポリシー' },
