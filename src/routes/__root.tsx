@@ -35,6 +35,7 @@ export const Route = createRootRoute({
 function RootDocument({ children }: { children: React.ReactNode }) {
   const pathname = useRouterState({ select: (state) => state.location.pathname })
   const lang = pathname.startsWith('/ko/') ? 'ko' : pathname.startsWith('/fr/') ? 'fr' : pathname.startsWith('/en/') ? 'en' : 'ja'
+  const sideAds = pathname.startsWith('/koi-shindan')
   return (
     <html lang={lang}>
       <head>
@@ -46,7 +47,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           crossOrigin="anonymous"
         />
       </head>
-      <body className="min-h-dvh font-sans antialiased">
+      <body className={sideAds ? 'side-ads min-h-dvh font-sans antialiased' : 'min-h-dvh font-sans antialiased'}>
         <SiteFrame>{children}</SiteFrame>
         <Scripts />
         <script data-cfasync="false" src="https://bauval.org/14/3362c7c294cf1727cf40c02e534019ec" />

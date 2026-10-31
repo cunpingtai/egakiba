@@ -555,6 +555,26 @@ iframe#play {
     left: auto;
     right: auto;
   }
+  body.side-ads {
+    background: #FFF9F5;
+    color: #2A2430;
+  }
+  body.side-ads::before { opacity: 0; }
+  body.side-ads .site-ad-rail {
+    position: fixed;
+    top: calc(52px + env(safe-area-inset-top) + 16px);
+    width: 300px;
+    margin: 0;
+    z-index: 5;
+  }
+  body.side-ads .site-ad-rail-left { left: 16px; right: auto; }
+  body.side-ads .site-ad-rail-right { right: 16px; left: auto; }
+  body.side-ads .ks > :is(main, footer) {
+    width: min(680px, calc(100vw - 664px));
+    max-width: min(680px, calc(100vw - 664px));
+    margin-left: auto;
+    margin-right: auto;
+  }
   iframe#play {
     height: calc(100dvh - 88px - 52px) !important;
   }

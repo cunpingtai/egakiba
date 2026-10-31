@@ -15,6 +15,7 @@ import { Route as CompareRouteImport } from './routes/compare'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as GlyphsRouteImport } from './routes/glyphs'
 import { Route as HowToPlayRouteImport } from './routes/how-to-play'
+import { Route as KoiShindanRouteRouteImport } from './routes/koi-shindan/route'
 import { Route as PlayRouteImport } from './routes/play'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as StagesRouteImport } from './routes/stages'
@@ -46,6 +47,9 @@ import { Route as JinseiWalkerIndexRouteImport } from './routes/jinsei-walker/in
 import { Route as JinseiWalkerSlugRouteImport } from './routes/jinsei-walker/$slug'
 import { Route as KazokuIgaiIndexRouteImport } from './routes/kazoku-igai/index'
 import { Route as KazokuIgaiSlugRouteImport } from './routes/kazoku-igai/$slug'
+import { Route as KoiShindanIndexRouteImport } from './routes/koi-shindan/index'
+import { Route as KoiShindanAboutRouteImport } from './routes/koi-shindan/about'
+import { Route as KoiShindanPrivacyRouteImport } from './routes/koi-shindan/privacy'
 import { Route as KuroiEkitaiIndexRouteImport } from './routes/kuroi-ekitai/index'
 import { Route as KuroiEkitaiSlugRouteImport } from './routes/kuroi-ekitai/$slug'
 import { Route as LatteartMakerIndexRouteImport } from './routes/latteart-maker/index'
@@ -97,6 +101,8 @@ import { Route as JaSansaOnlineTempleIndexRouteImport } from './routes/ja/sansa-
 import { Route as JaSansaOnlineTempleSlugRouteImport } from './routes/ja/sansa-online-temple/$slug'
 import { Route as KoSansaIndexRouteImport } from './routes/ko/sansa/index'
 import { Route as KoSansaSlugRouteImport } from './routes/ko/sansa/$slug'
+import { Route as KoiShindanQuizIndexRouteImport } from './routes/koi-shindan/$quiz/index'
+import { Route as KoiShindanQuizCodeRouteImport } from './routes/koi-shindan/$quiz/$code'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -126,6 +132,11 @@ const GlyphsRoute = GlyphsRouteImport.update({
 const HowToPlayRoute = HowToPlayRouteImport.update({
   id: '/how-to-play',
   path: '/how-to-play',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KoiShindanRouteRoute = KoiShindanRouteRouteImport.update({
+  id: '/koi-shindan',
+  path: '/koi-shindan',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlayRoute = PlayRouteImport.update({
@@ -282,6 +293,21 @@ const KazokuIgaiSlugRoute = KazokuIgaiSlugRouteImport.update({
   id: '/kazoku-igai/$slug',
   path: '/kazoku-igai/$slug',
   getParentRoute: () => rootRouteImport,
+} as any)
+const KoiShindanIndexRoute = KoiShindanIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => KoiShindanRouteRoute,
+} as any)
+const KoiShindanAboutRoute = KoiShindanAboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => KoiShindanRouteRoute,
+} as any)
+const KoiShindanPrivacyRoute = KoiShindanPrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => KoiShindanRouteRoute,
 } as any)
 const KuroiEkitaiIndexRoute = KuroiEkitaiIndexRouteImport.update({
   id: '/kuroi-ekitai/',
@@ -542,9 +568,20 @@ const KoSansaSlugRoute = KoSansaSlugRouteImport.update({
   path: '/ko/sansa/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KoiShindanQuizIndexRoute = KoiShindanQuizIndexRouteImport.update({
+  id: '/$quiz/',
+  path: '/$quiz/',
+  getParentRoute: () => KoiShindanRouteRoute,
+} as any)
+const KoiShindanQuizCodeRoute = KoiShindanQuizCodeRouteImport.update({
+  id: '/$quiz/$code',
+  path: '/$quiz/$code',
+  getParentRoute: () => KoiShindanRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/koi-shindan': typeof KoiShindanRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
@@ -567,6 +604,8 @@ export interface FileRoutesByFullPath {
   '/ice-break/$slug': typeof IceBreakSlugRoute
   '/jinsei-walker/$slug': typeof JinseiWalkerSlugRoute
   '/kazoku-igai/$slug': typeof KazokuIgaiSlugRoute
+  '/koi-shindan/about': typeof KoiShindanAboutRoute
+  '/koi-shindan/privacy': typeof KoiShindanPrivacyRoute
   '/kuroi-ekitai/$slug': typeof KuroiEkitaiSlugRoute
   '/latteart-maker/$slug': typeof LatteartMakerSlugRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
@@ -602,6 +641,7 @@ export interface FileRoutesByFullPath {
   '/interrogation-games/': typeof InterrogationGamesIndexRoute
   '/jinsei-walker/': typeof JinseiWalkerIndexRoute
   '/kazoku-igai/': typeof KazokuIgaiIndexRoute
+  '/koi-shindan/': typeof KoiShindanIndexRoute
   '/kuroi-ekitai/': typeof KuroiEkitaiIndexRoute
   '/latteart-maker/': typeof LatteartMakerIndexRoute
   '/long-potato/': typeof LongPotatoIndexRoute
@@ -628,10 +668,12 @@ export interface FileRoutesByFullPath {
   '/fr/sansa/$slug': typeof FrSansaSlugRoute
   '/ja/sansa-online-temple/$slug': typeof JaSansaOnlineTempleSlugRoute
   '/ko/sansa/$slug': typeof KoSansaSlugRoute
+  '/koi-shindan/$quiz/$code': typeof KoiShindanQuizCodeRoute
   '/en/sansa/': typeof EnSansaIndexRoute
   '/fr/sansa/': typeof FrSansaIndexRoute
   '/ja/sansa-online-temple/': typeof JaSansaOnlineTempleIndexRoute
   '/ko/sansa/': typeof KoSansaIndexRoute
+  '/koi-shindan/$quiz/': typeof KoiShindanQuizIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -657,6 +699,8 @@ export interface FileRoutesByTo {
   '/ice-break/$slug': typeof IceBreakSlugRoute
   '/jinsei-walker/$slug': typeof JinseiWalkerSlugRoute
   '/kazoku-igai/$slug': typeof KazokuIgaiSlugRoute
+  '/koi-shindan/about': typeof KoiShindanAboutRoute
+  '/koi-shindan/privacy': typeof KoiShindanPrivacyRoute
   '/kuroi-ekitai/$slug': typeof KuroiEkitaiSlugRoute
   '/latteart-maker/$slug': typeof LatteartMakerSlugRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
@@ -692,6 +736,7 @@ export interface FileRoutesByTo {
   '/interrogation-games': typeof InterrogationGamesIndexRoute
   '/jinsei-walker': typeof JinseiWalkerIndexRoute
   '/kazoku-igai': typeof KazokuIgaiIndexRoute
+  '/koi-shindan': typeof KoiShindanIndexRoute
   '/kuroi-ekitai': typeof KuroiEkitaiIndexRoute
   '/latteart-maker': typeof LatteartMakerIndexRoute
   '/long-potato': typeof LongPotatoIndexRoute
@@ -718,14 +763,17 @@ export interface FileRoutesByTo {
   '/fr/sansa/$slug': typeof FrSansaSlugRoute
   '/ja/sansa-online-temple/$slug': typeof JaSansaOnlineTempleSlugRoute
   '/ko/sansa/$slug': typeof KoSansaSlugRoute
+  '/koi-shindan/$quiz/$code': typeof KoiShindanQuizCodeRoute
   '/en/sansa': typeof EnSansaIndexRoute
   '/fr/sansa': typeof FrSansaIndexRoute
   '/ja/sansa-online-temple': typeof JaSansaOnlineTempleIndexRoute
   '/ko/sansa': typeof KoSansaIndexRoute
+  '/koi-shindan/$quiz': typeof KoiShindanQuizIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/koi-shindan': typeof KoiShindanRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/compare': typeof CompareRoute
   '/contact': typeof ContactRoute
@@ -748,6 +796,8 @@ export interface FileRoutesById {
   '/ice-break/$slug': typeof IceBreakSlugRoute
   '/jinsei-walker/$slug': typeof JinseiWalkerSlugRoute
   '/kazoku-igai/$slug': typeof KazokuIgaiSlugRoute
+  '/koi-shindan/about': typeof KoiShindanAboutRoute
+  '/koi-shindan/privacy': typeof KoiShindanPrivacyRoute
   '/kuroi-ekitai/$slug': typeof KuroiEkitaiSlugRoute
   '/latteart-maker/$slug': typeof LatteartMakerSlugRoute
   '/long-potato/$slug': typeof LongPotatoSlugRoute
@@ -783,6 +833,7 @@ export interface FileRoutesById {
   '/interrogation-games/': typeof InterrogationGamesIndexRoute
   '/jinsei-walker/': typeof JinseiWalkerIndexRoute
   '/kazoku-igai/': typeof KazokuIgaiIndexRoute
+  '/koi-shindan/': typeof KoiShindanIndexRoute
   '/kuroi-ekitai/': typeof KuroiEkitaiIndexRoute
   '/latteart-maker/': typeof LatteartMakerIndexRoute
   '/long-potato/': typeof LongPotatoIndexRoute
@@ -809,15 +860,18 @@ export interface FileRoutesById {
   '/fr/sansa/$slug': typeof FrSansaSlugRoute
   '/ja/sansa-online-temple/$slug': typeof JaSansaOnlineTempleSlugRoute
   '/ko/sansa/$slug': typeof KoSansaSlugRoute
+  '/koi-shindan/$quiz/$code': typeof KoiShindanQuizCodeRoute
   '/en/sansa/': typeof EnSansaIndexRoute
   '/fr/sansa/': typeof FrSansaIndexRoute
   '/ja/sansa-online-temple/': typeof JaSansaOnlineTempleIndexRoute
   '/ko/sansa/': typeof KoSansaIndexRoute
+  '/koi-shindan/$quiz/': typeof KoiShindanQuizIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/koi-shindan'
     | '/about'
     | '/compare'
     | '/contact'
@@ -840,6 +894,8 @@ export interface FileRouteTypes {
     | '/ice-break/$slug'
     | '/jinsei-walker/$slug'
     | '/kazoku-igai/$slug'
+    | '/koi-shindan/about'
+    | '/koi-shindan/privacy'
     | '/kuroi-ekitai/$slug'
     | '/latteart-maker/$slug'
     | '/long-potato/$slug'
@@ -875,6 +931,7 @@ export interface FileRouteTypes {
     | '/interrogation-games/'
     | '/jinsei-walker/'
     | '/kazoku-igai/'
+    | '/koi-shindan/'
     | '/kuroi-ekitai/'
     | '/latteart-maker/'
     | '/long-potato/'
@@ -901,10 +958,12 @@ export interface FileRouteTypes {
     | '/fr/sansa/$slug'
     | '/ja/sansa-online-temple/$slug'
     | '/ko/sansa/$slug'
+    | '/koi-shindan/$quiz/$code'
     | '/en/sansa/'
     | '/fr/sansa/'
     | '/ja/sansa-online-temple/'
     | '/ko/sansa/'
+    | '/koi-shindan/$quiz/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -930,6 +989,8 @@ export interface FileRouteTypes {
     | '/ice-break/$slug'
     | '/jinsei-walker/$slug'
     | '/kazoku-igai/$slug'
+    | '/koi-shindan/about'
+    | '/koi-shindan/privacy'
     | '/kuroi-ekitai/$slug'
     | '/latteart-maker/$slug'
     | '/long-potato/$slug'
@@ -965,6 +1026,7 @@ export interface FileRouteTypes {
     | '/interrogation-games'
     | '/jinsei-walker'
     | '/kazoku-igai'
+    | '/koi-shindan'
     | '/kuroi-ekitai'
     | '/latteart-maker'
     | '/long-potato'
@@ -991,13 +1053,16 @@ export interface FileRouteTypes {
     | '/fr/sansa/$slug'
     | '/ja/sansa-online-temple/$slug'
     | '/ko/sansa/$slug'
+    | '/koi-shindan/$quiz/$code'
     | '/en/sansa'
     | '/fr/sansa'
     | '/ja/sansa-online-temple'
     | '/ko/sansa'
+    | '/koi-shindan/$quiz'
   id:
     | '__root__'
     | '/'
+    | '/koi-shindan'
     | '/about'
     | '/compare'
     | '/contact'
@@ -1020,6 +1085,8 @@ export interface FileRouteTypes {
     | '/ice-break/$slug'
     | '/jinsei-walker/$slug'
     | '/kazoku-igai/$slug'
+    | '/koi-shindan/about'
+    | '/koi-shindan/privacy'
     | '/kuroi-ekitai/$slug'
     | '/latteart-maker/$slug'
     | '/long-potato/$slug'
@@ -1055,6 +1122,7 @@ export interface FileRouteTypes {
     | '/interrogation-games/'
     | '/jinsei-walker/'
     | '/kazoku-igai/'
+    | '/koi-shindan/'
     | '/kuroi-ekitai/'
     | '/latteart-maker/'
     | '/long-potato/'
@@ -1081,14 +1149,17 @@ export interface FileRouteTypes {
     | '/fr/sansa/$slug'
     | '/ja/sansa-online-temple/$slug'
     | '/ko/sansa/$slug'
+    | '/koi-shindan/$quiz/$code'
     | '/en/sansa/'
     | '/fr/sansa/'
     | '/ja/sansa-online-temple/'
     | '/ko/sansa/'
+    | '/koi-shindan/$quiz/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  KoiShindanRouteRoute: typeof KoiShindanRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   CompareRoute: typeof CompareRoute
   ContactRoute: typeof ContactRoute
@@ -1220,6 +1291,13 @@ declare module '@tanstack/react-router' {
       path: '/how-to-play'
       fullPath: '/how-to-play'
       preLoaderRoute: typeof HowToPlayRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/koi-shindan': {
+      id: '/koi-shindan'
+      path: '/koi-shindan'
+      fullPath: '/koi-shindan'
+      preLoaderRoute: typeof KoiShindanRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/play': {
@@ -1438,6 +1516,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/kazoku-igai/$slug'
       preLoaderRoute: typeof KazokuIgaiSlugRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/koi-shindan/': {
+      id: '/koi-shindan/'
+      path: '/'
+      fullPath: '/koi-shindan/'
+      preLoaderRoute: typeof KoiShindanIndexRouteImport
+      parentRoute: typeof KoiShindanRouteRoute
+    }
+    '/koi-shindan/about': {
+      id: '/koi-shindan/about'
+      path: '/about'
+      fullPath: '/koi-shindan/about'
+      preLoaderRoute: typeof KoiShindanAboutRouteImport
+      parentRoute: typeof KoiShindanRouteRoute
+    }
+    '/koi-shindan/privacy': {
+      id: '/koi-shindan/privacy'
+      path: '/privacy'
+      fullPath: '/koi-shindan/privacy'
+      preLoaderRoute: typeof KoiShindanPrivacyRouteImport
+      parentRoute: typeof KoiShindanRouteRoute
     }
     '/kuroi-ekitai/': {
       id: '/kuroi-ekitai/'
@@ -1796,11 +1895,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KoSansaSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/koi-shindan/$quiz/': {
+      id: '/koi-shindan/$quiz/'
+      path: '/$quiz'
+      fullPath: '/koi-shindan/$quiz/'
+      preLoaderRoute: typeof KoiShindanQuizIndexRouteImport
+      parentRoute: typeof KoiShindanRouteRoute
+    }
+    '/koi-shindan/$quiz/$code': {
+      id: '/koi-shindan/$quiz/$code'
+      path: '/$quiz/$code'
+      fullPath: '/koi-shindan/$quiz/$code'
+      preLoaderRoute: typeof KoiShindanQuizCodeRouteImport
+      parentRoute: typeof KoiShindanRouteRoute
+    }
   }
 }
 
+interface KoiShindanRouteRouteChildren {
+  KoiShindanAboutRoute: typeof KoiShindanAboutRoute
+  KoiShindanPrivacyRoute: typeof KoiShindanPrivacyRoute
+  KoiShindanIndexRoute: typeof KoiShindanIndexRoute
+  KoiShindanQuizCodeRoute: typeof KoiShindanQuizCodeRoute
+  KoiShindanQuizIndexRoute: typeof KoiShindanQuizIndexRoute
+}
+
+const KoiShindanRouteRouteChildren: KoiShindanRouteRouteChildren = {
+  KoiShindanAboutRoute: KoiShindanAboutRoute,
+  KoiShindanPrivacyRoute: KoiShindanPrivacyRoute,
+  KoiShindanIndexRoute: KoiShindanIndexRoute,
+  KoiShindanQuizCodeRoute: KoiShindanQuizCodeRoute,
+  KoiShindanQuizIndexRoute: KoiShindanQuizIndexRoute,
+}
+
+const KoiShindanRouteRouteWithChildren = KoiShindanRouteRoute._addFileChildren(
+  KoiShindanRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  KoiShindanRouteRoute: KoiShindanRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   CompareRoute: CompareRoute,
   ContactRoute: ContactRoute,

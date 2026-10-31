@@ -8,7 +8,7 @@ export type SiteGame = {
   here?: boolean
 }
 
-export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string; beerPour: string; sansa: string; coaster: string; turkishIce: string; latte: string; walker: string; rollIce: string; nnko: string; derby: string; tenhou: string; streamer: string; tsunde: string }): SiteGame[] {
+export function siteGames(links: { drawFight: string; typhoonEscape: string; zipperFinger: string; shodo: string; dashimaki: string; omurice: string; potato: string; breath: string; hamburg: string; softServe: string; ommoji: string; shusshinKen: string; uwakiJinmon: string; iceBreak: string; kuroiEkitai: string; daruma: string; prefectureGame: string; kazokuIgai: string; acupunctureDarts: string; concafeSim: string; hanko: string; beerPour: string; sansa: string; coaster: string; turkishIce: string; latte: string; walker: string; rollIce: string; nnko: string; derby: string; tenhou: string; streamer: string; tsunde: string; koi: string }): SiteGame[] {
   return [
     {
       id: 'moji-blade',
@@ -282,6 +282,14 @@ export function siteGames(links: { drawFight: string; typhoonEscape: string; zip
       kicker: '積み上げ',
       title: 'ツンデツンデツンデ',
       description: 'ツンデツンデをひたすら積み上げる。',
+    },
+    {
+      id: 'koi-shindan',
+      href: links.koi,
+      mark: '恋',
+      kicker: '診断',
+      title: '恋愛診断',
+      description: 'ツンデレ比率診断、ラブタイプ診断、何デレ診断、ドパガキ診断。',
     },
   ]
 }

@@ -11,6 +11,7 @@ import {
   getSeoPage,
   routeHref,
 } from '../src/seo/landing-content.mjs';
+import { indexablePaths } from '../src/koi-shindan/score.mjs';
 
 const root = new URL('../', import.meta.url);
 const read = (path) => readFile(new URL(path, root), 'utf8');
@@ -94,7 +95,8 @@ test('R26: sitemap contains the Japanese canonical landing URLs and no fragment 
   const sitemap = await read('public/sitemap.xml');
   const robots = await read('public/robots.txt');
   const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]);
-  assert.equal(urls.length, 129);
+  assert.equal(urls.length, 129 + indexablePaths().length);
+  for (const path of indexablePaths()) assert.ok(urls.includes(`${DEFAULT_SITE_URL}${path}`), `missing sitemap URL: ${path}`);
   assert.equal(sitemap.includes('<lastmod>'), false);
   assert.equal(new Set(urls).size, urls.length);
   assert.ok(urls.every((url) => !url.includes('#')));
